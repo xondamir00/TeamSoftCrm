@@ -1,7 +1,8 @@
+import Navbar from "./components/shared/navbar"
 
 const App = () => {
   return (
-    <div>App</div>
+    <div><Navbar/></div>
   )
 }
 
