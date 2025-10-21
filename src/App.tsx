@@ -1,8 +1,7 @@
+import Header from "./components/ui/header/header";
 
 const App = () => {
-  return (
-    <div>App</div>
-  )
-}
+  return <Header />;
+};
 
-export default App
+export default App;
