@@ -1,7 +1,9 @@
+import Category from "@/shared/Category";
+
 const Home = () => {
   return (
     <div>
-      <h1>Home</h1>
+      <Category />
     </div>
   );
 };
