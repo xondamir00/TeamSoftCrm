@@ -18,7 +18,7 @@ export default function Header() {
           {/* Mobile Toggle Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 border border-[#3F8CFF] rounded-md text-[#3F8CFF] hover:bg-[#3F8CFF1A] active:bg-[#3F8CFF33] transition-all"
+            className="md:hidden p-2 border border-[#893fff] rounded-md text-[#3F8CFF] hover:bg-[#3F8CFF1A] active:bg-[#3F8CFF33] transition-all"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -35,6 +35,8 @@ export default function Header() {
                 </li>
               ))}
             </ul>
+
+            
           </nav>
         </div>
 
