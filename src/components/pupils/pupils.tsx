@@ -41,7 +41,7 @@ const Pupils = () => {
           </TableBody>
         </Table>
       </div>
-      </div>
+    </div>
   );
 };
 
