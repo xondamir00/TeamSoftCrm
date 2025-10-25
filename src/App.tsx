@@ -1,8 +1,11 @@
+import Pupils from "./components/pupils/pupils"
 import Navbar from "./components/shared/navbar"
 
 const App = () => {
   return (
-    <div><Navbar/></div>
+    <div><Navbar/>
+    <Pupils/>
+    </div>
   )
 }
 
