@@ -1,13 +1,13 @@
 import Navbar from "@/shared/navbar/navbar";
 import { Outlet } from "react-router-dom";
 
-const Homelayout = () => {
+const Teacherlayout = () => {
   return (
-    <div>
+    <>
       <Navbar />
       <Outlet />
-    </div>
+    </>
   );
 };
 
-export default Homelayout;
+export default Teacherlayout;

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   DropdownMenu,
@@ -7,10 +7,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Settings, LogOut, UserPlus, User } from "lucide-react"
-import Logout from "./Logout"
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Settings, UserPlus, User } from "lucide-react";
+import Logout from "./Logout";
 
 export function AccountMenu() {
   return (
@@ -19,7 +19,9 @@ export function AccountMenu() {
         <button className="flex items-center space-x-2 rounded-full focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
           <Avatar className="h-10 w-10 ring-4 ring-white  ">
             <AvatarImage src="/avatars/01.png" alt="@user" />
-            <AvatarFallback className="bg-[#3F8CFF] dark:bg-black">M</AvatarFallback>
+            <AvatarFallback className="bg-orange-600 text-white dark:bg-black">
+              M
+            </AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>
@@ -46,10 +48,10 @@ export function AccountMenu() {
           <span>Add another account</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-      <Logout/>
+        <Logout />
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
 
-export default AccountMenu
+export default AccountMenu;

@@ -1,7 +1,7 @@
 import { LanguageSwitcher } from "@/i18react/LanguageSwitcher";
 import AccountMenu from "./AvatarDemo";
 import Logo from "./logo";
-import { ModeToggle } from "./modeToggle";
+import { ModeToggle } from "../modeToggle";
 
 const Navbar = () => {
   return (
