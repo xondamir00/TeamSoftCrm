@@ -1,4 +1,4 @@
-import Category from "@/shared/Category";
+import Category from "@/components/Category";
 
 const Home = () => {
   return (
