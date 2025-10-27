@@ -18,6 +18,7 @@ type LangOption = {
 const languages: LangOption[] = [
   { code: "uz", name: "O‘zbek", flag: "/flags/uz.png" },
   { code: "ru", name: "Русский", flag: "/flags/ru.png" },
+   { code: "en", name: "English", flag: "/flags/en.png" },
 ];
 export function LanguageSwitcher() {
   const { i18n: i18next } = useTranslation();
@@ -37,7 +38,7 @@ export function LanguageSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <motion.button
-          className="flex items-center justify-center w-10 h-10 ring-4 ring-white rounded-full border bg-[#3F8CFF] dark:bg-black"
+          className="flex items-center justify-center w-10 h-10 ring-2 ring-white rounded-full border bg-[#3F8CFF] dark:bg-black"
           whileTap={{ scale: 0.9 }}
           whileHover={{ scale: 1.05 }}
           aria-label="Language switcher"
