@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 const Pupils = () => {
   const { t } = useTranslation();
   return (
-    <div className="w-full bg-white rounded-2xl">
+    <div className="w-[98%] mx-auto bg-white shadow-md p-2 border rounded-2xl">
       <div className="md:block overflow-x-auto">
         <Table>
           <TableCaption>{t("pupils")}</TableCaption>
