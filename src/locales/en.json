@@ -4,5 +4,13 @@
   "name": "Name",
   "phone": "Number",
   "phone2": "Parents number",
-  "price": "Payment"
+  "price": "Payment",
+    "leads": "Leads",
+  "teachersList": "Teachers List",
+  "groups": "Groups",
+  "studentsList": "Students List",
+  "debtorsList": "Debtors List",
+  "settings": "Settings",
+  "finance": "Finance",
+  "categories": "Categories"
 }
