@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
 import { Input } from "../ui/input";
 
 const Login = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form className="bg-white p-6 w-full max-w-sm rounded-lg shadow-lg">
+      <form className="light:bg-white p-6 w-full max-w-sm rounded-lg shadow-lg">
         <p className="text-xl font-semibold text-center text-black mb-4">
           Sign in to your account
         </p>
@@ -25,14 +24,13 @@ const Login = () => {
           />
         </div>
 
-        <Link to={"/"}>
-          <button
-            type="submit"
-            className="w-full py-3 bg-[#3F8CFF] text-white text-sm font-medium uppercase rounded-lg hover:bg-indigo-700 transition-colors"
-          >
-            Sign in
-          </button>
-        </Link>
+        <button
+          type="submit"
+          className="w-full py-3 bg-[#3F8CFF] text-white text-sm font-medium uppercase rounded-lg hover:bg-indigo-700 transition-colors"
+        >
+          Sign in
+        </button>
+
         <p className="text-gray-500 text-sm text-center mt-4">
           No account?{" "}
           <a

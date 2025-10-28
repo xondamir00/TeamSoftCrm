@@ -1,62 +1,127 @@
+"use client";
+
+import * as React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
 import { CategoryNavigate } from "@/constants";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
 
-export default function Category() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+export default function CategoryNav() {
+  const [open, setOpen] = React.useState(false);
+  const location = useLocation();
 
-  // Umumiy stil (desktop va mobile uchun ham ishlaydi)
-  const linkStyles =
-    "block w-full px-4 py-2 text-center border border-[#3F8CFF] text-[#3F8CFF] rounded-md " +
-    "hover:bg-[#3F8CFF1A] active:bg-[#3F8CFF33] transition-all font-medium";
+  const isActive = (href: string) => location.pathname === href;
 
   return (
-    <header className="text-black w-[98%] mx-auto my-2 rounded-2xl bg-white border-b border-gray-300">
-      {/* Container o‘rniga to‘liq kenglik (yopishish uchun) */}
-      <div className="w-full px-0">
-        <div className="flex items-center justify-between h-20 px-4">
-          {/* Mobile Toggle Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 border border-[#3F8CFF] rounded-md text-[#3F8CFF] hover:bg-[#3F8CFF1A] active:bg-[#3F8CFF33] transition-all"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-
-          {/* Desktop Menu */}
-          <nav className="hidden md:block w-full">
-            <ul className="flex gap-[15px]">
-              {CategoryNavigate.map((link) => (
-                <li key={link.label} className="flex-1">
-                  <a href={link.href} className={linkStyles}>
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <nav className="md:hidden pt-4 border-t border-[#3F8CFF] px-4">
-            <ul className="space-y-3">
-              {CategoryNavigate.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className={linkStyles}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )}
+    <>
+      <div className="hidden bg-white border shadow-md md:flex justify-center py-3  my-4 w-[98%] mx-auto rounded-2xl dark:bg-black">
+        <NavigationMenu>
+          <NavigationMenuList className="flex gap-3 flex-wrap">
+            {CategoryNavigate.map((item) => {
+              return (
+                <NavigationMenuItem key={item.label}>
+                  <NavigationMenuLink asChild>
+                    <Link to={item.href}>
+                      <Button
+                        variant="ghost"
+                        className={
+                          "flex items-center text-xl gap-2 px-4 py-6 border rounded-md transition-all duration-200 "
+                        }
+                      >
+                        <img
+                          src={item.icon}
+                          alt={item.label}
+                          width={20}
+                          height={20}
+                          className="dark:invert  "
+                        />
+                        <span className="">{item.label}</span>
+                      </Button>
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              );
+            })}
+          </NavigationMenuList>
+        </NavigationMenu>
       </div>
-    </header>
+      <div className="flex justify-end md:hidden p-3 bg-[#3F8CFF] dark:bg-black">
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="border-white/50 text-white hover:bg-white/10 bg-[#3F8CFF]"
+            >
+              <Menu className="h-5 w-5 text-white dark:text-white " />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="p-0 bg-[#3F8CFF] dark:bg-black">
+            <SheetHeader className="p-4 border-b border-white/30 dark:border-white/50">
+              <SheetTitle className="text-white dark:text-white">
+                Kategoriyalar
+              </SheetTitle>
+            </SheetHeader>
+            <AnimatePresence>
+              {open && (
+                <motion.div
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 50 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="flex flex-col space-y-2 p-4 bg-[#3F8CFF] dark:bg-black"
+                >
+                  {CategoryNavigate.map((item) => {
+                    const active = isActive(item.href);
+                    return (
+                      <Link
+                        key={item.label}
+                        to={item.href}
+                        onClick={() => setOpen(false)}
+                      >
+                        <Button
+                          variant="ghost"
+                          className={`w-full flex items-center gap-3 px-3 py-2 rounded-md transition-transform duration-200 hover:scale-[1.02]
+                            ${
+                              active
+                                ? "bg-white/20 border border-white text-white dark:bg-white/10 dark:border-white dark:text-white"
+                                : "text-white dark:text-white hover:bg-white/10 dark:hover:bg-white/10"
+                            }`}
+                        >
+                          <img
+                            src={item.icon}
+                            alt={item.label}
+                            width={22}
+                            height={22}
+                            className="text-white"
+                            style={{ filter: "brightness(0) invert(1)" }}
+                          />
+                          <span>{item.label}</span>
+                        </Button>
+                      </Link>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </>
   );
 }
