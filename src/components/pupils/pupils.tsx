@@ -13,14 +13,14 @@ import { useTranslation } from "react-i18next";
 const Pupils = () => {
   const { t } = useTranslation();
   return (
-    <div className="w-[98%] mx-auto bg-white shadow-md p-2 border rounded-2xl">
+    <div className="w-[98%] mx-auto light:bg-white dark:bg-black shadow-md p-2 border rounded-2xl">
       <div className="md:block overflow-x-auto">
         <Table>
-          <TableCaption>{t("pupils")}</TableCaption>
+          <TableCaption className="text-xl">{t("pupils")}</TableCaption>
 
-          <TableHeader>
+          <TableHeader className="text-xl">
             <TableRow>
-              <TableHead>ID</TableHead>
+              <TableHead>T/r</TableHead>
               <TableHead className="w-[150px]">{t("name")}</TableHead>
               <TableHead>{t("phone")}</TableHead>
               <TableHead>{t("phone2")}</TableHead>
