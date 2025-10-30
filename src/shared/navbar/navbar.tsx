@@ -2,9 +2,7 @@
 
 import { motion } from "framer-motion";
 import Logo from "./logo";
-import { Button } from "@/components/ui/button";
 import { ModeToggle } from "../modeToggle";
-import { Link } from "react-router-dom";
 import LanguageSwitcher from "@/i18react/LanguageSwitcher";
 
 const Navbar = () => {
@@ -30,9 +28,6 @@ const Navbar = () => {
         >
           <LanguageSwitcher />
           <ModeToggle />
-          <Link to={"/sign"}>
-            <Button variant={"outline"}>Sign In</Button>
-          </Link>
         </motion.div>
       </div>
     </motion.header>
