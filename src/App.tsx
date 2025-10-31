@@ -6,20 +6,20 @@ import Teacher from "./components/page/Teacher";
 import GgroupDetail from "./components/teacher/GgroupDetail";
 import Pupils from "./components/pupils/pupils";
 import { Login } from "./components/auth/login";
-import { AuthRefresh } from "./components/auth/Auth-Refresh";
 import { RoleRoute } from "./components/layout/role-route";
+import { AuthRefresh } from "./components/auth/Auth-Refresh";
 
 const App = () => {
   return (
     <AuthRefresh>
       <div className="light:bg-[#f2f2f2] h-screen dark:bg-gray-900">
         <Routes>
-          {/* 🔓 Login sahifasi doim ochiq */}
+          {/* Login sahifasi doim ochiq */}
           <Route path="/sign" element={<Login />} />
 
-          {/* 🔒 Admin uchun route */}
+          {/* Admin route */}
           <Route
-            path="/ADMIN"
+            path="/admin"
             element={
               <RoleRoute roles={["ADMIN"]}>
                 <Homelayout />
@@ -30,7 +30,7 @@ const App = () => {
             <Route path="student" element={<Pupils />} />
           </Route>
 
-          {/* 🔒 Teacher uchun route */}
+          {/* Teacher route */}
           <Route
             path="/teacher"
             element={
@@ -43,7 +43,7 @@ const App = () => {
             <Route path=":id" element={<GgroupDetail />} />
           </Route>
 
-          {/* ⚠️ 404 yoki unauthorized */}
+          {/* 404 */}
           <Route path="*" element={<Login />} />
         </Routes>
       </div>

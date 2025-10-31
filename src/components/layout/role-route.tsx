@@ -1,28 +1,23 @@
-import { useAuth } from "@/Store";
 import { Navigate } from "react-router-dom";
-
-export type Role = "ADMIN" | "teacher";
+import { useAuth } from "@/Store";
 
 interface RoleRouteProps {
-  roles: Role[];
+  roles: string[];
   children: React.ReactNode;
 }
 
-export function Private({ children }: { children: React.ReactNode }) {
-  const { token } = useAuth();
-  return token ? <>{children}</> : <Navigate to="/sign" replace />;
-}
+export const RoleRoute = ({ roles, children }: RoleRouteProps) => {
+  const { user, token, booted } = useAuth();
 
-export function RoleRoute({ roles, children }: RoleRouteProps) {
-  const { token, user } = useAuth();
+  // ⏳ 1. AuthRefresh hali tugamagan bo‘lsa, kutamiz
+  if (!booted) return null;
 
-  if (!token || !user) {
-    return <Navigate to="/sign" replace />;
-  }
+  // ❌ 2. Agar token yoki user yo‘q bo‘lsa — login sahifasiga yuboramiz
+  if (!token || !user) return <Navigate to="/sign" replace />;
 
-  if (!roles.includes(user.role as Role)) {
-    return <Navigate to="/unauthorized" replace />;
-  }
+  // 🚫 3. Rol mos kelmasa, ruxsat yo‘q
+  if (!roles.includes(user.role)) return <Navigate to="/sign" replace />;
 
+  // ✅ 4. Hammasi joyida — bolani render qilamiz
   return <>{children}</>;
-}
+};

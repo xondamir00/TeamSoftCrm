@@ -1,31 +1,33 @@
 import { useEffect } from "react";
-import { useAuth } from "@/Store";
 import { api } from "../../Service/api";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/Store";
 
 interface AuthRefreshProps {
   children: React.ReactNode;
 }
 
 export function AuthRefresh({ children }: AuthRefreshProps) {
-  const { token, login, logout, booted, setBooted } = useAuth();
   const navigate = useNavigate();
+  const { token, refreshToken, login, logout, booted, setBooted } = useAuth();
 
   useEffect(() => {
     if (booted) return;
 
-    const refreshToken = async () => {
+    const refreshTokenFunc = async () => {
       try {
-        if (!token) {
-          // Refresh qilish uchun API chaqiriq
-          const { data } = await api.post("/auth/refresh");
-
-          if (data?.accessToken && data.user) {
-            login(data.accessToken, data.user);
+        if (!token && refreshToken) {
+          const { data } = await api.post("/auth/refresh", { token: refreshToken });
+          if (data?.accessToken && data?.refreshToken && data.user) {
+            login(data.accessToken, data.refreshToken, data.user);
+            
           } else {
             logout();
             navigate("/sign", { replace: true });
           }
+        } else if (!token && !refreshToken) {
+          logout();
+          navigate("/sign", { replace: true });
         }
       } catch (err) {
         logout();
@@ -35,11 +37,9 @@ export function AuthRefresh({ children }: AuthRefreshProps) {
       }
     };
 
-    refreshToken();
-  }, [booted, token]);
+    refreshTokenFunc();
+  }, [booted, token, refreshToken, login, logout, navigate, setBooted]);
 
-  // Booted bo‘lmaguncha hech narsa ko‘rsatilmaydi
   if (!booted) return null;
-
   return <>{children}</>;
 }

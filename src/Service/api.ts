@@ -1,70 +1,56 @@
 import { useAuth } from "@/Store";
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
+  baseURL: BASE_URL,
   withCredentials: true,
 });
 
-const refreshApi = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
-  withCredentials: true,
-});
-
+// Request interceptor: access tokenni yuborish
 api.interceptors.request.use((config) => {
   const token = useAuth.getState().token;
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (token && config.headers) {
+    config.headers["Authorization"] = `Bearer ${token}`;
+  }
   return config;
 });
 
-let refreshing = false;
-let waiters: Array<() => void> = [];
-
+// Response interceptor: 401 bo‘lsa refresh token bilan tokenni yangilash
 api.interceptors.response.use(
-  (response) => response,
+  (res) => res,
   async (error) => {
-    const original = error.config as any;
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const { refreshToken, logout, login } = useAuth.getState();
 
-    // 401 va retry qilinmagan request
-    if (error.response?.status === 401 && !original._retry) {
-      if (refreshing) {
-        // Boshqa refresh kutish
-        await new Promise<void>((res) => waiters.push(res));
-        original.headers.Authorization = `Bearer ${useAuth.getState().token}`;
-        original._retry = true;
-        return api(original);
+      if (!refreshToken) {
+        logout();
+        return Promise.reject(error);
       }
 
       try {
-        refreshing = true;
-        original._retry = true;
+        const { data } = await axios.post(
+          `${BASE_URL}/auth/refresh`,
+          { token: refreshToken },
+          { withCredentials: true }
+        );
 
-        const { data } = await refreshApi.post("/auth/refresh");
-
-        if (data?.accessToken && data.user) {
-          // Yangilangan tokenni store ga saqlash
-          useAuth.getState().login(data.accessToken, data.user);
-
-          // Barcha kutayotgan requestlarni ishlatish
-          waiters.forEach((fn) => fn());
-          waiters = [];
-
-          original.headers.Authorization = `Bearer ${data.accessToken}`;
-          return api(original);
+        if (data?.accessToken && data?.refreshToken && data.user) {
+          login(data.accessToken, data.refreshToken, data.user);
+          originalRequest.headers["Authorization"] = `Bearer ${data.accessToken}`;
+          return api(originalRequest);
         } else {
-          useAuth.getState().logout();
-          throw new Error("Refresh muvaffaqiyatsiz");
+          logout();
+          return Promise.reject(error);
         }
-      } catch (e) {
-        waiters.forEach((fn) => fn());
-        waiters = [];
-        useAuth.getState().logout();
-        throw e;
-      } finally {
-        refreshing = false;
+      } catch (err) {
+        logout();
+        return Promise.reject(err);
       }
     }
-
-    throw error;
+    return Promise.reject(error);
   }
 );

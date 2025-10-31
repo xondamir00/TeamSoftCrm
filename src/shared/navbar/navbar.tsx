@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Logo from "./logo";
 import { ModeToggle } from "../modeToggle";
 import LanguageSwitcher from "@/i18react/LanguageSwitcher";
+import LogoutButton from "./Logout";
 
 const Navbar = () => {
   return (
@@ -28,6 +29,7 @@ const Navbar = () => {
         >
           <LanguageSwitcher />
           <ModeToggle />
+          <LogoutButton/>
         </motion.div>
       </div>
     </motion.header>
