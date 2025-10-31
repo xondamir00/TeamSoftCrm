@@ -36,7 +36,7 @@ export default function CategoryNav() {
       {/* Desktop menu */}
       <div className="hidden bg-white border shadow-md md:flex justify-center py-3 my-4 w-[98%] mx-auto rounded-2xl dark:bg-black">
         <NavigationMenu>
-          <NavigationMenuList className="flex gap-3 flex-wrap">
+          <NavigationMenuList className="flex  w-full justify-around flex-wrap">
             {CategoryNavigate.map((item) => (
               <NavigationMenuItem key={item.label}>
                 <NavigationMenuLink asChild>

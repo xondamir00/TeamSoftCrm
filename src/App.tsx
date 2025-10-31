@@ -8,6 +8,7 @@ import Pupils from "./components/pupils/pupils";
 import { Login } from "./components/auth/login";
 import { RoleRoute } from "./components/layout/role-route";
 import { AuthRefresh } from "./components/auth/Auth-Refresh";
+import Settings from "./components/page/settings";
 
 const App = () => {
   return (
@@ -16,7 +17,6 @@ const App = () => {
         <Routes>
           {/* Login sahifasi doim ochiq */}
           <Route path="/sign" element={<Login />} />
-
           {/* Admin route */}
           <Route
             path="/admin"
@@ -27,6 +27,7 @@ const App = () => {
             }
           >
             <Route index element={<Home />} />
+            <Route path="settings" element={<Settings/>}/>
             <Route path="student" element={<Pupils />} />
           </Route>
 
