@@ -4,5 +4,12 @@
     "name":"Ism Familiyasi",
     "phone":"Telefon raqami",
     "phone2":"Ota-onasining raqami",
-    "price":"To'lov"
+    "price":"To'lov",  "leads": "Lidlar",
+  "teachersList": "O'qituvchilar ro'yxati",
+  "groups": "Guruhlar",
+  "studentsList": "O'quvchilar ro'yxati",
+  "debtorsList": "Qarzdorlar ro'yxati",
+  "settings": "Sozlamalar",
+  "finance": "Moliya",
+  "categories": "Kategoriyalar"
 }
