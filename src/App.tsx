@@ -6,9 +6,10 @@ import Teacher from "./components/page/Teacher";
 import GgroupDetail from "./components/teacher/GgroupDetail";
 import Pupils from "./components/pupils/pupils";
 import { Login } from "./components/auth/login";
-import { RoleRoute } from "./components/layout/role-route";
+import { RoleRoute } from "./role/role-route";
 import { AuthRefresh } from "./components/auth/Auth-Refresh";
 import Settings from "./components/page/settings";
+import TeacherList from "./components/teacher/Teacherlist";
 
 const App = () => {
   return (
@@ -27,8 +28,9 @@ const App = () => {
             }
           >
             <Route index element={<Home />} />
-            <Route path="settings" element={<Settings/>}/>
+            <Route path="settings" element={<Settings />} />
             <Route path="student" element={<Pupils />} />
+            <Route path="teachers" element={<TeacherList />} />
           </Route>
 
           {/* Teacher route */}
