@@ -62,7 +62,7 @@ export default function AddManagerForm() {
   };
 
   return (
-    <div className="w-[90%] border mx-auto mt-10 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+    <div className="w-[50%] border mx-auto mt-10 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
       <h2 className="text-xl font-semibold mb-4 text-center">
         Add New Manager
       </h2>

@@ -24,6 +24,23 @@ export interface CreateTeacherPayload {
   percentShare?: number | null;
 }
 
+export interface Group {
+  id: string;
+  name: string;
+  room: [{ name: string }];
+  roomId?: string;
+  teacherId?: string;
+  createdAt?: string;
+}
+export interface Student {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  parentPhone?: string;
+  payment?: number;
+}
+
 type AuthState = {
   token: string | null;
   refreshToken: string | null;
