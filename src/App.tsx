@@ -13,7 +13,7 @@ import Settings from "./components/page/settings";
 const App = () => {
   return (
     <AuthRefresh>
-      <div className="light:bg-[#f2f2f2] h-screen dark:bg-gray-900">
+      <div className="light:bg-[#f2f2f2] h-screen  dark:bg-gray-900">
         <Routes>
           {/* Login sahifasi doim ochiq */}
           <Route path="/sign" element={<Login />} />
