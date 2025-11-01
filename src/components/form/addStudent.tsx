@@ -64,7 +64,7 @@ export default function CreateStudentForm() {
 
   return (
     <div className="flex justify-center items-center  px-4">
-      <Card className="w-full max-w-lg shadow-lg">
+      <Card className="w-full max-w-lg bg-white dark:bg-black shadow-lg">
         <CardHeader>
           <CardTitle className="text-center text-lg font-semibold">
             {t("add_student")}
@@ -145,7 +145,7 @@ export default function CreateStudentForm() {
 
             <Button
               type="submit"
-              className="w-full flex items-center bg-blue-500 text-white hover:bg-blue-600 justify-center"
+              className="w-full flex items-center bg-[#3F8CFF] text-white hover:bg-blue-600 justify-center"
               disabled={loading}
             >
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

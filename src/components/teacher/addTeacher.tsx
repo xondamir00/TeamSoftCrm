@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { api } from "@/Service/api";
 
 type CreateTeacherPayload = {
@@ -12,6 +13,7 @@ type CreateTeacherPayload = {
 };
 
 export default function AddTeacherForm() {
+  const { t } = useTranslation();
   const [form, setForm] = useState<CreateTeacherPayload>({
     firstName: "",
     lastName: "",
@@ -28,15 +30,9 @@ export default function AddTeacherForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === "monthlySalary" || name === "percentShare") {
-      setForm((f) => ({
-        ...f,
-        [name]: value ? Number(value) : null,
-      }));
+      setForm((f) => ({ ...f, [name]: value ? Number(value) : null }));
     } else {
-      setForm((f) => ({
-        ...f,
-        [name]: value,
-      }));
+      setForm((f) => ({ ...f, [name]: value }));
     }
   };
 
@@ -46,7 +42,6 @@ export default function AddTeacherForm() {
     setLoading(true);
 
     try {
-      // Agar photoUrl bo'sh bo'lsa, null yuboramiz
       const payload = {
         ...form,
         photoUrl:
@@ -56,13 +51,14 @@ export default function AddTeacherForm() {
       };
 
       if (payload.monthlySalary && payload.percentShare) {
-        setMessage("Faqat bittasini kiriting: monthlySalary yoki percentShare");
+        setMessage(t("salary_warning"));
         setLoading(false);
+        return;
       }
 
       const res = await api.post("/teachers", payload);
       console.log("✅ Success:", res.data);
-      setMessage("Teacher muvaffaqiyatli qo‘shildi!");
+      setMessage(t("success"));
 
       setForm({
         firstName: "",
@@ -75,18 +71,16 @@ export default function AddTeacherForm() {
       });
     } catch (err: any) {
       console.error("❌ Error:", err.response?.data || err.message);
-      setMessage(
-        err.response?.data?.message || "Yuborishda xatolik yuz berdi (400)"
-      );
+      setMessage(err.response?.data?.message || t("error"));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-[90%]  mx-auto mt-10 bg-white p-6 rounded-xl shadow-md dark:bg-card">
+    <div className="w-[90%] mx-auto mt-10 bg-white dark:bg-black p-6 rounded-xl shadow-md ">
       <h2 className="text-2xl font-semibold mb-4 text-center">
-        Add New Teacher
+        {t("add_teacher")}
       </h2>
 
       {message && (
@@ -98,7 +92,7 @@ export default function AddTeacherForm() {
           name="firstName"
           value={form.firstName}
           onChange={handleChange}
-          placeholder="First Name"
+          placeholder={t("first_name")}
           className="border p-2 rounded"
           required
         />
@@ -106,7 +100,7 @@ export default function AddTeacherForm() {
           name="lastName"
           value={form.lastName}
           onChange={handleChange}
-          placeholder="Last Name"
+          placeholder={t("last_name")}
           className="border p-2 rounded"
           required
         />
@@ -114,7 +108,7 @@ export default function AddTeacherForm() {
           name="phone"
           value={form.phone}
           onChange={handleChange}
-          placeholder="Phone"
+          placeholder={t("phone")}
           className="border p-2 rounded"
           required
         />
@@ -123,7 +117,7 @@ export default function AddTeacherForm() {
           type="password"
           value={form.password}
           onChange={handleChange}
-          placeholder="Password"
+          placeholder={t("password")}
           className="border p-2 rounded"
           required
         />
@@ -131,7 +125,7 @@ export default function AddTeacherForm() {
           name="photoUrl"
           value={form.photoUrl || ""}
           onChange={handleChange}
-          placeholder="Photo URL (https://...)"
+          placeholder={t("photo_url")}
           className="border p-2 rounded"
         />
         <input
@@ -139,7 +133,7 @@ export default function AddTeacherForm() {
           value={form.monthlySalary ?? ""}
           onChange={handleChange}
           type="number"
-          placeholder="Monthly Salary"
+          placeholder={t("monthly_salary")}
           className="border p-2 rounded"
         />
         <input
@@ -147,15 +141,15 @@ export default function AddTeacherForm() {
           value={form.percentShare ?? ""}
           onChange={handleChange}
           type="number"
-          placeholder="Percent Share (0-100)"
+          placeholder={t("percent_share")}
           className="border p-2 rounded"
         />
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-500 text-white rounded p-2 hover:bg-blue-600 disabled:opacity-60"
+          className="bg-[#3F8CFF] text-white rounded p-2 hover:bg-blue-600 disabled:opacity-60"
         >
-          {loading ? "Yuborilmoqda..." : "Qo‘shish"}
+          {loading ? t("loading") : t("add_button")}
         </button>
       </form>
     </div>
