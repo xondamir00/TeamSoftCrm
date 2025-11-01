@@ -1,12 +1,12 @@
 export const CategoryNavigate = [
   { label: "leads", href: "lids", icon: "/icons/users.svg" },
-  { label: "teachersList", href: "teachers", icon: "/icons/teacher.svg" },
+  { label: "Rooms", href: "rooms", icon: "/icons/rooms.svg" },
   { label: "groups", href: "groups", icon: "/icons/group.svg" },
+  { label: "teachersList", href: "teachers", icon: "/icons/teacher.svg" },
   { label: "studentsList", href: "student", icon: "/icons/student.svg" },
   { label: "debtorsList", href: "debts", icon: "/icons/debt.svg" },
-  { label: "settings", href: "settings", icon: "/icons/settings.svg" },
-  { label: "Rooms", href: "rooms", icon: "/icons/settings.svg" },
   { label: "finance", href: "finance", icon: "/icons/finance.svg" },
+  { label: "settings", href: "settings", icon: "/icons/settings.svg" },
 ];
 export const CreateForm = [
   {
