@@ -14,6 +14,16 @@ export type User = {
   isActive: boolean;
 };
 
+export interface CreateTeacherPayload {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  password: string;
+  photoUrl?: string | null;
+  monthlySalary?: number | null;
+  percentShare?: number | null;
+}
+
 type AuthState = {
   token: string | null;
   refreshToken: string | null;
@@ -26,7 +36,10 @@ type AuthState = {
 
   changing: boolean;
   changeError: string | null;
-  changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+  changePassword: (
+    currentPassword: string,
+    newPassword: string
+  ) => Promise<void>;
 };
 
 export const useAuth = create<AuthState>()(
@@ -67,6 +80,6 @@ export const useAuth = create<AuthState>()(
         }
       },
     }),
-    { name: "auth-storage", getStorage: () => localStorage }
+    { name: "auth-storage" }
   )
 );

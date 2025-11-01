@@ -1,15 +1,6 @@
 import React, { useState } from "react";
 import { api } from "@/Service/api";
-
-type CreateTeacherPayload = {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  password: string;
-  photoUrl?: string | null;
-  monthlySalary?: number | null;
-  percentShare?: number | null;
-};
+import type { CreateTeacherPayload } from "@/Store";
 
 export default function AddTeacherForm() {
   const [form, setForm] = useState<CreateTeacherPayload>({
@@ -84,8 +75,8 @@ export default function AddTeacherForm() {
   };
 
   return (
-    <div className="w-[90%]  mx-auto mt-10 bg-white p-6 rounded-xl shadow-md dark:bg-card">
-      <h2 className="text-2xl font-semibold mb-4 text-center">
+    <div className="w-[90%]  mx-auto  border bg-white p-6 rounded-xl shadow-md dark:bg-card">
+      <h2 className="text-2xl my-6 font-semibold mb-4 text-center">
         Add New Teacher
       </h2>
 

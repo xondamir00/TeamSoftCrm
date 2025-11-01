@@ -25,7 +25,7 @@ interface Student {
 }
 
 const Pupils = () => {
-  const {t}= useTranslation()
+  const { t } = useTranslation();
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -51,15 +51,19 @@ const Pupils = () => {
       <div className="overflow-x-auto">
         <Table>
           <TableCaption className="text-lg dark:text-gray-300">
-           {t("pupils")}
+            {t("pupils")}
           </TableCaption>
           <TableHeader>
             <TableRow className="dark:border-gray-700">
               <TableHead className="dark:text-gray-300">T/r</TableHead>
               <TableHead className="dark:text-gray-300">{t("Sname")}</TableHead>
               <TableHead className="dark:text-gray-300">{t("phone")}</TableHead>
-              <TableHead className="dark:text-gray-300">{t("phone2")}</TableHead>
-              <TableHead className="dark:text-gray-300 text-right">{t("price")}</TableHead>
+              <TableHead className="dark:text-gray-300">
+                {t("phone2")}
+              </TableHead>
+              <TableHead className="dark:text-gray-300 text-right">
+                {t("price")}
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -90,7 +94,7 @@ const Pupils = () => {
               students.map((s, index) => (
                 <TableRow
                   key={s.id}
-                  className="border-gray-700 hover:bg-gray-900 transition"
+                  className="border-gray-700  hover:bg-gray-200 transition"
                 >
                   <TableCell className="font-medium">{index + 1}</TableCell>
                   <TableCell>{`${s.firstName} ${s.lastName}`}</TableCell>
