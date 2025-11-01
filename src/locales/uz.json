@@ -50,5 +50,6 @@
   "add": "Qo‘shish",
   "loading": "Yuklanmoqda...",
   "student_created": "Talaba yaratildi",
-  "create_error": "Talaba yaratishda xatolik yuz berdi"
+  "create_error": "Talaba yaratishda xatolik yuz berdi",
+  "logout": "Chiqish"
 }

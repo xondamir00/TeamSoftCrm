@@ -50,5 +50,6 @@
   "add": "Add",
   "loading": "Loading...",
   "student_created": "Student created",
-  "create_error": "Error creating student"
+  "create_error": "Error creating student",
+  "logout": "Logout"
 }

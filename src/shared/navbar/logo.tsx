@@ -28,13 +28,13 @@ const Logo = () => {
       >
         <motion.div
           whileHover={{ rotate: 10, scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ scale: 0.80 }}
           className="flex items-center justify-center bg-white/20 dark:bg-white/10 rounded-xl p-2 backdrop-blur-sm"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width={isScrolled ? 50 : 36}
-            height={isScrolled ? 50 : 36}
+            width={isScrolled ? 40 : 36}
+            height={isScrolled ? 40 : 36}
             viewBox="0 0 24 24"
             fill="none"
             stroke="white"
@@ -49,7 +49,7 @@ const Logo = () => {
         </motion.div>
         <motion.div
           className={`hidden md:block font-spaceGrotesk font-bold tracking-tight whitespace-nowrap ${
-            isScrolled ? "text-2xl" : "text-3xl"
+            isScrolled ? "text-xl" : "text-2xl"
           }`}
           transition={{ duration: 0.3 }}
         >

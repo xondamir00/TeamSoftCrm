@@ -2,10 +2,12 @@ import React from "react";
 import { useAuth } from "@/Store";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 const LogoutButton: React.FC = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     logout(); // Zustand store'dagi user, token, refreshToken ni tozalaydi
@@ -17,7 +19,7 @@ const LogoutButton: React.FC = () => {
       onClick={handleLogout}
       variant={'outline'}
     >
-      Logout
+      {t("logout")}
     </Button>
   );
 };
