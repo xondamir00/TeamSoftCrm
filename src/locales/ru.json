@@ -24,5 +24,11 @@
   "group_id_optional": "ID группы (необязательно)",
   "first_name": "Имя",
   "last_name": "Фамилия",
-  "phone_number": "Номер телефона"
+  "phone_number": "Номер телефона",
+  "add_room": "Добавить новую комнату",
+  "room_created": "Комната создана",
+  "room_name": "Название комнаты",
+  "capacity_optional": "Вместимость (необязательно)",
+  "capacity_placeholder": "Введите вместимость"
+
 }

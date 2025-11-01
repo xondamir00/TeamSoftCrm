@@ -1,4 +1,5 @@
-import CreateStudentForm from "../form/AddStudent"
+import AddRoom from "../form/addRoom"
+import CreateStudentForm from "../form/addStudent"
 import AddTeacherForm from "../teacher/addTeacher"
 
 const Settings = () => {
@@ -6,6 +7,7 @@ const Settings = () => {
     <div className=" gap-5 grid grid-cols-2">
                 <AddTeacherForm/>
                 <CreateStudentForm/>
+                <AddRoom/>
     </div>
   )
 }
