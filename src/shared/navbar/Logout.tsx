@@ -17,7 +17,7 @@ const LogoutButton: React.FC = () => {
   return (
     <Button
       onClick={handleLogout}
-      variant={'outline'}
+      variant={"outline"}
     >
       {t("logout")}
     </Button>

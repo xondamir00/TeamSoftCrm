@@ -2,12 +2,7 @@
 
 import React, { useState } from "react";
 import { api } from "@/Service/api";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -63,14 +58,13 @@ export default function CreateStudentForm() {
   };
 
   return (
-    <div className="flex justify-center items-center  px-4">
+    <div className="flex justify-center items-center px-4 py-6">
       <Card className="w-full max-w-lg bg-white dark:bg-black shadow-lg">
         <CardHeader>
           <CardTitle className="text-center text-lg font-semibold">
             {t("add_student")}
           </CardTitle>
         </CardHeader>
-
         <CardContent>
           <form onSubmit={onSubmit} className="space-y-4">
             <div className="grid sm:grid-cols-2 gap-3">
@@ -168,4 +162,3 @@ export default function CreateStudentForm() {
     </div>
   );
 }
-

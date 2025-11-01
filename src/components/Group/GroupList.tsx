@@ -14,19 +14,19 @@ import { api } from "@/Service/api";
 import { ChevronRight, Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTranslation } from "react-i18next";
-import type { Student } from "@/Store";
+import type { Group } from "@/Store";
 
-const Pupils = () => {
+const Groups = () => {
   const { t } = useTranslation();
-  const [students, setStudents] = useState<Student[]>([]);
+  const [groups, setGroups] = useState<Group[]>([]);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  const fetchStudents = async () => {
+  const fetchGroups = async () => {
     try {
       setLoading(true);
-      const { data } = await api.get("/students");
-      setStudents(data);
+      const { data } = await api.get("/groups");
+      setGroups(data);
     } catch (e: any) {
       setErr(e?.response?.data?.message || t("fetch_error"));
     } finally {
@@ -35,7 +35,7 @@ const Pupils = () => {
   };
 
   useEffect(() => {
-    fetchStudents();
+    fetchGroups();
   }, []);
 
   return (
@@ -43,15 +43,15 @@ const Pupils = () => {
       <div className="overflow-x-auto">
         <Table>
           <TableCaption className="text-lg dark:text-gray-300">
-            {t("pupils")}
+            {t("groups")}
           </TableCaption>
           <TableHeader>
             <TableRow className="dark:border-gray-700">
               <TableHead className="dark:text-gray-300">{t("tr")}</TableHead>
-              <TableHead className="dark:text-gray-300">{t("full_name")}</TableHead>
-              <TableHead className="dark:text-gray-300">{t("phone")}</TableHead>
-              <TableHead className="dark:text-gray-300">{t("parent_phone")}</TableHead>
-              <TableHead className="dark:text-gray-300 text-right">{t("payment")}</TableHead>
+              <TableHead className="dark:text-gray-300">{t("group_name")}</TableHead>
+              <TableHead className="dark:text-gray-300">{t("room")}</TableHead>
+              <TableHead className="dark:text-gray-300">{t("teacher")}</TableHead>
+              <TableHead className="dark:text-gray-300 text-right">{t("date")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -69,24 +69,26 @@ const Pupils = () => {
                   </Alert>
                 </TableCell>
               </TableRow>
-            ) : students.length === 0 ? (
+            ) : groups.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-center text-gray-500 py-4">
-                  {t("no_students")}
+                  {t("no_groups")}
                 </TableCell>
               </TableRow>
             ) : (
-              students.map((s, index) => (
+              groups.map((g, index) => (
                 <TableRow
-                  key={s.id}
+                  key={g.id}
                   className="border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 transition"
                 >
-                  <TableCell className="font-medium">{index + 1}</TableCell>
-                  <TableCell>{`${s.firstName} ${s.lastName}`}</TableCell>
-                  <TableCell>{s.phone}</TableCell>
-                  <TableCell>{s.parentPhone || "—"}</TableCell>
-                  <TableCell className="text-right flex items-center justify-end gap-2">
-                    <span>{s.payment ? `${s.payment} so‘m` : "—"}</span>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{g.name}</TableCell>
+                  <TableCell>{g.room?.name || "—"}</TableCell>
+                  <TableCell>{g.teacherId || "—"}</TableCell>
+                  <TableCell className="text-right flex justify-end items-center gap-2">
+                    <span>
+                      {g.createdAt ? new Date(g.createdAt).toLocaleDateString() : "—"}
+                    </span>
                     <ChevronRight className="w-4 h-4 text-gray-400" />
                   </TableCell>
                 </TableRow>
@@ -99,4 +101,4 @@ const Pupils = () => {
   );
 };
 
-export default Pupils;
+export default Groups;

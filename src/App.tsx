@@ -3,12 +3,19 @@ import Homelayout from "./components/layout/homelayout";
 import Home from "./components/page/home";
 import Teacherlayout from "./components/layout/teacherlayout";
 import Teacher from "./components/page/Teacher";
-import GgroupDetail from "./components/teacher/GgroupDetail";
 import Pupils from "./components/pupils/pupils";
 import { Login } from "./components/auth/login";
-import { RoleRoute } from "./components/layout/role-route";
+import { RoleRoute } from "./role/role-route";
 import { AuthRefresh } from "./components/auth/Auth-Refresh";
 import Settings from "./components/page/settings";
+import TeacherList from "./components/teacher/Teacherlist";
+import AddTeacherForm from "./components/form/addTeacher";
+import CreateStudentForm from "./components/form/addStudent";
+import AddManagerForm from "./components/form/AddManeger";
+import AddRoom from "./components/Roms/addRoom";
+import RoomsList from "./components/Roms/RoomsList";
+import AddGroupForm from "./components/Group/AddGoup";
+import Groups from "./components/Group/GroupList";
 
 const App = () => {
   return (
@@ -27,8 +34,26 @@ const App = () => {
             }
           >
             <Route index element={<Home />} />
-            <Route path="settings" element={<Settings/>}/>
+            <Route path="settings" element={<Settings />} />
             <Route path="student" element={<Pupils />} />
+            <Route path="teachers" element={<TeacherList />} />
+            <Route
+              path="settings/create-teacher"
+              element={<AddTeacherForm />}
+            />
+            <Route
+              path="settings/create-student"
+              element={<CreateStudentForm />}
+            />
+            <Route
+              path="settings/create-meneger"
+              element={<AddManagerForm />}
+            />
+            <Route path="settings/create-group" element={<AddGroupForm />} />
+            <Route path="settings/create-room" element={<AddRoom />} />
+
+            <Route path="rooms" element={<RoomsList />} />
+            <Route path="groups" element={<Groups />} />
           </Route>
 
           {/* Teacher route */}
@@ -41,7 +66,6 @@ const App = () => {
             }
           >
             <Route index element={<Teacher />} />
-            <Route path=":id" element={<GgroupDetail />} />
           </Route>
 
           {/* 404 */}

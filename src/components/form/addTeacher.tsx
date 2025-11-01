@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "@/Service/api";
-
-type CreateTeacherPayload = {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  password: string;
-  photoUrl?: string | null;
-  monthlySalary?: number | null;
-  percentShare?: number | null;
-};
+import type { CreateTeacherPayload } from "@/Store";
 
 export default function AddTeacherForm() {
   const { t } = useTranslation();
@@ -44,10 +35,7 @@ export default function AddTeacherForm() {
     try {
       const payload = {
         ...form,
-        photoUrl:
-          form.photoUrl && form.photoUrl.startsWith("http")
-            ? form.photoUrl
-            : null,
+        photoUrl: form.photoUrl && form.photoUrl.startsWith("http") ? form.photoUrl : null,
       };
 
       if (payload.monthlySalary && payload.percentShare) {
@@ -78,13 +66,11 @@ export default function AddTeacherForm() {
   };
 
   return (
-    <div className="w-[90%] mx-auto mt-10 bg-white dark:bg-black p-6 rounded-xl shadow-md ">
-      <h2 className="text-2xl font-semibold mb-4 text-center">
-        {t("add_teacher")}
-      </h2>
+    <div className="w-[90%] max-w-lg mx-auto mt-10 bg-white dark:bg-black p-6 rounded-xl shadow-md">
+      <h2 className="text-2xl font-semibold mb-6 text-center">{t("add_teacher")}</h2>
 
       {message && (
-        <div className="text-center text-sm mb-3 text-red-600">{message}</div>
+        <div className="text-center text-sm mb-4 text-red-600">{message}</div>
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">

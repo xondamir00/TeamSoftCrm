@@ -1,59 +1,34 @@
 export const CategoryNavigate = [
-
   { label: "leads", href: "lids", icon: "/icons/users.svg" },
   { label: "teachersList", href: "teachers", icon: "/icons/teacher.svg" },
   { label: "groups", href: "groups", icon: "/icons/group.svg" },
   { label: "studentsList", href: "student", icon: "/icons/student.svg" },
   { label: "debtorsList", href: "debts", icon: "/icons/debt.svg" },
   { label: "settings", href: "settings", icon: "/icons/settings.svg" },
+  { label: "Rooms", href: "rooms", icon: "/icons/settings.svg" },
   { label: "finance", href: "finance", icon: "/icons/finance.svg" },
-
 ];
-export const Guruhlar = [
+export const CreateForm = [
   {
-    id: 1,
-    name: "Dasturlash",
-    members: [
-      { id: 1, fullName: "Jasur Karimov" },
-      { id: 2, fullName: "Dilshod Rahimov" },
-      { id: 3, fullName: "Malika Tursunova" },
-      { id: 4, fullName: "Azizbek Yo‘ldoshev" },
-      { id: 5, fullName: "Nigora Ismoilova" },
-    ],
+    name: "Create Student",
+    href: "create-student",
   },
 
   {
-    id: 1,
-    name: "Dasturlash",
-    members: [
-      { id: 1, fullName: "Jasur Karimov" },
-      { id: 2, fullName: "Dilshod Rahimov" },
-      { id: 3, fullName: "Malika Tursunova" },
-      { id: 4, fullName: "Azizbek Yo‘ldoshev" },
-      { id: 5, fullName: "Nigora Ismoilova" },
-    ],
+    name: "create Teacher",
+    href: "create-teacher",
   },
   {
-    id: 1,
-    name: "Dasturlash",
-    members: [
-      { id: 1, fullName: "Jasur Karimov" },
-      { id: 2, fullName: "Dilshod Rahimov" },
-      { id: 3, fullName: "Malika Tursunova" },
-      { id: 4, fullName: "Azizbek Yo‘ldoshev" },
-      { id: 5, fullName: "Nigora Ismoilova" },
-    ],
+    name: "Create room",
+    href: "create-room",
   },
   {
-    id: 1,
-    name: "Dasturlash",
-    members: [
-      { id: 1, fullName: "Jasur Karimov" },
-      { id: 2, fullName: "Dilshod Rahimov" },
-      { id: 3, fullName: "Malika Tursunova" },
-      { id: 4, fullName: "Azizbek Yo‘ldoshev" },
-      { id: 5, fullName: "Nigora Ismoilova" },
-    ],
+    name: "create Meneger",
+    href: "create-meneger",
+  },
+  {
+    name: "create Group",
+    href: "create-group",
   },
 ];
 export const pupils = [
