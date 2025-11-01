@@ -1,13 +1,20 @@
-import AddManagerForm from "../form/AddManeger";
-import CreateStudentForm from "../form/addStudent";
-import AddTeacherForm from "../form/addTeacher";
+// import AddManagerForm from "../form/AddManeger";
+// import AddRoom from "../form/addRoom";
+// import CreateStudentForm from "../form/addStudent";
+// import AddTeacherForm from "../form/addTeacher";
+
+import TeacherGroup from "../form/Createform";
 
 const Settings = () => {
   return (
-    <div className="my-12 gap-5 grid grid-cols-2 ">
-      <AddTeacherForm />
+    <div className="flex items-center justify-center ">
+      {/* <AddTeacherForm />
       <CreateStudentForm />
       <AddManagerForm />
+      <AddRoom /> */}
+      <div className="w-[50%]">
+        <TeacherGroup />
+      </div>
     </div>
   );
 };

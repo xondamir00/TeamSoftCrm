@@ -58,9 +58,9 @@ export default function CreateStudentForm() {
   };
 
   return (
-    <Card className="w-[90%] mx-auto border  shadow-lg">
+    <Card className="w-[50%] mx-auto border  shadow-lg">
       <CardHeader>
-        <CardTitle className="text-center text-lg font-semibold">
+        <CardTitle className="text-center text-2xl text-white font-semibold">
           {t("add_student")}
         </CardTitle>
       </CardHeader>

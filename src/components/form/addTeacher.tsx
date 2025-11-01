@@ -75,7 +75,7 @@ export default function AddTeacherForm() {
   };
 
   return (
-    <div className="w-[90%]  mx-auto  border bg-white p-6 rounded-xl shadow-md dark:bg-card">
+    <div className="w-[50%]  mx-auto  border bg-white p-6 rounded-xl shadow-md dark:bg-card">
       <h2 className="text-2xl my-6 font-semibold mb-4 text-center">
         Add New Teacher
       </h2>
