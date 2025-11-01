@@ -75,7 +75,7 @@ const AddRoom = () => {
 
             <Button
               type="submit"
-              className="w-full flex items-center justify-center"
+              className="w-full flex items-center bg-blue-500 text-white hover:bg-blue-600 justify-center"
               disabled={loading}
             >
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

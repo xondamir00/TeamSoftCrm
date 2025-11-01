@@ -25,7 +25,7 @@
   "first_name": "Ism",
   "last_name": "Familiya",
   "phone_number": "Telefon raqam",
-   "add_room": "Yangi xona qo‘shish",
+  "add_room": "Yangi xona qo‘shish",
   "room_created": "Xona yaratildi",
   "room_name": "Xona nomi",
   "capacity_optional": "Sig‘imi (ixtiyoriy)",
