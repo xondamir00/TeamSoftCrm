@@ -28,7 +28,7 @@ const Pupils = () => {
       const { data } = await api.get("/students");
       setStudents(data);
     } catch (e: any) {
-      setErr(e?.response?.data?.message || "Ma'lumotlarni olishda xatolik");
+      setErr(e?.response?.data?.message || t("fetch_error"));
     } finally {
       setLoading(false);
     }
@@ -47,15 +47,11 @@ const Pupils = () => {
           </TableCaption>
           <TableHeader>
             <TableRow className="dark:border-gray-700">
-              <TableHead className="dark:text-gray-300">T/r</TableHead>
-              <TableHead className="dark:text-gray-300">{t("Sname")}</TableHead>
+              <TableHead className="dark:text-gray-300">{t("tr")}</TableHead>
+              <TableHead className="dark:text-gray-300">{t("full_name")}</TableHead>
               <TableHead className="dark:text-gray-300">{t("phone")}</TableHead>
-              <TableHead className="dark:text-gray-300">
-                {t("phone2")}
-              </TableHead>
-              <TableHead className="dark:text-gray-300 text-right">
-                {t("price")}
-              </TableHead>
+              <TableHead className="dark:text-gray-300">{t("parent_phone")}</TableHead>
+              <TableHead className="dark:text-gray-300 text-right">{t("payment")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -75,18 +71,15 @@ const Pupils = () => {
               </TableRow>
             ) : students.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={5}
-                  className="text-center text-gray-500 py-4"
-                >
-                  Hozircha talabalar yo‘q
+                <TableCell colSpan={5} className="text-center text-gray-500 py-4">
+                  {t("no_students")}
                 </TableCell>
               </TableRow>
             ) : (
               students.map((s, index) => (
                 <TableRow
                   key={s.id}
-                  className="border-gray-700  hover:bg-gray-200 transition"
+                  className="border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 transition"
                 >
                   <TableCell className="font-medium">{index + 1}</TableCell>
                   <TableCell>{`${s.firstName} ${s.lastName}`}</TableCell>

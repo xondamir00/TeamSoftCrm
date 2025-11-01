@@ -2,8 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { api } from "@/Service/api";
+import { useTranslation } from "react-i18next";
 
 export default function AddGroupForm() {
+  const { t } = useTranslation();
+
   const [form, setForm] = useState({ name: "", roomId: "" });
   const [rooms, setRooms] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
@@ -30,7 +33,7 @@ export default function AddGroupForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim()) return setMessage("Group nomi kiritish shart!");
+    if (!form.name.trim()) return setMessage(t("group_name_required"));
     setLoading(true);
     setMessage("");
 
@@ -39,23 +42,29 @@ export default function AddGroupForm() {
         name: form.name,
         roomId: form.roomId || undefined,
       });
-      setMessage("✅ Group muvaffaqiyatli qo‘shildi!");
+      setMessage(t("group_added_success"));
       setForm({ name: "", roomId: "" });
     } catch (err: any) {
-      setMessage(err.response?.data?.message || "❌ Xatolik yuz berdi");
+      setMessage(err.response?.data?.message || t("group_add_error"));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-[50%] mx-auto border  p-6 rounded-xl shadow-md dark:bg-card">
+    <div className="w-[50%] mx-auto border p-6 rounded-xl shadow-md dark:bg-card">
       <h2 className="text-2xl my-6 font-semibold mb-4 text-center">
-        Add New Group
+        {t("add_group")}
       </h2>
 
       {message && (
-        <p className="text-center text-sm mb-3 text-red-600">{message}</p>
+        <p
+          className={`text-center text-sm mb-3 ${
+            message.includes("❌") ? "text-red-600" : "text-green-600"
+          }`}
+        >
+          {message}
+        </p>
       )}
 
       <form
@@ -66,8 +75,8 @@ export default function AddGroupForm() {
           name="name"
           value={form.name}
           onChange={handleChange}
-          placeholder="Group nomi"
-          className="border  p-2 rounded"
+          placeholder={t("group_name")}
+          className="border p-2 rounded"
           required
         />
 
@@ -75,10 +84,9 @@ export default function AddGroupForm() {
           name="roomId"
           value={form.roomId}
           onChange={handleChange}
-          className="  border  p-2  rounded-md w-full bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:bg-card  dark:border-gray-700  dark:text-gray-200 dark:focus:ring-gray-500
-  "
+          className="border p-2 rounded-md w-full bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:bg-card dark:border-gray-700 dark:text-gray-200 dark:focus:ring-gray-500"
         >
-          <option value="">Xona tanlang (ixtiyoriy)</option>
+          <option value="">{t("select_room_optional")}</option>
           {rooms.map((r) => (
             <option key={r.id} value={r.id}>
               {r.name}
@@ -91,7 +99,7 @@ export default function AddGroupForm() {
           disabled={loading}
           className="bg-blue-500 text-white rounded p-2 hover:bg-blue-600 disabled:opacity-60"
         >
-          {loading ? "Yuborilmoqda..." : "Qo‘shish"}
+          {loading ? t("loading") : t("add_button")}
         </button>
       </form>
     </div>

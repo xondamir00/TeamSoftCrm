@@ -58,106 +58,107 @@ export default function CreateStudentForm() {
   };
 
   return (
-    <Card className="w-[50%] mx-auto border  shadow-lg">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl text-white font-semibold">
-          {t("add_student")}
-        </CardTitle>
-      </CardHeader>
+    <div className="flex justify-center items-center px-4 py-6">
+      <Card className="w-full max-w-lg bg-white dark:bg-black shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-center text-lg font-semibold">
+            {t("add_student")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div className="grid sm:grid-cols-2 gap-3">
+              <div>
+                <Label>{t("first_name")}</Label>
+                <Input
+                  placeholder={t("first_name")}
+                  value={firstName}
+                  onChange={(e) => setFirst(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <Label>{t("last_name")}</Label>
+                <Input
+                  placeholder={t("last_name")}
+                  value={lastName}
+                  onChange={(e) => setLast(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
 
-      <CardContent>
-        <form onSubmit={onSubmit} className="space-y-4">
-          <div className="grid sm:grid-cols-2 gap-3">
             <div>
-              <Label>{t("first_name")}</Label>
+              <Label>{t("phone_number")}</Label>
               <Input
-                placeholder={t("first_name")}
-                value={firstName}
-                onChange={(e) => setFirst(e.target.value)}
+                placeholder="+998901234567"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 required
               />
             </div>
+
             <div>
-              <Label>{t("last_name")}</Label>
+              <Label>{t("password")}</Label>
               <Input
-                placeholder={t("last_name")}
-                value={lastName}
-                onChange={(e) => setLast(e.target.value)}
+                type="password"
+                placeholder={t("password")}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-          </div>
 
-          <div>
-            <Label>{t("phone_number")}</Label>
-            <Input
-              placeholder="+998901234567"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-          </div>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <div>
+                <Label>{t("date_of_birth")}</Label>
+                <Input
+                  type="date"
+                  value={dateOfBirth}
+                  onChange={(e) => setDob(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label>{t("start_date")}</Label>
+                <Input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
+              </div>
+            </div>
 
-          <div>
-            <Label>{t("password")}</Label>
-            <Input
-              type="password"
-              placeholder={t("password")}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-3">
             <div>
-              <Label>{t("date_of_birth")}</Label>
+              <Label>{t("group_id_optional")}</Label>
               <Input
-                type="date"
-                value={dateOfBirth}
-                onChange={(e) => setDob(e.target.value)}
+                placeholder={t("enter_group_id")}
+                value={groupId}
+                onChange={(e) => setGroupId(e.target.value)}
               />
             </div>
-            <div>
-              <Label>{t("start_date")}</Label>
-              <Input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-            </div>
-          </div>
 
-          <div>
-            <Label>{t("group_id_optional")}</Label>
-            <Input
-              placeholder={t("enter_group_id")}
-              value={groupId}
-              onChange={(e) => setGroupId(e.target.value)}
-            />
-          </div>
+            <Button
+              type="submit"
+              className="w-full flex items-center bg-[#3F8CFF] text-white hover:bg-blue-600 justify-center"
+              disabled={loading}
+            >
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {t("add")}
+            </Button>
 
-          <Button
-            type="submit"
-            className="w-full flex items-center bg-blue-500 text-white hover:bg-blue-600 justify-center"
-            disabled={loading}
-          >
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {t("add")}
-          </Button>
-
-          {msg && (
-            <Alert className="bg-green-50 border-green-300">
-              <AlertDescription>{msg}</AlertDescription>
-            </Alert>
-          )}
-          {err && (
-            <Alert variant="destructive">
-              <AlertDescription>{err}</AlertDescription>
-            </Alert>
-          )}
-        </form>
-      </CardContent>
-    </Card>
+            {msg && (
+              <Alert className="bg-green-50 border-green-300">
+                <AlertDescription>{msg}</AlertDescription>
+              </Alert>
+            )}
+            {err && (
+              <Alert variant="destructive">
+                <AlertDescription>{err}</AlertDescription>
+              </Alert>
+            )}
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

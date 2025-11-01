@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useTranslation } from "react-i18next";
 
 interface Teacher {
   id: string;
@@ -23,6 +24,7 @@ interface Teacher {
 }
 
 export default function TeacherList() {
+  const { t } = useTranslation();
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,10 +35,7 @@ export default function TeacherList() {
       const { data } = await api.get("/teachers");
       setTeachers(data);
     } catch (err: any) {
-      setError(
-        err?.response?.data?.message ||
-          "Ma'lumotlarni olishda xatolik yuz berdi"
-      );
+      setError(err?.response?.data?.message || t("fetch_error"));
     } finally {
       setLoading(false);
     }
@@ -51,16 +50,14 @@ export default function TeacherList() {
       <div className="overflow-x-auto">
         <Table>
           <TableCaption className="text-lg dark:text-gray-300">
-            O‘qituvchilar ro‘yxati
+            {t("teachers_list")}
           </TableCaption>
           <TableHeader>
             <TableRow className="dark:border-gray-700">
-              <TableHead className="dark:text-gray-300">T/R</TableHead>
-              <TableHead className="dark:text-gray-300">Ism Familya</TableHead>
-              <TableHead className="dark:text-gray-300">Telefon</TableHead>
-              <TableHead className="dark:text-gray-300 text-right">
-                Qo‘shilgan sana
-              </TableHead>
+              <TableHead className="dark:text-gray-300">{t("tr")}</TableHead>
+              <TableHead className="dark:text-gray-300">{t("full_name")}</TableHead>
+              <TableHead className="dark:text-gray-300">{t("phone")}</TableHead>
+              <TableHead className="dark:text-gray-300 text-right">{t("date_added")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -80,24 +77,21 @@ export default function TeacherList() {
               </TableRow>
             ) : teachers.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={4}
-                  className="text-center text-gray-500 py-4"
-                >
-                  Hozircha o‘qituvchilar yo‘q
+                <TableCell colSpan={4} className="text-center text-gray-500 py-4">
+                  {t("no_teachers")}
                 </TableCell>
               </TableRow>
             ) : (
-              teachers.map((t, index) => (
+              teachers.map((tchr, index) => (
                 <TableRow
-                  key={t.id}
+                  key={tchr.id}
                   className="hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{`${t.firstName} ${t.lastName}`}</TableCell>
-                  <TableCell>{t.phone}</TableCell>
+                  <TableCell>{`${tchr.firstName} ${tchr.lastName}`}</TableCell>
+                  <TableCell>{tchr.phone}</TableCell>
                   <TableCell className="text-right">
-                    {new Date(t.createdAt).toLocaleDateString("uz-UZ")}
+                    {new Date(tchr.createdAt).toLocaleDateString()}
                   </TableCell>
                 </TableRow>
               ))

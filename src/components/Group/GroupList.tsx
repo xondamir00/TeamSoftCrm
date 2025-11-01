@@ -26,11 +26,9 @@ const Groups = () => {
     try {
       setLoading(true);
       const { data } = await api.get("/groups");
-      console.log(data, "group");
-
       setGroups(data);
     } catch (e: any) {
-      setErr(e?.response?.data?.message || "Ma'lumotlarni olishda xatolik");
+      setErr(e?.response?.data?.message || t("fetch_error"));
     } finally {
       setLoading(false);
     }
@@ -49,12 +47,16 @@ const Groups = () => {
           </TableCaption>
           <TableHeader>
             <TableRow className="dark:border-gray-700">
-              <TableHead className="dark:text-gray-300">T/r</TableHead>
-              <TableHead className="dark:text-gray-300">Guruh nomi</TableHead>
-              <TableHead className="dark:text-gray-300">Xona</TableHead>
-              <TableHead className="dark:text-gray-300">O‘qituvchi</TableHead>
+              <TableHead className="dark:text-gray-300">{t("tr")}</TableHead>
+              <TableHead className="dark:text-gray-300">
+                {t("group_name")}
+              </TableHead>
+              <TableHead className="dark:text-gray-300">{t("room")}</TableHead>
+              <TableHead className="dark:text-gray-300">
+                {t("teacher")}
+              </TableHead>
               <TableHead className="dark:text-gray-300 text-right">
-                Sana
+                {t("date")}
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -79,7 +81,7 @@ const Groups = () => {
                   colSpan={5}
                   className="text-center text-gray-500 py-4"
                 >
-                  Hozircha guruhlar yo‘q
+                  {t("no_groups")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -90,7 +92,6 @@ const Groups = () => {
                 >
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{g.name}</TableCell>
-                  <TableCell>{g.room.name || "—"}</TableCell>
                   <TableCell>{g.teacherId || "—"}</TableCell>
                   <TableCell className="text-right flex justify-end items-center gap-2">
                     <span>

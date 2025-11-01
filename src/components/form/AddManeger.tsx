@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { api } from "@/Service/api"; // yoki axios.create instance
+import { api } from "@/Service/api"; // yoki axios instance
+import { useTranslation } from "react-i18next";
 
 export default function AddManagerForm() {
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -42,7 +44,7 @@ export default function AddManagerForm() {
       const res = await api.post("/managers", payload);
       console.log("✅ Manager added:", res.data);
 
-      setMessage("Manager muvaffaqiyatli qo‘shildi!");
+      setMessage(t("manager_added_success"));
       setForm({
         firstName: "",
         lastName: "",
@@ -54,7 +56,7 @@ export default function AddManagerForm() {
     } catch (err: any) {
       console.error(err);
       setMessage(
-        err?.response?.data?.message || "Xatolik yuz berdi (400 Bad Request)"
+        err?.response?.data?.message || t("manager_add_error")
       );
     } finally {
       setLoading(false);
@@ -64,7 +66,7 @@ export default function AddManagerForm() {
   return (
     <div className="w-[50%] border mx-auto mt-10 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
       <h2 className="text-xl font-semibold mb-4 text-center">
-        Add New Manager
+        {t("add_manager")}
       </h2>
 
       {message && (
@@ -84,7 +86,7 @@ export default function AddManagerForm() {
           name="firstName"
           value={form.firstName}
           onChange={handleChange}
-          placeholder="First Name"
+          placeholder={t("first_name")}
           required
           className="border p-2 rounded"
         />
@@ -92,7 +94,7 @@ export default function AddManagerForm() {
           name="lastName"
           value={form.lastName}
           onChange={handleChange}
-          placeholder="Last Name"
+          placeholder={t("last_name")}
           required
           className="border p-2 rounded"
         />
@@ -100,7 +102,7 @@ export default function AddManagerForm() {
           name="phone"
           value={form.phone}
           onChange={handleChange}
-          placeholder="Phone (+998...)"
+          placeholder={t("phone")}
           required
           className="border p-2 rounded"
         />
@@ -109,7 +111,7 @@ export default function AddManagerForm() {
           type="password"
           value={form.password}
           onChange={handleChange}
-          placeholder="Password"
+          placeholder={t("password")}
           required
           className="border p-2 rounded"
         />
@@ -117,7 +119,7 @@ export default function AddManagerForm() {
           name="photoUrl"
           value={form.photoUrl}
           onChange={handleChange}
-          placeholder="Photo URL (optional)"
+          placeholder={t("photo_url_optional")}
           className="border p-2 rounded"
         />
         <input
@@ -125,7 +127,7 @@ export default function AddManagerForm() {
           type="number"
           value={form.monthlySalary}
           onChange={handleChange}
-          placeholder="Monthly Salary (optional)"
+          placeholder={t("monthly_salary_optional")}
           className="border p-2 rounded"
         />
 
@@ -134,7 +136,7 @@ export default function AddManagerForm() {
           type="submit"
           className="bg-blue-600 text-white rounded p-2 hover:bg-blue-700 disabled:opacity-60"
         >
-          {loading ? "Yuborilmoqda..." : "Qo‘shish"}
+          {loading ? t("loading") : t("add_button")}
         </button>
       </form>
     </div>

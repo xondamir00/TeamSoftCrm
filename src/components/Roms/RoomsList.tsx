@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Table,
   TableBody,
@@ -21,6 +22,7 @@ interface Room {
 }
 
 const RoomsList = () => {
+  const { t } = useTranslation();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -31,9 +33,7 @@ const RoomsList = () => {
       const { data } = await api.get("/rooms");
       setRooms(data);
     } catch (e: any) {
-      setErr(
-        e?.response?.data?.message || "Xonalarni olishda xatolik yuz berdi"
-      );
+      setErr(e?.response?.data?.message || t("fetch_error"));
     } finally {
       setLoading(false);
     }
@@ -59,9 +59,7 @@ const RoomsList = () => {
 
   if (!rooms.length)
     return (
-      <p className="text-center text-gray-500 py-5">
-        Hozircha faol xonalar yo‘q
-      </p>
+      <p className="text-center text-gray-500 py-5">{t("no_rooms")}</p>
     );
 
   return (
@@ -70,10 +68,10 @@ const RoomsList = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>T/r</TableHead>
-              <TableHead>Xona nomi</TableHead>
-              <TableHead>Sig‘imi</TableHead>
-              <TableHead>Yaratilgan sana</TableHead>
+              <TableHead>{t("tr")}</TableHead>
+              <TableHead>{t("room_name")}</TableHead>
+              <TableHead>{t("capacity")}</TableHead>
+              <TableHead>{t("created_at")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

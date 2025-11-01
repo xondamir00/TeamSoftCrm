@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 import { Alert, AlertDescription } from "../ui/alert";
 import { Label } from "../ui/label";
 import { Loader2 } from "lucide-react";
+
 const AddRoom = () => {
   const { t } = useTranslation();
   const [name, setName] = useState("");
@@ -37,6 +38,7 @@ const AddRoom = () => {
       setLoading(false);
     }
   };
+
   return (
     <div className="flex justify-center items-center min-h-[70vh] px-4">
       <Card className="w-full max-w-md shadow-lg">
