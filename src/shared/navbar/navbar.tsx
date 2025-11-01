@@ -2,15 +2,14 @@
 
 import { motion } from "framer-motion";
 import Logo from "./logo";
-import { Button } from "@/components/ui/button";
 import { ModeToggle } from "../modeToggle";
-import { Link } from "react-router-dom";
 import LanguageSwitcher from "@/i18react/LanguageSwitcher";
+import LogoutButton from "./Logout";
 
 const Navbar = () => {
   return (
-    <motion.header className="w-full h-[75px] bg-[#3F8CFF] dark:bg-black shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 lg:px-6 flex justify-between items-center h-full">
+    <motion.header className="w-full py-3 bg-[#3F8CFF] dark:bg-black shadow-sm">
+      <div className=" mx-auto px-4 lg:px-6 flex justify-between items-center h-full">
         {/* Chap tomondagi logo */}
         <motion.div
           className="flex items-center gap-3"
@@ -30,9 +29,7 @@ const Navbar = () => {
         >
           <LanguageSwitcher />
           <ModeToggle />
-          <Link to={"/sign"}>
-            <Button variant={"outline"}>Sign In</Button>
-          </Link>
+          <LogoutButton/>
         </motion.div>
       </div>
     </motion.header>
