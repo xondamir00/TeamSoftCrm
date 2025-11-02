@@ -11,23 +11,30 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { api } from "@/Service/api";
-import { ChevronRight, Loader2 } from "lucide-react";
+import { ChevronRight, Loader2, Plus } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTranslation } from "react-i18next";
 import type { Group } from "@/Store";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
+import AddGroupForm from "./AddGoup";
 
 const Groups = () => {
   const { t } = useTranslation();
   const [groups, setGroups] = useState<Group[]>([]);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false); // Drawer holati
 
   const fetchGroups = async () => {
     try {
       setLoading(true);
       const { data } = await api.get("/groups");
-      console.log(data, "group");
-
       setGroups(data);
     } catch (e: any) {
       setErr(e?.response?.data?.message || "Ma'lumotlarni olishda xatolik");
@@ -40,8 +47,67 @@ const Groups = () => {
     fetchGroups();
   }, []);
 
+  // Drawer ochilganda scrollni bloklaymiz
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [isOpen]);
+
   return (
-    <div className="w-[98%] mx-auto dark:bg-black dark:text-white border dark:border-gray-700 rounded-xl p-3 shadow-md">
+    <div
+      className="
+        w-[98%] mx-auto
+        bg-white text-black
+        dark:bg-[#0d1117] dark:text-white
+        border dark:border-gray-800
+        rounded-2xl p-6 shadow-md
+        transition-colors duration-500
+      "
+    >
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="text-2xl font-semibold text-[#3F8CFF]">{t("groups")}</h2>
+
+        {/* Drawer Trigger */}
+        <Drawer direction="right" open={isOpen} onOpenChange={setIsOpen}>
+          <DrawerTrigger asChild>
+            <Button
+              onClick={() => setIsOpen(true)}
+              className="bg-[#3F8CFF] hover:bg-[#3578e5] text-white flex items-center gap-2 rounded-xl px-4 py-2"
+            >
+              <Plus className="w-5 h-5" /> Yangi guruh qo‘shish
+            </Button>
+          </DrawerTrigger>
+
+          {/* Drawer ichidagi form */}
+          <DrawerContent className="!max-w-[460px] ml-auto h-full flex flex-col justify-between bg-white dark:bg-[#0d1117] shadow-xl rounded-none">
+            <div className="p-6 flex justify-center overflow-y-auto">
+              <div className="w-full max-w-[400px]">
+                <AddGroupForm
+                  onSuccess={() => {
+                    fetchGroups();
+                    setIsOpen(false);
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-center pb-5">
+              <DrawerClose asChild>
+                <Button
+                  onClick={() => setIsOpen(false)}
+                  className="bg-[#3F8CFF] hover:bg-[#3578e5] text-white rounded-xl"
+                >
+                  Yopish
+                </Button>
+              </DrawerClose>
+            </div>
+          </DrawerContent>
+        </Drawer>
+      </div>
+
       <div className="overflow-x-auto">
         <Table>
           <TableCaption className="text-lg dark:text-gray-300">
@@ -86,11 +152,11 @@ const Groups = () => {
               groups.map((g, index) => (
                 <TableRow
                   key={g.id}
-                  className="border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 transition"
+                  className="border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-[#111827] transition"
                 >
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{g.name}</TableCell>
-                  <TableCell>{g.room.name || "—"}</TableCell>
+                  <TableCell>{g.room?.name || "—"}</TableCell>
                   <TableCell>{g.teacherId || "—"}</TableCell>
                   <TableCell className="text-right flex justify-end items-center gap-2">
                     <span>
