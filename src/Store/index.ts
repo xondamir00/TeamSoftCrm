@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { api } from "../Service/api";
 
 export type Role = "admin" | "teacher" | "MANAGER" | "USER";
@@ -59,44 +58,39 @@ type AuthState = {
   ) => Promise<void>;
 };
 
-export const useAuth = create<AuthState>()(
-  persist(
-    (set, get) => ({
-      token: null,
-      refreshToken: null,
-      user: null,
-      booted: false,
+export const useAuth = create<AuthState>((set, get) => ({
+  token: null,
+  refreshToken: null,
+  user: null,
+  booted: false,
 
-      login: (token, refreshToken, user) => set({ token, refreshToken, user }),
-      logout: () => set({ token: null, refreshToken: null, user: null }),
-      setBooted: (v) => set({ booted: v }),
+  login: (token, refreshToken, user) => set({ token, refreshToken, user }),
+  logout: () => set({ token: null, refreshToken: null, user: null }),
+  setBooted: (v) => set({ booted: v }),
 
-      changing: false,
-      changeError: null,
-      async changePassword(currentPassword, newPassword) {
-        set({ changing: true, changeError: null });
-        try {
-          const { data } = await api.post("/auth/change-password", {
-            currentPassword,
-            newPassword,
-          });
-          const u = get().user;
-          if (u) set({ user: { ...u, mustChangePassword: false } });
-          console.log(data.message);
-        } catch (err: any) {
-          const msg =
-            err?.response?.data?.message ||
-            (Array.isArray(err?.response?.data)
-              ? err.response.data.join(", ")
-              : "") ||
-            "Parolni almashtirishda xatolik";
-          set({ changeError: msg });
-          throw err;
-        } finally {
-          set({ changing: false });
-        }
-      },
-    }),
-    { name: "auth-storage" }
-  )
-);
+  changing: false,
+  changeError: null,
+  async changePassword(currentPassword, newPassword) {
+    set({ changing: true, changeError: null });
+    try {
+      const { data } = await api.post("/auth/change-password", {
+        currentPassword,
+        newPassword,
+      });
+      const u = get().user;
+      if (u) set({ user: { ...u, mustChangePassword: false } });
+      console.log(data.message);
+    } catch (err: any) {
+      const msg =
+        err?.response?.data?.message ||
+        (Array.isArray(err?.response?.data)
+          ? err.response.data.join(", ")
+          : "") ||
+        "Parolni almashtirishda xatolik";
+      set({ changeError: msg });
+      throw err;
+    } finally {
+      set({ changing: false });
+    }
+  },
+}));
