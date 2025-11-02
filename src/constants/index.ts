@@ -1,85 +1,34 @@
 export const CategoryNavigate = [
-  {
-    label: "Lidlar",
-    href: "/lids",
-    icon: "/icons/users.svg", // 👥 odamlar ikonkasi
-  },
-  {
-    label: "O'qituvchilar ro'yxati",
-    href: "/teachers",
-    icon: "/icons/teacher.svg", // 👩‍🏫 o‘qituvchi ikonkasi
-  },
-  {
-    label: "Guruhlar",
-    href: "/groups",
-    icon: "/icons/group.svg", // 👨‍👩‍👧‍👦 guruh ikonkasi
-  },
-  {
-    label: "O'quvchilar ro'yxati",
-    href: "/student",
-    icon: "/icons/student.svg", // 🎓 o‘quvchi ikonkasi
-  },
-  {
-    label: "Qarzdorlar ro'yxati",
-    href: "/debts",
-    icon: "/icons/debt.svg", // 💰 qarzdorlik belgisi
-  },
-  {
-    label: "Sozlamalar",
-    href: "/settings",
-    icon: "/icons/settings.svg", // ⚙️ sozlamalar
-  },
-  {
-    label: "Moliya",
-    href: "/finance",
-    icon: "/icons/finance.svg", // 💵 moliya belgisi
-  },
+  { label: "leads", href: "lids", icon: "/icons/users.svg" },
+  { label: "teachersList", href: "teachers", icon: "/icons/teacher.svg" },
+  { label: "groups", href: "groups", icon: "/icons/group.svg" },
+  { label: "studentsList", href: "student", icon: "/icons/student.svg" },
+  { label: "debtorsList", href: "debts", icon: "/icons/debt.svg" },
+  { label: "settings", href: "settings", icon: "/icons/settings.svg" },
+  { label: "Rooms", href: "rooms", icon: "/icons/settings.svg" },
+  { label: "finance", href: "finance", icon: "/icons/finance.svg" },
 ];
-export const Guruhlar = [
+export const CreateForm = [
   {
-    id: 1,
-    name: "Dasturlash",
-    members: [
-      { id: 1, fullName: "Jasur Karimov" },
-      { id: 2, fullName: "Dilshod Rahimov" },
-      { id: 3, fullName: "Malika Tursunova" },
-      { id: 4, fullName: "Azizbek Yo‘ldoshev" },
-      { id: 5, fullName: "Nigora Ismoilova" },
-    ],
+    name: "Create Student",
+    href: "create-student",
   },
 
   {
-    id: 1,
-    name: "Dasturlash",
-    members: [
-      { id: 1, fullName: "Jasur Karimov" },
-      { id: 2, fullName: "Dilshod Rahimov" },
-      { id: 3, fullName: "Malika Tursunova" },
-      { id: 4, fullName: "Azizbek Yo‘ldoshev" },
-      { id: 5, fullName: "Nigora Ismoilova" },
-    ],
+    name: "create Teacher",
+    href: "create-teacher",
   },
   {
-    id: 1,
-    name: "Dasturlash",
-    members: [
-      { id: 1, fullName: "Jasur Karimov" },
-      { id: 2, fullName: "Dilshod Rahimov" },
-      { id: 3, fullName: "Malika Tursunova" },
-      { id: 4, fullName: "Azizbek Yo‘ldoshev" },
-      { id: 5, fullName: "Nigora Ismoilova" },
-    ],
+    name: "Create room",
+    href: "create-room",
   },
   {
-    id: 1,
-    name: "Dasturlash",
-    members: [
-      { id: 1, fullName: "Jasur Karimov" },
-      { id: 2, fullName: "Dilshod Rahimov" },
-      { id: 3, fullName: "Malika Tursunova" },
-      { id: 4, fullName: "Azizbek Yo‘ldoshev" },
-      { id: 5, fullName: "Nigora Ismoilova" },
-    ],
+    name: "create Meneger",
+    href: "create-meneger",
+  },
+  {
+    name: "create Group",
+    href: "create-group",
   },
 ];
 export const pupils = [
