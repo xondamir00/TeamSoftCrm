@@ -58,42 +58,44 @@ export default function CreateStudentForm() {
   };
 
   return (
-    <Card className="w-full border border-gray-700 bg-[#1e293b]/70 backdrop-blur-lg shadow-xl rounded-2xl p-6">
+    <Card className="w-full border border-gray-700   shadow-xl rounded-2xl p-6">
       <CardHeader>
-        <CardTitle className="text-center text-2xl text-white font-semibold">
+        <CardTitle className="text-center text-2xl  font-semibold">
           {t("add_student")}
         </CardTitle>
       </CardHeader>
 
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-5">
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <Label className="text-gray-300">{t("first_name")}</Label>
-              <Input
-                className="h-14 text-lg px-5 rounded-2xl bg-gray-800 text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
-                placeholder={t("first_name")}
-                value={firstName}
-                onChange={(e) => setFirst(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <Label className="text-gray-300">{t("last_name")}</Label>
-              <Input
-                className="h-14 text-lg px-5 rounded-2xl bg-gray-800 text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
-                placeholder={t("last_name")}
-                value={lastName}
-                onChange={(e) => setLast(e.target.value)}
-                required
-              />
-            </div>
+          {/* Ism */}
+          <div>
+            <Label className="text-xl">{t("first_name")}</Label>
+            <Input
+              className="h-10 text-lg px-5 rounded-xl text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              placeholder={t("first_name")}
+              value={firstName}
+              onChange={(e) => setFirst(e.target.value)}
+              required
+            />
           </div>
 
+          {/* Familiya */}
           <div>
-            <Label className="text-gray-300">{t("phone_number")}</Label>
+            <Label className="text-xl">{t("last_name")}</Label>
             <Input
-              className="h-14 text-lg px-5 rounded-2xl bg-gray-800 text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              className="h-10 text-lg px-5 rounded-xl text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              placeholder={t("last_name")}
+              value={lastName}
+              onChange={(e) => setLast(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Telefon */}
+          <div>
+            <Label className="text-xl">{t("phone_number")}</Label>
+            <Input
+              className="h-10 text-lg px-5 rounded-xl text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
               placeholder="+998901234567"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -101,11 +103,12 @@ export default function CreateStudentForm() {
             />
           </div>
 
+          {/* Parol */}
           <div>
-            <Label className="text-gray-300">{t("password")}</Label>
+            <Label className="text-xl">{t("password")}</Label>
             <Input
               type="password"
-              className="h-14 text-lg px-5 rounded-2xl bg-gray-800 text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              className="h-10 text-lg px-5 rounded-xl text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
               placeholder={t("password")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -113,37 +116,40 @@ export default function CreateStudentForm() {
             />
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <Label className="text-gray-300">{t("date_of_birth")}</Label>
-              <Input
-                type="date"
-                className="h-14 text-lg px-5 rounded-2xl bg-gray-800 text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
-                value={dateOfBirth}
-                onChange={(e) => setDob(e.target.value)}
-              />
-            </div>
-            <div>
-              <Label className="text-gray-300">{t("start_date")}</Label>
-              <Input
-                type="date"
-                className="h-14 text-lg px-5 rounded-2xl bg-gray-800 text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-            </div>
+          {/* Tug‘ilgan sana */}
+          <div>
+            <Label className="text-xl">{t("date_of_birth")}</Label>
+            <Input
+              type="date"
+              className="h-10 text-lg px-5 rounded-xl text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              value={dateOfBirth}
+              onChange={(e) => setDob(e.target.value)}
+            />
           </div>
 
+          {/* Boshlanish sanasi */}
           <div>
-            <Label className="text-gray-300">{t("group_id_optional")}</Label>
+            <Label className="text-xl">{t("start_date")}</Label>
             <Input
-              className="h-14 text-lg px-5 rounded-2xl bg-gray-800 text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              type="date"
+              className="h-10 text-lg px-5 rounded-xl text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
+
+          {/* Guruh ID */}
+          <div>
+            <Label className="text-xl">{t("group_id_optional")}</Label>
+            <Input
+              className="h-10 text-lg px-5 rounded-xl text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
               placeholder={t("enter_group_id")}
               value={groupId}
               onChange={(e) => setGroupId(e.target.value)}
             />
           </div>
 
+          {/* Tugma */}
           <Button
             type="submit"
             className="w-full h-14 text-lg bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-md transition"

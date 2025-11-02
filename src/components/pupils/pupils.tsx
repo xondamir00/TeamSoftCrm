@@ -83,23 +83,7 @@ const Pupils = () => {
             </Button>
           </DrawerTrigger>
 
-          <DrawerContent
-            className="
-              fixed right-0 top-0 bottom-0
-              sm:max-w-[600px] w-full
-              rounded-l-2xl shadow-2xl
-              border-l border-gray-700
-              bg-white dark:bg-[#0d1117]
-              text-black dark:text-white
-              transition-all duration-500
-            "
-          >
-            <DrawerHeader>
-              <DrawerTitle className="text-[#3F8CFF] text-2xl font-semibold text-center">
-                {t("add_student")}
-              </DrawerTitle>
-            </DrawerHeader>
-
+          <DrawerContent>
             <div className="p-6">
               <CreateStudentForm />
             </div>
