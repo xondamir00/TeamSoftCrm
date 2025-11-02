@@ -1,5 +1,17 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+[data-state="open"][data-direction="right"] {
+  animation: slideInRight 0.4s ease forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
 
 @custom-variant dark (&:is(.dark *));
 

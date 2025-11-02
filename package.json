@@ -28,11 +28,15 @@
     "lucide-react": "^0.546.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-i18next": "^16.2.0",
+    "react-i18next": "^16.2.2",
     "react-router-dom": "^7.9.4",
     "styled-components": "^6.1.19",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.16",
+<<<<<<< HEAD
+=======
+    "vaul": "^1.1.2",
+>>>>>>> 4fdc3fa0f0130c839d4ebfd2e638ea262a21627f
     "zustand": "^5.0.8"
   },
   "devDependencies": {

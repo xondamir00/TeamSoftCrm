@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 export default function AddGroupForm() {
   const { t } = useTranslation();
 
+
   const [form, setForm] = useState({ name: "", roomId: "" });
   const [rooms, setRooms] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
@@ -34,6 +35,7 @@ export default function AddGroupForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim()) return setMessage(t("group_name_required"));
+
     setLoading(true);
     setMessage("");
 
@@ -46,7 +48,10 @@ export default function AddGroupForm() {
       setForm({ name: "", roomId: "" });
     } catch (err: any) {
       setMessage(err.response?.data?.message || t("group_add_error"));
-    } finally {
+      setMessage("✅ Group muvaffaqiyatli qo‘shildi!");
+      setForm({ name: "", roomId: "" });
+    } 
+     finally {
       setLoading(false);
     }
   };
