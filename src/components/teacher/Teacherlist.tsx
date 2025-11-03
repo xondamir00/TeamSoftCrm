@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/Service/api";
-import { Loader2 } from "lucide-react";
+import { Loader2, Plus, Pencil, Trash2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Table,
@@ -13,7 +13,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
+import AddTeacherForm from "../form/addTeacher";
+import UpdateTeacherForm from "../form/Updateteacher";
 
 interface Teacher {
   id: string;
@@ -28,6 +39,7 @@ export default function TeacherList() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
 
   const fetchTeachers = async () => {
     try {
@@ -45,31 +57,77 @@ export default function TeacherList() {
     fetchTeachers();
   }, []);
 
+  const handleDelete = async (id: string) => {
+    if (!confirm(t("confirm_delete") || "Delete this teacher?")) return;
+    try {
+      await api.delete(`/teachers/${id}`);
+      fetchTeachers();
+    } catch (err: any) {
+      alert(err.response?.data?.message || "Delete error");
+    }
+  };
+
   return (
     <div className="w-[98%] mx-auto bg-white dark:bg-black dark:text-white border dark:border-gray-700 rounded-xl p-4 shadow-md">
-      <div className="overflow-x-auto">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">{t("teachers_list")}</h2>
+
+        {/* Add Teacher Drawer */}
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button className="flex items-center gap-2">
+              <Plus size={16} />
+              {t("add_teacher")}
+            </Button>
+          </SheetTrigger>
+          <SheetContent
+            side="right"
+            className="w-full sm:max-w-[500px] p-0 border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-black overflow-y-auto"
+          >
+            <SheetHeader className="p-4 border-b dark:border-gray-700 sticky top-0 bg-white dark:bg-black">
+              <SheetTitle>{t("add_teacher")}</SheetTitle>
+            </SheetHeader>
+
+            <div className="p-4">
+              <AddTeacherForm />
+            </div>
+
+            <div className="flex justify-end p-3 border-t dark:border-gray-700">
+              <SheetClose asChild>
+                <Button variant="outline">{t("close")}</Button>
+              </SheetClose>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* Table */}
+      <div className="overflow-x-auto overflow-y-auto max-h-[70vh]">
         <Table>
-          <TableCaption className="text-lg dark:text-gray-300">
+          <TableCaption className="hidden !mt-0 text-lg dark:text-gray-300">
             {t("teachers_list")}
           </TableCaption>
           <TableHeader>
             <TableRow className="dark:border-gray-700">
-              <TableHead className="dark:text-gray-300">{t("tr")}</TableHead>
-              <TableHead className="dark:text-gray-300">{t("full_name")}</TableHead>
-              <TableHead className="dark:text-gray-300">{t("phone")}</TableHead>
-              <TableHead className="dark:text-gray-300 text-right">{t("date_added")}</TableHead>
+              <TableHead>#</TableHead>
+              <TableHead>{t("full_name")}</TableHead>
+              <TableHead>{t("phone")}</TableHead>
+              <TableHead>{t("date_added")}</TableHead>
+              <TableHead className="text-right">{t("actions")}</TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center py-6">
+                <TableCell colSpan={5} className="text-center py-6">
                   <Loader2 className="h-5 w-5 animate-spin mx-auto text-gray-500" />
                 </TableCell>
               </TableRow>
             ) : error ? (
               <TableRow>
-                <TableCell colSpan={4}>
+                <TableCell colSpan={5}>
                   <Alert variant="destructive">
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
@@ -77,21 +135,67 @@ export default function TeacherList() {
               </TableRow>
             ) : teachers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center text-gray-500 py-4">
+                <TableCell colSpan={5} className="text-center text-gray-500 py-4">
                   {t("no_teachers")}
                 </TableCell>
               </TableRow>
             ) : (
               teachers.map((tchr, index) => (
-                <TableRow
-                  key={tchr.id}
-                  className="hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
+                <TableRow key={tchr.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{`${tchr.firstName} ${tchr.lastName}`}</TableCell>
                   <TableCell>{tchr.phone}</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell>
                     {new Date(tchr.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="text-right flex justify-end gap-2">
+                    {/* Update Drawer */}
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setSelectedTeacher(tchr)}
+                        >
+                          <Pencil size={15} />
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent
+                        side="right"
+                        className="w-full sm:max-w-[500px] p-0 border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-black overflow-y-auto"
+                      >
+                        <SheetHeader className="p-4 border-b dark:border-gray-700 sticky top-0 bg-white dark:bg-black">
+                          <SheetTitle>{t("edit_teacher")}</SheetTitle>
+                        </SheetHeader>
+
+                        <div className="p-4">
+                          {selectedTeacher && (
+                            <UpdateTeacherForm
+                              teacher={selectedTeacher}
+                              onSuccess={() => {
+                                fetchTeachers();
+                                setSelectedTeacher(null);
+                              }}
+                            />
+                          )}
+                        </div>
+
+                        <div className="flex justify-end p-3 border-t dark:border-gray-700">
+                          <SheetClose asChild>
+                            <Button variant="outline">{t("close")}</Button>
+                          </SheetClose>
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+
+                    {/* Delete Button */}
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDelete(tchr.id)}
+                    >
+                      <Trash2 size={15} />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))

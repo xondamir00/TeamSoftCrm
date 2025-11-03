@@ -8,11 +8,8 @@ import TeacherGroup from "../form/Createform";
 const Settings = () => {
   return (
     <div className="flex items-center  justify-center ">
-      {/* <AddTeacherForm />
-      <CreateStudentForm />
-      <AddManagerForm />
-      <AddRoom /> */}
-      <div className="w-[50%] bg-white shadow-md my-5 rounded-2xl border">
+   
+      <div className="w-[50%] light:bg-white shadow-md my-5 rounded-2xl light:border">
         <TeacherGroup />
       </div>
     </div>

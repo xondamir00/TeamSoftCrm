@@ -4,10 +4,13 @@ import React, { useState, useEffect } from "react";
 import { api } from "@/Service/api";
 import { useTranslation } from "react-i18next";
 
-export default function AddGroupForm() {
+interface AddGroupFormProps {
+  editingGroup?: { id: string; name: string; room?: { id: string; name: string } } | null;
+  onSuccess?: () => void;
+}
+
+export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormProps) {
   const { t } = useTranslation();
-
-
   const [form, setForm] = useState({ name: "", roomId: "" });
   const [rooms, setRooms] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
@@ -25,6 +28,17 @@ export default function AddGroupForm() {
     fetchRooms();
   }, []);
 
+  useEffect(() => {
+    if (editingGroup) {
+      setForm({
+        name: editingGroup.name || "",
+        roomId: editingGroup.room?.id || "",
+      });
+    } else {
+      setForm({ name: "", roomId: "" });
+    }
+  }, [editingGroup]);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -34,54 +48,51 @@ export default function AddGroupForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim()) return setMessage(t("group_name_required"));
-
     setLoading(true);
     setMessage("");
 
     try {
-      await api.post("/groups", {
-        name: form.name,
-        roomId: form.roomId || undefined,
-      });
-      setMessage(t("group_added_success"));
-      setForm({ name: "", roomId: "" });
+      if (editingGroup) {
+        await api.patch(`/groups/${editingGroup.id}`, {
+          name: form.name,
+          roomId: form.roomId || null,
+        });
+        setMessage(t("group_updated_success"));
+      } else {
+        await api.post("/groups", {
+          name: form.name,
+          roomId: form.roomId || undefined,
+        });
+        setMessage(t("group_added_success"));
+      }
+
+      setTimeout(() => {
+        onSuccess?.();
+      }, 500);
     } catch (err: any) {
-      setMessage(err.response?.data?.message || t("group_add_error"));
-      setMessage("✅ Group muvaffaqiyatli qo‘shildi!");
-      setForm({ name: "", roomId: "" });
-    } 
-     finally {
+      setMessage(err.response?.data?.message || t("group_error"));
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="w-[50%] mx-auto border p-6 rounded-xl shadow-md dark:bg-card">
-      <h2 className="text-2xl my-6 font-semibold mb-4 text-center">
-        {t("add_group")}
+    <div className="p-6">
+      <h2 className="text-xl font-semibold mb-4">
+        {editingGroup ? t("update_group") : t("add_group")}
       </h2>
 
       {message && (
-        <p
-          className={`text-center text-sm mb-3 ${
-            message.includes("❌") ? "text-red-600" : "text-green-600"
-          }`}
-        >
-          {message}
-        </p>
+        <p className="text-sm mb-3 text-center text-green-600">{message}</p>
       )}
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex dark:text-white flex-col gap-3"
-      >
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
           name="name"
           value={form.name}
           onChange={handleChange}
           placeholder={t("group_name")}
-          className="border p-2 rounded"
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
           required
         />
 
@@ -89,7 +100,7 @@ export default function AddGroupForm() {
           name="roomId"
           value={form.roomId}
           onChange={handleChange}
-          className="border p-2 rounded-md w-full bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:bg-card dark:border-gray-700 dark:text-gray-200 dark:focus:ring-gray-500"
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
         >
           <option value="">{t("select_room_optional")}</option>
           {rooms.map((r) => (
@@ -104,7 +115,7 @@ export default function AddGroupForm() {
           disabled={loading}
           className="bg-blue-500 text-white rounded p-2 hover:bg-blue-600 disabled:opacity-60"
         >
-          {loading ? t("loading") : t("add_button")}
+          {loading ? t("loading") : editingGroup ? t("update_button") : t("add_button")}
         </button>
       </form>
     </div>
