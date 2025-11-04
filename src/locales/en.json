@@ -77,5 +77,13 @@
     "createRoom": "Create Room",
     "createManager": "Create Manager",
     "createGroup": "Create Group"
-  }
+  },
+  "login_title": "Login",
+  "login_subtitle": "Welcome! Please sign in using your phone number",
+  "phone_placeholder": "+998901234567",
+  "password_placeholder": "Your password",
+  "login_button": "Login",
+  "error_invalid": "Invalid login credentials.",
+  "no_account": "Don’t have an account?",
+  "register": "Sign Up"
 }

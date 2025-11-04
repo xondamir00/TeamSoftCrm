@@ -77,7 +77,15 @@
     "createRoom": "Xona yaratish",
     "createManager": "Menejer yaratish",
     "createGroup": "Guruh yaratish"
-  }
+  },
+  "login_title": "Tizimga kirish",
+  "login_subtitle": "Xush kelibsiz! Tizimga telefon raqamingiz orqali kiring",
+  "phone_placeholder": "+998901234567",
+  "password_placeholder": "Parolingiz",
+  "login_button": "Kirish",
+  "error_invalid": "Login ma'lumotlari noto‘g‘ri.",
+  "no_account": "Hisobingiz yo‘qmi?",
+  "register": "Ro‘yxatdan o‘tish"
 }
 
 

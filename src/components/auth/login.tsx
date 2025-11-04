@@ -1,24 +1,30 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { api } from "@/Service/api";
 import { useAuth } from "@/Store";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, EyeOff, Phone, Lock } from "lucide-react";
+import { Eye, EyeOff, Phone, Lock, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { t, i18n } = useTranslation();
 
-  const [phone, setPhone] = useState("+998900001122");
-  const [password, setPassword] = useState("Admin@12345");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [remember, setRemember] = useState(false);
+
+  const changeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("i18nextLng", lang);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +36,7 @@ export function Login() {
       const { user, accessToken, refreshToken } = data;
 
       if (!accessToken || !refreshToken || !user) {
-        setError("Login ma'lumotlari to‘liq emas yoki noto‘g‘ri.");
+        setError(t("error_invalid"));
         return;
       }
 
@@ -48,7 +54,7 @@ export function Login() {
           break;
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || "Tizimga kirishda xatolik yuz berdi.");
+      setError(t("error_invalid"));
     } finally {
       setLoading(false);
     }
@@ -83,14 +89,13 @@ export function Login() {
         className="w-full max-w-md px-6 md:px-8 py-10 z-20"
       >
         <Card className="relative shadow-[0_8px_40px_-10px_rgba(59,130,246,0.5)] border border-blue-100 dark:border-gray-800 bg-white/70 dark:bg-gray-900/80 backdrop-blur-2xl rounded-2xl transition-all duration-500 hover:shadow-[0_8px_60px_-10px_rgba(59,130,246,0.7)] hover:scale-[1.02]">
-          <div className="absolute -top-20 -right-24 w-72 h-72 bg-blue-400/20 blur-3xl rounded-full"></div>
-          <div className="absolute -bottom-16 -left-20 w-64 h-64 bg-indigo-500/10 blur-3xl rounded-full"></div>
+
           <CardHeader className="relative z-10 text-center space-y-2">
             <CardTitle className="text-3xl font-extrabold text-[#3F8CFF]">
-              Tizimga kirish
+              {t("login_title")}
             </CardTitle>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Xush kelibsiz! Tizimga numer orqali kiring :) 
+              {t("login_subtitle")}
             </p>
           </CardHeader>
           <CardContent className="relative z-10 mt-6">
@@ -104,13 +109,15 @@ export function Login() {
                   {error}
                 </motion.p>
               )}
+
+              {/* Phone */}
               <div className="relative">
                 <Phone className="absolute left-3 top-3 text-gray-400" size={20} />
                 <Input
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+998901234567"
+                  placeholder={t("phone_placeholder")}
                   className="pl-10 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800/70 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   required
                 />
@@ -121,7 +128,7 @@ export function Login() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="*******"
+                  placeholder={t("password_placeholder")}
                   className="pl-10 pr-10 py-3 rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800/70 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   required
                 />
@@ -133,6 +140,7 @@ export function Login() {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
+
               <Button
                 type="submit"
                 disabled={loading}
@@ -141,7 +149,7 @@ export function Login() {
                   loading && "opacity-70 cursor-not-allowed"
                 )}
               >
-                {loading ? "Kirish..." : "Kirish"}
+                {loading ? t("loading") : t("login_button")}
               </Button>
             </form>
           </CardContent>

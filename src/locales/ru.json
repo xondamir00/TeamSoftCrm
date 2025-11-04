@@ -77,5 +77,13 @@
     "createRoom": "Создать комнату",
     "createManager": "Создать менеджера",
     "createGroup": "Создать группу"
-  }
+  },
+  "login_title": "Вход в систему",
+  "login_subtitle": "Добро пожаловать! Войдите с помощью номера телефона",
+  "phone_placeholder": "+998901234567",
+  "password_placeholder": "Ваш пароль",
+  "login_button": "Войти",
+  "error_invalid": "Неверные данные для входа.",
+  "no_account": "Нет аккаунта?",
+  "register": "Зарегистрироваться"
 }
