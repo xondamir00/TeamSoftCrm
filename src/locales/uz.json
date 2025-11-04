@@ -67,7 +67,17 @@
   "parent_phone": "Ota-ona telefoni",
   "payment": "To‘lov",
   "no_students": "Hozircha talabalar yo‘q",
-  "fetch_error": "Ma'lumotlarni olishda xatolik yuz berdi"
+  "fetch_error": "Ma'lumotlarni olishda xatolik yuz berdi",
+    "createForms": {
+    "title": "Formalar yaratish"
+  },
+  "createForm": {
+    "createStudent": "Talaba yaratish",
+    "createTeacher": "O‘qituvchi yaratish",
+    "createRoom": "Xona yaratish",
+    "createManager": "Menejer yaratish",
+    "createGroup": "Guruh yaratish"
+  }
 }
 
 

@@ -4,7 +4,6 @@ import Home from "./components/page/home";
 import Teacherlayout from "./components/layout/teacherlayout";
 import Teacher from "./components/page/Teacher";
 import Pupils from "./components/pupils/pupils";
-import { Login } from "./components/auth/login";
 import { RoleRoute } from "./role/role-route";
 import { AuthRefresh } from "./components/auth/Auth-Refresh";
 import Settings from "./components/page/settings";
@@ -16,6 +15,7 @@ import AddRoom from "./components/Roms/addRoom";
 import RoomsList from "./components/Roms/RoomsList";
 import AddGroupForm from "./components/Group/AddGoup";
 import Groups from "./components/Group/GroupList";
+import { Login } from "./components/auth/login";
 
 const App = () => {
   return (
