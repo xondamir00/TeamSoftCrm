@@ -10,27 +10,27 @@ export const CategoryNavigate = [
 ];
 export const CreateForm = [
   {
-    name: "Create Student",
+    name: "createForm.createStudent",
     href: "create-student",
   },
-
   {
-    name: "create Teacher",
+    name: "createForm.createTeacher",
     href: "create-teacher",
   },
   {
-    name: "Create room",
+    name: "createForm.createRoom",
     href: "create-room",
   },
   {
-    name: "create Meneger",
+    name: "createForm.createManager",
     href: "create-meneger",
   },
   {
-    name: "create Group",
+    name: "createForm.createGroup",
     href: "create-group",
   },
 ];
+
 export const pupils = [
   {
     id: "01",

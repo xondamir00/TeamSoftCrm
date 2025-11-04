@@ -67,5 +67,15 @@
   "parent_phone": "Телефон родителя",
   "payment": "Оплата",
   "no_students": "Пока нет учеников",
-  "fetch_error": "Ошибка при получении данных"
+  "fetch_error": "Ошибка при получении данных",
+   "createForms": {
+    "title": "Создание форм"
+  },
+  "createForm": {
+    "createStudent": "Создать студента",
+    "createTeacher": "Создать преподавателя",
+    "createRoom": "Создать комнату",
+    "createManager": "Создать менеджера",
+    "createGroup": "Создать группу"
+  }
 }

@@ -67,5 +67,15 @@
   "parent_phone": "Parent Phone",
   "payment": "Payment",
   "no_students": "No students yet",
-  "fetch_error": "Failed to fetch data"
+  "fetch_error": "Failed to fetch data",
+    "createForms": {
+    "title": "Create Forms"
+  },
+  "createForm": {
+    "createStudent": "Create Student",
+    "createTeacher": "Create Teacher",
+    "createRoom": "Create Room",
+    "createManager": "Create Manager",
+    "createGroup": "Create Group"
+  }
 }
