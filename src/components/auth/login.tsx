@@ -86,7 +86,7 @@ export function Login() {
           <div className="absolute -top-20 -right-24 w-72 h-72 bg-blue-400/20 blur-3xl rounded-full"></div>
           <div className="absolute -bottom-16 -left-20 w-64 h-64 bg-indigo-500/10 blur-3xl rounded-full"></div>
           <CardHeader className="relative z-10 text-center space-y-2">
-            <CardTitle className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-cyan-300 bg-clip-text text-transparent">
+            <CardTitle className="text-3xl font-extrabold text-[#3F8CFF]">
               Tizimga kirish
             </CardTitle>
             <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -137,7 +137,7 @@ export function Login() {
                 type="submit"
                 disabled={loading}
                 className={cn(
-                  "w-full py-3 text-lg font-semibold text-white rounded-xl transition-all duration-300 bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-600 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40",
+                  "w-full py-3 text-lg font-semibold text-white rounded-xl transition-all duration-300 bg-gradient-to-r from-[#3F8CFF] to-indigo-700 hover:from-blue-700 hover:to-indigo-600 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40",
                   loading && "opacity-70 cursor-not-allowed"
                 )}
               >
