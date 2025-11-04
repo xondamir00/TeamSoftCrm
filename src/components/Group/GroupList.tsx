@@ -65,8 +65,22 @@ export default function GroupList() {
               <Plus className="mr-2 w-4 h-4" /> {t("add_group")}
             </Button>
           </DrawerTrigger>
-          <DrawerContent className="fixed right-0 top-0 h-full w-full sm:w-[400px] bg-white dark:bg-gray-900 shadow-lg overflow-y-auto">
+
+          {/* ✅ Ong tarafdan chiqadigan DrawerContent */}
+          <DrawerContent
+            className="
+              fixed right-0 top-0 h-full w-full sm:w-[400px]
+              bg-white dark:bg-gray-900 shadow-lg
+              overflow-visible   /* ✅ overflow yo‘q */
+              transition-transform duration-300 ease-in-out
+              translate-x-0
+            "
+            style={{
+              left: "auto", // faqat o‘ngdan chiqsin
+            }}
+          >
             <AddGroupForm
+              editingGroup={editingGroup}
               onSuccess={() => {
                 setDrawerOpen(false);
                 fetchGroups();
