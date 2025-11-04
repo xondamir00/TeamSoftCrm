@@ -7,7 +7,7 @@ import { useAuth } from "@/Store";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, EyeOff, Phone, Lock, Globe } from "lucide-react";
+import { Eye, EyeOff, Phone, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Login() {

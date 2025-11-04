@@ -36,14 +36,14 @@ export default function CategoryNav() {
       {/* Desktop menu */}
       <div className="hidden bg-white border shadow-md md:flex justify-center py-3 my-4 w-[98%] mx-auto rounded-2xl dark:bg-black">
         <NavigationMenu>
-          <NavigationMenuList className="flex  w-full justify-around flex-wrap">
+          <NavigationMenuList className="flex   w-full justify-around flex-wrap">
             {CategoryNavigate.map((item) => (
               <NavigationMenuItem key={item.label}>
                 <NavigationMenuLink asChild>
                   <Link to={item.href}>
                     <Button
                       variant="ghost"
-                      className="flex items-center text-xl gap-2 px-4 py-6 border rounded-md transition-all duration-200"
+                      className="flex items-center text-lg gap-2 px-4 py-6 border rounded-md transition-all duration-200"
                     >
                       <img
                         src={item.icon}
