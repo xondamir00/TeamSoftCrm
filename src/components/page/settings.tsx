@@ -8,13 +8,13 @@ const TeacherGroup = () => {
 
   return (
     <div>
-      <div className="mx-auto py-5">
+      <div className="w-[50%] mx-auto py-5">
         <h1 className="text-3xl font-bold bg-white text-black dark:text-white dark:bg-[#3F8CFF] text-center rounded-2xl p-3">
           {t("createForms.title")}
         </h1>
       </div>
 
-      <div className="light:bg-white dark:bg-none dark:border-2 border-white p-3 grid grid-cols-2 gap-12 rounded-xl mx-auto">
+      <div className="w-[50%] light:bg-white dark:bg-none dark:border-2 border-white p-3 grid grid-cols-2 gap-12 rounded-xl mx-auto">
       {CreateForm.map((item) => (
   <Link key={item.href} to={item.href}>
     <Button
