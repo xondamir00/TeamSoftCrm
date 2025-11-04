@@ -68,15 +68,15 @@ export function Login() {
         className="absolute inset-0 w-full h-full object-cover opacity-20 dark:opacity-10"
       />
       <motion.div
-        initial={{ opacity: 0, x: -60 }}
+        initial={{ opacity: 0, x: -40 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7 }}
-        className="hidden lg:flex flex-col items-center justify-center w-1/2 p-10 relative z-10"
+        className="hidden lg:flex flex-col items-center justify-center w-[30%] p-10 relative z-10"
       >
         <motion.img
           src="/public/loginbg/login.webp"
           alt="login illustration"
-          className="w-4/5 max-w-lg"
+          className="w-[100%] ml-[-120px] max-w-lg"
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8 }}
