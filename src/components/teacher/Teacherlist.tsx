@@ -25,14 +25,7 @@ import {
 } from "@/components/ui/sheet";
 import AddTeacherForm from "../form/addTeacher";
 import UpdateTeacherForm from "../form/Updateteacher";
-
-interface Teacher {
-  id: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  createdAt: string;
-}
+import type { Teacher } from "@/Store";
 
 export default function TeacherList() {
   const { t } = useTranslation();
@@ -46,6 +39,7 @@ export default function TeacherList() {
       setLoading(true);
       const { data } = await api.get("/teachers");
       setTeachers(data);
+      console.log(data);
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
     } finally {
@@ -73,10 +67,12 @@ export default function TeacherList() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{t("teachers_list")}</h2>
 
-        {/* Add Teacher Drawer */}
         <Sheet>
           <SheetTrigger asChild>
-            <Button className="flex items-center gap-2">
+            <Button
+              variant={"outline"}
+              className="flex bg-blue-500 text-white items-center gap-2"
+            >
               <Plus size={16} />
               {t("add_teacher")}
             </Button>
@@ -105,12 +101,13 @@ export default function TeacherList() {
       {/* Table */}
       <div className="overflow-x-auto overflow-y-auto max-h-[70vh]">
         <Table>
-          <TableCaption className="hidden !mt-0 text-lg dark:text-gray-300">
+          <TableCaption className="hidden mt-0 text-lg dark:text-gray-300">
             {t("teachers_list")}
           </TableCaption>
           <TableHeader>
             <TableRow className="dark:border-gray-700">
-              <TableHead>#</TableHead>
+              <TableHead>T/r</TableHead>
+              <TableHead>{t("photo")}</TableHead>
               <TableHead>{t("full_name")}</TableHead>
               <TableHead>{t("phone")}</TableHead>
               <TableHead>{t("date_added")}</TableHead>
@@ -121,13 +118,13 @@ export default function TeacherList() {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-6">
+                <TableCell colSpan={6} className="text-center py-6">
                   <Loader2 className="h-5 w-5 animate-spin mx-auto text-gray-500" />
                 </TableCell>
               </TableRow>
             ) : error ? (
               <TableRow>
-                <TableCell colSpan={5}>
+                <TableCell colSpan={6}>
                   <Alert variant="destructive">
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
@@ -135,14 +132,27 @@ export default function TeacherList() {
               </TableRow>
             ) : teachers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center text-gray-500 py-4">
+                <TableCell
+                  colSpan={6}
+                  className="text-center text-gray-500 py-4"
+                >
                   {t("no_teachers")}
                 </TableCell>
               </TableRow>
             ) : (
               teachers.map((tchr, index) => (
-                <TableRow key={tchr.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
+                <TableRow
+                  key={tchr.id}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-800"
+                >
                   <TableCell>{index + 1}</TableCell>
+                  <TableCell>
+                    <img
+                      src={tchr.photoUrl || "/default-avatar.png"}
+                      alt={`${tchr.firstName} ${tchr.lastName}`}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  </TableCell>
                   <TableCell>{`${tchr.firstName} ${tchr.lastName}`}</TableCell>
                   <TableCell>{tchr.phone}</TableCell>
                   <TableCell>

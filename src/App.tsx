@@ -20,15 +20,14 @@ import Groups from "./components/Group/GroupList";
 const App = () => {
   return (
     <AuthRefresh>
-      <div className="light:bg-[#f2f2f2] h-screen  dark:bg-gray-900">
+      <div className="light:bg-[#f2f2f2] min-h-screen dark:bg-gray-900">
         <Routes>
-          {/* Login sahifasi doim ochiq */}
           <Route path="/sign" element={<Login />} />
-          {/* Admin route */}
+
           <Route
             path="/admin"
             element={
-              <RoleRoute roles={["ADMIN"]}>
+              <RoleRoute roles={["admin", "ADMIN"]}>
                 <Homelayout />
               </RoleRoute>
             }
@@ -51,16 +50,14 @@ const App = () => {
             />
             <Route path="settings/create-group" element={<AddGroupForm />} />
             <Route path="settings/create-room" element={<AddRoom />} />
-
             <Route path="rooms" element={<RoomsList />} />
             <Route path="groups" element={<Groups />} />
           </Route>
 
-          {/* Teacher route */}
           <Route
             path="/teacher"
             element={
-              <RoleRoute roles={["teacher"]}>
+              <RoleRoute roles={["teacher", "TEACHER"]}>
                 <Teacherlayout />
               </RoleRoute>
             }
@@ -68,7 +65,6 @@ const App = () => {
             <Route index element={<Teacher />} />
           </Route>
 
-          {/* 404 */}
           <Route path="*" element={<Login />} />
         </Routes>
       </div>

@@ -1,3 +1,4 @@
+// src/role/role-route.tsx
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/Store";
 
@@ -7,17 +8,16 @@ interface RoleRouteProps {
 }
 
 export const RoleRoute = ({ roles, children }: RoleRouteProps) => {
-  const { user, token, booted } = useAuth();
+  const { token, user } = useAuth();
 
-  // ⏳ 1. AuthRefresh hali tugamagan bo‘lsa, kutamiz
-  if (!booted) return null;
+  if (!token) {
+    return <Navigate to="/sign" replace />;
+  }
 
-  // ❌ 2. Agar token yoki user yo‘q bo‘lsa — login sahifasiga yuboramiz
-  if (!token || !user) return <Navigate to="/sign" replace />;
+  if (user && !roles.includes(user.role.toLowerCase())) {
+    // Agar roli mos kelmasa
+    return <Navigate to="/sign" replace />;
+  }
 
-  // 🚫 3. Rol mos kelmasa, ruxsat yo‘q
-  if (!roles.includes(user.role)) return <Navigate to="/sign" replace />;
-
-  // ✅ 4. Hammasi joyida — bolani render qilamiz
   return <>{children}</>;
 };

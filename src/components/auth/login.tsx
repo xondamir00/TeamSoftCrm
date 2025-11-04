@@ -13,39 +13,41 @@ export function Login() {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setError(null);
-  setLoading(true);
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
 
-  try {
-    const { data } = await api.post("/auth/login", { phone, password });
-    const { user, accessToken, refreshToken } = data;
-    
-    if (!accessToken || !refreshToken || !user) {
-      setError("Login ma'lumotlari to‘liq emas yoki noto‘g‘ri.");
-      return;
+    try {
+      const { data } = await api.post("/auth/login", { phone, password });
+      const { user, accessToken, refreshToken } = data;
+
+      if (!accessToken || !refreshToken || !user) {
+        setError("Login ma'lumotlari to‘liq emas yoki noto‘g‘ri.");
+        return;
+      }
+
+      login(accessToken, refreshToken, user);
+
+      switch (user.role) {
+        case "ADMIN":
+          navigate("/admin");
+          break;
+        case "MANAGER":
+          navigate("/manager/panel");
+          break;
+        case "USER":
+        default:
+          navigate("/dashboard");
+          break;
+      }
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message || "Tizimga kirishda xatolik yuz berdi."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    login(accessToken, refreshToken, user);
-
-    switch (user.role) {
-      case "ADMIN":
-        navigate("/admin");
-        break;
-      case "MANAGER":
-        navigate("/manager/panel");
-        break;
-      case "USER":
-      default:
-        navigate("/dashboard");
-        break;
-    }
-  } catch (err: any) {
-    setError(err.response?.data?.message || "Tizimga kirishda xatolik yuz berdi.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100 dark:bg-black px-4">
