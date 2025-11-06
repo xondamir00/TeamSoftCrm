@@ -1,6 +1,6 @@
 {
   "welcomeCRM": "Welcome CRM",
-  "home":"Home",
+  "home": "Home",
   "pupils": "Students",
   "Sname": "Name",
   "phone": "Number",
@@ -14,7 +14,7 @@
   "settings": "Settings",
   "finance": "Finance",
   "categories": "Categories",
-   "add_teacher": "Add New Teacher",
+  "add_teacher": "Add New Teacher",
   "photo_url": "Photo URL (https://...)",
   "monthly_salary": "Monthly Salary",
   "percent_share": "Percent Share (0-100)",
@@ -22,7 +22,7 @@
   "success": "Teacher added successfully!",
   "error": "An error occurred during submission",
   "salary_warning": "Enter only one: salary or percent share",
-   "add_student": "Add New Student",
+  "add_student": "Add New Student",
   "first_name": "First Name",
   "last_name": "Last Name",
   "phone_number": "Phone Number",
@@ -39,13 +39,13 @@
   "monthly_salary_optional": "Monthly Salary (optional)",
   "manager_added_success": "Manager added successfully!",
   "manager_add_error": "Error adding manager",
-    "add_group": "Add New Group",
+  "add_group": "Add New Group",
   "group_name": "Group Name",
   "select_room_optional": "Select Room (optional)",
   "group_added_success": "✅ Group added successfully!",
   "group_name_required": "Group name is required!",
   "group_add_error": "❌ An error occurred",
-   "add_room": "Add New Room",
+  "add_room": "Add New Room",
   "room_name": "Room Name",
   "capacity_optional": "Capacity (optional)",
   "capacity_placeholder": "Room Capacity",
@@ -60,7 +60,7 @@
   "room": "Room",
   "teacher": "Teacher",
   "date": "Date",
-   "teachers_list": "Teachers List",
+  "teachers_list": "Teachers List",
   "date_added": "Date Added",
   "no_teachers": "No teachers yet",
   "tr": "No",
@@ -69,7 +69,7 @@
   "payment": "Payment",
   "no_students": "No students yet",
   "fetch_error": "Failed to fetch data",
-    "createForms": {
+  "createForms": {
     "title": "Create Forms"
   },
   "createForm": {
@@ -86,5 +86,22 @@
   "login_button": "Login",
   "error_invalid": "Invalid login credentials.",
   "no_account": "Don’t have an account?",
-  "register": "Sign Up"
+  "register": "Sign Up",
+  "update_group": "Update Group",
+  "group_capacity": "Group capacity",
+  "group_updated_success": "Group updated successfully!",
+  "group_error": "Error while saving group.",
+  "update_button": "Update",
+
+  "select_day": "Select day",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday",
+  "odd_days_label": "Odd days (Mon, Wed, Fri)",
+  "even_days_label": "Even days (Tue, Thu, Sat)",
+  "custom_days_label": "Custom days"
 }
