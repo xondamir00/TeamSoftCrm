@@ -3,9 +3,17 @@
 import React, { useEffect, useState } from "react";
 import { api } from "@/Service/api";
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { Loader2, Pencil, Trash2, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
 import AddOrEditStudentForm from "./EditStudent";
 
 interface Student {
@@ -21,8 +29,8 @@ export default function StudentsList() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [editingStudent, setEditingStudent] = useState<Student | null>(null);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const fetchStudents = async () => {
     try {
@@ -55,32 +63,53 @@ export default function StudentsList() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{t("students_list")}</h2>
 
-        <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-          <DrawerTrigger asChild>
+        {/* O‘ngdan chiqadigan Sheet tugmasi */}
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+          <SheetTrigger asChild>
             <Button
+              className="bg-blue-500 hover:bg-blue-600 text-white flex items-center gap-2"
               onClick={() => {
-                setEditingStudent(null);
-                setDrawerOpen(true);
+                setSelectedStudent(null);
+                setSheetOpen(true);
               }}
-              className="bg-blue-500 hover:bg-blue-600 text-white"
             >
-              <Plus className="mr-2 w-4 h-4" /> {t("add_student")}
+              <Plus className="w-4 h-4" /> {t("add_student")}
             </Button>
-          </DrawerTrigger>
+          </SheetTrigger>
 
-          {/* O‘ng tomondan chiqadigan Drawer */}
-          <DrawerContent className="fixed inset-y-0 right-0 w-full sm:w-[420px] bg-white dark:bg-gray-900 shadow-xl transition-transform duration-300 ease-in-out transform data-[state=open]:translate-x-0 data-[state=closed]:translate-x-full overflow-hidden">
-            <div className="p-6">
+          <SheetContent
+            side="right"
+            className="w-full sm:max-w-md p-0 border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-y-auto"
+          >
+            <SheetHeader className="p-4 border-b dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-900 z-10">
+              <SheetTitle>
+                {selectedStudent ? t("edit_student") : t("add_student")}
+              </SheetTitle>
+              <SheetDescription>
+                {selectedStudent
+                  ? t("edit_student_description")
+                  : t("add_student_description")}
+              </SheetDescription>
+            </SheetHeader>
+
+            <div className="p-4 flex-1">
               <AddOrEditStudentForm
-                student={editingStudent}
+                student={selectedStudent}
                 onSuccess={() => {
-                  setDrawerOpen(false);
+                  setSheetOpen(false);
                   fetchStudents();
                 }}
+                onCancel={() => setSheetOpen(false)}
               />
             </div>
-          </DrawerContent>
-        </Drawer>
+
+            <div className="flex justify-end p-3 border-t dark:border-gray-700">
+              <SheetClose asChild>
+                <Button variant="outline">{t("close")}</Button>
+              </SheetClose>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
 
       {loading ? (
@@ -111,16 +140,19 @@ export default function StudentsList() {
                 <td className="p-2">{s.lastName}</td>
                 <td className="p-2">{s.phone}</td>
                 <td className="p-2 text-right flex justify-end gap-2">
+                  {/* Edit student */}
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => {
-                      setEditingStudent(s);
-                      setDrawerOpen(true);
+                      setSelectedStudent(s);
+                      setSheetOpen(true);
                     }}
                   >
                     <Pencil className="w-4 h-4" />
                   </Button>
+
+                  {/* Delete student */}
                   <Button
                     size="sm"
                     variant="destructive"

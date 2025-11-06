@@ -1,18 +1,39 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "@/Service/api";
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
-import { useTranslation } from "react-i18next";
 import { Loader2, Pencil, Trash2, Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
 import AddGroupForm from "./AddGoup";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 interface Group {
   id: string;
   name: string;
   room?: { name: string };
+  capacity?: number;
   createdAt: string;
+  schedule: { day: string; startTime: string; endTime: string }[];
 }
 
 export default function GroupList() {
@@ -20,8 +41,9 @@ export default function GroupList() {
   const [groups, setGroups] = useState<Group[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingGroup, setEditingGroup] = useState<Group | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Group | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false); // sheet o‘ngdan chiqadi
 
   const fetchGroups = async () => {
     try {
@@ -35,13 +57,18 @@ export default function GroupList() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm(t("delete_confirm") || "Are you sure?")) return;
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
     try {
-      await api.delete(`/groups/${id}`);
-      setGroups((prev) => prev.filter((g) => g.id !== id));
+      await api.delete(`/groups/${deleteTarget.id}`);
+      setGroups(prev => prev.filter(g => g.id !== deleteTarget.id));
+      setDeleteTarget(null);
     } catch (err: any) {
-      alert(err?.response?.data?.message || "Delete failed");
+      alert(
+        err?.response?.data?.message ||
+          "O‘chirishda xatolik yuz berdi yoki guruh topilmadi"
+      );
+      setDeleteTarget(null);
     }
   };
 
@@ -49,45 +76,68 @@ export default function GroupList() {
     fetchGroups();
   }, []);
 
+  const formatTime = (time?: string) => {
+    if (!time) return "-";
+    try {
+      const date = new Date(`1970-01-01T${time}`);
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    } catch {
+      return time;
+    }
+  };
+
   return (
     <div className="w-[98%] mx-auto bg-white dark:bg-black dark:text-white border dark:border-gray-700 rounded-xl p-4 shadow-md">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{t("groups_list")}</h2>
-        <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-          <DrawerTrigger asChild>
+
+        {/* Sheet tugmasi */}
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+          <SheetTrigger asChild>
             <Button
+              className="bg-blue-500 hover:bg-blue-600 text-white flex items-center gap-2"
               onClick={() => {
                 setEditingGroup(null);
-                setDrawerOpen(true);
+                setSheetOpen(true);
               }}
-              className="bg-blue-500 hover:bg-blue-600 text-white"
             >
-              <Plus className="mr-2 w-4 h-4" /> {t("add_group")}
+              <Plus className="w-4 h-4" /> {t("add_group")}
             </Button>
-          </DrawerTrigger>
+          </SheetTrigger>
 
-          {/* ✅ Ong tarafdan chiqadigan DrawerContent */}
-          <DrawerContent
-            className="
-              fixed right-0 top-0 h-full w-full sm:w-[400px]
-              bg-white dark:bg-gray-900 shadow-lg
-              overflow-visible   /* ✅ overflow yo‘q */
-              transition-transform duration-300 ease-in-out
-              translate-x-0
-            "
-            style={{
-              left: "auto", // faqat o‘ngdan chiqsin
-            }}
+          <SheetContent
+            side="right"
+            className="w-full sm:max-w-md p-0 border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-y-auto"
           >
-            <AddGroupForm
-              editingGroup={editingGroup}
-              onSuccess={() => {
-                setDrawerOpen(false);
-                fetchGroups();
-              }}
-            />
-          </DrawerContent>
-        </Drawer>
+            <SheetHeader className="p-4 border-b dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-900 z-10">
+              <SheetTitle>
+                {editingGroup ? t("edit_group") : t("add_group")}
+              </SheetTitle>
+              <SheetDescription>
+                {editingGroup
+                  ? t("edit_group_description")
+                  : t("add_group_description")}
+              </SheetDescription>
+            </SheetHeader>
+
+            <div className="p-4 flex-1">
+              <AddGroupForm
+                editingGroup={editingGroup}
+                onSuccess={() => {
+                  setSheetOpen(false);
+                  fetchGroups();
+                }}
+                onCancel={() => setSheetOpen(false)}
+              />
+            </div>
+
+            <div className="flex justify-end p-3 border-t dark:border-gray-700">
+              <SheetClose asChild>
+                <Button variant="outline">{t("close")}</Button>
+              </SheetClose>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
 
       {loading ? (
@@ -104,35 +154,80 @@ export default function GroupList() {
             <tr className="border-b dark:border-gray-700">
               <th className="text-left p-2">{t("name")}</th>
               <th className="text-left p-2">{t("room")}</th>
+              <th className="text-left p-2">{t("capacity")}</th>
+              <th className="text-left p-2">Days</th>
+              <th className="text-left p-2">{t("time")}</th>
               <th className="text-right p-2">{t("actions")}</th>
             </tr>
           </thead>
           <tbody>
-            {groups.map((g) => (
+            {groups.map(g => (
               <tr
                 key={g.id}
                 className="border-b hover:bg-gray-50 dark:hover:bg-gray-800"
               >
                 <td className="p-2">{g.name}</td>
                 <td className="p-2">{g.room?.name || "-"}</td>
+                <td className="p-2">{g.capacity ?? "-"}</td>
+                <td className="p-2">
+                  {g.schedule.length > 0
+                    ? g.schedule.map(s => s.day).join(", ")
+                    : "-"}
+                </td>
+                <td className="p-2">
+                  {g.schedule.length > 0
+                    ? `${formatTime(g.schedule[0].startTime)} - ${formatTime(
+                        g.schedule[0].endTime
+                      )}`
+                    : "-"}
+                </td>
                 <td className="p-2 text-right flex justify-end gap-2">
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => {
                       setEditingGroup(g);
-                      setDrawerOpen(true);
+                      setSheetOpen(true);
                     }}
                   >
                     <Pencil className="w-4 h-4" />
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => handleDelete(g.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+
+                  <AlertDialog open={deleteTarget?.id === g.id}>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => setDeleteTarget(g)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          {t("delete_confirm_title") || "O‘chirishni tasdiqlang"}
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          {t("delete_confirm_text") ||
+                            `"${g.name}" guruhini o‘chirishni xohlaysizmi? Bu amalni ortga qaytarib bo‘lmaydi.`}
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel
+                          onClick={() => setDeleteTarget(null)}
+                        >
+                          {t("cancel") || "Bekor qilish"}
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          className="bg-red-600 text-white hover:bg-red-700"
+                          onClick={handleDelete}
+                        >
+                          {t("delete") || "O‘chirish"}
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </td>
               </tr>
             ))}
