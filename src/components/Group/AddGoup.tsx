@@ -20,10 +20,7 @@ interface AddGroupFormProps {
   onSuccess?: () => void;
 }
 
-export default function AddGroupForm({
-  editingGroup,
-  onSuccess,
-}: AddGroupFormProps) {
+export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormProps) {
   const { t } = useTranslation();
   const [rooms, setRooms] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
@@ -34,7 +31,7 @@ export default function AddGroupForm({
     roomId: "",
     capacity: 1,
     schedule: {
-      mode: "ODD",
+      mode: "ODD" as "ODD" | "EVEN" | "CUSTOM",
       startTime: "",
       endTime: "",
       days: [] as string[],
@@ -69,16 +66,10 @@ export default function AddGroupForm({
     }
   }, [editingGroup]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-
     if (["mode", "startTime", "endTime"].includes(name)) {
-      setForm((f) => ({
-        ...f,
-        schedule: { ...f.schedule, [name]: value },
-      }));
+      setForm((f) => ({ ...f, schedule: { ...f.schedule, [name]: value } }));
     } else {
       setForm((f) => ({ ...f, [name]: value }));
     }
@@ -98,47 +89,46 @@ export default function AddGroupForm({
     setLoading(true);
     setMessage("");
 
-    const payload = {
-      name: form.name,
-      roomId: form.roomId || undefined,
-      capacity: Number(form.capacity),
-      schedule: {
-        mode: form.schedule.mode,
-        startTime: form.schedule.startTime,
-        endTime: form.schedule.endTime,
-        ...(form.schedule.mode === "CUSTOM"
-          ? { days: form.schedule.days }
-          : {}),
-      },
-    };
-
     try {
       if (editingGroup) {
-        await api.patch(`/groups/${editingGroup.id}`, payload);
+        // Faqat jadvalni yangilash (PATCH /schedule)
+        const schedulePayload = {
+          mode: form.schedule.mode,
+          startTime: form.schedule.startTime,
+          endTime: form.schedule.endTime,
+          ...(form.schedule.mode === "CUSTOM" ? { days: form.schedule.days } : {}),
+        };
+
+        await api.patch(`/groups/${editingGroup.id}/schedule`, schedulePayload);
         setMessage(t("group_updated_success"));
       } else {
+        // Yangi guruh yaratish (POST /groups)
+        const payload = {
+          name: form.name,
+          roomId: form.roomId || undefined,
+          capacity: Number(form.capacity),
+          schedule: {
+            mode: form.schedule.mode,
+            startTime: form.schedule.startTime,
+            endTime: form.schedule.endTime,
+            ...(form.schedule.mode === "CUSTOM" ? { days: form.schedule.days } : {}),
+          },
+        };
         await api.post("/groups", payload);
         setMessage(t("group_added_success"));
       }
 
       setTimeout(() => onSuccess?.(), 500);
     } catch (err: any) {
-      console.log("Error:", err.response?.data);
+      console.error("Error:", err.response?.data);
       setMessage(err.response?.data?.message || t("group_error"));
     } finally {
       setLoading(false);
     }
   };
 
-  const daysOfWeek = [
-    "MONDAY",
-    "TUESDAY",
-    "WEDNESDAY",
-    "THURSDAY",
-    "FRIDAY",
-    "SATURDAY",
-    "SUNDAY",
-  ];
+  // Backend enum DayOfWeek ga mos (Prisma: MON, TUE, WED, THU, FRI, SAT, SUN)
+  const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
   return (
     <div className="p-6">
@@ -151,44 +141,44 @@ export default function AddGroupForm({
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        {/* Group name */}
-        <input
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder={t("group_name")}
-          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-          required
-        />
+        {!editingGroup && (
+          <>
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder={t("group_name")}
+              className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+              required
+            />
 
-        {/* Room select */}
-        <select
-          name="roomId"
-          value={form.roomId}
-          onChange={handleChange}
-          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-        >
-          <option value="">{t("select_room_optional")}</option>
-          {rooms.map((r) => (
-            <option key={r.id} value={r.id}>
-              {r.name}
-            </option>
-          ))}
-        </select>
+            <select
+              name="roomId"
+              value={form.roomId}
+              onChange={handleChange}
+              className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+            >
+              <option value="">{t("select_room_optional")}</option>
+              {rooms.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.name}
+                </option>
+              ))}
+            </select>
 
-        {/* Capacity */}
-        <input
-          type="number"
-          name="capacity"
-          value={form.capacity}
-          onChange={handleChange}
-          min={1}
-          placeholder={t("group_capacity")}
-          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-          required
-        />
+            <input
+              type="number"
+              name="capacity"
+              value={form.capacity}
+              onChange={handleChange}
+              min={1}
+              placeholder={t("group_capacity")}
+              className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+              required
+            />
+          </>
+        )}
 
-        {/* Schedule mode */}
         <select
           name="mode"
           value={form.schedule.mode}
@@ -200,7 +190,6 @@ export default function AddGroupForm({
           <option value="CUSTOM">{t("custom_days_label")}</option>
         </select>
 
-        {/* Time pickers */}
         <div className="grid grid-cols-2 gap-2">
           <input
             type="time"
@@ -220,7 +209,6 @@ export default function AddGroupForm({
           />
         </div>
 
-        {/* Days (only if CUSTOM mode) */}
         {form.schedule.mode === "CUSTOM" && (
           <div className="flex flex-wrap gap-2">
             {daysOfWeek.map((day) => (
