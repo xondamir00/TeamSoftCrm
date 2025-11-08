@@ -10,6 +10,7 @@ interface AddGroupFormProps {
     name: string;
     room?: { id: string; name: string };
     capacity?: number;
+    monthlyFee?: number;
     schedule?: {
       mode: "ODD" | "EVEN" | "CUSTOM";
       startTime: string;
@@ -20,7 +21,10 @@ interface AddGroupFormProps {
   onSuccess?: () => void;
 }
 
-export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormProps) {
+export default function AddGroupForm({
+  editingGroup,
+  onSuccess,
+}: AddGroupFormProps) {
   const { t } = useTranslation();
   const [rooms, setRooms] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
@@ -30,6 +34,7 @@ export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormPr
     name: "",
     roomId: "",
     capacity: 1,
+    monthlyFee: 0,
     schedule: {
       mode: "ODD" as "ODD" | "EVEN" | "CUSTOM",
       startTime: "",
@@ -37,14 +42,13 @@ export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormPr
       days: [] as string[],
     },
   });
-
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const { data } = await api.get("/rooms");
-        setRooms(data);
-      } catch {
-        setRooms([]);
+        const res = await api.get("/rooms");
+        setRooms(res.data);
+      } catch (err: any) {
+        console.error("Xonalarni olishda xatolik:", err.response?.data || err);
       }
     };
     fetchRooms();
@@ -56,6 +60,7 @@ export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormPr
         name: editingGroup.name || "",
         roomId: editingGroup.room?.id || "",
         capacity: editingGroup.capacity || 1,
+        monthlyFee: editingGroup.monthlyFee || 0,
         schedule: {
           mode: editingGroup.schedule?.mode || "ODD",
           startTime: editingGroup.schedule?.startTime || "",
@@ -66,7 +71,9 @@ export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormPr
     }
   }, [editingGroup]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     if (["mode", "startTime", "endTime"].includes(name)) {
       setForm((f) => ({ ...f, schedule: { ...f.schedule, [name]: value } }));
@@ -90,30 +97,23 @@ export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormPr
     setMessage("");
 
     try {
-      if (editingGroup) {
-        // Faqat jadvalni yangilash (PATCH /schedule)
-        const schedulePayload = {
-          mode: form.schedule.mode,
-          startTime: form.schedule.startTime,
-          endTime: form.schedule.endTime,
-          ...(form.schedule.mode === "CUSTOM" ? { days: form.schedule.days } : {}),
-        };
+      const payload: any = {
+        name: form.name,
+        capacity: Number(form.capacity),
+        daysPattern: form.schedule.mode,
+        startTime: form.schedule.startTime,
+        endTime: form.schedule.endTime,
+        monthlyFee: Number(form.monthlyFee),
+      };
 
-        await api.patch(`/groups/${editingGroup.id}/schedule`, schedulePayload);
+      if (form.roomId && form.roomId.trim() !== "") {
+        payload.roomId = form.roomId;
+      }
+
+      if (editingGroup) {
+        await api.patch(`/groups/${editingGroup.id}`, payload);
         setMessage(t("group_updated_success"));
       } else {
-        // Yangi guruh yaratish (POST /groups)
-        const payload = {
-          name: form.name,
-          roomId: form.roomId || undefined,
-          capacity: Number(form.capacity),
-          schedule: {
-            mode: form.schedule.mode,
-            startTime: form.schedule.startTime,
-            endTime: form.schedule.endTime,
-            ...(form.schedule.mode === "CUSTOM" ? { days: form.schedule.days } : {}),
-          },
-        };
         await api.post("/groups", payload);
         setMessage(t("group_added_success"));
       }
@@ -127,7 +127,6 @@ export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormPr
     }
   };
 
-  // Backend enum DayOfWeek ga mos (Prisma: MON, TUE, WED, THU, FRI, SAT, SUN)
   const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
   return (
@@ -141,44 +140,47 @@ export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormPr
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        {!editingGroup && (
-          <>
-            <input
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder={t("group_name")}
-              className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-              required
-            />
-
-            <select
-              name="roomId"
-              value={form.roomId}
-              onChange={handleChange}
-              className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-            >
-              <option value="">{t("select_room_optional")}</option>
-              {rooms.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.name}
-                </option>
-              ))}
-            </select>
-
-            <input
-              type="number"
-              name="capacity"
-              value={form.capacity}
-              onChange={handleChange}
-              min={1}
-              placeholder={t("group_capacity")}
-              className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-              required
-            />
-          </>
-        )}
-
+        <input
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder={t("group_name")}
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+          required
+        />
+        <select
+          name="roomId"
+          value={form.roomId}
+          onChange={handleChange}
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+        >
+          <option value="">{t("select_room_optional")}</option>
+          {rooms.map((room) => (
+            <option key={room.id} value={room.id}>
+              {room.name}
+            </option>
+          ))}
+        </select>
+        <input
+          type="number"
+          name="monthlyFee"
+          value={form.monthlyFee}
+          onChange={handleChange}
+          placeholder={t("monthly_fee")}
+          min={0}
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+          required
+        />
+        <input
+          type="number"
+          name="capacity"
+          value={form.capacity}
+          onChange={handleChange}
+          min={1}
+          placeholder={t("group_capacity")}
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+          required
+        />
         <select
           name="mode"
           value={form.schedule.mode}
@@ -189,7 +191,6 @@ export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormPr
           <option value="EVEN">{t("even_days_label")}</option>
           <option value="CUSTOM">{t("custom_days_label")}</option>
         </select>
-
         <div className="grid grid-cols-2 gap-2">
           <input
             type="time"
@@ -208,7 +209,6 @@ export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormPr
             required
           />
         </div>
-
         {form.schedule.mode === "CUSTOM" && (
           <div className="flex flex-wrap gap-2">
             {daysOfWeek.map((day) => (
@@ -223,7 +223,6 @@ export default function AddGroupForm({ editingGroup, onSuccess }: AddGroupFormPr
             ))}
           </div>
         )}
-
         <button
           type="submit"
           disabled={loading}
