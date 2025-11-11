@@ -17,7 +17,7 @@ export default function TrashRoomsPage() {
 
   const restore = async (id) => {
     await api.patch(`/rooms/${id}`, { isActive: true });
-    setRooms((prev) => prev.filter((x) => x.id !== id)); // smooth animation hold
+    setRooms((prev) => prev.filter((x) => x.id !== id));
   };
 
   return (
