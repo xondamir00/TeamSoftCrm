@@ -52,7 +52,7 @@ const App = () => {
             />
             <Route path="settings/create-group" element={<AddGroupForm />} />
             <Route path="settings/create-room" element={<AddRoom />} />
-            <Route path="settings/trash" element={<TrashRoomsPage />} />
+             <Route path="settings/archive" element={<TrashRoomsPage />} />
             <Route path="rooms" element={<RoomsList />} />
             <Route path="groups" element={<Groups />} />
           </Route>
