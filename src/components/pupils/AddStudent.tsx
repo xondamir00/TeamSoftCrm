@@ -51,13 +51,12 @@ function AddStudent() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {/* Alert message */}
           {alert.message && (
             <Alert
               className={`mb-4 ${
                 alert.type === "success"
-                  ? "border-green-500 bg-green-50 text-green-700"
-                  : "border-red-500 bg-red-50 text-red-700"
+                  ? "border-green-500  text-green-700"
+                  : "border-red-500  text-red-700"
               }`}
             >
               {alert.type === "success" ? (
