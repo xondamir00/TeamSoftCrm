@@ -16,7 +16,7 @@ import RoomsList from "./components/Roms/RoomsList";
 import AddGroupForm from "./components/Group/AddGoup";
 import Groups from "./components/Group/GroupList";
 import { Login } from "./components/auth/login";
-import Student from "./components/pupils/Student";
+import ListStudent from "./components/pupils/ListStudent";
 
 const App = () => {
   return (
@@ -34,7 +34,7 @@ const App = () => {
           >
             <Route index element={<Home />} />
             <Route path="settings" element={<Settings />} />
-            <Route path="student" element={<Student />} />
+            <Route path="student" element={<ListStudent />} />
 
             <Route path="teachers" element={<TeacherList />} />
             <Route

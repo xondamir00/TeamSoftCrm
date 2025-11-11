@@ -16,29 +16,27 @@ interface DeleteStudentProps {
   student: any | null;
   open: boolean;
   onClose: () => void;
-  onDeleted?: () => void;
+  onUpdated?: () => void;
 }
 
-export default function DeleteStudentDialog({
+export default function RestoreStudentDialog({
   student,
   open,
   onClose,
-  onDeleted,
+  onUpdated,
 }: DeleteStudentProps) {
   const [loading, setLoading] = useState(false);
 
   if (!student) return null;
 
-  const handleDelete = async () => {
+  const handleToggleActive = async () => {
     setLoading(true);
     try {
-      await api.delete(`/students/${student.id}`);
-      if (onDeleted) onDeleted();
+      await api.patch(`/students/${student.id}/restore`);
+      if (onUpdated) onUpdated();
       onClose();
-      alert(`${student.fullName} muvaffaqiyatli o‘chirildi`);
     } catch (err) {
       console.error(err);
-      alert("Studentni o‘chirishda xatolik yuz berdi");
     } finally {
       setLoading(false);
     }
@@ -46,30 +44,32 @@ export default function DeleteStudentDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
-      <AlertDialogContent className="dark:bg-gray-900 dark:text-gray-200">
+      <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="dark:text-gray-100">
-            Delete Student?
+          <AlertDialogTitle>
+            {student.isActive ? "Deactivate Student?" : "Restore Student?"}
           </AlertDialogTitle>
-          <AlertDialogDescription className="dark:text-gray-300">
-            Siz {student.fullName} foydalanuvchisini o‘chirilsinmi?
+          <AlertDialogDescription>
+            {student.isActive
+              ? `${student.fullName} foydalanuvchisini o‘chirilsinmi?`
+              : `${student.fullName} qayta faollashtirilsinmi?`}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel
-            disabled={loading}
-            onClick={onClose}
-            className="dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200"
-          >
+          <AlertDialogCancel disabled={loading} onClick={onClose}>
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
             disabled={loading}
-            onClick={handleDelete}
-            className="bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 dark:text-gray-100"
+            onClick={handleToggleActive}
+            className={
+              student.isActive
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-green-600 hover:bg-green-700"
+            }
           >
             {loading && <Loader2 className="animate-spin w-4 h-4 mr-2" />}
-            Delete
+            {student.isActive ? "Deactivate" : "Restore"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
