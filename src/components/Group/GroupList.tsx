@@ -52,12 +52,19 @@ export default function GroupList() {
   const [deleteTarget, setDeleteTarget] = useState<Group | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  // Guruhlarni olish
   const fetchGroups = async () => {
     try {
       setLoading(true);
-      const { data } = await api.get("/groups");
-      setGroups(data?.items || []);
+      const { data } = await api.get("/groups", {
+        params: {
+          page: 1,
+          limit: 100, // kerak bo'lsa hammasini olish
+          isActive: true, // ✅ boolean
+        },
+      });
+
+      setGroups(data.items);
+      console.log(data.items);
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
     } finally {
@@ -69,7 +76,8 @@ export default function GroupList() {
   const fetchRooms = async () => {
     try {
       const { data } = await api.get("/rooms");
-      setRooms(data?.items || []);
+      setRooms(data || []);
+      console.log(data, "data");
     } catch (err) {
       console.error("Xonalarni olishda xato:", err);
     }
@@ -79,14 +87,31 @@ export default function GroupList() {
     if (!deleteTarget) return;
 
     try {
-      await api.delete(`/groups/${deleteTarget.id}`, {
-        params: { reason: "Admin deleted" },
-      });
+      setLoading(true);
+      console.log("Deleting group id:", deleteTarget.id);
 
-      fetchGroups();
-      setDeleteTarget(null);
+      const res = await api.delete(`/groups/${deleteTarget.id}`);
+      setGroups((prev) => prev.filter((g) => g.id !== deleteTarget.id));
+
+      if (res.status === 200 || res.status === 204) {
+        setGroups((prev) => prev.filter((g) => g.id !== deleteTarget.id));
+        setDeleteTarget(null);
+      } else {
+        console.warn("Unexpected response:", res);
+        alert("Serverdan kutilmagan javob keldi");
+      }
     } catch (err: any) {
-      alert(err?.response?.data?.message || "O‘chirishda xatolik");
+      console.error("Delete error:", err?.response || err);
+
+      const message =
+        err?.response?.data?.message ||
+        err?.message ||
+        "O‘chirishda xatolik yuz berdi yoki guruh topilmadi";
+
+      alert(message);
+    } finally {
+      setLoading(false);
+      setDeleteTarget(null);
     }
   };
 
