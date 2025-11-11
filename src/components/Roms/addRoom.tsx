@@ -1,97 +1,169 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { api } from "../../Service/api";
-import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Alert, AlertDescription } from "../ui/alert";
-import { Label } from "../ui/label";
-import { Loader2 } from "lucide-react";
-const AddRoom = () => {
-  const { t } = useTranslation();
-  const [name, setName] = useState("");
-  const [capacity, setCapacity] = useState<number | string>("");
+import { useEffect, useState } from "react";
+import { api } from "@/Service/api";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Loader2, Edit, Trash2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
+export default function RoomsPage() {
+  const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [msg, setMsg] = useState<string | null>(null);
-  const [err, setErr] = useState<string | null>(null);
+  const [name, setName] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [editRoom, setEditRoom] = useState(null);
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMsg(null);
-    setErr(null);
-    setLoading(true);
+  useEffect(() => { loadRooms(); }, []);
 
-    try {
-      const { data } = await api.post("/rooms", {
-        name,
-        capacity: capacity ? Number(capacity) : undefined,
-      });
-
-      setMsg(`${t("room_created")}: ${data.name}`);
-      setName("");
-      setCapacity("");
-    } catch (e: any) {
-      setErr(e?.response?.data?.message || t("create_error"));
-    } finally {
-      setLoading(false);
-    }
+  const loadRooms = async () => {
+    const { data } = await api.get("/rooms");
+    setRooms(data.filter((x) => x.isActive !== false));
   };
-  return (
-    <div className="flex justify-center items-center min-h-[70vh] px-4">
-      <Card className="w-full max-w-md shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-center text-lg font-semibold">
-            {t("add_room")}
-          </CardTitle>
-        </CardHeader>
 
+  const createRoom = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await api.post("/rooms", { name, capacity: Number(capacity) || undefined });
+    setName("");
+    setCapacity("");
+    setLoading(false);
+    loadRooms();
+  };
+
+  const updateRoom = async () => {
+    await api.patch(`/rooms/${editRoom.id}`, {
+      name: editRoom.name,
+      capacity: Number(editRoom.capacity),
+    });
+    setEditRoom(null);
+    loadRooms();
+  };
+
+  const deleteRoom = async (id) => {
+    await api.patch(`/rooms/${id}`, { isActive: false });
+    setRooms((prev) => prev.filter((x) => x.id !== id));
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
+
+      {/* Xona qo‘shish form */}
+      <Card className="shadow-sm border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900">
+        <CardHeader>
+          <CardTitle className="dark:text-white">Xona qo‘shish</CardTitle>
+        </CardHeader>
         <CardContent>
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div>
-              <Label>{t("room_name")}</Label>
+          <form onSubmit={createRoom} className="flex gap-4 flex-wrap items-end">
+            <div className="flex-1 min-w-[200px]">
+              <Label className="dark:text-neutral-300">Xona nomi</Label>
               <Input
-                placeholder={t("room_name")}
                 value={name}
-                onChange={(e) => setName(e.target.value)}
                 required
+                onChange={(e) => setName(e.target.value)}
+                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
               />
             </div>
 
-            <div>
-              <Label>{t("capacity_optional")}</Label>
+            <div className="min-w-[120px]">
+              <Label className="dark:text-neutral-300">Sig‘imi</Label>
               <Input
                 type="number"
-                placeholder={t("capacity_placeholder")}
                 value={capacity}
                 onChange={(e) => setCapacity(e.target.value)}
+                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
               />
             </div>
 
-            <Button
-              type="submit"
-              className="w-full flex items-center bg-blue-500 text-white hover:bg-blue-600 justify-center"
-              disabled={loading}
-            >
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t("add")}
+            <Button disabled={loading} className="flex gap-2">
+              {loading && <Loader2 className="w-4 h-4 animate-spin" />} Qo‘shish
             </Button>
-
-            {msg && (
-              <Alert className="bg-green-50 border-green-300">
-                <AlertDescription>{msg}</AlertDescription>
-              </Alert>
-            )}
-            {err && (
-              <Alert variant="destructive">
-                <AlertDescription>{err}</AlertDescription>
-              </Alert>
-            )}
           </form>
         </CardContent>
       </Card>
+
+      {/* Ro‘yxat */}
+      <Card className="shadow-sm border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900">
+        <CardHeader>
+          <CardTitle className="dark:text-white">Xonalar ro‘yxati</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+
+          <AnimatePresence>
+            {rooms.map((r) => (
+              <motion.div
+                key={r.id}
+                layout
+                transition={{ duration: 0.45, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.4,
+                  rotate: Math.random() * 40 - 20,
+                  x: (Math.random() - 0.5) * 200,
+                  y: (Math.random() - 0.5) * 200,
+                  filter: "blur(4px)"
+                }}
+                className="flex justify-between items-center p-3 border rounded-lg bg-white dark:bg-neutral-800 dark:border-neutral-700 hover:shadow-md transition"
+              >
+                <div>
+                  <p className="font-medium dark:text-white">{r.name}</p>
+                  <p className="text-sm opacity-60 dark:text-neutral-400">Sig‘imi: {r.capacity ?? "—"}</p>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button variant="outline" size="icon" className="dark:border-neutral-600" onClick={() => setEditRoom({ ...r })}>
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button variant="destructive" size="icon" onClick={() => deleteRoom(r.id)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+
+        </CardContent>
+      </Card>
+
+      {/* EDIT MODAL */}
+      {editRoom && (
+        <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white dark:bg-neutral-900 p-6 rounded-xl w-full max-w-sm space-y-4 shadow-lg"
+          >
+            <h2 className="text-lg font-semibold dark:text-white">Xonani tahrirlash</h2>
+
+            <div>
+              <Label className="dark:text-neutral-300">Nom</Label>
+              <Input
+                value={editRoom.name}
+                onChange={(e) => setEditRoom({ ...editRoom, name: e.target.value })}
+                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+              />
+            </div>
+
+            <div>
+              <Label className="dark:text-neutral-300">Sig‘imi</Label>
+              <Input
+                type="number"
+                value={editRoom.capacity}
+                onChange={(e) => setEditRoom({ ...editRoom, capacity: e.target.value })}
+                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" className="dark:border-neutral-600" onClick={() => setEditRoom(null)}>Bekor</Button>
+              <Button onClick={updateRoom}>Saqlash</Button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
     </div>
   );
-};
-
-export default AddRoom;
+}

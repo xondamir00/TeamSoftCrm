@@ -16,6 +16,7 @@ import RoomsList from "./components/Roms/RoomsList";
 import AddGroupForm from "./components/Group/AddGoup";
 import Groups from "./components/Group/GroupList";
 import { Login } from "./components/auth/login";
+import TrashRoomsPage from "./components/page/trash";
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="settings" element={<Settings />} />
             <Route path="student" element={<Pupils />} />
             <Route path="teachers" element={<TeacherList />} />
+           
             <Route
               path="settings/create-teacher"
               element={<AddTeacherForm />}
@@ -50,6 +52,7 @@ const App = () => {
             />
             <Route path="settings/create-group" element={<AddGroupForm />} />
             <Route path="settings/create-room" element={<AddRoom />} />
+             <Route path="settings/trash" element={<TrashRoomsPage />} />
             <Route path="rooms" element={<RoomsList />} />
             <Route path="groups" element={<Groups />} />
           </Route>
