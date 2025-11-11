@@ -68,7 +68,7 @@ const ListStudent = () => {
   if (loading)
     return (
       <div className="flex justify-center items-center py-10 text-gray-500">
-        <Loader2 className="animate-spin mr-2" /> Loading...
+        <Loader2 className="animate-spin mr-2" /> Loading... ..
       </div>
     );
 
