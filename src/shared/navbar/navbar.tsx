@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Logo from "./logo";
 import { ModeToggle } from "../modeToggle";
 import LanguageSwitcher from "@/i18react/LanguageSwitcher";
-import ProfileModal from "@/components/page/profile";
+import ProfileModal from "@/shared/navbar/profile";
 import LogoutButton from "./Logout";
 
 const Navbar = () => {

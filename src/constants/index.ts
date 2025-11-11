@@ -1,3 +1,47 @@
+
+import {
+  UserPlus,
+  UserCog,
+  Building,
+  ShieldPlus,
+  Users,
+  Trash2,
+} from "lucide-react";
+
+export const CreateForm = [
+  {
+    name: "createForm.createStudent",
+    href: "create-student",
+    icon: UserPlus,
+
+  },
+  {
+    name: "createForm.createTeacher",
+    href: "create-teacher",
+    icon: UserCog,
+  },
+  {
+    name: "createForm.createRoom",
+    href: "create-room",
+    icon: Building,
+  },
+  {
+    name: "createForm.createManager",
+    href: "create-meneger",
+    icon: ShieldPlus,
+  },
+  {
+    name: "createForm.createGroup",
+    href: "create-group",
+    icon: Users,
+  },
+  {
+    name: "Archive",
+    href: "archive",
+    icon: Trash2,
+  },
+];
+
 export const CategoryNavigate = [
   { label: "home", href: "", icon: "/icons/rooms.svg" },
   { label: "leads", href: "lids", icon: "/icons/users.svg" },
@@ -8,32 +52,7 @@ export const CategoryNavigate = [
   { label: "finance", href: "finance", icon: "/icons/finance.svg" },
   { label: "settings", href: "settings", icon: "/icons/settings.svg" },
 ];
-export const CreateForm = [
-  {
-    name: "createForm.createStudent",
-    href: "create-student",
-  },
-  {
-    name: "createForm.createTeacher",
-    href: "create-teacher",
-  },
-  {
-    name: "createForm.createRoom",
-    href: "create-room",
-  },
-  {
-    name: "createForm.createManager",
-    href: "create-meneger",
-  },
-  {
-    name: "createForm.createGroup",
-    href: "create-group",
-  },
-   {
-    name: "trash",
-    href: "trash",
-  },
-];
+
 
 export const pupils = [
   {
