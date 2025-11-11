@@ -52,11 +52,12 @@ export default function GroupList() {
   const [deleteTarget, setDeleteTarget] = useState<Group | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  // Guruhlarni olish
   const fetchGroups = async () => {
     try {
       setLoading(true);
-      const { data } = await api.get("/groups");
+      const { data } = await api.get("/groups", {
+        params: { isActive: true }, // faqat faol guruhlarni olish
+      });
       setGroups(data?.items || []);
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
@@ -77,15 +78,32 @@ export default function GroupList() {
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
+
     try {
-      await api.delete(`/groups/${deleteTarget.id}`);
+      setLoading(true);
+      console.log("Deleting group id:", deleteTarget.id);
+
+      const res = await api.delete(`/groups/${deleteTarget.id}`);
       setGroups((prev) => prev.filter((g) => g.id !== deleteTarget.id));
-      setDeleteTarget(null);
+
+      if (res.status === 200 || res.status === 204) {
+        setGroups((prev) => prev.filter((g) => g.id !== deleteTarget.id));
+        setDeleteTarget(null);
+      } else {
+        console.warn("Unexpected response:", res);
+        alert("Serverdan kutilmagan javob keldi");
+      }
     } catch (err: any) {
-      alert(
+      console.error("Delete error:", err?.response || err);
+
+      const message =
         err?.response?.data?.message ||
-          "O‘chirishda xatolik yuz berdi yoki guruh topilmadi"
-      );
+        err?.message ||
+        "O‘chirishda xatolik yuz berdi yoki guruh topilmadi";
+
+      alert(message);
+    } finally {
+      setLoading(false);
       setDeleteTarget(null);
     }
   };
@@ -99,7 +117,10 @@ export default function GroupList() {
     if (!time) return "-";
     try {
       const date = new Date(`1970-01-01T${time}`);
-      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     } catch {
       return time;
     }
