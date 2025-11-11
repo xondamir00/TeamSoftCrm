@@ -3,7 +3,7 @@ import Homelayout from "./components/layout/homelayout";
 import Home from "./components/page/home";
 import Teacherlayout from "./components/layout/teacherlayout";
 import Teacher from "./components/page/Teacher";
-import Pupils from "./components/pupils/pupils";
+import Pupils from "./components/pupils/AddStudent";
 import { RoleRoute } from "./role/role-route";
 import { AuthRefresh } from "./components/auth/Auth-Refresh";
 import Settings from "./components/page/settings";
@@ -16,6 +16,7 @@ import RoomsList from "./components/Roms/RoomsList";
 import AddGroupForm from "./components/Group/AddGoup";
 import Groups from "./components/Group/GroupList";
 import { Login } from "./components/auth/login";
+import Student from "./components/pupils/Student";
 
 const App = () => {
   return (
@@ -23,7 +24,6 @@ const App = () => {
       <div className="light:bg-[#f2f2f2] min-h-screen dark:bg-gray-900">
         <Routes>
           <Route path="/sign" element={<Login />} />
-
           <Route
             path="/admin"
             element={
@@ -34,7 +34,8 @@ const App = () => {
           >
             <Route index element={<Home />} />
             <Route path="settings" element={<Settings />} />
-            <Route path="student" element={<Pupils />} />
+            <Route path="student" element={<Student />} />
+
             <Route path="teachers" element={<TeacherList />} />
             <Route
               path="settings/create-teacher"
