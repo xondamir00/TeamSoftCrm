@@ -27,7 +27,7 @@ export default function GroupList() {
     try {
       setLoading(true);
       const { data } = await api.get("/groups");
-      setGroups(data);
+      setGroups(data.items);
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
     } finally {

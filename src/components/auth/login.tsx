@@ -77,7 +77,7 @@ export function Login() {
         <motion.img
           src="/public/loginbg/login.webp"
           alt="login illustration"
-          className="w-[100%] ml-[-120px] max-w-lg"
+          className=" ml-[-120px] max-w-lg"
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8 }}
