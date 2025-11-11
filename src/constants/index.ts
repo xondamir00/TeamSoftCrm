@@ -29,6 +29,10 @@ export const CreateForm = [
     name: "createForm.createGroup",
     href: "create-group",
   },
+   {
+    name: "trash",
+    href: "trash",
+  },
 ];
 
 export const pupils = [

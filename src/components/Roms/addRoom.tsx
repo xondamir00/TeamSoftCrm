@@ -4,30 +4,30 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Loader2, Edit, Trash, RotateCcw } from "lucide-react";
+import { Loader2, Edit, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function RoomsPage() {
   const [rooms, setRooms] = useState([]);
-  const [trashRooms, setTrashRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [capacity, setCapacity] = useState("");
   const [editRoom, setEditRoom] = useState(null);
 
+  useEffect(() => { loadRooms(); }, []);
+
   const loadRooms = async () => {
     const { data } = await api.get("/rooms");
-    setRooms(data.filter((r) => r.isActive !== false));
-    setTrashRooms(data.filter((r) => r.isActive === false));
+    setRooms(data.filter((x) => x.isActive !== false));
   };
-
-  useEffect(() => { loadRooms(); }, []);
 
   const createRoom = async (e) => {
     e.preventDefault();
     setLoading(true);
-    await api.post("/rooms", { name, capacity: capacity ? Number(capacity) : undefined });
-    setName(""); setCapacity(""); setLoading(false);
+    await api.post("/rooms", { name, capacity: Number(capacity) || undefined });
+    setName("");
+    setCapacity("");
+    setLoading(false);
     loadRooms();
   };
 
@@ -42,111 +42,122 @@ export default function RoomsPage() {
 
   const deleteRoom = async (id) => {
     await api.patch(`/rooms/${id}`, { isActive: false });
-    loadRooms();
-  };
-
-  const restoreRoom = async (id) => {
-    await api.patch(`/rooms/${id}`, { isActive: true });
-    loadRooms();
+    setRooms((prev) => prev.filter((x) => x.id !== id));
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-8">
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
 
-      {/* ADD FORM */}
-      <Card className="shadow-lg">
-        <CardHeader><CardTitle className="text-lg font-semibold">Xona qo‘shish</CardTitle></CardHeader>
+      {/* Xona qo‘shish form */}
+      <Card className="shadow-sm border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900">
+        <CardHeader>
+          <CardTitle className="dark:text-white">Xona qo‘shish</CardTitle>
+        </CardHeader>
         <CardContent>
-          <form onSubmit={createRoom} className="space-y-4">
-            <div><Label>Xona nomi</Label><Input value={name} required onChange={(e) => setName(e.target.value)} /></div>
-            <div><Label>Sig‘imi (ixtiyoriy)</Label><Input type="number" value={capacity} onChange={(e) => setCapacity(e.target.value)} /></div>
-            <Button className="w-full flex gap-2 justify-center" disabled={loading}>
-              {loading && <Loader2 className="h-4 w-4 animate-spin" />} Qo‘shish
+          <form onSubmit={createRoom} className="flex gap-4 flex-wrap items-end">
+            <div className="flex-1 min-w-[200px]">
+              <Label className="dark:text-neutral-300">Xona nomi</Label>
+              <Input
+                value={name}
+                required
+                onChange={(e) => setName(e.target.value)}
+                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+              />
+            </div>
+
+            <div className="min-w-[120px]">
+              <Label className="dark:text-neutral-300">Sig‘imi</Label>
+              <Input
+                type="number"
+                value={capacity}
+                onChange={(e) => setCapacity(e.target.value)}
+                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+              />
+            </div>
+
+            <Button disabled={loading} className="flex gap-2">
+              {loading && <Loader2 className="w-4 h-4 animate-spin" />} Qo‘shish
             </Button>
           </form>
         </CardContent>
       </Card>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      {/* Ro‘yxat */}
+      <Card className="shadow-sm border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900">
+        <CardHeader>
+          <CardTitle className="dark:text-white">Xonalar ro‘yxati</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
 
-        {/* ACTIVE ROOMS */}
-        <Card className="shadow-lg p-4">
-          <CardTitle className="mb-4">Xonalar</CardTitle>
           <AnimatePresence>
             {rooms.map((r) => (
               <motion.div
-                layoutId={`room-${r.id}`}
                 key={r.id}
-                className="flex justify-between items-center p-3 border rounded-lg bg-white shadow-sm"
-                initial={{ opacity: 0, y: 15 }}
+                layout
+                transition={{ duration: 0.45, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.7 }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.4,
+                  rotate: Math.random() * 40 - 20,
+                  x: (Math.random() - 0.5) * 200,
+                  y: (Math.random() - 0.5) * 200,
+                  filter: "blur(4px)"
+                }}
+                className="flex justify-between items-center p-3 border rounded-lg bg-white dark:bg-neutral-800 dark:border-neutral-700 hover:shadow-md transition"
               >
                 <div>
-                  <p className="font-medium">{r.name}</p>
-                  <p className="text-sm opacity-60">Sig‘imi: {r.capacity ?? "—"}</p>
+                  <p className="font-medium dark:text-white">{r.name}</p>
+                  <p className="text-sm opacity-60 dark:text-neutral-400">Sig‘imi: {r.capacity ?? "—"}</p>
                 </div>
 
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => setEditRoom({ ...r })}><Edit className="h-4 w-4" /></Button>
-                  <Button variant="destructive" size="sm" onClick={() => deleteRoom(r.id)}>
-                    <Trash className="h-4 w-4" />
+                  <Button variant="outline" size="icon" className="dark:border-neutral-600" onClick={() => setEditRoom({ ...r })}>
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button variant="destructive" size="icon" onClick={() => deleteRoom(r.id)}>
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
-        </Card>
 
-        {/* TRASH */}
-        <Card className="shadow-lg p-4 border-red-300">
-          <CardTitle className="mb-4 text-red-600 flex items-center gap-2">
-            <Trash className="h-5 w-5" /> Trash
-          </CardTitle>
-
-          <AnimatePresence>
-            {trashRooms.map((r) => (
-              <motion.div
-                layoutId={`room-${r.id}`}
-                key={r.id}
-                className="flex justify-between items-center p-3 border rounded-lg bg-red-50"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.7 }}
-              >
-                <div>
-                  <p className="font-medium line-through">{r.name}</p>
-                  <p className="text-sm opacity-60">Sig‘imi: {r.capacity ?? "—"}</p>
-                </div>
-
-                <Button size="sm" onClick={() => restoreRoom(r.id)}>
-                  <RotateCcw className="h-4 w-4" /> Qaytarish
-                </Button>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </Card>
-
-      </div>
+        </CardContent>
+      </Card>
 
       {/* EDIT MODAL */}
       {editRoom && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white p-6 rounded-lg w-full max-w-sm space-y-4">
-            <h2 className="text-lg font-semibold">Xonani tahrirlash</h2>
+        <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white dark:bg-neutral-900 p-6 rounded-xl w-full max-w-sm space-y-4 shadow-lg"
+          >
+            <h2 className="text-lg font-semibold dark:text-white">Xonani tahrirlash</h2>
 
             <div>
-              <Label>Xona nomi</Label>
-              <Input value={editRoom.name} onChange={(e) => setEditRoom({ ...editRoom, name: e.target.value })} />
+              <Label className="dark:text-neutral-300">Nom</Label>
+              <Input
+                value={editRoom.name}
+                onChange={(e) => setEditRoom({ ...editRoom, name: e.target.value })}
+                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+              />
             </div>
 
             <div>
-              <Label>Sig‘imi</Label>
-              <Input type="number" value={editRoom.capacity} onChange={(e) => setEditRoom({ ...editRoom, capacity: e.target.value })} />
+              <Label className="dark:text-neutral-300">Sig‘imi</Label>
+              <Input
+                type="number"
+                value={editRoom.capacity}
+                onChange={(e) => setEditRoom({ ...editRoom, capacity: e.target.value })}
+                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+              />
             </div>
 
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setEditRoom(null)}>Bekor</Button>
+              <Button variant="outline" className="dark:border-neutral-600" onClick={() => setEditRoom(null)}>Bekor</Button>
               <Button onClick={updateRoom}>Saqlash</Button>
             </div>
           </motion.div>
