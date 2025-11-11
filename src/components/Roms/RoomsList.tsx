@@ -31,7 +31,7 @@ const RoomsList = () => {
     try {
       setLoading(true);
       const { data } = await api.get("/rooms");
-      setRooms(data);
+      setRooms(data.items);
     } catch (e: any) {
       setErr(e?.response?.data?.message || t("fetch_error"));
     } finally {

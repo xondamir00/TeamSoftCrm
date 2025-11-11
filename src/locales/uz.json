@@ -1,6 +1,6 @@
 {
   "welcomeCRM": "Xush kelibsiz",
-  "home":"Bosh sahifa",
+  "home": "Bosh sahifa",
   "pupils": "O'quvchilar",
   "Sname": "Ism Familiyasi",
   "phone2": "Ota-onasining raqami",
@@ -22,7 +22,7 @@
   "success": "O‘qituvchi muvaffaqiyatli qo‘shildi!",
   "error": "Yuborishda xatolik yuz berdi",
   "salary_warning": "Faqat bittasini kiriting: maosh yoki foiz ulushi",
-    "add_student": "Yangi talaba qo‘shish",
+  "add_student": "Yangi talaba qo‘shish",
   "first_name": "Ism",
   "last_name": "Familiya",
   "phone_number": "Telefon raqami",
@@ -40,7 +40,7 @@
   "monthly_salary_optional": "Oylik maosh (ixtiyoriy)",
   "manager_added_success": "Menejer muvaffaqiyatli qo‘shildi!",
   "manager_add_error": "Menejer qo‘shishda xatolik yuz berdi",
-   "add_group": "Yangi guruh qo‘shish",
+  "add_group": "Yangi guruh qo‘shish",
   "group_name": "Guruh nomi",
   "select_room_optional": "Xona tanlang (ixtiyoriy)",
   "loading": "Yuborilmoqda...",
@@ -69,7 +69,7 @@
   "payment": "To‘lov",
   "no_students": "Hozircha talabalar yo‘q",
   "fetch_error": "Ma'lumotlarni olishda xatolik yuz berdi",
-    "createForms": {
+  "createForms": {
     "title": "Formalar yaratish"
   },
   "createForm": {
@@ -86,8 +86,22 @@
   "login_button": "Kirish",
   "error_invalid": "Login ma'lumotlari noto‘g‘ri.",
   "no_account": "Hisobingiz yo‘qmi?",
-  "register": "Ro‘yxatdan o‘tish"
+  "register": "Ro‘yxatdan o‘tish",
+  "update_group": "Guruhni tahrirlash",
+  "group_capacity": "Guruh sig‘imi",
+  "group_updated_success": "Guruh muvaffaqiyatli yangilandi!",
+  "group_error": "Guruhni saqlashda xatolik yuz berdi.",
+  "update_button": "Yangilash",
+
+  "select_day": "Hafta kunini tanlang",
+  "monday": "Dushanba",
+  "tuesday": "Seshanba",
+  "wednesday": "Chorshanba",
+  "thursday": "Payshanba",
+  "friday": "Juma",
+  "saturday": "Shanba",
+  "sunday": "Yakshanba",
+   "odd_days_label": "Toq kunlar (Dushanba, Chorshanba, Juma)",
+  "even_days_label": "Juft kunlar (Seshanba, Payshanba, Shanba)",
+  "custom_days_label": "Maxsus kunlar"
 }
-
-
-

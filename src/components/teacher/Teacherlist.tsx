@@ -47,7 +47,7 @@ export default function TeacherList() {
         },
       });
 
-      setTeachers(data.items);
+      setTeachers(data.items || []);
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
     } finally {
@@ -96,7 +96,7 @@ export default function TeacherList() {
             </SheetHeader>
 
             <div className="p-4">
-              <AddTeacherForm onSuccess={fetchTeachers} />
+              <AddTeacherForm />
             </div>
 
             <div className="flex justify-end p-3 border-t dark:border-gray-700">
