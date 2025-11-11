@@ -126,7 +126,7 @@ function AddStudent() {
               />
             </div>
             <div>
-              <Label>Start Data</Label>
+              <Label>Start Date</Label>
               <Input
                 type="date"
                 name="startDate"
