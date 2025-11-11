@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { api } from "@/Service/api";
 import { Button } from "@/components/ui/button";
@@ -30,26 +29,35 @@ import {
 interface Group {
   id: string;
   name: string;
-  room?: { name: string };
+  roomId?: string;
   capacity?: number;
+  daysPattern?: string;
+  startTime?: string;
+  endTime?: string;
   createdAt: string;
-  schedule: { day: string; startTime: string; endTime: string }[];
+}
+
+interface Room {
+  id: string;
+  name: string;
 }
 
 export default function GroupList() {
   const { t } = useTranslation();
   const [groups, setGroups] = useState<Group[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [editingGroup, setEditingGroup] = useState<Group | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Group | null>(null);
-  const [sheetOpen, setSheetOpen] = useState(false); // sheet o‘ngdan chiqadi
+  const [sheetOpen, setSheetOpen] = useState(false);
 
+  // Guruhlarni olish
   const fetchGroups = async () => {
     try {
       setLoading(true);
       const { data } = await api.get("/groups");
-      setGroups(data.items);
+      setGroups(data?.items || []);
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
     } finally {
@@ -57,11 +65,21 @@ export default function GroupList() {
     }
   };
 
+  // Xonalarni olish
+  const fetchRooms = async () => {
+    try {
+      const { data } = await api.get("/rooms");
+      setRooms(data?.items || []);
+    } catch (err) {
+      console.error("Xonalarni olishda xato:", err);
+    }
+  };
+
   const handleDelete = async () => {
     if (!deleteTarget) return;
     try {
       await api.delete(`/groups/${deleteTarget.id}`);
-      setGroups(prev => prev.filter(g => g.id !== deleteTarget.id));
+      setGroups((prev) => prev.filter((g) => g.id !== deleteTarget.id));
       setDeleteTarget(null);
     } catch (err: any) {
       alert(
@@ -74,6 +92,7 @@ export default function GroupList() {
 
   useEffect(() => {
     fetchGroups();
+    fetchRooms();
   }, []);
 
   const formatTime = (time?: string) => {
@@ -86,12 +105,18 @@ export default function GroupList() {
     }
   };
 
+  // roomId orqali xona nomini topish
+  const getRoomName = (roomId?: string) => {
+    const room = rooms.find((r) => r.id === roomId);
+    return room ? room.name : "-";
+  };
+
   return (
     <div className="w-[98%] mx-auto bg-white dark:bg-black dark:text-white border dark:border-gray-700 rounded-xl p-4 shadow-md">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{t("groups_list")}</h2>
 
-        {/* Sheet tugmasi */}
+        {/* Guruh qo‘shish tugmasi */}
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger asChild>
             <Button
@@ -161,26 +186,19 @@ export default function GroupList() {
             </tr>
           </thead>
           <tbody>
-            {groups.map(g => (
+            {groups.map((g) => (
               <tr
                 key={g.id}
                 className="border-b hover:bg-gray-50 dark:hover:bg-gray-800"
               >
                 <td className="p-2">{g.name}</td>
-                <td className="p-2">{g.room?.name || "-"}</td>
+                <td className="p-2">{getRoomName(g.roomId)}</td>
                 <td className="p-2">{g.capacity ?? "-"}</td>
+                <td className="p-2">{g.daysPattern || "-"}</td>
                 <td className="p-2">
-                  {g.schedule.length > 0
-                    ? g.schedule.map(s => s.day).join(", ")
-                    : "-"}
+                  {`${formatTime(g.startTime)} - ${formatTime(g.endTime)}`}
                 </td>
-                <td className="p-2">
-                  {g.schedule.length > 0
-                    ? `${formatTime(g.schedule[0].startTime)} - ${formatTime(
-                        g.schedule[0].endTime
-                      )}`
-                    : "-"}
-                </td>
+
                 <td className="p-2 text-right flex justify-end gap-2">
                   <Button
                     size="sm"
@@ -206,7 +224,8 @@ export default function GroupList() {
                     <AlertDialogContent>
                       <AlertDialogHeader>
                         <AlertDialogTitle>
-                          {t("delete_confirm_title") || "O‘chirishni tasdiqlang"}
+                          {t("delete_confirm_title") ||
+                            "O‘chirishni tasdiqlang"}
                         </AlertDialogTitle>
                         <AlertDialogDescription>
                           {t("delete_confirm_text") ||
