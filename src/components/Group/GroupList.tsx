@@ -58,13 +58,13 @@ export default function GroupList() {
       const { data } = await api.get("/groups", {
         params: {
           page: 1,
-          limit: 100, // kerak bo'lsa hammasini olish
+          limit: 10, // kerak bo'lsa hammasini olish
           isActive: true, // ✅ boolean
         },
       });
 
       setGroups(data.items);
-      console.log(data.items);
+      console.log(data.items, "groups");
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
     } finally {
@@ -76,7 +76,7 @@ export default function GroupList() {
   const fetchRooms = async () => {
     try {
       const { data } = await api.get("/rooms");
-      setRooms(data || []);
+      setRooms(data);
       console.log(data, "data");
     } catch (err) {
       console.error("Xonalarni olishda xato:", err);

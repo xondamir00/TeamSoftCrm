@@ -43,11 +43,12 @@ export default function TeacherList() {
       const { data } = await api.get("/teachers", {
         params: {
           page: 1,
-          limit: 50,
+          limit: 10,
         },
       });
 
-      setTeachers(data.items || []);
+      setTeachers(data || []);
+      console.log(data);
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
     } finally {

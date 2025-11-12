@@ -1,4 +1,3 @@
-
 import {
   UserPlus,
   UserCog,
@@ -7,13 +6,13 @@ import {
   Users,
   Trash2,
 } from "lucide-react";
+import { href } from "react-router-dom";
 
 export const CreateForm = [
   {
     name: "createForm.createStudent",
     href: "create-student",
     icon: UserPlus,
-
   },
   {
     name: "createForm.createTeacher",
@@ -40,6 +39,11 @@ export const CreateForm = [
     href: "archive",
     icon: Trash2,
   },
+  {
+    name: "enrollments",
+    href: "enrollments",
+    icon: Users,
+  },
 ];
 
 export const CategoryNavigate = [
@@ -52,7 +56,6 @@ export const CategoryNavigate = [
   { label: "finance", href: "finance", icon: "/icons/finance.svg" },
   { label: "settings", href: "settings", icon: "/icons/settings.svg" },
 ];
-
 
 export const pupils = [
   {
