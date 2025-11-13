@@ -26,6 +26,7 @@ import {
 
 import AddTeacherForm from "../form/addTeacher";
 import UpdateTeacherForm from "../form/Updateteacher";
+import DeleteTeacherDialog from "../form/DeleteTeacherDialog"; // 🔹 yangi qo‘shilgan
 import type { Teacher } from "@/Store";
 
 export default function TeacherList() {
@@ -35,20 +36,16 @@ export default function TeacherList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [teacherToDelete, setTeacherToDelete] = useState<Teacher | null>(null);
 
   const fetchTeachers = async () => {
     try {
       setLoading(true);
-
       const { data } = await api.get("/teachers", {
-        params: {
-          page: 1,
-          limit: 10,
-        },
+        params: { page: 1, limit: 10 },
       });
-
       setTeachers(data.items || []);
-      console.log(data);
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
     } finally {
@@ -60,27 +57,17 @@ export default function TeacherList() {
     fetchTeachers();
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm(t("confirm_delete") || "Delete this teacher?")) return;
-
-    try {
-      await api.delete(`/teachers/${id}/deactivate`);
-      fetchTeachers();
-    } catch (err: any) {
-      alert(err.response?.data?.message || "Delete error");
-    }
-  };
-
   return (
     <div className="w-[98%] mx-auto bg-white dark:bg-black dark:text-white border dark:border-gray-700 rounded-xl p-4 shadow-md">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{t("teachers_list")}</h2>
 
+        {/* Add Teacher */}
         <Sheet>
           <SheetTrigger asChild>
             <Button
-              variant={"outline"}
+              variant="outline"
               className="flex bg-blue-500 text-white items-center gap-2"
             >
               <Plus size={16} />
@@ -97,7 +84,7 @@ export default function TeacherList() {
             </SheetHeader>
 
             <div className="p-4">
-              <AddTeacherForm />
+              <AddTeacherForm onSuccess={fetchTeachers} />
             </div>
 
             <div className="flex justify-end p-3 border-t dark:border-gray-700">
@@ -167,7 +154,10 @@ export default function TeacherList() {
                     />
                   </TableCell>
 
-                  <TableCell>{teacher.fullName || `${teacher.firstName || ""} ${teacher.lastName || ""}`}</TableCell>
+                  <TableCell>
+                    {teacher.fullName ||
+                      `${teacher.firstName || ""} ${teacher.lastName || ""}`}
+                  </TableCell>
 
                   <TableCell>{teacher.phone}</TableCell>
 
@@ -220,7 +210,10 @@ export default function TeacherList() {
                     <Button
                       size="sm"
                       variant="destructive"
-                      onClick={() => handleDelete(teacher.id)}
+                      onClick={() => {
+                        setTeacherToDelete(teacher);
+                        setDeleteOpen(true);
+                      }}
                     >
                       <Trash2 size={15} />
                     </Button>
@@ -231,6 +224,14 @@ export default function TeacherList() {
           </TableBody>
         </Table>
       </div>
+
+      {/* Delete Dialog */}
+      <DeleteTeacherDialog
+        teacher={teacherToDelete}
+        open={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        onDeleted={fetchTeachers}
+      />
     </div>
   );
 }
