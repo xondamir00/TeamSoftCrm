@@ -41,13 +41,14 @@ export interface Group {
 }
 export interface Student {
   id: string;
-  firstName: string;
-  lastName: string;
+  userId: string;
+  fullName: string;
   phone: string;
-  parentPhone?: string;
-  payment?: number;
+  isActive: boolean;
+  dateOfBirth?: string;
+  startDate?: string;
+  createdAt: string;
 }
-
 type AuthState = {
   token: string | null;
   refreshToken: string | null;

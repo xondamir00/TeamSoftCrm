@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useAuth } from "@/Store";
 import {
   DropdownMenu,
@@ -11,14 +10,13 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import {  Settings } from "lucide-react";
-import { HiArchiveBoxXMark } from "react-icons/hi2";
+import { Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileMenu() {
-    const navigate = useNavigate()
-  const { user, logout } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth(); // ✅ useAuth store-dan real foydalanuvchi ma’lumotini oling
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
@@ -44,20 +42,29 @@ export default function ProfileMenu() {
             </AvatarFallback>
           </Avatar>
           <div className="text-sm">
-            <p className="font-semibold">{user?.firstName} {user?.lastName}</p>
+            <p className="font-semibold">
+              {user?.firstName} {user?.lastName}
+            </p>
             <p className="text-xs opacity-60">{user?.phone}</p>
           </div>
         </DropdownMenuLabel>
+
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => navigate("/admin/settings")} className="flex gap-2 cursor-pointer">
+
+        <DropdownMenuItem
+          onClick={() => navigate("/admin/settings")}
+          className="flex gap-2 cursor-pointer"
+        >
           <Settings size={16} />
           Sozlamalar
         </DropdownMenuItem>
+
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => navigate("/admin/settings/trash")}
+
+        <DropdownMenuItem
+          onClick={() => navigate("/admin/settings/archive")}
           className="flex gap-2 cursor-pointer text-red-500 focus:text-red-600"
         >
-           <HiArchiveBoxXMark size={16} />
           Archive
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -1,4 +1,3 @@
-
 import {
   UserPlus,
   UserCog,
@@ -7,17 +6,27 @@ import {
   Users,
   Trash2,
 } from "lucide-react";
+import { href } from "react-router-dom";
 
 export const CreateForm = [
   {
     name: "createForm.createStudent",
     href: "create-student",
     icon: UserPlus,
-
   },
   {
     name: "createForm.createTeacher",
     href: "create-teacher",
+    icon: UserCog,
+  },
+   {
+    name: "Assignment Teacher",
+    href: "create-assignment",
+    icon: UserCog,
+  },
+    {
+    name: "Assignment Teacher Get",
+    href: "assignments",
     icon: UserCog,
   },
   {
@@ -40,6 +49,11 @@ export const CreateForm = [
     href: "archive",
     icon: Trash2,
   },
+  {
+    name: "enrollments",
+    href: "enrollments",
+    icon: Users,
+  },
 ];
 
 export const CategoryNavigate = [
@@ -47,12 +61,11 @@ export const CategoryNavigate = [
   { label: "leads", href: "lids", icon: "/icons/users.svg" },
   { label: "groups", href: "groups", icon: "/icons/group.svg" },
   { label: "teachersList", href: "teachers", icon: "/icons/teacher.svg" },
-  { label: "studentsList", href: "student", icon: "/icons/student.svg" },
+  { label: "student", href: "student", icon: "/icons/student.svg" },
   { label: "debtorsList", href: "debts", icon: "/icons/debt.svg" },
   { label: "finance", href: "finance", icon: "/icons/finance.svg" },
   { label: "settings", href: "settings", icon: "/icons/settings.svg" },
 ];
-
 
 export const pupils = [
   {
