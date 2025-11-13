@@ -47,7 +47,7 @@ export default function TeacherList() {
         },
       });
 
-      setTeachers(data || []);
+      setTeachers(data.items || []);
       console.log(data);
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
@@ -167,7 +167,7 @@ export default function TeacherList() {
                     />
                   </TableCell>
 
-                  <TableCell>{teacher.lastName}</TableCell>
+                  <TableCell>{teacher.fullName || `${teacher.firstName || ""} ${teacher.lastName || ""}`}</TableCell>
 
                   <TableCell>{teacher.phone}</TableCell>
 
