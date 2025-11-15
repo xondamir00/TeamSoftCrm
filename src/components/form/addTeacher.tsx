@@ -70,7 +70,7 @@ export default function AddTeacherForm() {
       <h2 className="text-2xl font-semibold mb-6 text-center">{t("add_teacher")}</h2>
 
       {message && (
-        <div className="text-center text-sm mb-4 text-red-600">{message}</div>
+        <div className="text-center text-sm mb-4 text-green-600">{message}</div>
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">

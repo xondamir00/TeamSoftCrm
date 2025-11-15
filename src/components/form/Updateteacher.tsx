@@ -20,8 +20,8 @@ export default function UpdateTeacherForm({ teacher, onSuccess }: UpdateTeacherP
     phone: teacher.phone,
     password: "",
     photoUrl: "",
-    monthlySalary: null as number | null,
-    percentShare: null as number | null,
+    monthlySalary: null as string | null,
+    percentShare: null as string | null,
   });
 
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ export default function UpdateTeacherForm({ teacher, onSuccess }: UpdateTeacherP
       ...f,
       [name]:
         name === "monthlySalary" || name === "percentShare"
-          ? value ? Number(value) : null
+          ? value ? String(value) : null
           : value,
     }));
   };
