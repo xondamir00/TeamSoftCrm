@@ -34,11 +34,13 @@ export function Login() {
     try {
       const { data } = await api.post("/auth/login", { phone, password });
       const { user, accessToken, refreshToken } = data;
+      console.log(data.user.role);
 
       if (!accessToken || !refreshToken || !user) {
         setError(t("error_invalid"));
         return;
       }
+      console.log(accessToken);
 
       login(accessToken, refreshToken, user);
 

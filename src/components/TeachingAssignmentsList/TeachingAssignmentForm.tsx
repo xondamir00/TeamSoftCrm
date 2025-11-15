@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { data } from "react-router-dom";
 
 export const TeachingAssignmentForm = ({
   onSuccess,
@@ -50,7 +51,11 @@ export const TeachingAssignmentForm = ({
           api.get("/groups"),
         ]);
 
-        setTeachers(Array.isArray(teacherRes.data) ? teacherRes.data : []);
+        setTeachers(
+          Array.isArray(teacherRes.data.items) ? teacherRes.data.items : []
+        );
+        console.log(teachers);
+
         setGroups(Array.isArray(groupRes.data) ? groupRes.data : []);
       } catch (err: any) {
         setError("Ma'lumotlarni olishda xato yuz berdi");
@@ -68,7 +73,12 @@ export const TeachingAssignmentForm = ({
     if (!teacherId || !groupId) return;
 
     try {
-      await api.post("/teaching-assignments", { teacherId, groupId, role, note });
+      await api.post("/teaching-assignments", {
+        teacherId,
+        groupId,
+        role,
+        note,
+      });
       onSuccess();
       setTeacherId("");
       setGroupId("");
@@ -82,7 +92,9 @@ export const TeachingAssignmentForm = ({
 
   if (loading) {
     return (
-      <div className="text-center py-6 text-gray-500">Ma'lumotlar yuklanmoqda...</div>
+      <div className="text-center py-6 text-gray-500">
+        Ma'lumotlar yuklanmoqda...
+      </div>
     );
   }
 
@@ -169,7 +181,10 @@ export const TeachingAssignmentForm = ({
           />
         </div>
 
-        <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white">
+        <Button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-600 text-white"
+        >
           Add Assignment
         </Button>
       </form>
@@ -185,7 +200,9 @@ export const TeachingAssignmentForm = ({
             <AlertDialogCancel onClick={() => setOpenAlert(false)}>
               Yopish
             </AlertDialogCancel>
-            <AlertDialogAction onClick={() => setOpenAlert(false)}>OK</AlertDialogAction>
+            <AlertDialogAction onClick={() => setOpenAlert(false)}>
+              OK
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

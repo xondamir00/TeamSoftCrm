@@ -1,160 +1,116 @@
-"use client";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Button } from '@/components/ui/button';
+import { Loader2, Trash } from 'lucide-react';
+import CreateEnrollmentModal from '../Enrollments/CreateEnrollmentModal';
 
-import { useEffect, useState } from "react";
-import { api } from "@/Service/api";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Loader2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+interface Enrollment {
+  id: string;
+  status: 'ACTIVE' | 'PAUSED' | 'LEFT';
+  joinDate: string;
+  leaveDate?: string;
+  student: {
+    id: string;
+    fullName: string;
+    phone?: string;
+  };
+  group: {
+    id: string;
+    name: string;
+  };
+}
 
 export default function EnrollmentsPage() {
-  const [enrollments, setEnrollments] = useState<any[]>([]);
-  const [groups, setGroups] = useState<any[]>([]);
-  const [search, setSearch] = useState("");
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState("");
-  const [page, setPage] = useState(1);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [error, setError] = useState<string>('');
 
-  const loadEnrollments = async () => {
+  const fetchEnrollments = async () => {
     setLoading(true);
     try {
-      const { data } = await api.get("/enrollments", {
-        params: {
-          search,
-          groupId: selectedGroup || undefined,
-          page,
-          limit: 10,
-        },
-      });
-      setEnrollments(data.items);
-      console.log(data.items);
+      const res = await axios.get('/enrollments');
+      setEnrollments(res.data.student ?? []);
+    } catch (err) {
+      console.error(err);
+      setError('Enrollmentsni olishda xatolik yuz berdi');
     } finally {
       setLoading(false);
     }
   };
 
-  const loadGroups = async () => {
-    const { data } = await api.get("/groups");
-    setGroups(data.items);
-  };
-
   useEffect(() => {
-    loadGroups();
+    fetchEnrollments();
   }, []);
 
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      loadEnrollments();
-    }, 400); // 🔸 debounce 400ms
-    return () => clearTimeout(delay);
-  }, [search, selectedGroup, page]);
+  const handleDelete = async (id: string) => {
+    if (!confirm('Enrollmentni o‘chirmoqchimisiz?')) return;
+    try {
+      await axios.delete(`/enrollments/${id}`);
+      fetchEnrollments(); // refresh
+    } catch (err) {
+      console.error(err);
+      setError('O‘chirishda xatolik yuz berdi');
+    }
+  };
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-6">
-      <Card className="shadow-md border-blue-200">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold flex items-center justify-between">
-            <span className="flex items-center gap-2 text-blue-700">
-              Talabalar Ro‘yxati (Enrollments)
-            </span>
-          </CardTitle>
-        </CardHeader>
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Enrollments</h1>
+        <Button onClick={() => setModalOpen(true)}>Yangi Enrollment</Button>
+      </div>
 
-        <CardContent>
-          <div className="flex flex-col sm:flex-row items-center gap-3 mb-4">
-            <Input
-              placeholder="Qidirish (ism, telefon...)"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full sm:w-1/2"
-            />
+      {error && <p className="text-red-500 mb-2">{error}</p>}
 
-            <select
-              value={selectedGroup}
-              onChange={(e) => setSelectedGroup(e.target.value)}
-              className="border rounded-md p-2 text-sm w-full sm:w-1/3"
-            >
-              <option value="">Barcha guruhlar</option>
-              {groups.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.name}
-                </option>
-              ))}
-            </select>
-          </div>
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <Loader2 className="animate-spin w-6 h-6" />
+        </div>
+      ) : (
+        <table className="w-full border-collapse">
+          <thead>
+            <tr>
+              <th className="border p-2">Student</th>
+              <th className="border p-2">Phone</th>
+              <th className="border p-2">Guruh</th>
+              <th className="border p-2">Join Date</th>
+              <th className="border p-2">Status</th>
+              <th className="border p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+  {(enrollments ?? []).map((e) => (
+    <tr key={e.id}>
+      <td className="border p-2">{e.student.fullName}</td>
+      <td className="border p-2">{e.student.phone || '-'}</td>
+      <td className="border p-2">{e.group.name}</td>
+      <td className="border p-2">{new Date(e.joinDate).toLocaleDateString()}</td>
+      <td className="border p-2">{e.status}</td>
+      <td className="border p-2">
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={() => handleDelete(e.id)}
+        >
+          <Trash className="w-4 h-4" />
+        </Button>
+      </td>
+    </tr>
+  ))}
+</tbody>
 
-          {loading ? (
-            <div className="flex justify-center py-10">
-              <Loader2 className="animate-spin text-blue-600 w-6 h-6" />
-            </div>
-          ) : enrollments.length === 0 ? (
-            <p className="text-center text-sm opacity-60 py-6">
-              Ma’lumot topilmadi ❌
-            </p>
-          ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>#</TableHead>
-                    <TableHead>Ism Familiya</TableHead>
-                    <TableHead>Telefon</TableHead>
-                    <TableHead>Guruh</TableHead>
-                    <TableHead>Holat</TableHead>
-                    <TableHead>Qo‘shilgan sana</TableHead>
-                  </TableRow>
-                </TableHeader>
+        </table>
+      )}
 
-                <TableBody>
-                  <AnimatePresence>
-                    {enrollments.map((e, i) => (
-                      <motion.tr
-                        key={e.id}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.25 }}
-                        className="border-b hover:bg-blue-50"
-                      >
-                        <TableCell>{i + 1}</TableCell>
-                        <TableCell>
-                          {e.student?.user?.firstName}{" "}
-                          {e.student?.user?.lastName}
-                        </TableCell>
-                        <TableCell>{e.student?.user?.phone}</TableCell>
-                        <TableCell>{e.group?.name ?? "—"}</TableCell>
-                        <TableCell>
-                          <span
-                            className={`px-2 py-1 rounded-full text-xs ${
-                              e.status === "ACTIVE"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-gray-100 text-gray-500"
-                            }`}
-                          >
-                            {e.status}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          {new Date(e.joinDate).toLocaleDateString()}
-                        </TableCell>
-                      </motion.tr>
-                    ))}
-                  </AnimatePresence>
-                </TableBody>
-              </Table>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <CreateEnrollmentModal  
+            onClose={() => setModalOpen(false)}
+            onSuccess={() => fetchEnrollments()}
+          />
+        </div>
+      )}
     </div>
   );
 }
