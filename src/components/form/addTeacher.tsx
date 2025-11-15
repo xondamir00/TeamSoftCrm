@@ -21,7 +21,7 @@ export default function AddTeacherForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === "monthlySalary" || name === "percentShare") {
-      setForm((f) => ({ ...f, [name]: value ? Number(value) : null }));
+      setForm((f) => ({ ...f, [name]: value ? String(value) : null }));
     } else {
       setForm((f) => ({ ...f, [name]: value }));
     }

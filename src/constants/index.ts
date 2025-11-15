@@ -19,6 +19,16 @@ export const CreateForm = [
     href: "create-teacher",
     icon: UserCog,
   },
+   {
+    name: "Assignment Teacher",
+    href: "create-assignment",
+    icon: UserCog,
+  },
+    {
+    name: "Assignment Teacher Get",
+    href: "assignments",
+    icon: UserCog,
+  },
   {
     name: "createForm.createRoom",
     href: "create-room",

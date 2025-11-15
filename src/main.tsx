@@ -10,7 +10,8 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <App/>
+      <App />
+
     </ThemeProvider>
         </BrowserRouter>
   </StrictMode>

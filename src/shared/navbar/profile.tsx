@@ -62,7 +62,7 @@ export default function ProfileMenu() {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          onClick={() => navigate("/admin/settings/trash")}
+          onClick={() => navigate("/admin/settings/archive")}
           className="flex gap-2 cursor-pointer text-red-500 focus:text-red-600"
         >
           Archive
