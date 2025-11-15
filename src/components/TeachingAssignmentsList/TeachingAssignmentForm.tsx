@@ -19,31 +19,46 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { data } from "react-router-dom";
+
+// Backend enum bilan moslashtirilgan
+const DAYS_PATTERNS = [
+  { label: "Hafta kunlari (Mon-Fri)", value: "ODD" },
+  { label: "Hafta oxiri (Sat-Sun)", value: "ADD" },
+  { label: "Barcha kunlar", value: "ALL" },
+];
 
 export const TeachingAssignmentForm = ({
   onSuccess,
 }: {
   onSuccess: () => void;
 }) => {
-  const [teacherId, setTeacherId] = useState("");
-  const [groupId, setGroupId] = useState("");
-  const [role, setRole] = useState("LEAD");
-  const [note, setNote] = useState("");
+  const [form, setForm] = useState({
+    teacherId: "",
+    groupId: "",
+    role: "LEAD",
+    note: "",
+    fromDate: "",
+    toDate: "",
+    inheritSchedule: true,
+    daysPatternOverride: "", // enum qiymatlari: WEEKDAYS | WEEKEND | ALL
+    startTimeOverride: "",
+    endTimeOverride: "",
+  });
 
-  const [teachers, setTeachers] = useState<{ id: string; name: string }[]>([]);
-  const [groups, setGroups] = useState<{ id: string; name: string }[]>([]);
-  const [error, setError] = useState("");
-  const [openAlert, setOpenAlert] = useState(false);
+  const [teachers, setTeachers] = useState<any[]>([]);
+  const [groups, setGroups] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [error, setError] = useState("");
 
-  // Ma'lumotlarni olish
+  const updateForm = (key: string, value: any) =>
+    setForm((prev) => ({ ...prev, [key]: value }));
+
   useEffect(() => {
-    const fetchData = async () => {
+    (async () => {
       try {
         setLoading(true);
         const [teacherRes, groupRes] = await Promise.all([
@@ -51,52 +66,105 @@ export const TeachingAssignmentForm = ({
           api.get("/groups"),
         ]);
 
-        setTeachers(
-          Array.isArray(teacherRes.data.items) ? teacherRes.data.items : []
-        );
-        console.log(teachers);
+        const tItems =
+          teacherRes?.data?.items ??
+          teacherRes?.data?.data ??
+          teacherRes?.data ??
+          [];
+        const gItems =
+          groupRes?.data?.items ?? groupRes?.data?.data ?? groupRes?.data ?? [];
 
-        setGroups(Array.isArray(groupRes.data) ? groupRes.data : []);
-      } catch (err: any) {
+        setTeachers(Array.isArray(tItems) ? tItems : []);
+        setGroups(Array.isArray(gItems) ? gItems : []);
+      } catch (e: any) {
+        console.error("fetch error", e);
         setError("Ma'lumotlarni olishda xato yuz berdi");
         setOpenAlert(true);
       } finally {
         setLoading(false);
       }
+    })();
+  }, []);
+
+  const teacherLabel = (t: any) =>
+    t.name ||
+    t.fullName ||
+    `${t.firstName ?? ""} ${t.lastName ?? ""}`.trim() ||
+    t.id;
+
+  const buildDto = () => {
+    const dto: any = {
+      teacherId: form.teacherId,
+      groupId: form.groupId,
+      role: form.role,
+      note: form.note || undefined,
+      inheritSchedule: !!form.inheritSchedule,
     };
 
-    fetchData();
-  }, []);
+    // ISO 8601 format
+    if (form.fromDate) dto.fromDate = new Date(form.fromDate).toISOString();
+    if (form.toDate) dto.toDate = new Date(form.toDate).toISOString();
+
+    if (!form.inheritSchedule) {
+      dto.daysPatternOverride = form.daysPatternOverride || undefined;
+      dto.startTimeOverride = form.startTimeOverride || undefined;
+      dto.endTimeOverride = form.endTimeOverride || undefined;
+    }
+
+    return dto;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!teacherId || !groupId) return;
+    if (!form.teacherId || !form.groupId) {
+      setError("Iltimos, o'qituvchi va guruhni tanlang");
+      setOpenAlert(true);
+      return;
+    }
+
+    if (!form.inheritSchedule) {
+      if (
+        !form.daysPatternOverride ||
+        !form.startTimeOverride ||
+        !form.endTimeOverride
+      ) {
+        setError(
+          "inheritSchedule=false bo'lsa, daysPatternOverride, start va end time majburiy"
+        );
+        setOpenAlert(true);
+        return;
+      }
+    }
 
     try {
-      await api.post("/teaching-assignments", {
-        teacherId,
-        groupId,
-        role,
-        note,
-      });
+      const dto = buildDto();
+      await api.post("/teaching-assignments", dto);
       onSuccess();
-      setTeacherId("");
-      setGroupId("");
-      setRole("LEAD");
-      setNote("");
+      setForm({
+        teacherId: "",
+        groupId: "",
+        role: "LEAD",
+        note: "",
+        fromDate: "",
+        toDate: "",
+        inheritSchedule: true,
+        daysPatternOverride: "",
+        startTimeOverride: "",
+        endTimeOverride: "",
+      });
     } catch (err: any) {
-      setError(err.response?.data?.message || "Xato yuz berdi");
+      console.error("submit error", err);
+      setError(err?.response?.data?.message ?? err.message ?? "Xato yuz berdi");
       setOpenAlert(true);
     }
   };
 
-  if (loading) {
+  if (loading)
     return (
       <div className="text-center py-6 text-gray-500">
         Ma'lumotlar yuklanmoqda...
       </div>
     );
-  }
 
   return (
     <>
@@ -104,43 +172,51 @@ export const TeachingAssignmentForm = ({
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 p-6 bg-white dark:bg-black border dark:border-gray-700 rounded-xl shadow-md"
       >
-        {/* Teacher select */}
+        {/* Teacher */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
             O'qituvchi
           </label>
-          <Select value={teacherId} onValueChange={setTeacherId}>
+          <Select
+            value={form.teacherId}
+            onValueChange={(v) => updateForm("teacherId", v)}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="O'qituvchi tanlang" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Teachers</SelectLabel>
-                {teachers.map((t) => (
-                  <SelectItem key={t.id} value={t.id}>
-                    {t.name}
-                  </SelectItem>
-                ))}
+                {teachers.length === 0 ? (
+                  <SelectItem value="">— Hech qanday o'qituvchi —</SelectItem>
+                ) : (
+                  teachers.map((t: any) => (
+                    <SelectItem key={t.id} value={t.id}>
+                      {teacherLabel(t)}
+                    </SelectItem>
+                  ))
+                )}
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
 
-        {/* Group select */}
+        {/* Group */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
             Guruh
           </label>
-          <Select value={groupId} onValueChange={setGroupId}>
+          <Select
+            value={form.groupId}
+            onValueChange={(v) => updateForm("groupId", v)}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Guruh tanlang" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Groups</SelectLabel>
-                {groups.map((g) => (
+                {groups.map((g: any) => (
                   <SelectItem key={g.id} value={g.id}>
-                    {g.name}
+                    {g.name ?? g.title ?? g.id}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -148,34 +224,135 @@ export const TeachingAssignmentForm = ({
           </Select>
         </div>
 
-        {/* Role select */}
+        {/* Role */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
             Role
           </label>
-          <Select value={role} onValueChange={setRole}>
+          <Select
+            value={form.role}
+            onValueChange={(v) => updateForm("role", v)}
+          >
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectGroup>
-                <SelectItem value="LEAD">LEAD</SelectItem>
-                <SelectItem value="ASSISTANT">ASSISTANT</SelectItem>
-                <SelectItem value="SUBSTITUTE">SUBSTITUTE</SelectItem>
-              </SelectGroup>
+              <SelectItem value="LEAD">LEAD</SelectItem>
+              <SelectItem value="ASSISTANT">ASSISTANT</SelectItem>
+              <SelectItem value="SUBSTITUTE">SUBSTITUTE</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        {/* Note input */}
+        {/* Period */}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
+              From
+            </label>
+            <input
+              type="date"
+              value={form.fromDate}
+              onChange={(e) => updateForm("fromDate", e.target.value)}
+              className="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+            />
+          </div>
+          <div>
+            <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
+              To
+            </label>
+            <input
+              type="date"
+              value={form.toDate}
+              onChange={(e) => updateForm("toDate", e.target.value)}
+              className="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+            />
+          </div>
+        </div>
+
+        {/* Inherit toggle */}
+        <div className="flex items-center gap-3">
+          <input
+            id="inherit"
+            type="checkbox"
+            checked={form.inheritSchedule}
+            onChange={(e) => updateForm("inheritSchedule", e.target.checked)}
+            className="w-4 h-4"
+          />
+          <label
+            htmlFor="inherit"
+            className="text-sm text-gray-700 dark:text-gray-300"
+          >
+            Guruh jadvalini meros qilib olish (inheritSchedule)
+          </label>
+        </div>
+
+        {/* Overrides */}
+        {!form.inheritSchedule && (
+          <>
+            <div>
+              <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
+                Days pattern
+              </label>
+              <Select
+                value={form.daysPatternOverride}
+                onValueChange={(v) => updateForm("daysPatternOverride", v)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Days pattern tanlang" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {DAYS_PATTERNS.map((d) => (
+                      <SelectItem key={d.value} value={d.value}>
+                        {d.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
+                  Start time (HH:MM)
+                </label>
+                <input
+                  type="time"
+                  value={form.startTimeOverride}
+                  onChange={(e) =>
+                    updateForm("startTimeOverride", e.target.value)
+                  }
+                  className="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
+                  End time (HH:MM)
+                </label>
+                <input
+                  type="time"
+                  value={form.endTimeOverride}
+                  onChange={(e) =>
+                    updateForm("endTimeOverride", e.target.value)
+                  }
+                  className="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+                />
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Note */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
             Note
           </label>
           <input
             type="text"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
+            value={form.note}
+            onChange={(e) => updateForm("note", e.target.value)}
             placeholder="Qo'shimcha izoh"
             className="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
           />
@@ -185,11 +362,11 @@ export const TeachingAssignmentForm = ({
           type="submit"
           className="bg-blue-500 hover:bg-blue-600 text-white"
         >
-          Add Assignment
+          Saqlash
         </Button>
       </form>
 
-      {/* Error Alert */}
+      {/* Alert */}
       <AlertDialog open={openAlert} onOpenChange={setOpenAlert}>
         <AlertDialogContent>
           <AlertDialogHeader>
