@@ -22,13 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-// Backend enum bilan moslashtirilgan
-const DAYS_PATTERNS = [
-  { label: "Hafta kunlari (Mon-Fri)", value: "ODD" },
-  { label: "Hafta oxiri (Sat-Sun)", value: "ADD" },
-  { label: "Barcha kunlar", value: "ALL" },
-];
+import { data } from "react-router-dom";
 
 export const TeachingAssignmentForm = ({
   onSuccess,
@@ -66,18 +60,13 @@ export const TeachingAssignmentForm = ({
           api.get("/groups"),
         ]);
 
-        const tItems =
-          teacherRes?.data?.items ??
-          teacherRes?.data?.data ??
-          teacherRes?.data ??
-          [];
-        const gItems =
-          groupRes?.data?.items ?? groupRes?.data?.data ?? groupRes?.data ?? [];
+        setTeachers(
+          Array.isArray(teacherRes.data.items) ? teacherRes.data.items : []
+        );
+        console.log(teachers);
 
-        setTeachers(Array.isArray(tItems) ? tItems : []);
-        setGroups(Array.isArray(gItems) ? gItems : []);
-      } catch (e: any) {
-        console.error("fetch error", e);
+        setGroups(Array.isArray(groupRes.data) ? groupRes.data : []);
+      } catch (err: any) {
         setError("Ma'lumotlarni olishda xato yuz berdi");
         setOpenAlert(true);
       } finally {
@@ -116,29 +105,15 @@ export const TeachingAssignmentForm = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.teacherId || !form.groupId) {
-      setError("Iltimos, o'qituvchi va guruhni tanlang");
-      setOpenAlert(true);
-      return;
-    }
-
-    if (!form.inheritSchedule) {
-      if (
-        !form.daysPatternOverride ||
-        !form.startTimeOverride ||
-        !form.endTimeOverride
-      ) {
-        setError(
-          "inheritSchedule=false bo'lsa, daysPatternOverride, start va end time majburiy"
-        );
-        setOpenAlert(true);
-        return;
-      }
-    }
+    if (!teacherId || !groupId) return;
 
     try {
-      const dto = buildDto();
-      await api.post("/teaching-assignments", dto);
+      await api.post("/teaching-assignments", {
+        teacherId,
+        groupId,
+        role,
+        note,
+      });
       onSuccess();
       setForm({
         teacherId: "",
@@ -362,7 +337,7 @@ export const TeachingAssignmentForm = ({
           type="submit"
           className="bg-blue-500 hover:bg-blue-600 text-white"
         >
-          Saqlash
+          Add Assignment
         </Button>
       </form>
 

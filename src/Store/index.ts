@@ -50,6 +50,27 @@ export interface Student {
   startDate?: string;
   createdAt: string;
 }
+export interface Enrollment {
+  id: string;
+  studentId: string;
+  groupId: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+
+  // backend join qaytarsa optional
+  student?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+  };
+
+  group?: {
+    id: string;
+    name: string;
+  };
+}
+
 type AuthState = {
   token: string | null;
   refreshToken: string | null;
