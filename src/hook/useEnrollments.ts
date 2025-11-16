@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { api } from "@/Service/api";
+import type { Enrollment } from "@/Store";
 
 interface Filters {
   studentId?: string;
@@ -12,15 +13,15 @@ interface Filters {
 }
 
 export function useEnrollments(filters: Filters = {}) {
-  const [data, setData] = useState<any[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<Enrollment[]>([]);
+  const [total, setTotal] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchEnrollments = useCallback(async () => {
     try {
       setLoading(true);
 
-      const params: any = {};
+      const params: Record<string, string | number | undefined> = {};
 
       if (filters.studentId) params.studentId = filters.studentId;
       if (filters.groupId) params.groupId = filters.groupId;
@@ -31,7 +32,10 @@ export function useEnrollments(filters: Filters = {}) {
       params.page = filters.page || 1;
       params.limit = filters.limit || 10;
 
-      const res = await api.get("/enrollments", { params });
+      const res = await api.get<{
+        data: Enrollment[];
+        total: number;
+      }>("/enrollments", { params });
 
       setData(res.data.data);
       setTotal(res.data.total);

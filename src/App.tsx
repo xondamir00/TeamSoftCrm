@@ -15,21 +15,21 @@ import RoomsList from "./components/Roms/RoomsList";
 
 import Groups from "./components/Group/GroupList";
 
-
-
 import { Login } from "./components/auth/login";
 import ListStudent from "./components/Students/ListStudent";
 import EnrollmentsPage from "./components/page/EnrollmentsPage";
-import Trash from "./components/page/trash";
 import { TeachingAssignmentForm } from "./components/TeachingAssignmentsList/TeachingAssignmentForm";
 import { TeachingAssignmentsList } from "./components/TeachingAssignmentsList/TeachingAssignmentsList";
+import AddTeacherForm from "./components/teacher/AddTeacherForm";
+import CreateStudentForm from "./components/form/addStudent";
+import AddGroupForm from "./components/Group/AddGoup";
+import TrashRoomsPage from "./components/trash/trashroom";
 
 const App = () => {
   return (
     <AuthRefresh>
       <div className="light:bg-[#f2f2f2] min-h-screen dark:bg-gray-900">
         <Routes>
-
           {/* Public route */}
           <Route path="/sign" element={<Login />} />
 
@@ -48,15 +48,33 @@ const App = () => {
             <Route path="teachers" element={<TeacherList />} />
 
             {/* Teaching Assignments routes */}
-            <Route path="settings/assignments" element={<TeachingAssignmentsList/>} />
-            <Route path="settings/create-assignment" element={<TeachingAssignmentForm onSuccess={() => {}} />} />
+            <Route
+              path="settings/assignments"
+              element={<TeachingAssignmentsList />}
+            />
+            <Route
+              path="settings/create-assignment"
+              element={<TeachingAssignmentForm onSuccess={() => {}} />}
+            />
 
             {/* Create forms */}
-            <Route path="settings/create-meneger" element={<AddManagerForm />} />
+            <Route
+              path="settings/create-teacher"
+              element={<AddTeacherForm />}
+            />
+            <Route
+              path="settings/create-student"
+              element={<CreateStudentForm />}
+            />
+            <Route
+              path="settings/create-meneger"
+              element={<AddManagerForm />}
+            />
+            <Route path="settings/create-group" element={<AddGroupForm />} />
             <Route path="settings/create-room" element={<AddRoom />} />
 
             {/* Other admin pages */}
-            <Route path="settings/archive" element={<Trash />} />
+            <Route path="settings/archive" element={<TrashRoomsPage />} />
             <Route path="settings/enrollments" element={<EnrollmentsPage />} />
             <Route path="rooms" element={<RoomsList />} />
             <Route path="groups" element={<Groups />} />

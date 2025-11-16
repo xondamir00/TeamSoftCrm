@@ -4,8 +4,18 @@ import { useState, useEffect } from "react";
 import { api } from "@/Service/api";
 import { Button } from "@/components/ui/button";
 import { Loader2, Trash, Plus, Edit } from "lucide-react";
-import { AnimatePresence } from "framer-motion";
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 import CreateEnrollmentDrawer from "../Enrollments/CreateEnrollmentModal";
 import EditEnrollmentDrawer from "../Enrollments/EditEnrollmentDrawer";
 
@@ -31,13 +41,12 @@ export default function EnrollmentsPage() {
   const [error, setError] = useState<string>("");
   const [createOpen, setCreateOpen] = useState(false);
   const [editEnrollment, setEditEnrollment] = useState<Enrollment | null>(null);
-  const [] = useState<Enrollment | null>(null);
 
   const fetchEnrollments = async () => {
     setLoading(true);
     try {
       const res = await api.get("/enrollments");
-      setEnrollments(res.data.student ?? []);
+      setEnrollments(res.data.items ?? []);
     } catch (err) {
       console.error(err);
       setError("Enrollmentsni olishda xatolik yuz berdi");
@@ -46,7 +55,9 @@ export default function EnrollmentsPage() {
     }
   };
 
-  useEffect(() => { fetchEnrollments(); }, []);
+  useEffect(() => {
+    fetchEnrollments();
+  }, []);
 
   const handleDelete = async (id: string) => {
     try {
@@ -70,7 +81,9 @@ export default function EnrollmentsPage() {
       {error && <p className="text-red-500 mb-2">{error}</p>}
 
       {loading ? (
-        <div className="flex justify-center items-center"><Loader2 className="animate-spin w-6 h-6" /></div>
+        <div className="flex justify-center items-center">
+          <Loader2 className="animate-spin w-6 h-6" />
+        </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border rounded-lg overflow-hidden">
@@ -90,10 +103,16 @@ export default function EnrollmentsPage() {
                   <td className="p-3">{e.student.fullName}</td>
                   <td className="p-3">{e.student.phone || "-"}</td>
                   <td className="p-3">{e.group.name}</td>
-                  <td className="p-3">{new Date(e.joinDate).toLocaleDateString()}</td>
+                  <td className="p-3">
+                    {new Date(e.joinDate).toLocaleDateString()}
+                  </td>
                   <td className="p-3">{e.status}</td>
                   <td className="p-3 flex space-x-2">
-                    <Button variant="outline" size="sm" onClick={() => setEditEnrollment(e)}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setEditEnrollment(e)}
+                    >
                       <Edit className="w-4 h-4" />
                     </Button>
 
@@ -105,14 +124,18 @@ export default function EnrollmentsPage() {
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>O‘chirishni tasdiqlang</AlertDialogTitle>
+                          <AlertDialogTitle>
+                            O‘chirishni tasdiqlang
+                          </AlertDialogTitle>
                           <AlertDialogDescription>
                             {`"${e.student.fullName}" enrollmentni o‘chirmoqchimisiz?`}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(e.id)}>O‘chirish</AlertDialogAction>
+                          <AlertDialogAction onClick={() => handleDelete(e.id)}>
+                            O‘chirish
+                          </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
@@ -129,7 +152,10 @@ export default function EnrollmentsPage() {
         {createOpen && (
           <CreateEnrollmentDrawer
             onClose={() => setCreateOpen(false)}
-            onSuccess={() => { fetchEnrollments(); setCreateOpen(false); }}
+            onSuccess={() => {
+              fetchEnrollments();
+              setCreateOpen(false);
+            }}
           />
         )}
       </AnimatePresence>
@@ -140,7 +166,10 @@ export default function EnrollmentsPage() {
           <EditEnrollmentDrawer
             enrollment={editEnrollment}
             onClose={() => setEditEnrollment(null)}
-            onSuccess={() => { fetchEnrollments(); setEditEnrollment(null); }}
+            onSuccess={() => {
+              fetchEnrollments();
+              setEditEnrollment(null);
+            }}
           />
         )}
       </AnimatePresence>
