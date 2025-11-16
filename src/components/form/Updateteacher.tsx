@@ -1,6 +1,13 @@
+"use client";
+
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "@/Service/api";
+import { AxiosError } from "axios";
+
+interface ApiError {
+  message?: string;
+}
 
 interface UpdateTeacherProps {
   teacher: {
@@ -14,28 +21,32 @@ interface UpdateTeacherProps {
 
 export default function UpdateTeacherForm({ teacher, onSuccess }: UpdateTeacherProps) {
   const { t } = useTranslation();
+
   const [form, setForm] = useState({
     firstName: teacher.firstName,
     lastName: teacher.lastName,
     phone: teacher.phone,
     password: "",
     photoUrl: "",
-    monthlySalary: null as string | null,
-    percentShare: null as string | null,
+    monthlySalary: null as number | null,
+    percentShare: null as number | null,
   });
 
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm((f) => ({
-      ...f,
-      [name]:
-        name === "monthlySalary" || name === "percentShare"
-          ? value ? String(value) : null
-          : value,
-    }));
+
+    if (name === "monthlySalary" || name === "percentShare") {
+      setForm((prev) => ({
+        ...prev,
+        [name]: value === "" ? null : Number(value),
+      }));
+      return;
+    }
+
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,11 +55,20 @@ export default function UpdateTeacherForm({ teacher, onSuccess }: UpdateTeacherP
     setMessage("");
 
     try {
-      const payload = { ...form };
+      const payload = {
+        ...form,
+        photoUrl:
+          form.photoUrl && form.photoUrl.startsWith("http")
+            ? form.photoUrl
+            : null,
+      };
+
       await api.patch(`/teachers/${teacher.id}`, payload);
+
       setMessage(t("updated_successfully"));
       onSuccess();
-    } catch (err: any) {
+    } catch (error) {
+      const err = error as AxiosError<ApiError>;
       setMessage(err.response?.data?.message || t("update_error"));
     } finally {
       setLoading(false);
@@ -111,6 +131,7 @@ export default function UpdateTeacherForm({ teacher, onSuccess }: UpdateTeacherP
         placeholder={t("percent_share")}
         className="border p-2 rounded"
       />
+
       <button
         type="submit"
         disabled={loading}

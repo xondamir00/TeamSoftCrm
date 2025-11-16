@@ -1,6 +1,20 @@
 import React, { useState } from "react";
-import { api } from "@/Service/api"; // yoki axios instance
+import { api } from "@/Service/api";
 import { useTranslation } from "react-i18next";
+import { AxiosError } from "axios";
+
+interface ManagerPayload {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  password: string;
+  photoUrl?: string | null;
+  monthlySalary?: number;
+}
+
+interface ApiErrorResponse {
+  message?: string;
+}
 
 export default function AddManagerForm() {
   const { t } = useTranslation();
@@ -27,7 +41,7 @@ export default function AddManagerForm() {
     setLoading(true);
 
     try {
-      const payload = {
+      const payload: ManagerPayload = {
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
         phone: form.phone.trim(),
@@ -42,7 +56,7 @@ export default function AddManagerForm() {
       };
 
       const res = await api.post("/managers", payload);
-      console.log("✅ Manager added:", res.data);
+      console.log("Manager added:", res.data);
 
       setMessage(t("manager_added_success"));
       setForm({
@@ -53,11 +67,13 @@ export default function AddManagerForm() {
         photoUrl: "",
         monthlySalary: "",
       });
-    } catch (err: any) {
-      console.error(err);
-      setMessage(
-        err?.response?.data?.message || t("manager_add_error")
-      );
+    } catch (error) {
+      const err = error as AxiosError<ApiErrorResponse>;
+
+      const errMsg =
+        err.response?.data?.message || t("manager_add_error");
+
+      setMessage(errMsg);
     } finally {
       setLoading(false);
     }

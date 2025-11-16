@@ -9,6 +9,11 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "react-i18next";
+import { AxiosError } from "axios";
+
+interface ApiError {
+  message?: string;
+}
 
 export default function CreateStudentForm() {
   const { t } = useTranslation();
@@ -43,6 +48,7 @@ export default function CreateStudentForm() {
       });
 
       setMsg(`${t("student_created")}: ${data.firstName} ${data.lastName}`);
+
       setFirst("");
       setLast("");
       setPhone("");
@@ -50,8 +56,9 @@ export default function CreateStudentForm() {
       setDob("");
       setStartDate("");
       setGroupId("");
-    } catch (e: any) {
-      setErr(e?.response?.data?.message || t("create_error"));
+    } catch (error) {
+      const errObj = error as AxiosError<ApiError>;
+      setErr(errObj.response?.data?.message || t("create_error"));
     } finally {
       setLoading(false);
     }
@@ -77,6 +84,7 @@ export default function CreateStudentForm() {
                   required
                 />
               </div>
+
               <div>
                 <Label>{t("last_name")}</Label>
                 <Input
@@ -118,6 +126,7 @@ export default function CreateStudentForm() {
                   onChange={(e) => setDob(e.target.value)}
                 />
               </div>
+
               <div>
                 <Label>{t("start_date")}</Label>
                 <Input
@@ -151,6 +160,7 @@ export default function CreateStudentForm() {
                 <AlertDescription>{msg}</AlertDescription>
               </Alert>
             )}
+
             {err && (
               <Alert variant="destructive">
                 <AlertDescription>{err}</AlertDescription>
