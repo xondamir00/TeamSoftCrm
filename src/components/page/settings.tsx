@@ -56,7 +56,6 @@ const TeacherGroup = () => {
                 >
                   <Icon
                     size={28}
-                    style={{ color: item.color }}
                     className="transition-transform duration-300 group-hover:scale-110"
                   />
                 </div>

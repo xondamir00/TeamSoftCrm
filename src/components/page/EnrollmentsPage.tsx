@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { api } from "@/Service/api";
 import { Button } from "@/components/ui/button";
 import { Loader2, Trash, Plus, Edit } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 import CreateEnrollmentDrawer from "../Enrollments/CreateEnrollmentModal";
 import EditEnrollmentDrawer from "../Enrollments/EditEnrollmentDrawer";
@@ -31,7 +31,7 @@ export default function EnrollmentsPage() {
   const [error, setError] = useState<string>("");
   const [createOpen, setCreateOpen] = useState(false);
   const [editEnrollment, setEditEnrollment] = useState<Enrollment | null>(null);
-  const [deleteEnrollment, setDeleteEnrollment] = useState<Enrollment | null>(null);
+  const [] = useState<Enrollment | null>(null);
 
   const fetchEnrollments = async () => {
     setLoading(true);

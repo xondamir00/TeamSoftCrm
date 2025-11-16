@@ -8,14 +8,11 @@ import { AuthRefresh } from "./components/auth/Auth-Refresh";
 
 import Settings from "./components/page/settings";
 import TeacherList from "./components/teacher/Teacherlist";
-import AddTeacherForm from "./components/form/addTeacher";
-import CreateStudentForm from "./components/form/addStudent";
 import AddManagerForm from "./components/form/AddManeger";
 
 import AddRoom from "./components/Roms/addRoom";
 import RoomsList from "./components/Roms/RoomsList";
 
-import AddGroupForm from "./components/Group/AddGoup";
 import Groups from "./components/Group/GroupList";
 
 
@@ -55,10 +52,7 @@ const App = () => {
             <Route path="settings/create-assignment" element={<TeachingAssignmentForm onSuccess={() => {}} />} />
 
             {/* Create forms */}
-            <Route path="settings/create-teacher" element={<AddTeacherForm />} />
-            <Route path="settings/create-student" element={<CreateStudentForm />} />
             <Route path="settings/create-meneger" element={<AddManagerForm />} />
-            <Route path="settings/create-group" element={<AddGroupForm />} />
             <Route path="settings/create-room" element={<AddRoom />} />
 
             {/* Other admin pages */}
