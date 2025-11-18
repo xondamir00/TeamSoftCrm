@@ -13,7 +13,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
 import {
   Select,
   SelectContent,
@@ -22,7 +21,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { data } from "react-router-dom";
+
+const DAYS_PATTERNS = [
+  { value: "ADD", label: "Weekdays" },
+  { value: "ODD", label: "Weekend" },
+  { value: "ALL", label: "All days" },
+];
 
 export const TeachingAssignmentForm = ({
   onSuccess,
@@ -37,7 +41,7 @@ export const TeachingAssignmentForm = ({
     fromDate: "",
     toDate: "",
     inheritSchedule: true,
-    daysPatternOverride: "", // enum qiymatlari: WEEKDAYS | WEEKEND | ALL
+    daysPatternOverride: "",
     startTimeOverride: "",
     endTimeOverride: "",
   });
@@ -63,8 +67,6 @@ export const TeachingAssignmentForm = ({
         setTeachers(
           Array.isArray(teacherRes.data.items) ? teacherRes.data.items : []
         );
-        console.log(teachers);
-
         setGroups(
           Array.isArray(groupRes.data.items) ? groupRes.data.items : []
         );
@@ -92,7 +94,6 @@ export const TeachingAssignmentForm = ({
       inheritSchedule: !!form.inheritSchedule,
     };
 
-    // ISO 8601 format
     if (form.fromDate) dto.fromDate = new Date(form.fromDate).toISOString();
     if (form.toDate) dto.toDate = new Date(form.toDate).toISOString();
 
@@ -107,15 +108,11 @@ export const TeachingAssignmentForm = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const { teacherId, groupId } = form;
     if (!teacherId || !groupId) return;
 
     try {
-      await api.post("/teaching-assignments", {
-        teacherId,
-        groupId,
-        role,
-        note,
-      });
+      await api.post("/teaching-assignments", buildDto());
       onSuccess();
       setForm({
         teacherId: "",
@@ -260,7 +257,7 @@ export const TeachingAssignmentForm = ({
             htmlFor="inherit"
             className="text-sm text-gray-700 dark:text-gray-300"
           >
-            Guruh jadvalini meros qilib olish (inheritSchedule)
+            Guruh jadvalini meros qilib olish
           </label>
         </div>
 
