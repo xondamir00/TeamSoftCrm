@@ -9,14 +9,16 @@ import { Button } from "@/components/ui/button";
 import type { Teacher } from "@/Store";
 import DeleteTeacherDialog from "../teacher/deleteTeacher";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 export default function TrashTeacherPage() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const [restoreOpen, setRestoreOpen] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
+
+  const { t } = useTranslation();
 
   const fetchTrashTeachers = async () => {
     try {
@@ -26,7 +28,7 @@ export default function TrashTeacherPage() {
       });
       setTeachers(data.items || []);
     } catch (err: any) {
-      setError(err?.response?.data?.message || "Xatolik!");
+      setError(err?.response?.data?.message || t("errorDefault"));
     } finally {
       setLoading(false);
     }
@@ -42,7 +44,7 @@ export default function TrashTeacherPage() {
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-red-600 flex items-center gap-2">
             <Trash2 className="h-5 w-5" />
-            Korzina / O‘chirilgan O‘qituvchilar
+            {t("trashTeachersTitle")}
           </CardTitle>
         </CardHeader>
 
@@ -64,7 +66,7 @@ export default function TrashTeacherPage() {
           {/* Empty */}
           {!loading && !error && teachers.length === 0 && (
             <p className="text-center text-sm opacity-60 py-4">
-              Korzina hozircha bo‘sh ✅
+              {t("emptyText")}
             </p>
           )}
 
@@ -96,7 +98,7 @@ export default function TrashTeacherPage() {
                   }}
                 >
                   <RotateCcw className="h-4 w-4" />
-                  Qaytarish
+                  {t("restore")}
                 </Button>
               </motion.div>
             ))}

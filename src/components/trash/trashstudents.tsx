@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RotateCcw, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface Student {
   id: string;
@@ -18,6 +19,7 @@ interface Student {
 export default function TrashStudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const load = async () => {
     try {
@@ -46,20 +48,20 @@ export default function TrashStudentsPage() {
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-red-600 flex items-center gap-2">
             <Trash2 className="h-5 w-5" />
-            Korzina / O‘chirilgan talabalar
+            {t("trashStudentsTitle")}
           </CardTitle>
         </CardHeader>
 
         <CardContent className="space-y-3">
           {loading && (
             <p className="text-center text-sm opacity-60 py-4">
-              Yuklanmoqda...
+              {t("loading")}
             </p>
           )}
 
           {!loading && students.length === 0 && (
             <p className="text-center text-sm opacity-60 py-4">
-              Korzina hozircha bo‘sh ✅
+              {t("emptyText")}
             </p>
           )}
 
@@ -78,7 +80,7 @@ export default function TrashStudentsPage() {
                     {s.fullName}
                   </p>
                   <p className="text-xs opacity-60">
-                    Telefon: {s.phone || "—"}
+                    {t("phone")}: {s.phone || "—"}
                   </p>
                 </div>
 
@@ -89,7 +91,7 @@ export default function TrashStudentsPage() {
                   onClick={() => restore(s.id)}
                 >
                   <RotateCcw className="h-4 w-4" />
-                  Qaytarish
+                  {t("restore")}
                 </Button>
               </motion.div>
             ))}

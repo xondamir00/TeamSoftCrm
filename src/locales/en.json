@@ -103,5 +103,11 @@
   "sunday": "Sunday",
   "odd_days_label": "Odd days (Mon, Wed, Fri)",
   "even_days_label": "Even days (Tue, Thu, Sat)",
-  "custom_days_label": "Custom days"
+  "custom_days_label": "Custom days",
+  "trashTitle": "Trash / Deleted Rooms",
+  "emptyText": "The trash is currently empty ✅",
+  "restore": "Restore",
+  "trashStudentsTitle": "Trash / Deleted Students",
+  "trashTeachersTitle": "Trash / Deleted Teachers",
+  "errorDefault": "An error occurred!"
 }

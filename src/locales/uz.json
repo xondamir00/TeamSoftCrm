@@ -101,7 +101,13 @@
   "friday": "Juma",
   "saturday": "Shanba",
   "sunday": "Yakshanba",
-   "odd_days_label": "Toq kunlar (Dushanba, Chorshanba, Juma)",
+  "odd_days_label": "Toq kunlar (Dushanba, Chorshanba, Juma)",
   "even_days_label": "Juft kunlar (Seshanba, Payshanba, Shanba)",
-  "custom_days_label": "Maxsus kunlar"
+  "custom_days_label": "Maxsus kunlar",
+  "trashTitle": "Korzina / O‘chirilgan xonalar",
+  "emptyText": "Korzina hozircha bo‘sh ✅",
+  "restore": "Qaytarish",
+  "trashStudentsTitle": "Korzina / O‘chirilgan talabalar",
+  "trashTeachersTitle": "Korzina / O‘chirilgan O‘qituvchilar",
+  "errorDefault": "Xatolik yuz berdi!"
 }
