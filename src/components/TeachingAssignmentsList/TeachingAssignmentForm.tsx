@@ -65,7 +65,9 @@ export const TeachingAssignmentForm = ({
         );
         console.log(teachers);
 
-        setGroups(Array.isArray(groupRes.data) ? groupRes.data : []);
+        setGroups(
+          Array.isArray(groupRes.data.items) ? groupRes.data.items : []
+        );
       } catch (err: any) {
         setError("Ma'lumotlarni olishda xato yuz berdi");
         setOpenAlert(true);

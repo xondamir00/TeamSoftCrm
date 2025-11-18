@@ -49,9 +49,9 @@ export function Login() {
           navigate("/admin");
           break;
         case "MANAGER":
-          navigate("/manager/panel");
+          navigate("/admin");
           break;
-        case "USER":
+        case "TEACHER":
         default:
           navigate("/dashboard");
           break;
