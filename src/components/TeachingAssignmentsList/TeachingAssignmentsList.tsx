@@ -34,7 +34,9 @@ export const TeachingAssignmentsList = () => {
       const { data } = await api.get("/teaching-assignments");
       setAssignments(data.items || []);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Ma'lumotlarni olishda xatolik yuz berdi");
+      setError(
+        err.response?.data?.message || "Ma'lumotlarni olishda xatolik yuz berdi"
+      );
     } finally {
       setLoading(false);
     }
@@ -59,7 +61,11 @@ export const TeachingAssignmentsList = () => {
     );
 
   if (!assignments.length)
-    return <p className="text-center text-gray-500 py-6">Hech qanday tayinlashlar mavjud emas</p>;
+    return (
+      <p className="text-center text-gray-500 py-6">
+        Hech qanday tayinlashlar mavjud emas
+      </p>
+    );
 
   return (
     <div className="w-[95%] mx-auto dark:bg-black dark:text-white border dark:border-gray-700 rounded-xl p-4 shadow">
@@ -78,7 +84,10 @@ export const TeachingAssignmentsList = () => {
           </TableHeader>
           <TableBody>
             {assignments.map((a, i) => (
-              <TableRow key={a.id} className="hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+              <TableRow
+                key={a.id}
+                className="hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+              >
                 <TableCell>{i + 1}</TableCell>
                 <TableCell>{a.teacherId}</TableCell>
                 <TableCell>{a.groupId}</TableCell>

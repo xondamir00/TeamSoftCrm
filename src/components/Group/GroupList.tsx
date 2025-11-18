@@ -180,7 +180,6 @@ export default function GroupList() {
                   setSheetOpen(false);
                   fetchGroups();
                 }}
-                onCancel={() => setSheetOpen(false)}
               />
             </div>
 

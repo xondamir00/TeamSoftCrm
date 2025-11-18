@@ -32,11 +32,16 @@ export default function DeleteTeacherDialog({
 
   if (!teacher) return null;
 
-  const handleDelete = async () => {
+  const isActive = teacher.isActive;
+
+  const handleUpdateActive = async () => {
     setLoading(true);
     try {
-      await api.delete(`/teachers/${teacher.id}`);
-      if (onDeleted) onDeleted();
+      await api.patch(`/teachers/${teacher.id}`, {
+        isActive: !isActive,
+      });
+
+      onDeleted?.();
       onClose();
     } catch (err) {
       console.error(err);
@@ -49,15 +54,27 @@ export default function DeleteTeacherDialog({
     <AlertDialog open={open} onOpenChange={onClose}>
       <AlertDialogContent className="dark:bg-gray-900 dark:text-gray-200">
         <AlertDialogHeader>
-          <AlertDialogTitle className="dark:text-gray-100">
-            {`O‘qituvchini o‘chirish`}
+          <AlertDialogTitle>
+            {isActive ? "O‘qituvchini o‘chirish" : "O‘qituvchini tiklash"}
           </AlertDialogTitle>
-          <AlertDialogDescription className="dark:text-gray-300">
+
+          <AlertDialogDescription>
             {teacher.fullName ||
-              `${teacher.firstName || ""} ${teacher.lastName || ""}`}  
-            o‘chirilishini xohlaysizmi?
+              `${teacher.firstName || ""} ${teacher.lastName || ""}`}{" "}
+            {isActive
+              ? "o‘chirilishini xohlaysizmi?"
+              : "tiklanishini xohlaysizmi?"}
           </AlertDialogDescription>
+
+          <p
+            className={`mt-2 text-sm font-semibold ${
+              isActive ? "text-green-600" : "text-red-500"
+            }`}
+          >
+            Status: {isActive ? "Active" : "Inactive"}
+          </p>
         </AlertDialogHeader>
+
         <AlertDialogFooter>
           <AlertDialogCancel
             disabled={loading}
@@ -66,13 +83,18 @@ export default function DeleteTeacherDialog({
           >
             Bekor qilish
           </AlertDialogCancel>
+
           <AlertDialogAction
             disabled={loading}
-            onClick={handleDelete}
-            className="bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 dark:text-gray-100"
+            onClick={handleUpdateActive}
+            className={`dark:text-gray-100 ${
+              isActive
+                ? "bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+                : "bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600"
+            }`}
           >
             {loading && <Loader2 className="animate-spin w-4 h-4 mr-2" />}
-            O‘chirish
+            {isActive ? "O‘chirish" : "Tiklash"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

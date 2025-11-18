@@ -43,7 +43,7 @@ export default function TeacherList() {
     try {
       setLoading(true);
       const { data } = await api.get("/teachers", {
-        params: { page: 1, limit: 10 },
+        params: { page: 1, limit: 10, isActive: true }, // 🔥 Faqat ACTIVE
       });
       setTeachers(data.items || []);
     } catch (err: any) {
@@ -52,6 +52,7 @@ export default function TeacherList() {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     fetchTeachers();
