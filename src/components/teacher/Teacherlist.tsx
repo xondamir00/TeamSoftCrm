@@ -26,12 +26,16 @@ export default function TeacherList() {
   const fetchTeachers = async () => {
     try {
       setLoading(true);
-      const { data } = await api.get("/teachers", {
-        params: { page: 1, limit: 10, isActive: true }, // 🔥 Faqat ACTIVE
+      const { data } = await api.get<{ items: Teacher[] }>("/teachers", {
+        params: { page: 1, limit: 10 },
       });
       setTeachers(data.items || []);
-    } catch (err: any) {
-      setError(err?.response?.data?.message || t("fetch_error"));
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError(t("fetch_error"));
+      }
     } finally {
       setLoading(false);
     }

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Pie, Line } from "react-chartjs-2";
+import { Line, Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -25,168 +25,149 @@ ChartJS.register(
   LineElement
 );
 
-type ChartType = "tushumlar" | "chiqimlar" | "foyda";
+type Category = "tushumlar" | "chiqimlar" | "foyda";
+type Range = "yillik" | "oylik" | "haftalik";
 
 export default function FinancePage() {
-  const [active, setActive] = useState<ChartType>("tushumlar");
+  const [category, setCategory] = useState<Category>("tushumlar");
+  const [range, setRange] = useState<Range>("yillik");
 
-  const pieData = {
-    tushumlar: {
-      labels: ["Kurslar", "Kitoblar", "Boshqa"],
-      datasets: [
-        {
-          data: [400, 150, 100],
-          backgroundColor: ["#22c55e", "#3b82f6", "#f97316"],
-        },
-      ],
+  const dataSets = {
+    yillik: {
+      labels: ["Yan", "Fev", "Mar", "Apr", "May", "Iyun", "Iyul", "Avg", "Sen", "Okt", "Noy", "Dek"],
+      tushumlar: [5, 6, 8, 9, 10, 11, 12, 13, 15, 17, 18, 20],
+      chiqimlar: [3, 3.5, 4, 4.5, 5, 5.2, 6, 7, 8, 9, 10, 11],
+      foyda: [2, 2.5, 4, 4.5, 5, 5.8, 6, 6.5, 7, 8, 8, 9],
     },
-    chiqimlar: {
-      labels: ["Ijara", "Reklama", "Maosh"],
-      datasets: [
-        {
-          data: [200, 300, 250],
-          backgroundColor: ["#ef4444", "#eab308", "#3b82f6"],
-        },
-      ],
+
+    oylik: {
+      labels: ["1-hafta", "2-hafta", "3-hafta", "4-hafta"],
+      tushumlar: [12, 14, 16, 18],
+      chiqimlar: [4, 5, 6, 7],
+      foyda: [8, 9, 10, 11],
     },
-    foyda: {
-      labels: ["Yan", "Fev", "Mar", "Apr", "May", "Iyun"],
-      datasets: [
-        {
-          label: "Foyda (so‘m)",
-          data: [5, 6, 7.5, 8, 9.2, 10],
-          borderColor: "#22c55e",
-          backgroundColor: "rgba(34,197,94,0.2)",
-          tension: 0.4,
-        },
-      ],
+
+    haftalik: {
+      labels: ["Du", "Se", "Chor", "Pay", "Ju", "Shan", "Yak"],
+      tushumlar: [3, 4, 3.5, 5, 6, 7, 6],
+      chiqimlar: [1, 1.5, 2, 2.5, 3, 3, 2.5],
+      foyda: [2, 2.5, 1.5, 2.5, 3, 4, 3.5],
     },
   };
 
-  const lineData = {
-    labels: ["Yan", "Fev", "Mar", "Apr", "May", "Iyun"],
+  const selected = dataSets[range];
+
+  const activeValues =
+    category === "tushumlar"
+      ? selected.tushumlar
+      : category === "chiqimlar"
+      ? selected.chiqimlar
+      : selected.foyda;
+
+  const totalAmount = activeValues.reduce((sum, v) => sum + v, 0);
+
+  const chartData = {
+    labels: selected.labels,
     datasets: [
       {
         label:
-          active === "tushumlar"
-            ? "Tushumlar (so‘m)"
-            : active === "chiqimlar"
-            ? "Chiqimlar (so‘m)"
-            : "Foyda (so‘m)",
-        data:
-          active === "tushumlar"
-            ? [5, 6.5, 7, 8, 9.5, 10]
-            : active === "chiqimlar"
-            ? [3, 3.5, 4.5, 5, 6, 6.5]
-            : [2, 3, 4, 5, 5.5, 6],
+          category === "tushumlar"
+            ? "Tushumlar"
+            : category === "chiqimlar"
+            ? "Chiqimlar"
+            : "Foyda",
+        data: activeValues,
         borderColor:
-          active === "tushumlar"
+          category === "tushumlar"
             ? "#3b82f6"
-            : active === "chiqimlar"
+            : category === "chiqimlar"
             ? "#ef4444"
             : "#22c55e",
         backgroundColor:
-          active === "tushumlar"
-            ? "rgba(59,130,246,0.2)"
-            : active === "chiqimlar"
-            ? "rgba(239,68,68,0.2)"
-            : "rgba(34,197,94,0.2)",
+          category === "tushumlar"
+            ? "rgba(59,130,246,0.3)"
+            : category === "chiqimlar"
+            ? "rgba(239,68,68,0.3)"
+            : "rgba(34,197,94,0.3)",
         tension: 0.4,
       },
     ],
   };
 
-  const commonOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      tooltip: {
-        titleColor: "#fff",
-        bodyColor: "#fff",
+  const chiqimDetails = {
+    labels: ["Ijara", "Reklama", "Maosh"],
+    datasets: [
+      {
+        data: [200, 300, 250],
+        backgroundColor: ["#ef4444", "#eab308", "#3b82f6"],
       },
-    },
-    scales: {
-      x: {
-        ticks: { color: "#ccc" },
-        grid: { color: "#374151" },
-      },
-      y: {
-        ticks: { color: "#ccc" },
-        grid: { color: "#374151" },
-      },
-    },
+    ],
   };
 
   return (
-    <div className="min-h-screen  dark:text-white p-6">
-      <div className="border  p-4 rounded-md ">
-        <div className="flex justify-center gap-6 py-6">
-          <Button
-            className="w-[200px] h-[50px]"
-            variant={active === "tushumlar" ? "default" : "outline"}
-            onClick={() => setActive("tushumlar")}
-          >
-            Tushumlar
-          </Button>
-
-          <Button
-            className="w-[200px] h-[50px]"
-            variant={active === "chiqimlar" ? "default" : "outline"}
-            onClick={() => setActive("chiqimlar")}
-          >
-            Chiqimlar
-          </Button>
-
-          <Button
-            className="w-[200px] h-[50px]"
-            variant={active === "foyda" ? "default" : "outline"}
-            onClick={() => setActive("foyda")}
-          >
-            Foyda
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-          <Card className=" text-center h-[500px] flex flex-col justify-between">
-            <CardHeader>
-              <CardTitle>
-                {active === "tushumlar"
-                  ? "Tushumlar diagrammasi (shu oy)"
-                  : active === "chiqimlar"
-                  ? "Chiqimlar diagrammasi (shu oy)"
-                  : "Foyda (oylar bo‘yicha)"}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex justify-center items-center flex-1">
-              <div className="w-[400px] h-[400px]">
-                {active === "foyda" ? (
-                  <Line data={pieData.foyda} options={commonOptions} />
-                ) : (
-                  <Pie
-                    data={
-                      active === "tushumlar"
-                        ? pieData.tushumlar
-                        : pieData.chiqimlar
-                    }
-                    options={commonOptions}
-                  />
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className=" text-center h-[500px] flex flex-col justify-between">
-            <CardHeader>
-              <CardTitle>Diagramma oylar bo‘yicha</CardTitle>
-            </CardHeader>
-            <CardContent className="flex justify-center items-center flex-1">
-              <div className="w-[400px] h-[400px]">
-                <Line data={lineData} options={commonOptions} />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+    <div className="min-h-screen p-6 dark:text-white">
+      {/* Category tanlash */}
+      <div className="flex justify-center gap-4 mb-6">
+        <Button variant={category === "tushumlar" ? "default" : "outline"} onClick={() => setCategory("tushumlar")} className="w-[150px]">
+          Tushumlar
+        </Button>
+        <Button variant={category === "chiqimlar" ? "default" : "outline"} onClick={() => setCategory("chiqimlar")} className="w-[150px]">
+          Chiqimlar
+        </Button>
+        <Button variant={category === "foyda" ? "default" : "outline"} onClick={() => setCategory("foyda")} className="w-[150px]">
+          Foyda
+        </Button>
       </div>
+
+      {/* Vaqt filtri */}
+      <div className="flex justify-center gap-4 mb-8">
+        <Button variant={range === "yillik" ? "default" : "outline"} onClick={() => setRange("yillik")}>
+          Yillik
+        </Button>
+        <Button variant={range === "oylik" ? "default" : "outline"} onClick={() => setRange("oylik")}>
+          Oylik
+        </Button>
+        <Button variant={range === "haftalik" ? "default" : "outline"} onClick={() => setRange("haftalik")}>
+          Haftalik
+        </Button>
+      </div>
+
+      {/* Bitta asosiy diagramma */}
+      <Card className="text-center p-4">
+        <CardHeader>
+          <CardTitle className="text-xl">
+            {
+              {
+                tushumlar: "Tushumlar",
+                chiqimlar: "Chiqimlar",
+                foyda: "Foyda",
+              }[category]
+            }{" "}
+            ({range})
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent className="w-[95%] mx-auto h-[420px]">
+          <Line data={chartData} />
+        </CardContent>
+
+        {/* Jami miqdor */}
+        <div className="py-4 text-lg font-semibold text-center">
+          Jami: <span className="text-primary text-2xl">{totalAmount} mln so‘m</span>
+        </div>
+      </Card>
+
+      {/* Chiqimlar breakdown */}
+      {category === "chiqimlar" && (
+        <Card className="mt-6 p-4">
+          <CardHeader>
+            <CardTitle>Chiqim turlari bo‘yicha</CardTitle>
+          </CardHeader>
+          <CardContent className="w-[300px] mx-auto">
+            <Pie data={chiqimDetails} />
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
