@@ -23,7 +23,6 @@ import { TeachingAssignmentsList } from "./components/TeachingAssignmentsList/Te
 import AddTeacherForm from "./components/teacher/AddTeacherForm";
 import CreateStudentForm from "./components/form/addStudent";
 import AddGroupForm from "./components/Group/AddGoup";
-import TrashRoomsPage from "./components/trash/trashroom";
 import Trash from "./components/page/Trash";
 
 const App = () => {
@@ -38,7 +37,7 @@ const App = () => {
           <Route
             path="/admin"
             element={
-              <RoleRoute roles={["admin", "ADMIN"]}>
+              <RoleRoute roles={["admin", "ADMIN", "manager", "MANAGER"]}>
                 <Homelayout />
               </RoleRoute>
             }

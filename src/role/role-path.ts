@@ -1,5 +1,5 @@
-export const  rolePath: Record<"admin" | "teacher", string> = {
-    admin: "/admin",
-    teacher: "/teacher",
-   
-}
+export const rolePath: Record<"admin" | "teacher" | "manager", string> = {
+  admin: "/admin",
+  manager: "/manager",
+  teacher: "/teacher",
+};
