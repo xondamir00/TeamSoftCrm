@@ -1,59 +1,45 @@
-import {
-  UserPlus,
-  UserCog,
-  Building,
-  ShieldPlus,
-  Users,
-  Trash2,
-} from "lucide-react";
+import { TiUserAdd } from "react-icons/ti";
+import { FaIdBadge } from "react-icons/fa6";
+import { BsHouseAddFill } from "react-icons/bs";
+import { MdAddModerator } from "react-icons/md";
+import { PiTrashSimpleFill } from "react-icons/pi";
+import { FaChild } from "react-icons/fa6";
+
+
+
 
 export const CreateForm = [
   {
-    name: "createForm.createStudent",
-    href: "create-student",
-    icon: UserPlus,
-  },
-  {
-    name: "createForm.createTeacher",
-    href: "create-teacher",
-    icon: UserCog,
-  },
-   {
     name: "Assignment Teacher",
     href: "create-assignment",
-    icon: UserCog,
+    icon: TiUserAdd,
   },
-    {
-    name: "Assignment Teacher Get",
+  {
+    name: "Assignment List",
     href: "assignments",
-    icon: UserCog,
+    icon: FaIdBadge,
   },
   {
-    name: "createForm.createRoom",
+    name: "Add Room",
     href: "create-room",
-    icon: Building,
+    icon: BsHouseAddFill,
   },
   {
-    name: "createForm.createManager",
+    name: "Add Manager",
     href: "create-meneger",
-    icon: ShieldPlus,
+    icon: MdAddModerator,
   },
   {
-    name: "createForm.createGroup",
-    href: "create-group",
-    icon: Users,
-  },
-  {
+    name: "Student Hub",
+    href: "enrollments",
+    icon: FaChild,
+  }, {
     name: "Archive",
     href: "archive",
-    icon: Trash2,
-  },
-  {
-    name: "enrollments",
-    href: "enrollments",
-    icon: Users,
+    icon: PiTrashSimpleFill,
   },
 ];
+
 
 export const CategoryNavigate = [
   { label: "home", href: "", icon: "/icons/rooms.svg" },

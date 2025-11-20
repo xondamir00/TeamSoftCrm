@@ -4,27 +4,8 @@ import { api } from "@/Service/api";
 import { Button } from "@/components/ui/button";
 import { Loader2, Pencil, Trash2, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetTrigger,
-  SheetClose,
-} from "@/components/ui/sheet";
 import AddGroupForm from "./AddGoup";
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from "@/components/ui/alert-dialog";
+import { motion } from "framer-motion";
 
 interface Group {
   id: string;
@@ -50,21 +31,15 @@ export default function GroupList() {
   const [error, setError] = useState("");
   const [editingGroup, setEditingGroup] = useState<Group | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Group | null>(null);
-  const [sheetOpen, setSheetOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const fetchGroups = async () => {
     try {
       setLoading(true);
       const { data } = await api.get("/groups", {
-        params: {
-          page: 1,
-          limit: 10, // kerak bo'lsa hammasini olish
-          isActive: true, // ✅ boolean
-        },
+        params: { page: 1, limit: 10, isActive: true },
       });
-
       setGroups(data.items);
-      console.log(data.items, "groups");
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
     } finally {
@@ -72,12 +47,10 @@ export default function GroupList() {
     }
   };
 
-  // Xonalarni olish
   const fetchRooms = async () => {
     try {
       const { data } = await api.get("/rooms");
       setRooms(data);
-      console.log(data, "data");
     } catch (err) {
       console.error("Xonalarni olishda xato:", err);
     }
@@ -85,33 +58,20 @@ export default function GroupList() {
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
-
     try {
       setLoading(true);
-      console.log("Deleting group id:", deleteTarget.id);
-
-      const res = await api.delete(`/groups/${deleteTarget.id}`);
+      await api.delete(`/groups/${deleteTarget.id}`);
       setGroups((prev) => prev.filter((g) => g.id !== deleteTarget.id));
-
-      if (res.status === 200 || res.status === 204) {
-        setGroups((prev) => prev.filter((g) => g.id !== deleteTarget.id));
-        setDeleteTarget(null);
-      } else {
-        console.warn("Unexpected response:", res);
-        alert("Serverdan kutilmagan javob keldi");
-      }
+      setDeleteTarget(null);
     } catch (err: any) {
-      console.error("Delete error:", err?.response || err);
-
-      const message =
+      alert(
         err?.response?.data?.message ||
-        err?.message ||
-        "O‘chirishda xatolik yuz berdi yoki guruh topilmadi";
-
-      alert(message);
+          err?.message ||
+          "O‘chirishda xatolik yuz berdi"
+      );
+      setDeleteTarget(null);
     } finally {
       setLoading(false);
-      setDeleteTarget(null);
     }
   };
 
@@ -124,19 +84,20 @@ export default function GroupList() {
     if (!time) return "-";
     try {
       const date = new Date(`1970-01-01T${time}`);
-      return date.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     } catch {
       return time;
     }
   };
 
-  // roomId orqali xona nomini topish
   const getRoomName = (roomId?: string) => {
     const room = rooms.find((r) => r.id === roomId);
     return room ? room.name : "-";
+  };
+
+  const openModal = (group: Group | null) => {
+    setEditingGroup(group);
+    setModalOpen(true);
   };
 
   return (
@@ -144,52 +105,13 @@ export default function GroupList() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{t("groups_list")}</h2>
 
-        {/* Guruh qo‘shish tugmasi */}
-        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-          <SheetTrigger asChild>
-            <Button
-              className="bg-blue-500 hover:bg-blue-600 text-white flex items-center gap-2"
-              onClick={() => {
-                setEditingGroup(null);
-                setSheetOpen(true);
-              }}
-            >
-              <Plus className="w-4 h-4" /> {t("add_group")}
-            </Button>
-          </SheetTrigger>
-
-          <SheetContent
-            side="right"
-            className="w-full sm:max-w-md p-0 border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-y-auto"
-          >
-            <SheetHeader className="p-4 border-b dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-900 z-10">
-              <SheetTitle>
-                {editingGroup ? t("edit_group") : t("add_group")}
-              </SheetTitle>
-              <SheetDescription>
-                {editingGroup
-                  ? t("edit_group_description")
-                  : t("add_group_description")}
-              </SheetDescription>
-            </SheetHeader>
-
-            <div className="p-4 flex-1">
-              <AddGroupForm
-                editingGroup={editingGroup}
-                onSuccess={() => {
-                  setSheetOpen(false);
-                  fetchGroups();
-                }}
-              />
-            </div>
-
-            <div className="flex justify-end p-3 border-t dark:border-gray-700">
-              <SheetClose asChild>
-                <Button variant="outline">{t("close")}</Button>
-              </SheetClose>
-            </div>
-          </SheetContent>
-        </Sheet>
+        {/* Add Group button */}
+        <Button
+          className="bg-blue-500 hover:bg-blue-600 text-white flex items-center gap-2"
+          onClick={() => openModal(null)}
+        >
+          <Plus className="w-4 h-4" /> {t("add_group")}
+        </Button>
       </div>
 
       {loading ? (
@@ -225,64 +147,101 @@ export default function GroupList() {
                 <td className="p-2">
                   {`${formatTime(g.startTime)} - ${formatTime(g.endTime)}`}
                 </td>
-
                 <td className="p-2 text-right flex justify-end gap-2">
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => {
-                      setEditingGroup(g);
-                      setSheetOpen(true);
-                    }}
+                    onClick={() => openModal(g)}
                   >
                     <Pencil className="w-4 h-4" />
                   </Button>
-                  <AlertDialog
-                    open={deleteTarget?.id === g.id}
-                    onOpenChange={(open) => {
-                      if (!open) setDeleteTarget(null);
-                    }}
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => setDeleteTarget(g)}
                   >
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => setDeleteTarget(g)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </AlertDialogTrigger>
-
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          {t("delete_confirm_title") ||
-                            "O‘chirishni tasdiqlang"}
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          {t("delete_confirm_text") ||
-                            `"${g.name}" guruhini o‘chirishni xohlaysizmi?`}
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-
-                        <AlertDialogAction
-                          type="button" // ✅ YAXSHILANDI
-                          className="bg-red-600 text-white hover:bg-red-700"
-                          onClick={handleDelete}
-                        >
-                          {t("delete") || "O‘chirish"}
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      )}
+
+      {/* Modal for edit/add group */}
+     {modalOpen && (
+  <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex justify-end z-50">
+    <motion.div
+      initial={{ x: "100%" }}      // Ekranning o'ng tomonidan kiradi
+      animate={{ x: 0 }}
+      exit={{ x: "100%" }}
+      transition={{ type: "tween", duration: 0.3 }}
+      className="bg-white dark:bg-gray-900 w-full sm:max-w-md h-full shadow-xl flex flex-col"
+    >
+      {/* Header */}
+      <div className="p-4 border-b dark:border-gray-700 flex justify-between items-center">
+        <div>
+          <h2 className="text-lg font-semibold dark:text-white">
+            {editingGroup ? t("edit_group") : t("add_group")}
+          </h2>
+          <p className="dark:text-gray-300 text-sm">
+            {editingGroup
+              ? t("edit_group_description")
+              : t("add_group_description")}
+          </p>
+        </div>
+        <Button variant="outline" onClick={() => setModalOpen(false)}>
+          {t("close")}
+        </Button>
+      </div>
+
+      {/* Form */}
+      <div className="p-4 flex-1 overflow-y-auto">
+        <AddGroupForm
+          editingGroup={editingGroup}
+          onSuccess={() => {
+            setModalOpen(false);
+            fetchGroups();
+          }}
+        />
+      </div>
+    </motion.div>
+  </div>
+)}
+
+      {/* Modal for delete confirmation */}
+      {deleteTarget && (
+        <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white dark:bg-gray-900 rounded-xl p-6 max-w-sm w-full shadow-lg space-y-4"
+          >
+            <h2 className="text-lg font-semibold dark:text-white">
+              {t("delete_confirm_title") || "O‘chirishni tasdiqlang"}
+            </h2>
+            <p className="dark:text-gray-300">
+              {t("delete_confirm_text") ||
+                `"${deleteTarget.name}" guruhini o‘chirishni xohlaysizmi?`}
+            </p>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                className="dark:border-gray-600"
+                onClick={() => setDeleteTarget(null)}
+              >
+                {t("cancel")}
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDelete}
+              >
+                {t("delete") || "O‘chirish"}
+              </Button>
+            </div>
+          </motion.div>
+        </div>
       )}
     </div>
   );

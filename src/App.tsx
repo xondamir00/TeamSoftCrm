@@ -8,14 +8,11 @@ import { AuthRefresh } from "./components/auth/Auth-Refresh";
 
 import Settings from "./components/page/settings";
 import TeacherList from "./components/teacher/Teacherlist";
-import AddTeacherForm from "./components/form/addTeacher";
-import CreateStudentForm from "./components/form/addStudent";
 import AddManagerForm from "./components/form/AddManeger";
 
 import AddRoom from "./components/Roms/addRoom";
 import RoomsList from "./components/Roms/RoomsList";
 
-import AddGroupForm from "./components/Group/AddGoup";
 import Groups from "./components/Group/GroupList";
 
 import { Login } from "./components/auth/login";
@@ -23,7 +20,10 @@ import ListStudent from "./components/Students/ListStudent";
 import EnrollmentsPage from "./components/page/EnrollmentsPage";
 import { TeachingAssignmentForm } from "./components/TeachingAssignmentsList/TeachingAssignmentForm";
 import { TeachingAssignmentsList } from "./components/TeachingAssignmentsList/TeachingAssignmentsList";
-import Trash from "./components/page/Trash";
+import AddTeacherForm from "./components/teacher/AddTeacherForm";
+import CreateStudentForm from "./components/form/addStudent";
+import AddGroupForm from "./components/Group/AddGoup";
+import TrashRoomsPage from "./components/trash/trashroom";
 
 const App = () => {
   return (
@@ -74,7 +74,7 @@ const App = () => {
             <Route path="settings/create-room" element={<AddRoom />} />
 
             {/* Other admin pages */}
-            <Route path="settings/archive" element={<Trash />} />
+            <Route path="settings/archive" element={<TrashRoomsPage />} />
             <Route path="settings/enrollments" element={<EnrollmentsPage />} />
             <Route path="rooms" element={<RoomsList />} />
             <Route path="groups" element={<Groups />} />
