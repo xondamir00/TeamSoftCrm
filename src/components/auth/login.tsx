@@ -52,6 +52,8 @@ export function Login() {
           navigate("/admin");
           break;
         case "TEACHER":
+          navigate("/teacher");
+          break;
         default:
           navigate("/dashboard");
           break;

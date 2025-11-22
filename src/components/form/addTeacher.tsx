@@ -19,8 +19,8 @@ export default function AddTeacherForm() {
     phone: "",
     password: "",
     photoUrl: "",
-    monthlySalary: null,
-    percentShare: null,
+    monthlySalary: undefined,
+    percentShare: undefined,
   });
 
   const [message, setMessage] = useState<string>("");
@@ -29,10 +29,11 @@ export default function AddTeacherForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
+    // Backend string kutgani uchun:
     if (name === "monthlySalary" || name === "percentShare") {
       setForm((prev) => ({
         ...prev,
-        [name]: value === "" ? null : Number(value),
+        [name]: value.trim() === "" ? undefined : value, // string yuboramiz!
       }));
       return;
     }
@@ -51,28 +52,36 @@ export default function AddTeacherForm() {
         photoUrl:
           form.photoUrl && form.photoUrl.startsWith("http")
             ? form.photoUrl
-            : null,
+            : undefined,
       };
 
+      // Bir vaqtning o'zida ikkala turi bo‘lmasligi kerak
       if (payload.monthlySalary && payload.percentShare) {
         setMessage(t("salary_warning"));
         setLoading(false);
         return;
       }
 
+      // undefined maydonlarni o‘chirib yuboramiz
+      Object.keys(payload).forEach((key) => {
+        if (payload[key as keyof CreateTeacherPayload] === undefined) {
+          delete payload[key as keyof CreateTeacherPayload];
+        }
+      });
+
       await api.post("/teachers", payload);
 
       setMessage(t("success"));
 
-      // formani tozalash
+      // Forma reset
       setForm({
         firstName: "",
         lastName: "",
         phone: "",
         password: "",
         photoUrl: "",
-        monthlySalary: null,
-        percentShare: null,
+        monthlySalary: undefined,
+        percentShare: undefined,
       });
     } catch (error) {
       const err = error as AxiosError<ApiError>;
@@ -101,6 +110,7 @@ export default function AddTeacherForm() {
           className="border p-2 rounded"
           required
         />
+
         <input
           name="lastName"
           value={form.lastName}
@@ -109,6 +119,7 @@ export default function AddTeacherForm() {
           className="border p-2 rounded"
           required
         />
+
         <input
           name="phone"
           value={form.phone}
@@ -117,6 +128,7 @@ export default function AddTeacherForm() {
           className="border p-2 rounded"
           required
         />
+
         <input
           name="password"
           type="password"
@@ -126,6 +138,7 @@ export default function AddTeacherForm() {
           className="border p-2 rounded"
           required
         />
+
         <input
           name="photoUrl"
           value={form.photoUrl || ""}
@@ -133,6 +146,7 @@ export default function AddTeacherForm() {
           placeholder={t("photo_url")}
           className="border p-2 rounded"
         />
+
         <input
           name="monthlySalary"
           value={form.monthlySalary ?? ""}
@@ -141,6 +155,7 @@ export default function AddTeacherForm() {
           placeholder={t("monthly_salary")}
           className="border p-2 rounded"
         />
+
         <input
           name="percentShare"
           value={form.percentShare ?? ""}

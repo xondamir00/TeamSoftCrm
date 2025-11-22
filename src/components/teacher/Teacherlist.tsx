@@ -29,7 +29,8 @@ export default function TeacherList() {
       const { data } = await api.get<{ items: Teacher[] }>("/teachers", {
         params: { page: 1, limit: 10 },
       });
-      setTeachers(data.items || []);
+
+      setTeachers((data.items || []).filter((t) => t.isActive)); // 🔥 faqat active teacherlar
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -40,7 +41,6 @@ export default function TeacherList() {
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchTeachers();

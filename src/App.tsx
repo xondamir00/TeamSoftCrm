@@ -32,7 +32,6 @@ const App = () => {
         <Routes>
           {/* Public route */}
           <Route path="/sign" element={<Login />} />
-
           {/* Admin routes */}
           <Route
             path="/admin"
