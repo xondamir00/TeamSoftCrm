@@ -37,9 +37,11 @@ export default function GroupList() {
     try {
       setLoading(true);
       const { data } = await api.get("/groups", {
-        params: { page: 1, limit: 10, isActive: true },
+        params: { page: 1, limit: 10 },
       });
-      setGroups(data.items);
+
+      // 🔥 Faqat ACTIVE guruhlarni ko‘rsatish
+      setGroups((data.items || []).filter((g: any) => g.isActive !== false));
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
     } finally {
@@ -84,7 +86,10 @@ export default function GroupList() {
     if (!time) return "-";
     try {
       const date = new Date(`1970-01-01T${time}`);
-      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     } catch {
       return time;
     }
@@ -170,45 +175,45 @@ export default function GroupList() {
       )}
 
       {/* Modal for edit/add group */}
-     {modalOpen && (
-  <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex justify-end z-50">
-    <motion.div
-      initial={{ x: "100%" }}      // Ekranning o'ng tomonidan kiradi
-      animate={{ x: 0 }}
-      exit={{ x: "100%" }}
-      transition={{ type: "tween", duration: 0.3 }}
-      className="bg-white dark:bg-gray-900 w-full sm:max-w-md h-full shadow-xl flex flex-col"
-    >
-      {/* Header */}
-      <div className="p-4 border-b dark:border-gray-700 flex justify-between items-center">
-        <div>
-          <h2 className="text-lg font-semibold dark:text-white">
-            {editingGroup ? t("edit_group") : t("add_group")}
-          </h2>
-          <p className="dark:text-gray-300 text-sm">
-            {editingGroup
-              ? t("edit_group_description")
-              : t("add_group_description")}
-          </p>
-        </div>
-        <Button variant="outline" onClick={() => setModalOpen(false)}>
-          {t("close")}
-        </Button>
-      </div>
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex justify-end z-50">
+          <motion.div
+            initial={{ x: "100%" }} // Ekranning o'ng tomonidan kiradi
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
+            className="bg-white dark:bg-gray-900 w-full sm:max-w-md h-full shadow-xl flex flex-col"
+          >
+            {/* Header */}
+            <div className="p-4 border-b dark:border-gray-700 flex justify-between items-center">
+              <div>
+                <h2 className="text-lg font-semibold dark:text-white">
+                  {editingGroup ? t("edit_group") : t("add_group")}
+                </h2>
+                <p className="dark:text-gray-300 text-sm">
+                  {editingGroup
+                    ? t("edit_group_description")
+                    : t("add_group_description")}
+                </p>
+              </div>
+              <Button variant="outline" onClick={() => setModalOpen(false)}>
+                {t("close")}
+              </Button>
+            </div>
 
-      {/* Form */}
-      <div className="p-4 flex-1 overflow-y-auto">
-        <AddGroupForm
-          editingGroup={editingGroup}
-          onSuccess={() => {
-            setModalOpen(false);
-            fetchGroups();
-          }}
-        />
-      </div>
-    </motion.div>
-  </div>
-)}
+            {/* Form */}
+            <div className="p-4 flex-1 overflow-y-auto">
+              <AddGroupForm
+                editingGroup={editingGroup}
+                onSuccess={() => {
+                  setModalOpen(false);
+                  fetchGroups();
+                }}
+              />
+            </div>
+          </motion.div>
+        </div>
+      )}
 
       {/* Modal for delete confirmation */}
       {deleteTarget && (
@@ -233,10 +238,7 @@ export default function GroupList() {
               >
                 {t("cancel")}
               </Button>
-              <Button
-                variant="destructive"
-                onClick={handleDelete}
-              >
+              <Button variant="destructive" onClick={handleDelete}>
                 {t("delete") || "O‘chirish"}
               </Button>
             </div>
