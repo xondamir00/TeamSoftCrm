@@ -15,13 +15,13 @@ const LogoutButton: React.FC = () => {
       onClick={handleLogout}
       variant="ghost"
       size="icon"
-      className="w-10 h-10 rounded-full ring-2 ring-white 
-      transition-colors duration-200 group bg-[#3F8CFF] hover:bg-[#3F8CFF] dark:bg-black "
+      className="w-10 h-10 cursor-pointer rounded-full ring-2 ring-red-600  hover:ring-red-600 dark:ring-red-600 hover:dark:ring-red-600
+      transition-colors duration-200 group bg-white hover:bg-[] dark:bg-black "
     >
       <LogOut
         size={18}
         strokeWidth={2}
-        className="text-white dark:text-white 
+        className="text-black dark:text-white 
         group-hover:text-red-600 dark:group-hover:text-red-600 
         transition-colors duration-200 "
       />

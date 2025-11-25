@@ -5,8 +5,6 @@ import Logo from "./logo";
 import { ModeToggle } from "../modeToggle";
 import LanguageSwitcher from "@/i18react/LanguageSwitcher";
 import ProfileModal from "@/shared/navbar/profile";
-import LogoutButton from "./Logout";
-
 const Navbar = () => {
   return (
     <motion.header className="w-full py-3 bg-[#3F8CFF] dark:bg-black shadow-sm">
@@ -30,7 +28,6 @@ const Navbar = () => {
           <LanguageSwitcher />
           <ModeToggle />
           <ProfileModal />
-          <LogoutButton/>
         </motion.div>
 
       </div>
