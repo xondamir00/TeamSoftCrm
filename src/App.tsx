@@ -5,16 +5,12 @@ import Teacherlayout from "./components/layout/teacherlayout";
 import Teacher from "./components/page/Teacher";
 import { RoleRoute } from "./role/role-route";
 import { AuthRefresh } from "./components/auth/Auth-Refresh";
-
 import Settings from "./components/page/settings";
 import TeacherList from "./components/teacher/Teacherlist";
 import AddManagerForm from "./components/form/AddManeger";
-
 import AddRoom from "./components/Roms/addRoom";
 import RoomsList from "./components/Roms/RoomsList";
-
 import Groups from "./components/Group/GroupList";
-
 import { Login } from "./components/auth/login";
 import ListStudent from "./components/Students/ListStudent";
 import EnrollmentsPage from "./components/page/EnrollmentsPage";
@@ -23,8 +19,9 @@ import { TeachingAssignmentsList } from "./components/TeachingAssignmentsList/Te
 import AddTeacherForm from "./components/teacher/AddTeacherForm";
 import CreateStudentForm from "./components/form/addStudent";
 import AddGroupForm from "./components/Group/AddGoup";
-import Trash from "./components/page/Trash";
 import AttendancePage from "./components/attendance/AttendancePage";
+import Trash from "./components/page/trash";
+import ManagerList from "./components/Maneger/ManagerList";
 
 const App = () => {
   return (
@@ -70,6 +67,7 @@ const App = () => {
               path="settings/create-meneger"
               element={<AddManagerForm />}
             />
+            <Route path="settings/menegers-list" element={<ManagerList />} />
             <Route path="settings/create-group" element={<AddGroupForm />} />
             <Route path="settings/create-room" element={<AddRoom />} />
 

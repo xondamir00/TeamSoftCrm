@@ -19,7 +19,7 @@ const LogoutButton: React.FC = () => {
       transition-colors duration-200 group bg-white hover:bg-[] dark:bg-black "
     >
       <LogOut
-        size={18}
+        size={10}
         strokeWidth={2}
         className="text-black dark:text-white 
         group-hover:text-red-600 dark:group-hover:text-red-600 

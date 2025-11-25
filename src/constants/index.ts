@@ -29,6 +29,11 @@ export const CreateForm = [
     href: "create-meneger",
     icon: MdAddModerator,
   },
+   {
+    name: "Manager List",
+    href: "menegers-list",
+    icon: MdAddModerator,
+  },
   {
     name: "Student Hub",
     href: "enrollments",
