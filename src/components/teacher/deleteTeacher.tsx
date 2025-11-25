@@ -14,6 +14,7 @@ import { api } from "@/Service/api";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import type { Teacher } from "@/Store";
+import { useTranslation } from "react-i18next";
 
 interface DeleteTeacherProps {
   teacher: Teacher | null;
@@ -28,6 +29,7 @@ export default function DeleteTeacherDialog({
   onClose,
   onDeleted,
 }: DeleteTeacherProps) {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
   if (!teacher) return null;
@@ -55,23 +57,23 @@ export default function DeleteTeacherDialog({
       <AlertDialogContent className="dark:bg-gray-900 dark:text-gray-200">
         <AlertDialogHeader>
           <AlertDialogTitle>
-            {isActive ? "O‘qituvchini o‘chirish" : "O‘qituvchini tiklash"}
+            {isActive ? t("delete_teacher") : t("restore_teacher")}
           </AlertDialogTitle>
 
           <AlertDialogDescription>
             {teacher.fullName ||
               `${teacher.firstName || ""} ${teacher.lastName || ""}`}{" "}
             {isActive
-              ? "o‘chirilishini xohlaysizmi?"
-              : "tiklanishini xohlaysizmi?"}
+              ? t("delete_teacher_confirm")
+              : t("restore_teacher_confirm")}
           </AlertDialogDescription>
 
           <p
             className={`mt-2 text-sm font-semibold ${
-              isActive ? "text-green-600" : "text-red-500"
+              isActive ? "text-red-500" : "text-green-600"
             }`}
           >
-            Status: {isActive ? "Active" : "Inactive"}
+            {t("status")}: {isActive ? t("active") : t("inactive")}
           </p>
         </AlertDialogHeader>
 
@@ -81,7 +83,7 @@ export default function DeleteTeacherDialog({
             onClick={onClose}
             className="dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200"
           >
-            Bekor qilish
+            {t("cancel")}
           </AlertDialogCancel>
 
           <AlertDialogAction
@@ -94,7 +96,7 @@ export default function DeleteTeacherDialog({
             }`}
           >
             {loading && <Loader2 className="animate-spin w-4 h-4 mr-2" />}
-            {isActive ? "O‘chirish" : "Tiklash"}
+            {isActive ? t("delete") : t("restore")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

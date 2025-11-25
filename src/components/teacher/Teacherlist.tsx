@@ -10,6 +10,7 @@ import type { Teacher } from "@/Store";
 import UpdateTeacherForm from "./UpdateTeacherForm";
 import AddTeacherForm from "./AddTeacherForm";
 import { Input } from "@/components/ui/input";
+import DeleteTeacherDialog from "./deleteTeacher";
 
 export default function TeacherList() {
   const { t } = useTranslation();
@@ -46,6 +47,11 @@ export default function TeacherList() {
   const openModal = (teacher: Teacher | null) => {
     setEditingTeacher(teacher);
     setModalOpen(true);
+  };
+
+  const handleDeleted = () => {
+    fetchTeachers();
+    setDeleteTarget(null);
   };
 
   return (
@@ -89,7 +95,6 @@ export default function TeacherList() {
                 <th className="p-3 text-right">{t("actions")}</th>
               </tr>
             </thead>
-
             <tbody>
               {teachers.map((teacher, index) => (
                 <tr
@@ -97,7 +102,6 @@ export default function TeacherList() {
                   className="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
                 >
                   <td className="p-3">{index + 1}</td>
-
                   <td className="p-3">
                     <img
                       src={teacher.photoUrl || "/default-avatar.png"}
@@ -105,18 +109,14 @@ export default function TeacherList() {
                       className="w-10 h-10 rounded-full object-cover shadow-sm"
                     />
                   </td>
-
                   <td className="p-3">
                     {teacher.fullName ||
                       `${teacher.firstName} ${teacher.lastName}`}
                   </td>
-
                   <td className="p-3">{teacher.phone}</td>
-
                   <td className="p-3">
                     {new Date(teacher.createdAt).toLocaleDateString()}
                   </td>
-
                   <td className="p-3 text-right flex justify-end gap-2">
                     <Button
                       size="icon"
@@ -126,7 +126,6 @@ export default function TeacherList() {
                     >
                       <Pencil className="w-4 h-4" />
                     </Button>
-
                     <Button
                       size="icon"
                       variant="destructive"
@@ -152,18 +151,14 @@ export default function TeacherList() {
             transition={{ duration: 0.3 }}
             className="bg-white dark:bg-gray-900 w-full sm:max-w-md h-full shadow-xl flex flex-col"
           >
-            {/* Header */}
             <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
               <h2 className="text-lg font-semibold dark:text-white">
                 {editingTeacher ? t("edit_teacher") : t("add_teacher")}
               </h2>
-
               <Button variant="outline" onClick={() => setModalOpen(false)}>
                 {t("close")}
               </Button>
             </div>
-
-            {/* Form */}
             <div className="p-4 overflow-y-auto flex-1">
               {editingTeacher ? (
                 <UpdateTeacherForm
@@ -187,50 +182,13 @@ export default function TeacherList() {
         </div>
       )}
 
-      {/* Delete Modal */}
-      {deleteTarget && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <motion.div
-            initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-xl max-w-sm w-full"
-          >
-            <h2 className="text-lg font-semibold dark:text-white mb-2">
-              {t("delete_confirm_title")}
-            </h2>
-
-            <p className="dark:text-gray-300 mb-4">
-              "{deleteTarget.fullName}" {t("delete_confirm_text")}
-            </p>
-
-            <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setDeleteTarget(null)}>
-                {t("cancel")}
-              </Button>
-
-              <Button
-                variant="destructive"
-                onClick={async () => {
-                  try {
-                    setLoading(true);
-                    await api.delete(`/teachers/${deleteTarget.id}`);
-                    setTeachers((prev) =>
-                      prev.filter((t) => t.id !== deleteTarget.id)
-                    );
-                    setDeleteTarget(null);
-                  } catch (err: any) {
-                    alert(err?.response?.data?.message || t("error_delete"));
-                  } finally {
-                    setLoading(false);
-                  }
-                }}
-              >
-                {t("delete")}
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      )}
+      {/* Delete Dialog */}
+      <DeleteTeacherDialog
+        teacher={deleteTarget}
+        open={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onDeleted={handleDeleted}
+      />
     </div>
   );
 }
