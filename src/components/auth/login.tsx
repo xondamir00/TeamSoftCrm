@@ -40,7 +40,7 @@ export function Login() {
         setError(t("error_invalid"));
         return;
       }
-      console.log(accessToken);
+      console.log(data);
 
       login(accessToken, refreshToken, user);
 

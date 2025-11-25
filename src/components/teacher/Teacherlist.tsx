@@ -29,6 +29,7 @@ export default function TeacherList() {
       const { data } = await api.get<{ items: Teacher[] }>("/teachers", {
         params: { page: 1, limit: 10 },
       });
+      console.log(data);
 
       setTeachers((data.items || []).filter((t) => t.isActive)); // 🔥 faqat active teacherlar
     } catch (err: unknown) {

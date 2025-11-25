@@ -24,6 +24,7 @@ import AddTeacherForm from "./components/teacher/AddTeacherForm";
 import CreateStudentForm from "./components/form/addStudent";
 import AddGroupForm from "./components/Group/AddGoup";
 import Trash from "./components/page/Trash";
+import AttendancePage from "./components/attendance/AttendancePage";
 
 const App = () => {
   return (
@@ -89,6 +90,7 @@ const App = () => {
             }
           >
             <Route index element={<Teacher />} />
+            <Route path="attendance" element={<AttendancePage />} />
           </Route>
 
           {/* Catch-all route */}

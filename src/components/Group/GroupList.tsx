@@ -48,7 +48,7 @@ export default function GroupList() {
       setLoading(false);
     }
   };
-
+  
   const fetchRooms = async () => {
     try {
       const { data } = await api.get("/rooms");
