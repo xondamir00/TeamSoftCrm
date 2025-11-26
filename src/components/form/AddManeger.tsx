@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { api } from "@/Service/api";
 import { useTranslation } from "react-i18next";
@@ -55,8 +57,7 @@ export default function AddManagerForm() {
           : undefined,
       };
 
-      const res = await api.post("/managers", payload);
-      console.log("Manager added:", res.data);
+      await api.post("/managers", payload);
 
       setMessage(t("manager_added_success"));
       setForm({
@@ -69,10 +70,7 @@ export default function AddManagerForm() {
       });
     } catch (error) {
       const err = error as AxiosError<ApiErrorResponse>;
-
-      const errMsg =
-        err.response?.data?.message || t("manager_add_error");
-
+      const errMsg = err.response?.data?.message || t("manager_add_error");
       setMessage(errMsg);
     } finally {
       setLoading(false);

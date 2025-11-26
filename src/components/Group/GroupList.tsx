@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Pencil, Trash2, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import AddGroupForm from "./AddGoup";
+import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 
 interface Group {
@@ -32,15 +33,15 @@ export default function GroupList() {
   const [editingGroup, setEditingGroup] = useState<Group | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Group | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   const fetchGroups = async () => {
     try {
       setLoading(true);
       const { data } = await api.get("/groups", {
-        params: { page: 1, limit: 10 },
+        params: { page: 1, limit: 30, search },
       });
 
-      // 🔥 Faqat ACTIVE guruhlarni ko‘rsatish
       setGroups((data.items || []).filter((g: any) => g.isActive !== false));
     } catch (err: any) {
       setError(err?.response?.data?.message || t("fetch_error"));
@@ -58,6 +59,11 @@ export default function GroupList() {
     }
   };
 
+  useEffect(() => {
+    fetchGroups();
+    fetchRooms();
+  }, [search]);
+
   const handleDelete = async () => {
     if (!deleteTarget) return;
     try {
@@ -66,21 +72,11 @@ export default function GroupList() {
       setGroups((prev) => prev.filter((g) => g.id !== deleteTarget.id));
       setDeleteTarget(null);
     } catch (err: any) {
-      alert(
-        err?.response?.data?.message ||
-          err?.message ||
-          "O‘chirishda xatolik yuz berdi"
-      );
-      setDeleteTarget(null);
+      alert(err?.response?.data?.message || "O‘chirishda xatolik yuz berdi");
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchGroups();
-    fetchRooms();
-  }, []);
 
   const formatTime = (time?: string) => {
     if (!time) return "-";
@@ -106,103 +102,115 @@ export default function GroupList() {
   };
 
   return (
-    <div className="w-[98%] mx-auto bg-white dark:bg-black dark:text-white border dark:border-gray-700 rounded-xl p-4 shadow-md">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">{t("groups_list")}</h2>
+    <div className="space-y-6 w-[98%] mx-auto">
+      {/* Top Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <Input
+          placeholder="Search groups..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="max-w-md w-full dark:bg-gray-800 dark:text-gray-200"
+        />
 
-        {/* Add Group button */}
         <Button
-          className="bg-blue-500 hover:bg-blue-600 text-white flex items-center gap-2"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white"
           onClick={() => openModal(null)}
         >
           <Plus className="w-4 h-4" /> {t("add_group")}
         </Button>
       </div>
 
-      {loading ? (
-        <div className="text-center py-6">
-          <Loader2 className="h-5 w-5 animate-spin mx-auto text-gray-500" />
-        </div>
-      ) : error ? (
-        <p className="text-red-500 text-center">{error}</p>
-      ) : groups.length === 0 ? (
-        <p className="text-gray-500 text-center">{t("no_groups")}</p>
-      ) : (
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b dark:border-gray-700">
-              <th className="text-left p-2">{t("name")}</th>
-              <th className="text-left p-2">{t("room")}</th>
-              <th className="text-left p-2">{t("capacity")}</th>
-              <th className="text-left p-2">Days</th>
-              <th className="text-left p-2">{t("time")}</th>
-              <th className="text-right p-2">{t("actions")}</th>
+      {/* Table */}
+      <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm dark:shadow-black/30">
+        <table className="w-full">
+          <thead className="bg-gray-100 dark:bg-gray-900">
+            <tr>
+              <th className="p-3 text-left dark:text-gray-300">{t("name")}</th>
+              <th className="p-3 text-left dark:text-gray-300">{t("room")}</th>
+              <th className="p-3 text-left dark:text-gray-300">
+                {t("capacity")}
+              </th>
+              <th className="p-3 text-left dark:text-gray-300">Days</th>
+              <th className="p-3 text-left dark:text-gray-300">{t("time")}</th>
+              <th className="p-3 text-right dark:text-gray-300">
+                {t("actions")}
+              </th>
             </tr>
           </thead>
+
           <tbody>
-            {groups.map((g) => (
-              <tr
-                key={g.id}
-                className="border-b hover:bg-gray-50 dark:hover:bg-gray-800"
-              >
-                <td className="p-2">{g.name}</td>
-                <td className="p-2">{getRoomName(g.roomId)}</td>
-                <td className="p-2">{g.capacity ?? "-"}</td>
-                <td className="p-2">{g.daysPattern || "-"}</td>
-                <td className="p-2">
-                  {`${formatTime(g.startTime)} - ${formatTime(g.endTime)}`}
-                </td>
-                <td className="p-2 text-right flex justify-end gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => openModal(g)}
-                  >
-                    <Pencil className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => setDeleteTarget(g)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+            {loading ? (
+              <tr>
+                <td colSpan={6} className="py-6 text-center text-gray-500">
+                  <Loader2 className="animate-spin mx-auto w-6 h-6" />
                 </td>
               </tr>
-            ))}
+            ) : groups.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="py-6 text-center text-gray-500">
+                  {t("no_groups")}
+                </td>
+              </tr>
+            ) : (
+              groups.map((g) => (
+                <tr
+                  key={g.id}
+                  className="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                >
+                  <td className="p-3">{g.name}</td>
+                  <td className="p-3">{getRoomName(g.roomId)}</td>
+                  <td className="p-3">{g.capacity ?? "-"}</td>
+                  <td className="p-3">{g.daysPattern || "-"}</td>
+                  <td className="p-3">
+                    {formatTime(g.startTime)} - {formatTime(g.endTime)}
+                  </td>
+                  <td className="p-3 text-right flex justify-end gap-2">
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => openModal(g)}
+                      className="dark:border-gray-600"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </Button>
+
+                    <Button
+                      size="icon"
+                      variant="destructive"
+                      onClick={() => setDeleteTarget(g)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
-      )}
+      </div>
 
-      {/* Modal for edit/add group */}
+      {/* Drawer / Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex justify-end z-50">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-end z-50">
           <motion.div
-            initial={{ x: "100%" }} // Ekranning o'ng tomonidan kiradi
+            initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "tween", duration: 0.3 }}
-            className="bg-white dark:bg-gray-900 w-full sm:max-w-md h-full shadow-xl flex flex-col"
+            transition={{ duration: 0.3 }}
+            className="bg-white dark:bg-gray-900 w-full sm:max-w-md h-full flex flex-col shadow-xl"
           >
             {/* Header */}
-            <div className="p-4 border-b dark:border-gray-700 flex justify-between items-center">
-              <div>
-                <h2 className="text-lg font-semibold dark:text-white">
-                  {editingGroup ? t("edit_group") : t("add_group")}
-                </h2>
-                <p className="dark:text-gray-300 text-sm">
-                  {editingGroup
-                    ? t("edit_group_description")
-                    : t("add_group_description")}
-                </p>
-              </div>
+            <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
+              <h2 className="text-lg font-semibold dark:text-white">
+                {editingGroup ? t("edit_group") : t("add_group")}
+              </h2>
               <Button variant="outline" onClick={() => setModalOpen(false)}>
                 {t("close")}
               </Button>
             </div>
 
             {/* Form */}
-            <div className="p-4 flex-1 overflow-y-auto">
+            <div className="p-4 overflow-y-auto flex-1">
               <AddGroupForm
                 editingGroup={editingGroup}
                 onSuccess={() => {
@@ -215,31 +223,27 @@ export default function GroupList() {
         </div>
       )}
 
-      {/* Modal for delete confirmation */}
+      {/* Delete Modal */}
       {deleteTarget && (
-        <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <motion.div
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-white dark:bg-gray-900 rounded-xl p-6 max-w-sm w-full shadow-lg space-y-4"
+            className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-xl max-w-sm w-full"
           >
-            <h2 className="text-lg font-semibold dark:text-white">
-              {t("delete_confirm_title") || "O‘chirishni tasdiqlang"}
+            <h2 className="text-lg font-semibold dark:text-white mb-2">
+              {t("delete_confirm_title")}
             </h2>
-            <p className="dark:text-gray-300">
-              {t("delete_confirm_text") ||
-                `"${deleteTarget.name}" guruhini o‘chirishni xohlaysizmi?`}
+            <p className="dark:text-gray-300 mb-4">
+              {t("delete_confirm_text")} "{deleteTarget.name}"?
             </p>
+
             <div className="flex justify-end gap-2">
-              <Button
-                variant="outline"
-                className="dark:border-gray-600"
-                onClick={() => setDeleteTarget(null)}
-              >
+              <Button variant="outline" onClick={() => setDeleteTarget(null)}>
                 {t("cancel")}
               </Button>
               <Button variant="destructive" onClick={handleDelete}>
-                {t("delete") || "O‘chirish"}
+                {t("delete")}
               </Button>
             </div>
           </motion.div>

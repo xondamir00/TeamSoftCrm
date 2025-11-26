@@ -43,6 +43,27 @@ export interface Group {
   endTime?: string;
   daysPattern?: string;
 }
+export type StudentStatus = "PRESENT" | "ABSENT" | "UNKNOWN";
+
+export interface Student {
+  studentId: string;
+  fullName: string;
+  status: StudentStatus;
+  comment?: string | null;
+}
+
+export interface Sheet {
+  sheetId: string;
+  date: string;
+  lesson: number;
+  status: "OPEN" | "CLOSED";
+  group: {
+    id: string;
+    name: string;
+    room?: { name: string } | null;
+  };
+  students: Student[];
+}
 
 export interface Student {
   id: string;

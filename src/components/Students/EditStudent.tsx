@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { api } from "@/Service/api";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -6,6 +8,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { CheckCircle2, XCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface EditStudentProps {
   studentId: string;
@@ -26,6 +29,8 @@ export default function EditStudent({
   studentId,
   onUpdated,
 }: EditStudentProps) {
+  const { t } = useTranslation();
+
   const [form, setForm] = useState<StudentForm>({
     firstName: "",
     lastName: "",
@@ -39,7 +44,6 @@ export default function EditStudent({
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState({ type: "", message: "" });
 
-  // Fetch student data safely
   const fetchStudent = async () => {
     try {
       setLoading(true);
@@ -59,7 +63,7 @@ export default function EditStudent({
       });
     } catch (error) {
       console.error(error);
-      setAlert({ type: "error", message: "Student ma'lumotlari olinmadi!" });
+      setAlert({ type: "error", message: t("fetch_error") });
     } finally {
       setLoading(false);
     }
@@ -78,18 +82,18 @@ export default function EditStudent({
     e.preventDefault();
     try {
       await api.patch(`/students/${studentId}`, form);
-      setAlert({ type: "success", message: "Student updated successfully!" });
+      setAlert({ type: "success", message: t("update_success") });
       if (onUpdated) onUpdated();
     } catch (error) {
       console.error(error);
-      setAlert({ type: "error", message: "Error updating student!" });
+      setAlert({ type: "error", message: t("update_error") });
     }
   };
 
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20 text-gray-400 dark:text-gray-500">
-        Loading student data...
+        {t("loading_student")}
       </div>
     );
   }
@@ -99,7 +103,7 @@ export default function EditStudent({
       <Card className="w-full max-w-md shadow-lg dark:bg-gray-900 dark:text-gray-200">
         <CardHeader>
           <CardTitle className="text-center text-xl font-semibold">
-            Edit Student
+            {t("edit_student")}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -117,7 +121,7 @@ export default function EditStudent({
                 <XCircle className="h-5 w-5" />
               )}
               <AlertTitle>
-                {alert.type === "success" ? "Success" : "Error"}
+                {alert.type === "success" ? t("success") : t("error")}
               </AlertTitle>
               <AlertDescription>{alert.message}</AlertDescription>
             </Alert>
@@ -125,7 +129,7 @@ export default function EditStudent({
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label>First Name</Label>
+              <Label>{t("first_name")}</Label>
               <Input
                 name="firstName"
                 value={form.firstName}
@@ -134,7 +138,7 @@ export default function EditStudent({
               />
             </div>
             <div>
-              <Label>Last Name</Label>
+              <Label>{t("last_name")}</Label>
               <Input
                 name="lastName"
                 value={form.lastName}
@@ -143,7 +147,7 @@ export default function EditStudent({
               />
             </div>
             <div>
-              <Label>Phone</Label>
+              <Label>{t("phone")}</Label>
               <Input
                 name="phone"
                 value={form.phone}
@@ -152,17 +156,17 @@ export default function EditStudent({
               />
             </div>
             <div>
-              <Label>Password</Label>
+              <Label>{t("password")}</Label>
               <Input
                 type="password"
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                placeholder="Leave blank to keep current"
+                placeholder={t("password_optional")}
               />
             </div>
             <div>
-              <Label>Date of Birth</Label>
+              <Label>{t("dob")}</Label>
               <Input
                 type="date"
                 name="dateOfBirth"
@@ -171,7 +175,7 @@ export default function EditStudent({
               />
             </div>
             <div>
-              <Label>Start Date</Label>
+              <Label>{t("start_date")}</Label>
               <Input
                 type="date"
                 name="startDate"
@@ -186,10 +190,10 @@ export default function EditStudent({
                 checked={form.isActive}
                 onChange={handleChange}
               />
-              <Label>Active</Label>
+              <Label>{t("active")}</Label>
             </div>
             <Button type="submit" className="w-full">
-              💾 Update Student
+              {t("update_student")}
             </Button>
           </form>
         </CardContent>

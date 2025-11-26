@@ -5,41 +5,38 @@ import { MdAddModerator } from "react-icons/md";
 import { PiTrashSimpleFill } from "react-icons/pi";
 import { FaChild } from "react-icons/fa6";
 
-
-
-
 export const CreateForm = [
   {
-    name: "Assignment Teacher",
+    nameKey: "assignment_teacher",
     href: "create-assignment",
     icon: TiUserAdd,
   },
   {
-    name: "Assignment List",
+    nameKey: "assignment_list",
     href: "assignments",
     icon: FaIdBadge,
   },
   {
-    name: "Add Room",
+    nameKey: "add_room",
     href: "create-room",
     icon: BsHouseAddFill,
   },
   {
-    name: "Add Manager",
-    href: "create-meneger",
+    nameKey: "add_manager",
+    href: "create-manager",
     icon: MdAddModerator,
   },
   {
-    name: "Student Hub",
+    nameKey: "student_hub",
     href: "enrollments",
     icon: FaChild,
-  }, {
-    name: "Archive",
+  },
+  {
+    nameKey: "archive",
     href: "archive",
     icon: PiTrashSimpleFill,
   },
 ];
-
 
 export const CategoryNavigate = [
   { label: "home", href: "", icon: "/icons/rooms.svg" },
