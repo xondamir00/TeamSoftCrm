@@ -25,6 +25,7 @@ import CreateStudentForm from "./components/form/addStudent";
 import AddGroupForm from "./components/Group/AddGoup";
 import Trash from "./components/page/Trash";
 import AttendancePage from "./components/attendance/AttendancePage";
+import Teacherdetail from "./components/teacher/teacher-detail";
 
 const App = () => {
   return (
@@ -91,6 +92,7 @@ const App = () => {
           >
             <Route index element={<Teacher />} />
             <Route path="attendance" element={<AttendancePage />} />
+            <Route path="group/:groupId" element={<Teacherdetail />} />
           </Route>
 
           {/* Catch-all route */}

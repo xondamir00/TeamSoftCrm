@@ -1,4 +1,4 @@
-import TeacherGroup from "../form/teacher-group";
+import TeacherGroup from "../teacher/teacher-group";
 
 const Teacher = () => {
   return (

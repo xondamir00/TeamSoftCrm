@@ -31,15 +31,19 @@ export interface CreateTeacherPayload {
   monthlySalary?: number | null;
   percentShare?: number | null;
 }
-
 export interface Group {
-  id: string;
-  name: string;
-  room: [{ name: string }];
-  roomId?: string;
-  teacherId?: string;
-  createdAt?: string;
+  groupId: string;
+  groupName: string;
+  room?: {
+    id: string;
+    name: string;
+    capacity?: number;
+  };
+  startTime?: string;
+  endTime?: string;
+  daysPattern?: string;
 }
+
 export interface Student {
   id: string;
   userId: string;
