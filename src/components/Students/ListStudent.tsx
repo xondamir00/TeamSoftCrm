@@ -37,7 +37,6 @@ const ListStudent = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
   const [restoreDialogOpen, setRestoreDialogOpen] = useState<boolean>(false);
 
-  // Debounce search
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
@@ -64,7 +63,7 @@ const ListStudent = () => {
       setTotalPages(res.data.meta?.pages || 1);
     } catch (error) {
       console.error(error);
-      setError("Studentlarni olishda xatolik yuz berdi");
+      setError("Studentlarni olishda xatolik");
     } finally {
       setLoading(false);
     }
