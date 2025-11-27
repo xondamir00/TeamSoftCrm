@@ -73,7 +73,6 @@ export interface Student {
   isActive: boolean;
   dateOfBirth?: string;
   startDate?: string;
-  createdAt: string;
 }
 export interface Enrollment {
   id: string;
@@ -113,92 +112,15 @@ type AuthState = {
     newPassword: string
   ) => Promise<void>;
 };
-export interface Manager {
+export interface Student {
   id: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   phone: string;
-  photoUrl?: string;
-  monthlySalary?: number;
   isActive: boolean;
+  dateOfBirth?: string;
+  startDate?: string;
+  createdAt?: string;
 }
-
-interface ManagerState {
-  managers: Manager[];
-  trashManagers: Manager[];
-  loading: boolean;
-  error: string | null;
-
-  fetchManagers: () => Promise<void>;
-  fetchTrashManagers: () => Promise<void>;
-  deleteManager: (id: string) => Promise<void>;
-  restoreManager: (id: string) => Promise<void>;
-}
-
-export const useManagerStore = create<ManagerState>((set, get) => ({
-  managers: [],
-  trashManagers: [],
-  loading: false,
-  error: null,
-
-  // ACTIVE MANAGERS LIST
-  fetchManagers: async () => {
-    try {
-      set({ loading: true });
-      const { data } = await api.get("/managers", {
-        params: { isActive: true },
-      });
-      set({ managers: data.items || [], loading: false });
-    } catch (e: any) {
-      set({
-        loading: false,
-        error: e.response?.data?.message || "Failed to load managers",
-      });
-    }
-  },
-
-  // TRASH LIST
-  fetchTrashManagers: async () => {
-    try {
-      set({ loading: true });
-      const { data } = await api.get("/managers", {
-        params: { isActive: false },
-      });
-      set({ trashManagers: data.items || [], loading: false });
-    } catch (e: any) {
-      set({
-        loading: false,
-        error: e.response?.data?.message || "Failed to load trash managers",
-      });
-    }
-  },
-
-  // MOVE TO TRASH
-  deleteManager: async (id: string) => {
-    try {
-      await api.delete(`/managers/${id}`);
-      await get().fetchManagers();
-      await get().fetchTrashManagers();
-    } catch (e: any) {
-      set({
-        error: e.response?.data?.message || "Failed to delete manager",
-      });
-    }
-  },
-
-  // RESTORE
-  restoreManager: async (id: string) => {
-    try {
-      await api.patch(`/managers/${id}`, { isActive: true });
-      await get().fetchManagers();
-      await get().fetchTrashManagers();
-    } catch (e: any) {
-      set({
-        error: e.response?.data?.message || "Failed to restore manager",
-      });
-    }
-  },
-}));
 
 export const useAuth = create<AuthState>()(
   persist(

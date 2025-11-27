@@ -1,20 +1,22 @@
-import { TiUserAdd } from "react-icons/ti";
-import { FaIdBadge } from "react-icons/fa6";
 import { BsHouseAddFill } from "react-icons/bs";
 import { MdAddModerator } from "react-icons/md";
 import { PiTrashSimpleFill } from "react-icons/pi";
-import { FaChild } from "react-icons/fa6";
+import { FaUserTie } from "react-icons/fa6";
+import { GiTeacher } from "react-icons/gi";
+import { FaUserPlus } from "react-icons/fa6";
+import { FaUserGraduate } from "react-icons/fa6";
+import { FaTrashAlt } from "react-icons/fa";
 
 export const CreateForm = [
   {
     nameKey: "assignment_teacher",
     href: "create-assignment",
-    icon: TiUserAdd,
+    icon: FaUserPlus,
   },
   {
     nameKey: "assignment_list",
     href: "assignments",
-    icon: FaIdBadge,
+    icon: GiTeacher,
   },
   {
     nameKey: "add_room",
@@ -24,7 +26,7 @@ export const CreateForm = [
   {
     nameKey: "add_manager",
     href: "create-manager",
-    icon: MdAddModerator,
+    icon: FaUserTie,
   },
    {
     nameKey: "Manager List",
@@ -34,12 +36,12 @@ export const CreateForm = [
   {
     nameKey: "student_hub",
     href: "enrollments",
-    icon: FaChild,
+    icon: FaUserGraduate,
   },
   {
     nameKey: "archive",
     href: "archive",
-    icon: PiTrashSimpleFill,
+    icon: FaTrashAlt,
   },
 ];
 
