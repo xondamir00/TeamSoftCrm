@@ -21,18 +21,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslation } from "react-i18next";
 
 const DAYS_PATTERNS = [
-  { value: "ADD", label: "Weekdays" },
-  { value: "ODD", label: "Weekend" },
-  { value: "ALL", label: "All days" },
+  { value: "ADD", labelKey: "weekdays" },
+  { value: "ODD", labelKey: "weekend" },
+  { value: "ALL", labelKey: "all_days" },
 ];
+
+interface TeachingAssignmentFormProps {
+  onSuccess: () => void;
+}
 
 export const TeachingAssignmentForm = ({
   onSuccess,
-}: {
-  onSuccess: () => void;
-}) => {
+}: TeachingAssignmentFormProps) => {
+  const { t } = useTranslation();
+
   const [form, setForm] = useState({
     teacherId: "",
     groupId: "",
@@ -63,7 +68,6 @@ export const TeachingAssignmentForm = ({
           api.get("/teachers"),
           api.get("/groups"),
         ]);
-
         setTeachers(
           Array.isArray(teacherRes.data.items) ? teacherRes.data.items : []
         );
@@ -71,7 +75,7 @@ export const TeachingAssignmentForm = ({
           Array.isArray(groupRes.data.items) ? groupRes.data.items : []
         );
       } catch (err: any) {
-        setError("Ma'lumotlarni olishda xato yuz berdi");
+        setError(t("error"));
         setOpenAlert(true);
       } finally {
         setLoading(false);
@@ -79,11 +83,11 @@ export const TeachingAssignmentForm = ({
     })();
   }, []);
 
-  const teacherLabel = (t: any) =>
-    t.name ||
-    t.fullName ||
-    `${t.firstName ?? ""} ${t.lastName ?? ""}`.trim() ||
-    t.id;
+  const teacherLabel = (tch: any) =>
+    tch.name ||
+    tch.fullName ||
+    `${tch.firstName ?? ""} ${tch.lastName ?? ""}`.trim() ||
+    tch.id;
 
   const buildDto = () => {
     const dto: any = {
@@ -93,24 +97,19 @@ export const TeachingAssignmentForm = ({
       note: form.note || undefined,
       inheritSchedule: !!form.inheritSchedule,
     };
-
     if (form.fromDate) dto.fromDate = new Date(form.fromDate).toISOString();
     if (form.toDate) dto.toDate = new Date(form.toDate).toISOString();
-
     if (!form.inheritSchedule) {
       dto.daysPatternOverride = form.daysPatternOverride || undefined;
       dto.startTimeOverride = form.startTimeOverride || undefined;
       dto.endTimeOverride = form.endTimeOverride || undefined;
     }
-
     return dto;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { teacherId, groupId } = form;
-    if (!teacherId || !groupId) return;
-
+    if (!form.teacherId || !form.groupId) return;
     try {
       await api.post("/teaching-assignments", buildDto());
       onSuccess();
@@ -127,17 +126,14 @@ export const TeachingAssignmentForm = ({
         endTimeOverride: "",
       });
     } catch (err: any) {
-      console.error("submit error", err);
-      setError(err?.response?.data?.message ?? err.message ?? "Xato yuz berdi");
+      setError(err?.response?.data?.message ?? t("error"));
       setOpenAlert(true);
     }
   };
 
   if (loading)
     return (
-      <div className="text-center py-6 text-gray-500">
-        Ma'lumotlar yuklanmoqda...
-      </div>
+      <div className="text-center py-6 text-gray-500">{t("loading_data")}</div>
     );
 
   return (
@@ -149,23 +145,23 @@ export const TeachingAssignmentForm = ({
         {/* Teacher */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-            O'qituvchi
+            {t("teacher")}
           </label>
           <Select
             value={form.teacherId}
             onValueChange={(v) => updateForm("teacherId", v)}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="O'qituvchi tanlang" />
+              <SelectValue placeholder={t("select_teacher")} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 {teachers.length === 0 ? (
-                  <SelectItem value="">— Hech qanday o'qituvchi —</SelectItem>
+                  <SelectItem value="">{t("no_teacher")}</SelectItem>
                 ) : (
-                  teachers.map((t: any) => (
-                    <SelectItem key={t.id} value={t.id}>
-                      {teacherLabel(t)}
+                  teachers.map((tch) => (
+                    <SelectItem key={tch.id} value={tch.id}>
+                      {teacherLabel(tch)}
                     </SelectItem>
                   ))
                 )}
@@ -177,18 +173,18 @@ export const TeachingAssignmentForm = ({
         {/* Group */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Guruh
+            {t("group")}
           </label>
           <Select
             value={form.groupId}
             onValueChange={(v) => updateForm("groupId", v)}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Guruh tanlang" />
+              <SelectValue placeholder={t("select_group")} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {groups.map((g: any) => (
+                {groups.map((g) => (
                   <SelectItem key={g.id} value={g.id}>
                     {g.name ?? g.title ?? g.id}
                   </SelectItem>
@@ -201,7 +197,7 @@ export const TeachingAssignmentForm = ({
         {/* Role */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Role
+            {t("role")}
           </label>
           <Select
             value={form.role}
@@ -211,9 +207,9 @@ export const TeachingAssignmentForm = ({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="LEAD">LEAD</SelectItem>
-              <SelectItem value="ASSISTANT">ASSISTANT</SelectItem>
-              <SelectItem value="SUBSTITUTE">SUBSTITUTE</SelectItem>
+              <SelectItem value="LEAD">{t("lead")}</SelectItem>
+              <SelectItem value="ASSISTANT">{t("assistant")}</SelectItem>
+              <SelectItem value="SUBSTITUTE">{t("substitute")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -222,7 +218,7 @@ export const TeachingAssignmentForm = ({
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
-              From
+              {t("from")}
             </label>
             <input
               type="date"
@@ -233,7 +229,7 @@ export const TeachingAssignmentForm = ({
           </div>
           <div>
             <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
-              To
+              {t("to")}
             </label>
             <input
               type="date"
@@ -257,7 +253,7 @@ export const TeachingAssignmentForm = ({
             htmlFor="inherit"
             className="text-sm text-gray-700 dark:text-gray-300"
           >
-            Guruh jadvalini meros qilib olish
+            {t("inherit_schedule")}
           </label>
         </div>
 
@@ -266,20 +262,20 @@ export const TeachingAssignmentForm = ({
           <>
             <div>
               <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
-                Days pattern
+                {t("days_pattern")}
               </label>
               <Select
                 value={form.daysPatternOverride}
                 onValueChange={(v) => updateForm("daysPatternOverride", v)}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Days pattern tanlang" />
+                  <SelectValue placeholder={t("select_days_pattern")} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     {DAYS_PATTERNS.map((d) => (
                       <SelectItem key={d.value} value={d.value}>
-                        {d.label}
+                        {t(d.labelKey)}
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -290,7 +286,7 @@ export const TeachingAssignmentForm = ({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
-                  Start time (HH:MM)
+                  {t("start_time")}
                 </label>
                 <input
                   type="time"
@@ -303,7 +299,7 @@ export const TeachingAssignmentForm = ({
               </div>
               <div>
                 <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
-                  End time (HH:MM)
+                  {t("end_time")}
                 </label>
                 <input
                   type="time"
@@ -321,13 +317,13 @@ export const TeachingAssignmentForm = ({
         {/* Note */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-            Note
+            {t("note")}
           </label>
           <input
             type="text"
             value={form.note}
             onChange={(e) => updateForm("note", e.target.value)}
-            placeholder="Qo'shimcha izoh"
+            placeholder={t("placeholder_note")}
             className="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
           />
         </div>
@@ -336,7 +332,7 @@ export const TeachingAssignmentForm = ({
           type="submit"
           className="bg-blue-500 hover:bg-blue-600 text-white"
         >
-          Add Assignment
+          {t("add_assignment")}
         </Button>
       </form>
 
@@ -344,15 +340,15 @@ export const TeachingAssignmentForm = ({
       <AlertDialog open={openAlert} onOpenChange={setOpenAlert}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Xatolik</AlertDialogTitle>
+            <AlertDialogTitle>{t("error")}</AlertDialogTitle>
             <AlertDialogDescription>{error}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setOpenAlert(false)}>
-              Yopish
+              {t("close")}
             </AlertDialogCancel>
             <AlertDialogAction onClick={() => setOpenAlert(false)}>
-              OK
+              {t("ok")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

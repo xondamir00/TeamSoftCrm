@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Button } from "../ui/button";
 import EditStudent from "./EditStudent";
+import { useTranslation } from "react-i18next";
 
 interface EditStudentDrawerProps {
   open: boolean;
@@ -16,6 +17,8 @@ export default function EditStudentDrawer({
   studentId,
   onUpdated,
 }: EditStudentDrawerProps) {
+  const { t } = useTranslation();
+
   return (
     <AnimatePresence>
       {open && (
@@ -39,7 +42,7 @@ export default function EditStudentDrawer({
           >
             <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
               <h2 className="text-lg font-semibold dark:text-gray-200">
-                Edit Student
+                {t("edit_student")}
               </h2>
               <Button
                 onClick={onClose}

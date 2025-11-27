@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { api } from "@/Service/api";
 import { Input } from "../ui/input";
@@ -16,13 +18,16 @@ import RestoreStudentDialog from "./RestoreStudent";
 import AddStudentDrawer from "./AddStudentDrawer";
 import EditStudentDrawer from "./EditStudentDrawer";
 import type { Student } from "@/Store";
+import { useTranslation } from "react-i18next";
 
 const ListStudent = () => {
+  const { t } = useTranslation();
+
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState(""); // Debounced value
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
@@ -33,13 +38,11 @@ const ListStudent = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [restoreDialogOpen, setRestoreDialogOpen] = useState(false);
 
-  // Debounce search input
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-      setPage(1); // search qilganda sahifa 1 ga qaytariladi
-    }, 500); // 500ms kechikish
-
+      setPage(1);
+    }, 500);
     return () => clearTimeout(handler);
   }, [search]);
 
@@ -54,13 +57,12 @@ const ListStudent = () => {
       setTotalPages(res.data.meta?.pages || 1);
     } catch (err: any) {
       console.error(err);
-      setError("Studentlarni olishda xatolik yuz berdi");
+      setError(t("fetch_error"));
     } finally {
       setLoading(false);
     }
   };
 
-  // Debounced search va page o'zgarganda fetch qilamiz
   useEffect(() => {
     fetchStudents();
   }, [debouncedSearch, page]);
@@ -90,7 +92,8 @@ const ListStudent = () => {
   if (loading)
     return (
       <div className="flex justify-center items-center py-20 text-gray-400 dark:text-gray-500">
-        <Loader2 className="animate-spin mr-2 w-6 h-6" /> Loading students...
+        <Loader2 className="animate-spin mr-2 w-6 h-6" />{" "}
+        {t("loading_students")}
       </div>
     );
 
@@ -107,7 +110,7 @@ const ListStudent = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <Input
           type="text"
-          placeholder="Search by name or phone..."
+          placeholder={t("search_placeholder")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-md w-full dark:bg-gray-800 dark:text-gray-200"
@@ -116,7 +119,7 @@ const ListStudent = () => {
           onClick={() => setOpenAddDrawer(true)}
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white"
         >
-          <Plus className="w-4 h-4" /> Add Student
+          <Plus className="w-4 h-4" /> {t("add_student")}
         </Button>
         <AddStudentDrawer
           open={openAddDrawer}
@@ -131,25 +134,25 @@ const ListStudent = () => {
           <TableHeader className="bg-gray-100 dark:bg-gray-900">
             <TableRow>
               <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                ID
+                {t("id")}
               </TableHead>
               <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                Name
+                {t("name")}
               </TableHead>
               <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                Phone
+                {t("phone")}
               </TableHead>
               <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                Status
+                {t("status")}
               </TableHead>
               <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                Date of Birth
+                {t("dob")}
               </TableHead>
               <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                Start Date
+                {t("start_date")}
               </TableHead>
               <TableHead className="text-right px-4 py-2 text-gray-700 dark:text-gray-300">
-                Actions
+                {t("actions")}
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -161,7 +164,7 @@ const ListStudent = () => {
                   colSpan={7}
                   className="text-center text-gray-500 dark:text-gray-400 py-4"
                 >
-                  No students found.
+                  {t("no_students")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -185,7 +188,7 @@ const ListStudent = () => {
                           : "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100"
                       }`}
                     >
-                      {student.isActive ? "Active" : "Inactive"}
+                      {student.isActive ? t("active") : t("inactive")}
                     </span>
                   </TableCell>
                   <TableCell className="px-4 py-2">
@@ -236,11 +239,11 @@ const ListStudent = () => {
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
         >
-          Previous
+          {t("previous")}
         </Button>
 
         <span className="text-gray-600 dark:text-gray-300">
-          Page <strong>{page}</strong> of {totalPages}
+          {t("page")} <strong>{page}</strong> {t("of")} {totalPages}
         </span>
 
         <Button
@@ -248,7 +251,7 @@ const ListStudent = () => {
           onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={page === totalPages}
         >
-          Next
+          {t("next")}
         </Button>
       </div>
 

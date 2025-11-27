@@ -1,87 +1,147 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { api } from "@/Service/api";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { AxiosError } from "axios";
 
-export default function UpdateTeacherForm({ teacher, onSuccess }: any) {
+interface ApiError {
+  message?: string;
+}
+
+interface UpdateTeacherProps {
+  teacher: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+  };
+  onSuccess: () => void;
+}
+
+export default function UpdateTeacherForm({
+  teacher,
+  onSuccess,
+}: UpdateTeacherProps) {
+  const { t } = useTranslation();
+
   const [form, setForm] = useState({
-    firstName: teacher.fullName?.split(" ")[0] || "",
-    lastName: teacher.fullName?.split(" ")[1] || "",
-    phone: teacher.phone || "",
+    firstName: teacher.firstName,
+    lastName: teacher.lastName,
+    phone: teacher.phone,
     password: "",
-    photoUrl: teacher.photoUrl || "",
-    monthlySalary: teacher.monthlySalary || "",
-    percentShare: teacher.percentShare || "",
+    photoUrl: "",
+    monthlySalary: null as number | null,
+    percentShare: null as number | null,
   });
 
-  const handleChange = (key: string, val: any) => {
-    setForm((p) => ({ ...p, [key]: val }));
+  const [loading, setLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
 
-    if (key === "monthlySalary" && val) setForm((p) => ({ ...p, percentShare: "" }));
-    if (key === "percentShare" && val) setForm((p) => ({ ...p, monthlySalary: "" }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "monthlySalary" || name === "percentShare") {
+      setForm((prev) => ({
+        ...prev,
+        [name]: value === "" ? null : Number(value),
+      }));
+      return;
+    }
+
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
     try {
-      await api.patch(`/teachers/${teacher.id}`, form);
-      alert("✅ Malumot yangilandi!");
-      onSuccess?.();
-    } catch (err: any) {
-      alert("❌ Xatolik: " + (err.response?.data?.message || "Server xatosi"));
+      const payload = {
+        ...form,
+        photoUrl:
+          form.photoUrl && form.photoUrl.startsWith("http")
+            ? form.photoUrl
+            : null,
+      };
+
+      await api.patch(`/teachers/${teacher.id}`, payload);
+
+      setMessage(t("updated_successfully"));
+      onSuccess();
+    } catch (error) {
+      const err = error as AxiosError<ApiError>;
+      setMessage(err.response?.data?.message || t("update_error"));
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="space-y-4">
-      <div>
-        <Label>Ism</Label>
-        <Input value={form.firstName} onChange={(e) => handleChange("firstName", e.target.value)} />
-      </div>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      {message && <p className="text-center text-sm text-red-500">{message}</p>}
 
-      <div>
-        <Label>Familiya</Label>
-        <Input value={form.lastName} onChange={(e) => handleChange("lastName", e.target.value)} />
-      </div>
+      <input
+        name="firstName"
+        value={form.firstName}
+        onChange={handleChange}
+        placeholder={t("first_name")}
+        className="border p-2 rounded"
+      />
+      <input
+        name="lastName"
+        value={form.lastName}
+        onChange={handleChange}
+        placeholder={t("last_name")}
+        className="border p-2 rounded"
+      />
+      <input
+        name="phone"
+        value={form.phone}
+        onChange={handleChange}
+        placeholder={t("phone")}
+        className="border p-2 rounded"
+      />
+      <input
+        name="password"
+        type="password"
+        value={form.password}
+        onChange={handleChange}
+        placeholder={t("password_optional")}
+        className="border p-2 rounded"
+      />
+      <input
+        name="photoUrl"
+        value={form.photoUrl}
+        onChange={handleChange}
+        placeholder={t("photo_url")}
+        className="border p-2 rounded"
+      />
+      <input
+        name="monthlySalary"
+        type="number"
+        value={form.monthlySalary ?? ""}
+        onChange={handleChange}
+        placeholder={t("monthly_salary")}
+        className="border p-2 rounded"
+      />
+      <input
+        name="percentShare"
+        type="number"
+        value={form.percentShare ?? ""}
+        onChange={handleChange}
+        placeholder={t("percent_share")}
+        className="border p-2 rounded"
+      />
 
-      <div>
-        <Label>Telefon</Label>
-        <Input value={form.phone} onChange={(e) => handleChange("phone", e.target.value)} />
-      </div>
-
-      <div>
-        <Label>Yangi parol</Label>
-        <Input type="password" value={form.password} onChange={(e) => handleChange("password", e.target.value)} />
-      </div>
-
-      <div>
-        <Label>Avatar URL</Label>
-        <Input value={form.photoUrl} onChange={(e) => handleChange("photoUrl", e.target.value)} />
-      </div>
-
-      <div>
-        <Label>Oylik (UZS)</Label>
-        <Input
-          value={form.monthlySalary}
-          disabled={Boolean(form.percentShare)}
-          onChange={(e) => handleChange("monthlySalary", e.target.value)}
-        />
-      </div>
-
-      <div>
-        <Label>Foiz ulushi (%)</Label>
-        <Input
-          value={form.percentShare}
-          disabled={Boolean(form.monthlySalary)}
-          onChange={(e) => handleChange("percentShare", e.target.value)}
-        />
-      </div>
-
-      <Button className="w-full bg-green-600 text-white" onClick={handleSubmit}>
-        Saqlash
-      </Button>
-    </div>
+      <button
+        type="submit"
+        disabled={loading}
+        className="bg-[#3F8CFF] text-white rounded p-2 hover:bg-blue-600 disabled:opacity-60"
+      >
+        {loading ? t("loading") : t("save_changes")}
+      </button>
+    </form>
   );
 }

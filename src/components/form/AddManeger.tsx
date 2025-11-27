@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { api } from "@/Service/api";
 import { useTranslation } from "react-i18next";
@@ -61,8 +63,7 @@ export default function AddManagerForm() {
         monthlySalary: form.monthlySalary ? Number(form.monthlySalary) : undefined,
       };
 
-      const res = await api.post("/managers", payload);
-      console.log("Manager added:", res.data);
+      await api.post("/managers", payload);
 
       setMessage("success");
       setIsDialogOpen(true);
@@ -76,8 +77,13 @@ export default function AddManagerForm() {
       });
     } catch (error) {
       const err = error as AxiosError<ApiErrorResponse>;
+<<<<<<< HEAD
       setMessage(err.response?.data?.message || "Error occurred");
       setIsDialogOpen(true);
+=======
+      const errMsg = err.response?.data?.message || t("manager_add_error");
+      setMessage(errMsg);
+>>>>>>> 471c8e8e1ac6b8ad9b7fd0b5423bfa612c1c3da9
     } finally {
       setLoading(false);
     }

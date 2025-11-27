@@ -1,5 +1,3 @@
-"use client";
-
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { CreateForm } from "@/constants";
@@ -17,7 +15,6 @@ const TeacherGroup = () => {
 
   return (
     <div className="mt-16 space-y-14">
-
       {/* Title */}
       <motion.h1
         initial={{ opacity: 0, y: 16 }}
@@ -39,7 +36,11 @@ const TeacherGroup = () => {
               key={item.href}
               initial={{ opacity: 0, x: dir.x, y: dir.y, scale: 0.95 }}
               animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-              transition={{ duration: 0.45, delay: index * 0.08, ease: "easeOut" }}
+              transition={{
+                duration: 0.45,
+                delay: index * 0.08,
+                ease: "easeOut",
+              }}
             >
               <Link
                 to={item.href}
@@ -48,12 +49,8 @@ const TeacherGroup = () => {
                 p-6 flex flex-col items-center justify-center gap-3
                 hover:shadow-lg transition-all duration-300"
               >
-
                 {/* Icon Box */}
-                <div
-                  className="w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300"
-              
-                >
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300">
                   <Icon
                     size={28}
                     className="transition-transform duration-300 group-hover:scale-110"
@@ -61,13 +58,9 @@ const TeacherGroup = () => {
                 </div>
 
                 {/* Name */}
-                <span
-                  className="text-lg font-medium transition-colors duration-300"
-              
-                >
-                  {t(item.name)}
+                <span className="text-lg font-medium transition-colors duration-300">
+                  {t(item.nameKey)}
                 </span>
-
               </Link>
             </motion.div>
           );
