@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { api } from "@/Service/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,45 +15,39 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
+import { useEnrollmentStore, Student, Group } from "@/Store/Enrollment";
 
-interface Student {
-  id: string;
-  fullName: string;
-  phone?: string;
-}
-interface Group {
-  id: string;
-  name: string;
-}
 interface Props {
   onClose?: () => void;
   onSuccess?: () => void;
 }
 
 export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
-  const [students, setStudents] = useState<Student[]>([]);
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [studentId, setStudentId] = useState("");
-  const [groupId, setGroupId] = useState("");
+  const [studentId, setStudentId] = useState<string>("");
+  const [groupId, setGroupId] = useState<string>("");
   const [joinDate, setJoinDate] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Store state va actions
+  const students = useEnrollmentStore((state) => state.students);
+  const groups = useEnrollmentStore((state) => state.groups);
+  const fetchStudents = useEnrollmentStore((state) => state.fetchStudents);
+  const fetchGroups = useEnrollmentStore((state) => state.fetchGroups);
+  const createEnrollment = useEnrollmentStore((state) => state.createEnrollment);
+
+  // Ma'lumotlarni yuklash
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [resStudents, resGroups] = await Promise.all([
-          api.get("/students"),
-          api.get("/groups"),
-        ]);
-        setStudents(resStudents.data.items ?? []);
-        setGroups(resGroups.data.items ?? []);
+        await Promise.all([fetchStudents(), fetchGroups()]);
       } catch (err) {
+        console.error(err);
         setError("Ma'lumotlarni yuklashda xatolik yuz berdi");
       }
     };
     fetchData();
-  }, []);
+  }, [fetchStudents, fetchGroups]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,16 +55,14 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
       setError("Iltimos, student va guruhni tanlang");
       return;
     }
+
     setLoading(true);
     try {
-      await api.post("/enrollments", {
-        studentId,
-        groupId,
-        joinDate: joinDate || undefined,
-      });
+      await createEnrollment({ studentId, groupId, joinDate: joinDate || undefined });
       onSuccess?.();
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Serverda xatolik");
+      onClose?.();
+    } catch {
+      setError("Serverda xatolik yuz berdi");
     } finally {
       setLoading(false);
     }
@@ -108,9 +99,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
                 <AlertDialogDescription>{error}</AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel onClick={() => setError(null)}>
-                  Yopish
-                </AlertDialogCancel>
+                <AlertDialogCancel onClick={() => setError(null)}>Yopish</AlertDialogCancel>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -126,7 +115,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
               onChange={(e) => setStudentId(e.target.value)}
             >
               <option value="">Tanlang</option>
-              {(students ?? []).map((s) => (
+              {students.map((s: Student) => (
                 <option key={s.id} value={s.id}>
                   {s.fullName}
                 </option>
@@ -143,7 +132,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
               onChange={(e) => setGroupId(e.target.value)}
             >
               <option value="">Tanlang</option>
-              {(groups ?? []).map((g) => (
+              {groups.map((g: Group) => (
                 <option key={g.id} value={g.id}>
                   {g.name}
                 </option>
@@ -166,9 +155,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
               Bekor qilish
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? (
-                <Loader2 className="w-4 h-4 animate-spin mr-2 inline-block" />
-              ) : null}{" "}
+              {loading && <Loader2 className="w-4 h-4 animate-spin mr-2 inline-block" />}
               Yaratish
             </Button>
           </div>
