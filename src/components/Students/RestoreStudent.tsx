@@ -11,9 +11,10 @@ import {
 import { api } from "@/Service/api";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import type { Student } from "@/Store";
 
-interface DeleteStudentProps {
-  student: any | null;
+interface RestoreStudentProps {
+  student: Student | null;
   open: boolean;
   onClose: () => void;
   onUpdated?: () => void;
@@ -24,7 +25,7 @@ export default function RestoreStudentDialog({
   open,
   onClose,
   onUpdated,
-}: DeleteStudentProps) {
+}: RestoreStudentProps) {
   const [loading, setLoading] = useState(false);
 
   if (!student) return null;
@@ -33,7 +34,7 @@ export default function RestoreStudentDialog({
     setLoading(true);
     try {
       await api.patch(`/students/${student.id}/restore`);
-      if (onUpdated) onUpdated();
+      onUpdated?.();
       onClose();
     } catch (err) {
       console.error(err);
@@ -49,16 +50,19 @@ export default function RestoreStudentDialog({
           <AlertDialogTitle>
             {student.isActive ? "Deactivate Student?" : "Restore Student?"}
           </AlertDialogTitle>
+
           <AlertDialogDescription>
             {student.isActive
-              ? `${student.fullName} foydalanuvchisini o‘chirilsinmi?`
+              ? `${student.fullName} foydalanuvchisi faol emas qilinsinmi?`
               : `${student.fullName} qayta faollashtirilsinmi?`}
           </AlertDialogDescription>
         </AlertDialogHeader>
+
         <AlertDialogFooter>
           <AlertDialogCancel disabled={loading} onClick={onClose}>
             Cancel
           </AlertDialogCancel>
+
           <AlertDialogAction
             disabled={loading}
             onClick={handleToggleActive}

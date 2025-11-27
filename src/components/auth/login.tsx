@@ -33,21 +33,21 @@ export function Login() {
 
     try {
       const { data } = await api.post("/auth/login", { phone, password });
-      const { user, accessToken, refreshToken } = data;
-      console.log(data.user.role);
 
+      const { user, accessToken, refreshToken } = data;
+
+      // ✔ TO‘G‘RI TASNIF
       if (!accessToken || !refreshToken || !user) {
         setError(t("error_invalid"));
         return;
       }
-      console.log(accessToken);
 
+      // Token va userni storega saqlash
       login(accessToken, refreshToken, user);
 
+      // Rolga qarab redirect
       switch (user.role) {
         case "ADMIN":
-          navigate("/admin");
-          break;
         case "MANAGER":
           navigate("/admin");
           break;
@@ -64,6 +64,9 @@ export function Login() {
       setLoading(false);
     }
   };
+
+  console.log('Sending phone:', phone);
+console.log('Sending password:', password);
 
   return (
     <div className="relative min-h-screen flex flex-col md:flex-row items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
@@ -87,6 +90,7 @@ export function Login() {
           transition={{ duration: 0.8 }}
         />
       </motion.div>
+
       <motion.div
         initial={{ opacity: 0, x: 60 }}
         animate={{ opacity: 1, x: 0 }}
@@ -102,6 +106,7 @@ export function Login() {
               {t("login_subtitle")}
             </p>
           </CardHeader>
+
           <CardContent className="relative z-10 mt-6">
             <form onSubmit={handleLogin} className="space-y-6">
               {error && (
@@ -114,7 +119,7 @@ export function Login() {
                 </motion.p>
               )}
 
-              {/* Phone */}
+              {/* Phone input */}
               <div className="relative">
                 <Phone
                   className="absolute left-3 top-3 text-gray-400"
@@ -129,6 +134,8 @@ export function Login() {
                   required
                 />
               </div>
+
+              {/* Password */}
               <div className="relative">
                 <Lock
                   className="absolute left-3 top-3 text-gray-400"

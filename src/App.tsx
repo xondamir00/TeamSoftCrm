@@ -23,7 +23,8 @@ import { TeachingAssignmentsList } from "./components/TeachingAssignmentsList/Te
 import AddTeacherForm from "./components/teacher/AddTeacherForm";
 import CreateStudentForm from "./components/form/addStudent";
 import AddGroupForm from "./components/Group/AddGoup";
-import Trash from "./components/page/Trash";
+import Trash from "./components/page/trash";
+import { TeacherAttendancePage } from "./components/attendance/TeacherAttendancePage";
 
 const App = () => {
   return (
@@ -89,6 +90,7 @@ const App = () => {
             }
           >
             <Route index element={<Teacher />} />
+            <Route path="/teacher/attendance" element={<TeacherAttendancePage />} />
           </Route>
 
           {/* Catch-all route */}

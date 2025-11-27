@@ -11,34 +11,38 @@ import {
   TableRow,
 } from "../ui/table";
 import { Loader2, Pencil, Trash2, RotateCw, Plus } from "lucide-react";
+
 import DeleteStudentDialog from "./DeleteStudent";
 import RestoreStudentDialog from "./RestoreStudent";
 import AddStudentDrawer from "./AddStudentDrawer";
 import EditStudentDrawer from "./EditStudentDrawer";
+
 import type { Student } from "@/Store";
 
 const ListStudent = () => {
   const [students, setStudents] = useState<Student[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState(""); // Debounced value
-  const [page, setPage] = useState(1);
-  const [limit] = useState(10);
-  const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState<string>("");
+  const [debouncedSearch, setDebouncedSearch] = useState<string>("");
 
-  const [openAddDrawer, setOpenAddDrawer] = useState(false);
-  const [openEditDrawer, setOpenEditDrawer] = useState(false);
+  const [page, setPage] = useState<number>(1);
+  const [limit] = useState<number>(10);
+  const [totalPages, setTotalPages] = useState<number>(1);
+
+  const [openAddDrawer, setOpenAddDrawer] = useState<boolean>(false);
+  const [openEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
+
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [restoreDialogOpen, setRestoreDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
+  const [restoreDialogOpen, setRestoreDialogOpen] = useState<boolean>(false);
 
-  // Debounce search input
+  // Debounce search
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-      setPage(1); // search qilganda sahifa 1 ga qaytariladi
-    }, 500); // 500ms kechikish
+      setPage(1);
+    }, 500);
 
     return () => clearTimeout(handler);
   }, [search]);
@@ -46,21 +50,26 @@ const ListStudent = () => {
   const fetchStudents = async () => {
     try {
       setLoading(true);
+
       const res = await api.get("/students", {
-        params: { search: debouncedSearch, page, limit, isActive: true },
+        params: {
+          search: debouncedSearch,
+          page,
+          limit,
+          isActive: true,
+        },
       });
 
       setStudents(res.data.items || []);
       setTotalPages(res.data.meta?.pages || 1);
-    } catch (err: any) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       setError("Studentlarni olishda xatolik yuz berdi");
     } finally {
       setLoading(false);
     }
   };
 
-  // Debounced search va page o'zgarganda fetch qilamiz
   useEffect(() => {
     fetchStudents();
   }, [debouncedSearch, page]);
@@ -102,7 +111,7 @@ const ListStudent = () => {
     );
 
   return (
-    <div className="space-y-6 w-[98%] mx-auto ">
+    <div className="space-y-6 w-[98%] mx-auto">
       {/* Search & Add */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <Input
@@ -112,12 +121,14 @@ const ListStudent = () => {
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-md w-full dark:bg-gray-800 dark:text-gray-200"
         />
+
         <Button
           onClick={() => setOpenAddDrawer(true)}
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white"
         >
           <Plus className="w-4 h-4" /> Add Student
         </Button>
+
         <AddStudentDrawer
           open={openAddDrawer}
           onClose={() => setOpenAddDrawer(false)}
@@ -130,94 +141,46 @@ const ListStudent = () => {
         <Table>
           <TableHeader className="bg-gray-100 dark:bg-gray-900">
             <TableRow>
-              <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                ID
-              </TableHead>
-              <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                Name
-              </TableHead>
-              <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                Phone
-              </TableHead>
-              <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                Status
-              </TableHead>
-              <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                Date of Birth
-              </TableHead>
-              <TableHead className="text-left px-4 py-2 text-gray-700 dark:text-gray-300">
-                Start Date
-              </TableHead>
-              <TableHead className="text-right px-4 py-2 text-gray-700 dark:text-gray-300">
-                Actions
-              </TableHead>
+              <TableHead>ID</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Phone</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Date of Birth</TableHead>
+              <TableHead>Start Date</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
             {students.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={7}
-                  className="text-center text-gray-500 dark:text-gray-400 py-4"
-                >
+                <TableCell colSpan={7} className="text-center text-gray-500 dark:text-gray-400 py-4">
                   No students found.
                 </TableCell>
               </TableRow>
             ) : (
               students.map((student) => (
-                <TableRow
-                  key={student.id}
-                  className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <TableCell className="font-mono text-sm px-4 py-2">
-                    {student.id}
+                <TableRow key={student.id}>
+                  <TableCell>{student.id}</TableCell>
+                  <TableCell>{student.fullName}</TableCell>
+                  <TableCell>{student.phone}</TableCell>
+                  <TableCell>
+                    {student.isActive ? "Active" : "Inactive"}
                   </TableCell>
-                  <TableCell className="px-4 py-2">
-                    {student.fullName}
-                  </TableCell>
-                  <TableCell className="px-4 py-2">{student.phone}</TableCell>
-                  <TableCell className="px-4 py-2">
-                    <span
-                      className={`px-2 py-1 text-xs font-medium rounded-full ${
-                        student.isActive
-                          ? "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100"
-                          : "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100"
-                      }`}
-                    >
-                      {student.isActive ? "Active" : "Inactive"}
-                    </span>
-                  </TableCell>
-                  <TableCell className="px-4 py-2">
-                    {student.dateOfBirth || "-"}
-                  </TableCell>
-                  <TableCell className="px-4 py-2">
-                    {student.startDate || "-"}
-                  </TableCell>
-                  <TableCell className="px-4 py-2 text-right space-x-2">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => handleEdit(student)}
-                      className="dark:border-gray-600 dark:text-gray-200"
-                    >
+                  <TableCell>{student.dateOfBirth || "-"}</TableCell>
+                  <TableCell>{student.startDate || "-"}</TableCell>
+
+                  <TableCell className="text-right space-x-2">
+                    <Button variant="outline" size="icon" onClick={() => handleEdit(student)}>
                       <Pencil className="w-4 h-4" />
                     </Button>
 
                     {student.isActive ? (
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        onClick={() => handleDelete(student)}
-                      >
+                      <Button variant="destructive" size="icon" onClick={() => handleDelete(student)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     ) : (
-                      <Button
-                        variant="secondary"
-                        size="icon"
-                        onClick={() => handleRestore(student)}
-                      >
+                      <Button variant="secondary" size="icon" onClick={() => handleRestore(student)}>
                         <RotateCw className="w-4 h-4" />
                       </Button>
                     )}
@@ -230,7 +193,7 @@ const ListStudent = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div className="flex justify-between items-center">
         <Button
           variant="outline"
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -239,7 +202,7 @@ const ListStudent = () => {
           Previous
         </Button>
 
-        <span className="text-gray-600 dark:text-gray-300">
+        <span>
           Page <strong>{page}</strong> of {totalPages}
         </span>
 
@@ -261,6 +224,7 @@ const ListStudent = () => {
           onDeleted={handleUpdated}
         />
       )}
+
       {selectedStudent && (
         <RestoreStudentDialog
           student={selectedStudent}
@@ -269,6 +233,7 @@ const ListStudent = () => {
           onDeleted={handleUpdated}
         />
       )}
+
       {selectedStudent && (
         <EditStudentDrawer
           open={openEditDrawer}
