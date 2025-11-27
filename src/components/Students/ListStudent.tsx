@@ -11,59 +11,49 @@ import {
   TableRow,
 } from "../ui/table";
 import { Loader2, Pencil, Trash2, RotateCw, Plus } from "lucide-react";
-
 import DeleteStudentDialog from "./DeleteStudent";
 import RestoreStudentDialog from "./RestoreStudent";
 import AddStudentDrawer from "./AddStudentDrawer";
 import EditStudentDrawer from "./EditStudentDrawer";
-
 import type { Student } from "@/Store";
 
 const ListStudent = () => {
   const [students, setStudents] = useState<Student[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [search, setSearch] = useState<string>("");
-  const [debouncedSearch, setDebouncedSearch] = useState<string>("");
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(""); 
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const [page, setPage] = useState<number>(1);
-  const [limit] = useState<number>(10);
-  const [totalPages, setTotalPages] = useState<number>(1);
-
-  const [openAddDrawer, setOpenAddDrawer] = useState<boolean>(false);
-  const [openEditDrawer, setOpenEditDrawer] = useState<boolean>(false);
-
+  const [openAddDrawer, setOpenAddDrawer] = useState(false);
+  const [openEditDrawer, setOpenEditDrawer] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
-  const [restoreDialogOpen, setRestoreDialogOpen] = useState<boolean>(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [restoreDialogOpen, setRestoreDialogOpen] = useState(false);
 
+  // Debounce search input
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-      setPage(1);
+      setPage(1); 
     }, 500);
-
     return () => clearTimeout(handler);
   }, [search]);
 
   const fetchStudents = async () => {
     try {
       setLoading(true);
-
       const res = await api.get("/students", {
-        params: {
-          search: debouncedSearch,
-          page,
-          limit,
-          isActive: true,
-        },
+        params: { search: debouncedSearch, page, limit, isActive: true },
       });
 
       setStudents(res.data.items || []);
       setTotalPages(res.data.meta?.pages || 1);
-    } catch (error) {
-      console.error(error);
-      setError("Studentlarni olishda xatolik");
+    } catch (err: unknown) {
+      console.error(err);
+      setError("Studentlarni olishda xatolik yuz berdi");
     } finally {
       setLoading(false);
     }
@@ -78,21 +68,27 @@ const ListStudent = () => {
     setDeleteDialogOpen(true);
   };
 
-  const handleRestore = (student: Student) => {
-    setSelectedStudent(student);
-    setRestoreDialogOpen(true);
-  };
-
   const handleEdit = (student: Student) => {
     setSelectedStudent(student);
     setOpenEditDrawer(true);
   };
 
-  const handleUpdated = () => {
+  // onAdded/onDeleted/onUpdated callback uchun TypeScript-friendly
+  const handleUpdated = (_?: unknown) => {
     fetchStudents();
     setDeleteDialogOpen(false);
     setRestoreDialogOpen(false);
     setOpenEditDrawer(false);
+  };
+
+  // Sana formatlash funksiyasi
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "-";
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
 
   if (loading)
@@ -120,14 +116,12 @@ const ListStudent = () => {
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-md w-full dark:bg-gray-800 dark:text-gray-200"
         />
-
         <Button
           onClick={() => setOpenAddDrawer(true)}
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white"
         >
           <Plus className="w-4 h-4" /> Add Student
         </Button>
-
         <AddStudentDrawer
           open={openAddDrawer}
           onClose={() => setOpenAddDrawer(false)}
@@ -153,33 +147,40 @@ const ListStudent = () => {
           <TableBody>
             {students.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-gray-500 dark:text-gray-400 py-4">
+                <TableCell colSpan={7} className="text-center py-4 text-gray-500 dark:text-gray-400">
                   No students found.
                 </TableCell>
               </TableRow>
             ) : (
-              students.map((student) => (
-                <TableRow key={student.id}>
-                  <TableCell>{student.id}</TableCell>
+              students.map((student, index) => (
+                <TableRow key={student.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                  {/* Ketma-ket raqam */}
+                  <TableCell>{(page - 1) * limit + index + 1}</TableCell>
                   <TableCell>{student.fullName}</TableCell>
                   <TableCell>{student.phone}</TableCell>
                   <TableCell>
-                    {student.isActive ? "Active" : "Inactive"}
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        student.isActive
+                          ? "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100"
+                          : "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100"
+                      }`}
+                    >
+                      {student.isActive ? "Active" : "Inactive"}
+                    </span>
                   </TableCell>
-                  <TableCell>{student.dateOfBirth || "-"}</TableCell>
-                  <TableCell>{student.startDate || "-"}</TableCell>
-
+                  <TableCell>{formatDate(student.dateOfBirth)}</TableCell>
+                  <TableCell>{formatDate(student.startDate)}</TableCell>
                   <TableCell className="text-right space-x-2">
                     <Button variant="outline" size="icon" onClick={() => handleEdit(student)}>
                       <Pencil className="w-4 h-4" />
                     </Button>
-
                     {student.isActive ? (
                       <Button variant="destructive" size="icon" onClick={() => handleDelete(student)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     ) : (
-                      <Button variant="secondary" size="icon" onClick={() => handleRestore(student)}>
+                      <Button variant="secondary" size="icon">
                         <RotateCw className="w-4 h-4" />
                       </Button>
                     )}
@@ -192,7 +193,7 @@ const ListStudent = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
         <Button
           variant="outline"
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -201,7 +202,7 @@ const ListStudent = () => {
           Previous
         </Button>
 
-        <span>
+        <span className="text-gray-600 dark:text-gray-300">
           Page <strong>{page}</strong> of {totalPages}
         </span>
 
@@ -223,7 +224,6 @@ const ListStudent = () => {
           onDeleted={handleUpdated}
         />
       )}
-
       {selectedStudent && (
         <RestoreStudentDialog
           student={selectedStudent}
@@ -232,7 +232,6 @@ const ListStudent = () => {
           onDeleted={handleUpdated}
         />
       )}
-
       {selectedStudent && (
         <EditStudentDrawer
           open={openEditDrawer}

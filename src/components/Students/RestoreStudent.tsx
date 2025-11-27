@@ -8,12 +8,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { api } from "@/Service/api";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import type { Student } from "@/Store";
+import { useStudentStore } from "@/Store/Student";
 
-interface RestoreStudentProps {
+interface RestoreStudentDialogProps {
   student: Student | null;
   open: boolean;
   onClose: () => void;
@@ -25,16 +25,17 @@ export default function RestoreStudentDialog({
   open,
   onClose,
   onUpdated,
-}: RestoreStudentProps) {
+}: RestoreStudentDialogProps) {
   const [loading, setLoading] = useState(false);
+  const restoreStudent = useStudentStore((state) => state.restoreStudent);
 
   if (!student) return null;
 
   const handleToggleActive = async () => {
     setLoading(true);
     try {
-      await api.patch(`/students/${student.id}/restore`);
-      onUpdated?.();
+      await restoreStudent(student.id); 
+      if (onUpdated) onUpdated();
       onClose();
     } catch (err) {
       console.error(err);
@@ -50,19 +51,16 @@ export default function RestoreStudentDialog({
           <AlertDialogTitle>
             {student.isActive ? "Deactivate Student?" : "Restore Student?"}
           </AlertDialogTitle>
-
           <AlertDialogDescription>
             {student.isActive
-              ? `${student.fullName} foydalanuvchisi faol emas qilinsinmi?`
+              ? `${student.fullName} foydalanuvchisini o‘chirilsinmi?`
               : `${student.fullName} qayta faollashtirilsinmi?`}
           </AlertDialogDescription>
         </AlertDialogHeader>
-
         <AlertDialogFooter>
           <AlertDialogCancel disabled={loading} onClick={onClose}>
             Cancel
           </AlertDialogCancel>
-
           <AlertDialogAction
             disabled={loading}
             onClick={handleToggleActive}

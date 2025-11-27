@@ -1,4 +1,3 @@
-import { api } from "@/Service/api";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
@@ -6,9 +5,10 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { CheckCircle2, XCircle } from "lucide-react";
+import { useStudentStore, type CreateStudentDto } from "@/Store/Student";
 
 function AddStudent() {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<CreateStudentDto>({
     firstName: "",
     lastName: "",
     phone: "",
@@ -19,6 +19,8 @@ function AddStudent() {
 
   const [alert, setAlert] = useState({ type: "", message: "" });
 
+  const createStudent = useStudentStore((state) => state.createStudent);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -26,7 +28,7 @@ function AddStudent() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await api.post("/students", form);
+      await createStudent(form);
       setAlert({ type: "success", message: "Student added successfully!" });
       setForm({
         firstName: "",
@@ -81,9 +83,9 @@ function AddStudent() {
                 value={form.firstName}
                 onChange={handleChange}
                 required
-                className="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700"
               />
             </div>
+
             <div>
               <Label>Last Name</Label>
               <Input
@@ -91,9 +93,9 @@ function AddStudent() {
                 value={form.lastName}
                 onChange={handleChange}
                 required
-                className="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700"
               />
             </div>
+
             <div>
               <Label>Phone</Label>
               <Input
@@ -101,9 +103,9 @@ function AddStudent() {
                 value={form.phone}
                 onChange={handleChange}
                 required
-                className="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700"
               />
             </div>
+
             <div>
               <Label>Password</Label>
               <Input
@@ -112,9 +114,9 @@ function AddStudent() {
                 value={form.password}
                 onChange={handleChange}
                 required
-                className="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700"
               />
             </div>
+
             <div>
               <Label>Date of Birth</Label>
               <Input
@@ -122,9 +124,9 @@ function AddStudent() {
                 name="dateOfBirth"
                 value={form.dateOfBirth}
                 onChange={handleChange}
-                className="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700"
               />
             </div>
+
             <div>
               <Label>Start Date</Label>
               <Input
@@ -132,12 +134,12 @@ function AddStudent() {
                 name="startDate"
                 value={form.startDate}
                 onChange={handleChange}
-                className="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700"
               />
             </div>
+
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+              className="w-full bg-blue-600 hover:bg-blue-700"
             >
               ➕ Add Student
             </Button>

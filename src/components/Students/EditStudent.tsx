@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { api } from "@/Service/api";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { CheckCircle2, XCircle } from "lucide-react";
+import { useStudentStore } from "@/Store/Student";
 
 interface EditStudentProps {
-  studentId: string;
+  studentId: number;
   onUpdated?: () => void;
 }
 
@@ -22,10 +22,7 @@ interface StudentForm {
   isActive: boolean;
 }
 
-export default function EditStudent({
-  studentId,
-  onUpdated,
-}: EditStudentProps) {
+export default function EditStudent({ studentId, onUpdated }: EditStudentProps) {
   const [form, setForm] = useState<StudentForm>({
     firstName: "",
     lastName: "",
@@ -39,23 +36,33 @@ export default function EditStudent({
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState({ type: "", message: "" });
 
-  // Fetch student data safely
+  const getStudentById = useStudentStore((state) => state.getStudentById);
+  const updateStudent = useStudentStore((state) => state.updateStudent);
+
+ useEffect(() => {
   const fetchStudent = async () => {
     try {
       setLoading(true);
-      const res = await api.get(`/students/${studentId}`);
-      const student = res.data;
+      const student = await getStudentById(studentId);
+
+      // firstName va lastName mavjud bo'lsa oling, yo'q bo'lsa fullName dan ajratib oling
+      let firstName = student.firstName ?? "";
+      let lastName = student.lastName ?? "";
+
+      if (!firstName && !lastName && student.fullName) {
+        const names = student.fullName.split(" ");
+        firstName = names[0] ?? "";
+        lastName = names.slice(1).join(" ") ?? "";
+      }
 
       setForm({
-        firstName:
-          student.user?.firstName || student.fullName?.split(" ")[0] || "",
-        lastName:
-          student.user?.lastName || student.fullName?.split(" ")[1] || "",
-        phone: student.user?.phone || student.phone || "",
+        firstName,
+        lastName,
+        phone: student.phone ?? "",
         password: "",
-        dateOfBirth: student.dateOfBirth?.split("T")[0] || "",
-        startDate: student.startDate?.split("T")[0] || "",
-        isActive: student.user?.isActive ?? student.isActive ?? true,
+        dateOfBirth: student.dateOfBirth?.split("T")[0] ?? "",
+        startDate: student.startDate?.split("T")[0] ?? "",
+        isActive: student.isActive ?? true,
       });
     } catch (error) {
       console.error(error);
@@ -65,9 +72,9 @@ export default function EditStudent({
     }
   };
 
-  useEffect(() => {
-    if (studentId) fetchStudent();
-  }, [studentId]);
+  if (studentId) fetchStudent();
+}, [studentId, getStudentById]);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -77,9 +84,9 @@ export default function EditStudent({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.patch(`/students/${studentId}`, form);
+      await updateStudent(studentId, form);
       setAlert({ type: "success", message: "Student updated successfully!" });
-      if (onUpdated) onUpdated();
+      onUpdated?.();
     } catch (error) {
       console.error(error);
       setAlert({ type: "error", message: "Error updating student!" });
@@ -98,9 +105,7 @@ export default function EditStudent({
     <div className="flex justify-center mt-10">
       <Card className="w-full max-w-md shadow-lg dark:bg-gray-900 dark:text-gray-200">
         <CardHeader>
-          <CardTitle className="text-center text-xl font-semibold">
-            Edit Student
-          </CardTitle>
+          <CardTitle className="text-center text-xl font-semibold">Edit Student</CardTitle>
         </CardHeader>
         <CardContent>
           {alert.message && (
@@ -111,14 +116,8 @@ export default function EditStudent({
                   : "border-red-500 text-red-700 dark:border-red-400 dark:text-red-300"
               }`}
             >
-              {alert.type === "success" ? (
-                <CheckCircle2 className="h-5 w-5" />
-              ) : (
-                <XCircle className="h-5 w-5" />
-              )}
-              <AlertTitle>
-                {alert.type === "success" ? "Success" : "Error"}
-              </AlertTitle>
+              {alert.type === "success" ? <CheckCircle2 className="h-5 w-5" /> : <XCircle className="h-5 w-5" />}
+              <AlertTitle>{alert.type === "success" ? "Success" : "Error"}</AlertTitle>
               <AlertDescription>{alert.message}</AlertDescription>
             </Alert>
           )}
@@ -126,30 +125,15 @@ export default function EditStudent({
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label>First Name</Label>
-              <Input
-                name="firstName"
-                value={form.firstName}
-                onChange={handleChange}
-                required
-              />
+              <Input name="firstName" value={form.firstName} onChange={handleChange} required />
             </div>
             <div>
               <Label>Last Name</Label>
-              <Input
-                name="lastName"
-                value={form.lastName}
-                onChange={handleChange}
-                required
-              />
+              <Input name="lastName" value={form.lastName} onChange={handleChange} required />
             </div>
             <div>
               <Label>Phone</Label>
-              <Input
-                name="phone"
-                value={form.phone}
-                onChange={handleChange}
-                required
-              />
+              <Input name="phone" value={form.phone} onChange={handleChange} required />
             </div>
             <div>
               <Label>Password</Label>
@@ -163,29 +147,14 @@ export default function EditStudent({
             </div>
             <div>
               <Label>Date of Birth</Label>
-              <Input
-                type="date"
-                name="dateOfBirth"
-                value={form.dateOfBirth}
-                onChange={handleChange}
-              />
+              <Input type="date" name="dateOfBirth" value={form.dateOfBirth} onChange={handleChange} />
             </div>
             <div>
               <Label>Start Date</Label>
-              <Input
-                type="date"
-                name="startDate"
-                value={form.startDate}
-                onChange={handleChange}
-              />
+              <Input type="date" name="startDate" value={form.startDate} onChange={handleChange} />
             </div>
             <div className="flex items-center space-x-2">
-              <Input
-                type="checkbox"
-                name="isActive"
-                checked={form.isActive}
-                onChange={handleChange}
-              />
+              <Input type="checkbox" name="isActive" checked={form.isActive} onChange={handleChange} />
               <Label>Active</Label>
             </div>
             <Button type="submit" className="w-full">

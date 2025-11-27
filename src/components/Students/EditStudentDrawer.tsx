@@ -51,6 +51,7 @@ export default function EditStudentDrawer({
 
             <div className="p-4">
               <EditStudent studentId={studentId} onUpdated={onUpdated} />
+
             </div>
           </motion.div>
         </>
