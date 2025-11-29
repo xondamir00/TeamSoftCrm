@@ -31,15 +31,40 @@ export interface CreateTeacherPayload {
   monthlySalary?: number | null;
   percentShare?: number | null;
 }
-
 export interface Group {
-  id: string;
-  name: string;
-  room: [{ name: string }];
-  roomId?: string;
-  teacherId?: string;
-  createdAt?: string;
+  groupId: string;
+  groupName: string;
+  room?: {
+    id: string;
+    name: string;
+    capacity?: number;
+  };
+  startTime?: string;
+  endTime?: string;
+  daysPattern?: string;
 }
+export type StudentStatus = "PRESENT" | "ABSENT" | "UNKNOWN";
+
+export interface Student {
+  studentId: string;
+  fullName: string;
+  status: StudentStatus;
+  comment?: string | null;
+}
+
+export interface Sheet {
+  sheetId: string;
+  date: string;
+  lesson: number;
+  status: "OPEN" | "CLOSED";
+  group: {
+    id: string;
+    name: string;
+    room?: { name: string } | null;
+  };
+  students: Student[];
+}
+
 export interface Student {
   id: string;
   userId: string;

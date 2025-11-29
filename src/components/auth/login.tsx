@@ -41,6 +41,7 @@ export function Login() {
         setError(t("error_invalid"));
         return;
       }
+      console.log(data);
 
       // Token va userni storega saqlash
       login(accessToken, refreshToken, user);

@@ -15,16 +15,29 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
-import { useEnrollmentStore, Student, Group } from "@/Store/Enrollment";
+import { useTranslation } from "react-i18next";
 
+interface Student {
+  id: string;
+  fullName: string;
+  phone?: string;
+}
+interface Group {
+  id: string;
+  name: string;
+}
 interface Props {
   onClose?: () => void;
   onSuccess?: () => void;
 }
 
 export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
-  const [studentId, setStudentId] = useState<string>("");
-  const [groupId, setGroupId] = useState<string>("");
+  const { t } = useTranslation();
+
+  const [students, setStudents] = useState<Student[]>([]);
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [studentId, setStudentId] = useState("");
+  const [groupId, setGroupId] = useState("");
   const [joinDate, setJoinDate] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,17 +55,16 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
       try {
         await Promise.all([fetchStudents(), fetchGroups()]);
       } catch (err) {
-        console.error(err);
-        setError("Ma'lumotlarni yuklashda xatolik yuz berdi");
+        setError(t("fetch_error"));
       }
     };
     fetchData();
-  }, [fetchStudents, fetchGroups]);
+  }, [t]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!studentId || !groupId) {
-      setError("Iltimos, student va guruhni tanlang");
+      setError(t("select_student_group"));
       return;
     }
 
@@ -60,9 +72,8 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
     try {
       await createEnrollment({ studentId, groupId, joinDate: joinDate || undefined });
       onSuccess?.();
-      onClose?.();
-    } catch {
-      setError("Serverda xatolik yuz berdi");
+    } catch (err: any) {
+      setError(err.response?.data?.message || t("server_error"));
     } finally {
       setLoading(false);
     }
@@ -89,17 +100,19 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
           <X className="w-5 h-5" />
         </button>
 
-        <h2 className="text-2xl font-bold mb-4">Yangi Enrollment yaratish</h2>
+        <h2 className="text-2xl font-bold mb-4">{t("create_enrollment")}</h2>
 
         {error && (
           <AlertDialog open={!!error} onOpenChange={() => setError(null)}>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Xatolik yuz berdi</AlertDialogTitle>
+                <AlertDialogTitle>{t("error_occurred")}</AlertDialogTitle>
                 <AlertDialogDescription>{error}</AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel onClick={() => setError(null)}>Yopish</AlertDialogCancel>
+                <AlertDialogCancel onClick={() => setError(null)}>
+                  {t("close")}
+                </AlertDialogCancel>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -107,15 +120,15 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="student">Student</Label>
+            <Label htmlFor="student">{t("student")}</Label>
             <select
               id="student"
               className="border rounded w-full p-2 mt-1"
               value={studentId}
               onChange={(e) => setStudentId(e.target.value)}
             >
-              <option value="">Tanlang</option>
-              {students.map((s: Student) => (
+              <option value="">{t("select")}</option>
+              {(students ?? []).map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.fullName}
                 </option>
@@ -124,15 +137,15 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
           </div>
 
           <div>
-            <Label htmlFor="group">Guruh</Label>
+            <Label htmlFor="group">{t("group")}</Label>
             <select
               id="group"
               className="border rounded w-full p-2 mt-1"
               value={groupId}
               onChange={(e) => setGroupId(e.target.value)}
             >
-              <option value="">Tanlang</option>
-              {groups.map((g: Group) => (
+              <option value="">{t("select")}</option>
+              {(groups ?? []).map((g) => (
                 <option key={g.id} value={g.id}>
                   {g.name}
                 </option>
@@ -141,7 +154,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
           </div>
 
           <div>
-            <Label htmlFor="joinDate">Join Date</Label>
+            <Label htmlFor="joinDate">{t("join_date")}</Label>
             <Input
               id="joinDate"
               type="date"
@@ -152,11 +165,13 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
 
           <div className="flex justify-end space-x-2">
             <Button variant="outline" onClick={onClose}>
-              Bekor qilish
+              {t("cancel")}
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading && <Loader2 className="w-4 h-4 animate-spin mr-2 inline-block" />}
-              Yaratish
+              {loading && (
+                <Loader2 className="w-4 h-4 animate-spin mr-2 inline-block" />
+              )}
+              {t("create")}
             </Button>
           </div>
         </form>

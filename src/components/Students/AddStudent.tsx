@@ -1,34 +1,63 @@
-import { useState } from "react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
-import { CheckCircle2, XCircle } from "lucide-react";
-import { useStudentStore, type CreateStudentDto } from "@/Store/Student";
+"use client";
 
-export default function AddStudent() {
-  const [form, setForm] = useState<CreateStudentDto>({
+import React, { useState } from "react";
+import { api } from "@/Service/api";
+import { AxiosError } from "axios";
+import { useTranslation } from "react-i18next";
+
+interface ApiError {
+  message?: string;
+}
+
+export default function AddStudentForm() {
+  const { t } = useTranslation();
+
+  const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     phone: "",
     password: "",
     dateOfBirth: "",
     startDate: "",
+    groupId: "",
   });
 
-  const [alert, setAlert] = useState({ type: "", message: "" });
-
-  const createStudent = useStudentStore((state) => state.createStudent);
+  const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setMessage("");
+    setLoading(true);
+
     try {
-      await createStudent(form);
-      setAlert({ type: "success", message: "Student added successfully!" });
+      const payload = {
+        ...form,
+        dateOfBirth: form.dateOfBirth || undefined,
+        startDate: form.startDate || undefined,
+        groupId: form.groupId || undefined,
+      };
+
+      // undefined fieldlarni tozalash:
+      Object.keys(payload).forEach((key) => {
+        if (payload[key as keyof typeof payload] === undefined) {
+          delete payload[key as keyof typeof payload];
+        }
+      });
+
+      await api.post("/students", payload);
+
+      setMessage(t("success"));
+
       setForm({
         firstName: "",
         lastName: "",
@@ -36,69 +65,93 @@ export default function AddStudent() {
         password: "",
         dateOfBirth: "",
         startDate: "",
+        groupId: "",
       });
     } catch (error) {
-      setAlert({ type: "error", message: "Error adding student!" });
-      console.error(error);
+      const err = error as AxiosError<ApiError>;
+      setMessage(err.response?.data?.message || t("error"));
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-6 sm:p-8 space-y-4 transition-colors duration-300">
-      <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white text-center mb-4">
-        Add New Student
-      </h2>
+    <div className="p-6">
+      <h2 className="text-xl font-semibold mb-4">{t("add_student")}</h2>
 
-      {alert.message && (
-        <Alert
-          className={`flex items-start gap-2 p-3 rounded-lg border ${
-            alert.type === "success"
-              ? "border-emerald-500 text-emerald-700 dark:border-emerald-400 dark:text-emerald-300"
-              : "border-red-500 text-red-700 dark:border-red-400 dark:text-red-300"
-          }`}
-        >
-          {alert.type === "success" ? <CheckCircle2 className="w-5 h-5 mt-1" /> : <XCircle className="w-5 h-5 mt-1" />}
-          <div className="flex-1">
-            <AlertTitle>{alert.type === "success" ? "Success" : "Error"}</AlertTitle>
-            <AlertDescription>{alert.message}</AlertDescription>
-          </div>
-        </Alert>
+      {message && (
+        <p className="text-sm mb-3 text-center text-green-600">{message}</p>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <Label>First Name</Label>
-          <Input name="firstName" value={form.firstName} onChange={handleChange} required />
-        </div>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <input
+          name="firstName"
+          value={form.firstName}
+          onChange={handleChange}
+          placeholder={t("first_name")}
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+          required
+        />
 
-        <div>
-          <Label>Last Name</Label>
-          <Input name="lastName" value={form.lastName} onChange={handleChange} required />
-        </div>
+        <input
+          name="lastName"
+          value={form.lastName}
+          onChange={handleChange}
+          placeholder={t("last_name")}
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+          required
+        />
 
-        <div>
-          <Label>Phone</Label>
-          <Input name="phone" value={form.phone} onChange={handleChange} required />
-        </div>
+        <input
+          name="phone"
+          value={form.phone}
+          onChange={handleChange}
+          placeholder={t("phone_number")}
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+          required
+        />
 
-        <div>
-          <Label>Password</Label>
-          <Input type="password" name="password" value={form.password} onChange={handleChange} required />
-        </div>
+        <input
+          name="password"
+          type="password"
+          value={form.password}
+          onChange={handleChange}
+          placeholder={t("password")}
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+          required
+        />
 
-        <div>
-          <Label>Date of Birth</Label>
-          <Input type="date" name="dateOfBirth" value={form.dateOfBirth} onChange={handleChange} />
-        </div>
+        <input
+          type="date"
+          name="dateOfBirth"
+          value={form.dateOfBirth}
+          onChange={handleChange}
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+        />
 
-        <div>
-          <Label>Start Date</Label>
-          <Input type="date" name="startDate" value={form.startDate} onChange={handleChange} />
-        </div>
+        <input
+          type="date"
+          name="startDate"
+          value={form.startDate}
+          onChange={handleChange}
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+        />
 
-        <Button type="submit" className="w-full shadow-lg hover:shadow-xl bg-blue-600 hover:bg-blue-700 text-white">
-          ➕ Add Student
-        </Button>
+        <input
+          name="groupId"
+          value={form.groupId}
+          onChange={handleChange}
+          placeholder={t("group_id_optional")}
+          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
+        />
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-500 text-white rounded p-2 hover:bg-blue-600 disabled:opacity-60"
+        >
+          {loading ? t("loading") : t("add_button")}
+        </button>
       </form>
     </div>
   );

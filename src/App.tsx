@@ -5,16 +5,10 @@ import Teacherlayout from "./components/layout/teacherlayout";
 import Teacher from "./components/page/Teacher";
 import { RoleRoute } from "./role/role-route";
 import { AuthRefresh } from "./components/auth/Auth-Refresh";
-
 import Settings from "./components/page/settings";
-import TeacherList from "./components/teacher/Teacherlist";
-import AddManagerForm from "./components/form/AddManeger";
-
-import AddRoom from "./components/Roms/addRoom";
-import RoomsList from "./components/Roms/RoomsList";
-
+import AddRoom from "./components/Rooms/addRoom";
+import RoomsList from "./components/Rooms/RoomsList";
 import Groups from "./components/Group/GroupList";
-
 import { Login } from "./components/auth/login";
 import ListStudent from "./components/Students/ListStudent";
 import EnrollmentsPage from "./components/page/EnrollmentsPage";
@@ -23,8 +17,11 @@ import { TeachingAssignmentsList } from "./components/TeachingAssignmentsList/Te
 import AddTeacherForm from "./components/teacher/AddTeacherForm";
 import CreateStudentForm from "./components/form/addStudent";
 import AddGroupForm from "./components/Group/AddGoup";
-import Trash from "./components/page/trash";
-import { TeacherAttendancePage } from "./components/attendance/TeacherAttendancePage";
+import TeacherList from "./components/teacher/Teacherlist";
+import AddManagerForm from "./components/form/AddManeger";
+import AttendancePage from "./components/attendance/AttendancePage";
+import Teacherdetail from "./components/teacher/teacher-detail";
+import Trash from "./components/page/Trash";
 
 const App = () => {
   return (
@@ -67,7 +64,7 @@ const App = () => {
               element={<CreateStudentForm />}
             />
             <Route
-              path="settings/create-meneger"
+              path="settings/create-manager"
               element={<AddManagerForm />}
             />
             <Route path="settings/create-group" element={<AddGroupForm />} />
@@ -90,7 +87,8 @@ const App = () => {
             }
           >
             <Route index element={<Teacher />} />
-            <Route path="/teacher/attendance" element={<TeacherAttendancePage />} />
+            <Route path="attendance" element={<AttendancePage />} />
+            <Route path="group/:groupId" element={<Teacherdetail />} />
           </Route>
 
           {/* Catch-all route */}

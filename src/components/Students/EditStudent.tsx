@@ -1,10 +1,14 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 import { CheckCircle2, XCircle } from "lucide-react";
-import { useStudentStore } from "@/Store/Student";
+import { useTranslation } from "react-i18next";
+import { Card, CardHeader, CardContent, CardTitle } from "../ui/card"; // Agar Card komponenti mavjud bo‘lsa
+import { api } from "@/Service/api";
 
 interface EditStudentProps {
   studentId: number;
@@ -22,6 +26,8 @@ interface StudentForm {
 }
 
 export default function EditStudent({ studentId, onUpdated }: EditStudentProps) {
+  const { t } = useTranslation();
+
   const [form, setForm] = useState<StudentForm>({
     firstName: "",
     lastName: "",
@@ -35,43 +41,32 @@ export default function EditStudent({ studentId, onUpdated }: EditStudentProps) 
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState({ type: "", message: "" });
 
-  const getStudentById = useStudentStore((state) => state.getStudentById);
-  const updateStudent = useStudentStore((state) => state.updateStudent);
-
   useEffect(() => {
     const fetchStudent = async () => {
       try {
         setLoading(true);
-        const student = await getStudentById(studentId);
-
-        let firstName = student.firstName ?? "";
-        let lastName = student.lastName ?? "";
-
-        if (!firstName && !lastName && student.fullName) {
-          const names = student.fullName.split(" ");
-          firstName = names[0] ?? "";
-          lastName = names.slice(1).join(" ") ?? "";
-        }
+        const res = await api.get(`/students/${studentId}`);
+        const student = res.data;
 
         setForm({
-          firstName,
-          lastName,
-          phone: student.phone ?? "",
+          firstName: student.user?.firstName || student.fullName?.split(" ")[0] || "",
+          lastName: student.user?.lastName || student.fullName?.split(" ")[1] || "",
+          phone: student.user?.phone || student.phone || "",
           password: "",
-          dateOfBirth: student.dateOfBirth?.split("T")[0] ?? "",
-          startDate: student.startDate?.split("T")[0] ?? "",
-          isActive: student.isActive ?? true,
+          dateOfBirth: student.dateOfBirth?.split("T")[0] || "",
+          startDate: student.startDate?.split("T")[0] || "",
+          isActive: student.user?.isActive ?? student.isActive ?? true,
         });
       } catch (error) {
         console.error(error);
-        setAlert({ type: "error", message: "Student ma'lumotlari olinmadi!" });
+        setAlert({ type: "error", message: t("fetch_error") });
       } finally {
         setLoading(false);
       }
     };
 
     if (studentId) fetchStudent();
-  }, [studentId, getStudentById]);
+  }, [studentId, t]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -81,84 +76,123 @@ export default function EditStudent({ studentId, onUpdated }: EditStudentProps) 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updateStudent(studentId, form);
-      setAlert({ type: "success", message: "Student updated successfully!" });
+      await api.patch(`/students/${studentId}`, form);
+      setAlert({ type: "success", message: t("update_success") });
       onUpdated?.();
     } catch (error) {
       console.error(error);
-      setAlert({ type: "error", message: "Error updating student!" });
+      setAlert({ type: "error", message: t("update_error") });
     }
   };
 
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20 text-gray-400 dark:text-gray-500">
-        Loading student data...
+        {t("loading_student")}
       </div>
     );
   }
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-6 sm:p-8 space-y-4 transition-colors duration-300">
-      <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white text-center mb-4">
-        Edit Student
-      </h2>
+    <div className="flex justify-center mt-10">
+      <Card className="w-full max-w-md shadow-lg dark:bg-gray-900 dark:text-gray-200">
+        <CardHeader>
+          <CardTitle className="text-center text-xl font-semibold">
+            {t("edit_student")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {alert.message && (
+            <Alert
+              className={`mb-4 ${
+                alert.type === "success"
+                  ? "border-green-500 text-green-700 dark:border-green-400 dark:text-green-300"
+                  : "border-red-500 text-red-700 dark:border-red-400 dark:text-red-300"
+              }`}
+            >
+              {alert.type === "success" ? (
+                <CheckCircle2 className="h-5 w-5" />
+              ) : (
+                <XCircle className="h-5 w-5" />
+              )}
+              <AlertTitle>
+                {alert.type === "success" ? t("success") : t("error")}
+              </AlertTitle>
+              <AlertDescription>{alert.message}</AlertDescription>
+            </Alert>
+          )}
 
-      {alert.message && (
-        <Alert
-          className={`flex items-start gap-2 p-3 rounded-lg border ${
-            alert.type === "success"
-              ? "border-emerald-500 text-emerald-700 dark:border-emerald-400 dark:text-emerald-300"
-              : "border-red-500 text-red-700 dark:border-red-400 dark:text-red-300"
-          }`}
-        >
-          {alert.type === "success" ? <CheckCircle2 className="w-5 h-5 mt-1" /> : <XCircle className="w-5 h-5 mt-1" />}
-          <div className="flex-1">
-            <AlertTitle>{alert.type === "success" ? "Success" : "Error"}</AlertTitle>
-            <AlertDescription>{alert.message}</AlertDescription>
-          </div>
-        </Alert>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <Label>First Name</Label>
-          <Input name="firstName" value={form.firstName} onChange={handleChange} required />
-        </div>
-        <div>
-          <Label>Last Name</Label>
-          <Input name="lastName" value={form.lastName} onChange={handleChange} required />
-        </div>
-        <div>
-          <Label>Phone</Label>
-          <Input name="phone" value={form.phone} onChange={handleChange} required />
-        </div>
-        <div>
-          <Label>Password</Label>
-          <Input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Leave blank to keep current"
-          />
-        </div>
-        <div>
-          <Label>Date of Birth</Label>
-          <Input type="date" name="dateOfBirth" value={form.dateOfBirth} onChange={handleChange} />
-        </div>
-        <div>
-          <Label>Start Date</Label>
-          <Input type="date" name="startDate" value={form.startDate} onChange={handleChange} />
-        </div>
-        <div className="flex items-center gap-2">
-          <Input type="checkbox" name="isActive" checked={form.isActive} onChange={handleChange} />
-          <Label>Active</Label>
-        </div>
-        <Button type="submit" className="w-full shadow-lg hover:shadow-xl">
-          💾 Update Student
-        </Button>
-      </form>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label>{t("first_name")}</Label>
+              <Input
+                name="firstName"
+                value={form.firstName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <Label>{t("last_name")}</Label>
+              <Input
+                name="lastName"
+                value={form.lastName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <Label>{t("phone")}</Label>
+              <Input
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <Label>{t("password")}</Label>
+              <Input
+                type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                placeholder={t("password_optional")}
+              />
+            </div>
+            <div>
+              <Label>{t("dob")}</Label>
+              <Input
+                type="date"
+                name="dateOfBirth"
+                value={form.dateOfBirth}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <Label>{t("start_date")}</Label>
+              <Input
+                type="date"
+                name="startDate"
+                value={form.startDate}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex items-center space-x-2">
+              <Input
+                type="checkbox"
+                name="isActive"
+                checked={form.isActive}
+                onChange={handleChange}
+              />
+              <Label>{t("active")}</Label>
+            </div>
+            <Button type="submit" className="w-full">
+              {t("update_student")}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

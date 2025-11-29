@@ -10,8 +10,11 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function EnrollmentPage() {
+  const { t } = useTranslation();
+
   const [students, setStudents] = useState<any[]>([]);
   const [groups, setGroups] = useState<any[]>([]);
   const [enrollments, setEnrollments] = useState<any[]>([]);
@@ -33,7 +36,6 @@ export default function EnrollmentPage() {
     loadAll();
   }, []);
 
-  // ACTIVE enrollment bo‘lmagan studentlar
   const unassignedStudents = students
     .filter(
       (s) =>
@@ -43,7 +45,7 @@ export default function EnrollmentPage() {
 
   const handleAssign = async (studentId: string) => {
     if (!selectedGroup) {
-      alert("Avval guruh tanlang!");
+      alert(t("select_group_first"));
       return;
     }
 
@@ -64,15 +66,15 @@ export default function EnrollmentPage() {
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-semibold">
-        Studentlarni guruhga biriktirish
+        {t("assign_students_to_group")}
       </h1>
 
-      {/* Search + Group Dropdown (yonma-yon) */}
-      <div className="flex gap-2 w-full justify-between ">
+      {/* Search + Group Dropdown */}
+      <div className="flex gap-2 w-full justify-between">
         <input
           type="text"
-          placeholder="Student qidirish..."
-          className="border p-2 rounded-md "
+          placeholder={t("search_student")}
+          className="border p-2 rounded-md"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -82,7 +84,7 @@ export default function EnrollmentPage() {
           value={selectedGroup ?? ""}
           onChange={(e) => setSelectedGroup(e.target.value)}
         >
-          <option value="">Guruh tanlang</option>
+          <option value="">{t("select_group")}</option>
           {groups.map((g) => (
             <option key={g.id} value={g.id}>
               {g.name}
@@ -91,12 +93,10 @@ export default function EnrollmentPage() {
         </select>
       </div>
 
-      {/* Studentlar listi */}
+      {/* Students list */}
       <div className="space-y-4">
         {unassignedStudents.length === 0 ? (
-          <p className="text-gray-600">
-            Hech narsa topilmadi yoki hammasi biriktirilgan 👌
-          </p>
+          <p className="text-gray-600">{t("no_students_found")}</p>
         ) : (
           unassignedStudents.map((s) => (
             <div
@@ -115,7 +115,7 @@ export default function EnrollmentPage() {
                 {loadingId === s.id && (
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                 )}
-                Biriktirish
+                {t("assign")}
               </Button>
             </div>
           ))

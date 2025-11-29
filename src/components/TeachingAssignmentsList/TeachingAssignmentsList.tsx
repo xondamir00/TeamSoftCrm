@@ -13,6 +13,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 interface Assignment {
   id: string;
@@ -24,6 +25,8 @@ interface Assignment {
 }
 
 export const TeachingAssignmentsList = () => {
+  const { t } = useTranslation();
+
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,9 +37,7 @@ export const TeachingAssignmentsList = () => {
       const { data } = await api.get("/teaching-assignments");
       setAssignments(data.items || []);
     } catch (err: any) {
-      setError(
-        err.response?.data?.message || "Ma'lumotlarni olishda xatolik yuz berdi"
-      );
+      setError(err.response?.data?.message || t("fetch_error"));
     } finally {
       setLoading(false);
     }
@@ -62,24 +63,24 @@ export const TeachingAssignmentsList = () => {
 
   if (!assignments.length)
     return (
-      <p className="text-center text-gray-500 py-6">
-        Hech qanday tayinlashlar mavjud emas
-      </p>
+      <p className="text-center text-gray-500 py-6">{t("no_assignments")}</p>
     );
 
   return (
     <div className="w-[95%] mx-auto dark:bg-black dark:text-white border dark:border-gray-700 rounded-xl p-4 shadow">
-      <h2 className="text-xl font-semibold mb-4">Teaching Assignments</h2>
+      <h2 className="text-xl font-semibold mb-4">
+        {t("teaching_assignments")}
+      </h2>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>#</TableHead>
-              <TableHead>Teacher ID</TableHead>
-              <TableHead>Group ID</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Note</TableHead>
+              <TableHead>{t("teacher_id")}</TableHead>
+              <TableHead>{t("group_id")}</TableHead>
+              <TableHead>{t("role")}</TableHead>
+              <TableHead>{t("status")}</TableHead>
+              <TableHead>{t("note")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -94,7 +95,7 @@ export const TeachingAssignmentsList = () => {
                 <TableCell>{a.role}</TableCell>
                 <TableCell>
                   <Badge variant={a.isActive ? "success" : "destructive"}>
-                    {a.isActive ? "Active" : "Inactive"}
+                    {a.isActive ? t("active") : t("inactive")}
                   </Badge>
                 </TableCell>
                 <TableCell>{a.note ?? "—"}</TableCell>

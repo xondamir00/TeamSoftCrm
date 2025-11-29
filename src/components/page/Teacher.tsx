@@ -1,6 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import TeacherGroup from "../form/Createform";
+import TeacherGroup from "../teacher/teacher-group";
 
 const Teacher: React.FC = () => {
   return (

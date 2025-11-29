@@ -14,6 +14,7 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   ArcElement,
@@ -29,32 +30,30 @@ type Category = "tushumlar" | "chiqimlar" | "foyda";
 type Range = "yillik" | "oylik" | "haftalik";
 
 export default function FinancePage() {
+  const { t } = useTranslation();
   const [category, setCategory] = useState<Category>("tushumlar");
   const [range, setRange] = useState<Range>("yillik");
 
   const dataSets = {
     yillik: {
-      labels: ["Yan", "Fev", "Mar", "Apr", "May", "Iyun", "Iyul", "Avg", "Sen", "Okt", "Noy", "Dek"],
+      labels: t("monthsShort", { returnObjects: true }),
       tushumlar: [5, 6, 8, 9, 10, 11, 12, 13, 15, 17, 18, 20],
       chiqimlar: [3, 3.5, 4, 4.5, 5, 5.2, 6, 7, 8, 9, 10, 11],
       foyda: [2, 2.5, 4, 4.5, 5, 5.8, 6, 6.5, 7, 8, 8, 9],
     },
-
     oylik: {
-      labels: ["1-hafta", "2-hafta", "3-hafta", "4-hafta"],
+      labels: t("weeksInMonth", { returnObjects: true }),
       tushumlar: [12, 14, 16, 18],
       chiqimlar: [4, 5, 6, 7],
       foyda: [8, 9, 10, 11],
     },
-
     haftalik: {
-      labels: ["Du", "Se", "Chor", "Pay", "Ju", "Shan", "Yak"],
+      labels: t("daysOfWeek", { returnObjects: true }),
       tushumlar: [3, 4, 3.5, 5, 6, 7, 6],
       chiqimlar: [1, 1.5, 2, 2.5, 3, 3, 2.5],
       foyda: [2, 2.5, 1.5, 2.5, 3, 4, 3.5],
     },
   };
-
   const selected = dataSets[range];
 
   const activeValues =
@@ -72,10 +71,10 @@ export default function FinancePage() {
       {
         label:
           category === "tushumlar"
-            ? "Tushumlar"
+            ? t("income")
             : category === "chiqimlar"
-            ? "Chiqimlar"
-            : "Foyda",
+            ? t("expenses")
+            : t("profit"),
         data: activeValues,
         borderColor:
           category === "tushumlar"
@@ -95,7 +94,7 @@ export default function FinancePage() {
   };
 
   const chiqimDetails = {
-    labels: ["Ijara", "Reklama", "Maosh"],
+    labels: [t("rent"), t("advertisement"), t("salary")],
     datasets: [
       {
         data: [200, 300, 250],
@@ -108,27 +107,45 @@ export default function FinancePage() {
     <div className="min-h-screen p-6 dark:text-white">
       {/* Category tanlash */}
       <div className="flex justify-center gap-4 mb-6">
-        <Button variant={category === "tushumlar" ? "default" : "outline"} onClick={() => setCategory("tushumlar")} className="w-[150px]">
-          Tushumlar
+        <Button
+          variant={category === "tushumlar" ? "default" : "outline"}
+          onClick={() => setCategory("tushumlar")}
+        >
+          {t("income")}
         </Button>
-        <Button variant={category === "chiqimlar" ? "default" : "outline"} onClick={() => setCategory("chiqimlar")} className="w-[150px]">
-          Chiqimlar
+        <Button
+          variant={category === "chiqimlar" ? "default" : "outline"}
+          onClick={() => setCategory("chiqimlar")}
+        >
+          {t("expenses")}
         </Button>
-        <Button variant={category === "foyda" ? "default" : "outline"} onClick={() => setCategory("foyda")} className="w-[150px]">
-          Foyda
+        <Button
+          variant={category === "foyda" ? "default" : "outline"}
+          onClick={() => setCategory("foyda")}
+        >
+          {t("profit")}
         </Button>
       </div>
 
       {/* Vaqt filtri */}
       <div className="flex justify-center gap-4 mb-8">
-        <Button variant={range === "yillik" ? "default" : "outline"} onClick={() => setRange("yillik")}>
-          Yillik
+        <Button
+          variant={range === "yillik" ? "default" : "outline"}
+          onClick={() => setRange("yillik")}
+        >
+          {t("annual")}
         </Button>
-        <Button variant={range === "oylik" ? "default" : "outline"} onClick={() => setRange("oylik")}>
-          Oylik
+        <Button
+          variant={range === "oylik" ? "default" : "outline"}
+          onClick={() => setRange("oylik")}
+        >
+          {t("monthly")}
         </Button>
-        <Button variant={range === "haftalik" ? "default" : "outline"} onClick={() => setRange("haftalik")}>
-          Haftalik
+        <Button
+          variant={range === "haftalik" ? "default" : "outline"}
+          onClick={() => setRange("haftalik")}
+        >
+          {t("weekly")}
         </Button>
       </div>
 
@@ -153,7 +170,7 @@ export default function FinancePage() {
 
         {/* Jami miqdor */}
         <div className="py-4 text-lg font-semibold text-center">
-          Jami: <span className="text-primary text-2xl">{totalAmount} mln so‘m</span>
+          {t("total")}: {totalAmount} mln so‘m
         </div>
       </Card>
 
@@ -161,7 +178,7 @@ export default function FinancePage() {
       {category === "chiqimlar" && (
         <Card className="mt-6 p-4">
           <CardHeader>
-            <CardTitle>Chiqim turlari bo‘yicha</CardTitle>
+            <CardTitle>{t("expensesByType")}</CardTitle>
           </CardHeader>
           <CardContent className="w-[300px] mx-auto">
             <Pie data={chiqimDetails} />
