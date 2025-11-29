@@ -30,7 +30,7 @@ export default function TeacherList() {
         params: { page: 1, limit: 10 },
       });
 
-      setTeachers((data.items || []).filter((t) => t.isActive)); // 🔥 faqat active teacherlar
+      setTeachers((data.items || []).filter((t) => t.isActive)); 
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);

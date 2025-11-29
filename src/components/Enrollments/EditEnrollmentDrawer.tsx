@@ -36,8 +36,8 @@ export default function EditEnrollmentDrawer({ enrollment, onClose, onSuccess }:
     try {
       await api.patch(`/enrollments/${enrollment.id}`, { status, leaveDate: leaveDate || undefined });
       onSuccess?.();
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Serverda xatolik yuz berdi");
+    } catch (err: unknown) {
+      return err
     } finally {
       setLoading(false);
     }
