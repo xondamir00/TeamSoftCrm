@@ -8,12 +8,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { api } from "@/Service/api";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import type { Student } from "@/Store";
+import { useStudentStore } from "@/Store/Student";
 
-interface DeleteStudentProps {
-  student: any | null;
+interface RestoreStudentDialogProps {
+  student: Student | null;
   open: boolean;
   onClose: () => void;
   onUpdated?: () => void;
@@ -24,15 +25,16 @@ export default function RestoreStudentDialog({
   open,
   onClose,
   onUpdated,
-}: DeleteStudentProps) {
+}: RestoreStudentDialogProps) {
   const [loading, setLoading] = useState(false);
+  const restoreStudent = useStudentStore((state) => state.restoreStudent);
 
   if (!student) return null;
 
   const handleToggleActive = async () => {
     setLoading(true);
     try {
-      await api.patch(`/students/${student.id}/restore`);
+      await restoreStudent(student.id); 
       if (onUpdated) onUpdated();
       onClose();
     } catch (err) {

@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Button } from "../ui/button";
 import AddStudentForm from "./AddStudent";
-import { useTranslation } from "react-i18next";
 
 interface DrawerProps {
   open: boolean;
@@ -13,7 +12,6 @@ interface DrawerProps {
 }
 
 export default function AddStudentDrawer({ open, onClose }: DrawerProps) {
-  const {t} =useTranslation()
   return (
     <AnimatePresence>
       {open && (
@@ -21,7 +19,7 @@ export default function AddStudentDrawer({ open, onClose }: DrawerProps) {
           {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.5 }}
+            animate={{ opacity: 0.5 }}y
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="fixed inset-0 bg-black z-40 cursor-pointer"
@@ -38,7 +36,7 @@ export default function AddStudentDrawer({ open, onClose }: DrawerProps) {
             {/* Header */}
             <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {t("add_student")}
+                Add New Student
               </h2>
               <Button
                 onClick={onClose}

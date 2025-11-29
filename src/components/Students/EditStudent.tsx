@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { api } from "@/Service/api";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Card, CardHeader, CardContent, CardTitle } from "../ui/card"; // Agar Card komponenti mavjud bo‘lsa
+import { api } from "@/Service/api";
 
 interface EditStudentProps {
-  studentId: string;
+  studentId: number;
   onUpdated?: () => void;
 }
 
@@ -25,10 +25,7 @@ interface StudentForm {
   isActive: boolean;
 }
 
-export default function EditStudent({
-  studentId,
-  onUpdated,
-}: EditStudentProps) {
+export default function EditStudent({ studentId, onUpdated }: EditStudentProps) {
   const { t } = useTranslation();
 
   const [form, setForm] = useState<StudentForm>({
@@ -44,34 +41,32 @@ export default function EditStudent({
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState({ type: "", message: "" });
 
-  const fetchStudent = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get(`/students/${studentId}`);
-      const student = res.data;
-
-      setForm({
-        firstName:
-          student.user?.firstName || student.fullName?.split(" ")[0] || "",
-        lastName:
-          student.user?.lastName || student.fullName?.split(" ")[1] || "",
-        phone: student.user?.phone || student.phone || "",
-        password: "",
-        dateOfBirth: student.dateOfBirth?.split("T")[0] || "",
-        startDate: student.startDate?.split("T")[0] || "",
-        isActive: student.user?.isActive ?? student.isActive ?? true,
-      });
-    } catch (error) {
-      console.error(error);
-      setAlert({ type: "error", message: t("fetch_error") });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchStudent = async () => {
+      try {
+        setLoading(true);
+        const res = await api.get(`/students/${studentId}`);
+        const student = res.data;
+
+        setForm({
+          firstName: student.user?.firstName || student.fullName?.split(" ")[0] || "",
+          lastName: student.user?.lastName || student.fullName?.split(" ")[1] || "",
+          phone: student.user?.phone || student.phone || "",
+          password: "",
+          dateOfBirth: student.dateOfBirth?.split("T")[0] || "",
+          startDate: student.startDate?.split("T")[0] || "",
+          isActive: student.user?.isActive ?? student.isActive ?? true,
+        });
+      } catch (error) {
+        console.error(error);
+        setAlert({ type: "error", message: t("fetch_error") });
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (studentId) fetchStudent();
-  }, [studentId]);
+  }, [studentId, t]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -83,7 +78,7 @@ export default function EditStudent({
     try {
       await api.patch(`/students/${studentId}`, form);
       setAlert({ type: "success", message: t("update_success") });
-      if (onUpdated) onUpdated();
+      onUpdated?.();
     } catch (error) {
       console.error(error);
       setAlert({ type: "error", message: t("update_error") });
