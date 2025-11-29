@@ -19,7 +19,7 @@ export default function AddStudentDrawer({ open, onClose }: DrawerProps) {
           {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.5 }}
+            animate={{ opacity: 0.5 }}y
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="fixed inset-0 bg-black z-40 cursor-pointer"

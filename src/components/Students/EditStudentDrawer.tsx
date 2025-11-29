@@ -29,7 +29,7 @@ export default function EditStudentDrawer({
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black z-40 cursor-pointer"
+            className="fixed inset-0 dark:bg-black z-40 cursor-pointer"
           />
 
           {/* Drawer */}
