@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -29,8 +27,6 @@ import type { Student } from "@/Store/Student";
 import { api } from "@/Service/api";
 
 const ListStudent = () => {
-  const { t } = useTranslation();
-
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
