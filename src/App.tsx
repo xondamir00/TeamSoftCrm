@@ -21,7 +21,8 @@ import TeacherList from "./components/teacher/Teacherlist";
 import AddManagerForm from "./components/form/AddManeger";
 import AttendancePage from "./components/attendance/AttendancePage";
 import Teacherdetail from "./components/teacher/teacher-detail";
-import Trash from "./components/page/Trash";
+import ManagerList from "./components/Maneger/ManagerList";
+import Trash from "./components/page/trash";
 
 const App = () => {
   return (
@@ -67,6 +68,7 @@ const App = () => {
               path="settings/create-manager"
               element={<AddManagerForm />}
             />
+            <Route path="settings/menegers-list" element={<ManagerList />} />
             <Route path="settings/create-group" element={<AddGroupForm />} />
             <Route path="settings/create-room" element={<AddRoom />} />
 
