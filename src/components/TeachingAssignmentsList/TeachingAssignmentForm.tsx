@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 
 const DAYS_PATTERNS = [
   { value: "ADD", labelKey: "weekdays" },
@@ -71,9 +72,7 @@ export const TeachingAssignmentForm = ({
         setTeachers(
           Array.isArray(teacherRes.data.items) ? teacherRes.data.items : []
         );
-        setGroups(
-          Array.isArray(groupRes.data.items) ? groupRes.data.items : []
-        );
+        setGroups(Array.isArray(groupRes.data.items) ? groupRes.data.items : []);
       } catch (err: any) {
         setError(t("error"));
         setOpenAlert(true);
@@ -84,10 +83,7 @@ export const TeachingAssignmentForm = ({
   }, []);
 
   const teacherLabel = (tch: any) =>
-    tch.name ||
-    tch.fullName ||
-    `${tch.firstName ?? ""} ${tch.lastName ?? ""}`.trim() ||
-    tch.id;
+    tch.name || tch.fullName || `${tch.firstName ?? ""} ${tch.lastName ?? ""}`.trim() || tch.id;
 
   const buildDto = () => {
     const dto: any = {
@@ -138,72 +134,76 @@ export const TeachingAssignmentForm = ({
 
   return (
     <>
-      <form
+      <motion.form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 p-6 bg-white dark:bg-black border dark:border-gray-700 rounded-xl shadow-md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="flex flex-col gap-5 p-6 mt-7 bg-white dark:bg-black rounded-3xl shadow-xl border border-gray-200 dark:border-gray-900 max-w-3xl mx-auto"
       >
-        {/* Teacher */}
-        <div>
-          <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-            {t("teacher")}
-          </label>
-          <Select
-            value={form.teacherId}
-            onValueChange={(v) => updateForm("teacherId", v)}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder={t("select_teacher")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {teachers.length === 0 ? (
-                  <SelectItem value="">{t("no_teacher")}</SelectItem>
-                ) : (
-                  teachers.map((tch) => (
-                    <SelectItem key={tch.id} value={tch.id}>
-                      {teacherLabel(tch)}
-                    </SelectItem>
-                  ))
-                )}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+        {/* Teacher & Group (Responsive Grid) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+              {t("teacher")}
+            </label>
+            <Select
+              value={form.teacherId}
+              onValueChange={(v) => updateForm("teacherId", v)}
+            >
+              <SelectTrigger className="w-full border rounded-lg dark:bg-black dark:border-gray-700">
+                <SelectValue placeholder={t("select_teacher")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {teachers.length === 0 ? (
+                    <SelectItem value="">{t("no_teacher")}</SelectItem>
+                  ) : (
+                    teachers.map((tch) => (
+                      <SelectItem key={tch.id} value={tch.id}>
+                        {teacherLabel(tch)}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
 
-        {/* Group */}
-        <div>
-          <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-            {t("group")}
-          </label>
-          <Select
-            value={form.groupId}
-            onValueChange={(v) => updateForm("groupId", v)}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder={t("select_group")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {groups.map((g) => (
-                  <SelectItem key={g.id} value={g.id}>
-                    {g.name ?? g.title ?? g.id}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+              {t("group")}
+            </label>
+            <Select
+              value={form.groupId}
+              onValueChange={(v) => updateForm("groupId", v)}
+            >
+              <SelectTrigger className="w-full border rounded-lg dark:bg-black dark:border-gray-700">
+                <SelectValue placeholder={t("select_group")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {groups.map((g) => (
+                    <SelectItem key={g.id} value={g.id}>
+                      {g.name ?? g.title ?? g.id}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {/* Role */}
         <div>
-          <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
             {t("role")}
           </label>
           <Select
             value={form.role}
             onValueChange={(v) => updateForm("role", v)}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full border rounded-lg dark:bg-black dark:border-gray-700">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -215,7 +215,7 @@ export const TeachingAssignmentForm = ({
         </div>
 
         {/* Period */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
               {t("from")}
@@ -224,7 +224,7 @@ export const TeachingAssignmentForm = ({
               type="date"
               value={form.fromDate}
               onChange={(e) => updateForm("fromDate", e.target.value)}
-              className="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+              className="w-full border rounded-lg px-3 py-2 dark:bg-black dark:border-gray-700"
             />
           </div>
           <div>
@@ -235,7 +235,7 @@ export const TeachingAssignmentForm = ({
               type="date"
               value={form.toDate}
               onChange={(e) => updateForm("toDate", e.target.value)}
-              className="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+              className="w-full border rounded-lg px-3 py-2 dark:bg-black dark:border-gray-700"
             />
           </div>
         </div>
@@ -247,7 +247,7 @@ export const TeachingAssignmentForm = ({
             type="checkbox"
             checked={form.inheritSchedule}
             onChange={(e) => updateForm("inheritSchedule", e.target.checked)}
-            className="w-4 h-4"
+            className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 dark:bg-black"
           />
           <label
             htmlFor="inherit"
@@ -261,14 +261,14 @@ export const TeachingAssignmentForm = ({
         {!form.inheritSchedule && (
           <>
             <div>
-              <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
+              <label className="block mb-2 text-sm text-gray-700 dark:text-gray-300">
                 {t("days_pattern")}
               </label>
               <Select
                 value={form.daysPatternOverride}
                 onValueChange={(v) => updateForm("daysPatternOverride", v)}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full border rounded-lg dark:bg-black dark:border-gray-700">
                   <SelectValue placeholder={t("select_days_pattern")} />
                 </SelectTrigger>
                 <SelectContent>
@@ -283,7 +283,7 @@ export const TeachingAssignmentForm = ({
               </Select>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
                   {t("start_time")}
@@ -294,7 +294,7 @@ export const TeachingAssignmentForm = ({
                   onChange={(e) =>
                     updateForm("startTimeOverride", e.target.value)
                   }
-                  className="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+                  className="w-full border rounded-lg px-3 py-2 dark:bg-black dark:border-gray-700"
                 />
               </div>
               <div>
@@ -307,7 +307,7 @@ export const TeachingAssignmentForm = ({
                   onChange={(e) =>
                     updateForm("endTimeOverride", e.target.value)
                   }
-                  className="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+                  className="w-full border rounded-lg px-3 py-2 dark:bg-black dark:border-gray-700"
                 />
               </div>
             </div>
@@ -316,7 +316,7 @@ export const TeachingAssignmentForm = ({
 
         {/* Note */}
         <div>
-          <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
             {t("note")}
           </label>
           <input
@@ -324,17 +324,18 @@ export const TeachingAssignmentForm = ({
             value={form.note}
             onChange={(e) => updateForm("note", e.target.value)}
             placeholder={t("placeholder_note")}
-            className="w-full border rounded px-3 py-2 dark:bg-gray-800 dark:border-gray-700"
+            className="w-full border rounded-lg px-3 py-2 dark:bg-black dark:border-gray-700"
           />
         </div>
 
+        {/* Submit */}
         <Button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white"
+          className="bg-[#0208B0] hover:bg-[#0208B0] text-white rounded-lg shadow-lg transition-all duration-200"
         >
           {t("add_assignment")}
         </Button>
-      </form>
+      </motion.form>
 
       {/* Alert */}
       <AlertDialog open={openAlert} onOpenChange={setOpenAlert}>

@@ -27,7 +27,7 @@ import Trash from "./components/page/trash";
 const App = () => {
   return (
     <AuthRefresh>
-      <div className="light:bg-[#f2f2f2] min-h-screen dark:bg-gray-900">
+      <div className="bg-white min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900">
         <Routes>
           {/* Public route */}
           <Route path="/sign" element={<Login />} />
