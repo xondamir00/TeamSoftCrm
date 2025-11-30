@@ -64,6 +64,20 @@ export interface Sheet {
   };
   students: Student[];
 }
+export interface AttendanceState {
+  sheets: Sheet[];
+  loading: boolean;
+  saving: boolean;
+  groupName: string;
+  fetchSheet: (groupId: string, date: string, lesson: number) => Promise<void>;
+  updateLocalStatus: (
+    sheetId: string,
+    studentId: string,
+    status: StudentStatus
+  ) => void;
+
+  saveSheet: (sheetId: string) => Promise<void>;
+}
 
 export interface Student {
   id: string;

@@ -1,4 +1,4 @@
-import TeacherGroup from "../teacher/teacher-group";
+import TeacherGroup from "../attendance/teacher/teacher-group";
 
 const Teacher = () => {
   return (

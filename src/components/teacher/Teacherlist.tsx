@@ -182,6 +182,7 @@ export default function TeacherList() {
           </motion.div>
         </div>
       )}
+      
 
       {/* Delete Dialog */}
       <DeleteTeacherDialog
