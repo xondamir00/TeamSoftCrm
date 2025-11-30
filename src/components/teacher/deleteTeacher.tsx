@@ -42,7 +42,6 @@ export default function DeleteTeacherDialog({
       await api.patch(`/teachers/${teacher.id}`, {
         isActive: !isActive,
       });
-
       onDeleted?.();
       onClose();
     } catch (err) {
@@ -54,52 +53,52 @@ export default function DeleteTeacherDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
-      <AlertDialogContent className="dark:bg-gray-900 dark:text-gray-200">
-        <AlertDialogHeader>
-          <AlertDialogTitle>
-            {isActive ? t("delete_teacher") : t("restore_teacher")}
-          </AlertDialogTitle>
+      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <AlertDialogContent className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 max-w-md w-full p-6">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {isActive ? t("delete_teacher") : t("restore_teacher")}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {teacher.fullName ||
+                `${teacher.firstName || ""} ${teacher.lastName || ""}`}{" "}
+              {isActive
+                ? t("delete_teacher_confirm")
+                : t("restore_teacher_confirm")}
+            </AlertDialogDescription>
+            <p
+              className={`mt-2 text-sm font-semibold ${
+                isActive ? "text-red-500" : "text-green-600"
+              }`}
+            >
+              {t("status")}: {isActive ? t("active") : t("inactive")}
+            </p>
+          </AlertDialogHeader>
 
-          <AlertDialogDescription>
-            {teacher.fullName ||
-              `${teacher.firstName || ""} ${teacher.lastName || ""}`}{" "}
-            {isActive
-              ? t("delete_teacher_confirm")
-              : t("restore_teacher_confirm")}
-          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              disabled={loading}
+              onClick={onClose}
+              className="dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 rounded-xl"
+            >
+              {t("cancel")}
+            </AlertDialogCancel>
 
-          <p
-            className={`mt-2 text-sm font-semibold ${
-              isActive ? "text-red-500" : "text-green-600"
-            }`}
-          >
-            {t("status")}: {isActive ? t("active") : t("inactive")}
-          </p>
-        </AlertDialogHeader>
-
-        <AlertDialogFooter>
-          <AlertDialogCancel
-            disabled={loading}
-            onClick={onClose}
-            className="dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200"
-          >
-            {t("cancel")}
-          </AlertDialogCancel>
-
-          <AlertDialogAction
-            disabled={loading}
-            onClick={handleUpdateActive}
-            className={`dark:text-gray-100 ${
-              isActive
-                ? "bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
-                : "bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600"
-            }`}
-          >
-            {loading && <Loader2 className="animate-spin w-4 h-4 mr-2" />}
-            {isActive ? t("delete") : t("restore")}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
+            <AlertDialogAction
+              disabled={loading}
+              onClick={handleUpdateActive}
+              className={`rounded-xl dark:text-gray-100 ${
+                isActive
+                  ? "bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+                  : "bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600"
+              }`}
+            >
+              {loading && <Loader2 className="animate-spin w-4 h-4 mr-2" />}
+              {isActive ? t("delete") : t("restore")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </div>
     </AlertDialog>
   );
 }

@@ -360,22 +360,29 @@ export default function TeacherList() {
         </div>
       </div>
 
-      {selectedTeacher && (
-        <>
-          <DeleteTeacherDialog
-            teacher={selectedTeacher}
-            open={deleteDialogOpen}
-            onClose={() => setDeleteDialogOpen(false)}
-            onDeleted={handleUpdated}
-          />
-          <UpdateTeacherDrawer
-            open={openEditDrawer}
-            onClose={() => setOpenEditDrawer(false)}
-            teacherId={selectedTeacher.id}
-            onUpdated={handleUpdated}
-          />
-        </>
-      )}
+{selectedTeacher && (
+  <>
+    {/* Delete dialog with blur */}
+    {deleteDialogOpen && (
+      <DeleteTeacherDialog 
+        teacher={selectedTeacher}
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onDeleted={handleUpdated}
+      />
+    )}
+
+    {/* Edit drawer */}
+    <UpdateTeacherDrawer
+      open={openEditDrawer}
+      onClose={() => setOpenEditDrawer(false)}
+      teacherId={selectedTeacher.id}
+      onUpdated={handleUpdated}
+    />
+  </>
+)}
+
+
 
       <AddTeacherDrawer
         open={openAddDrawer}
