@@ -12,6 +12,7 @@ import {
   type GroupsResponse,
   GroupService,
 } from "@/Store/group";
+import { api } from "@/Service/api";
 
 export default function GroupList() {
   const { t } = useTranslation();
