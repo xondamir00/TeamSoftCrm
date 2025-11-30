@@ -4,21 +4,30 @@ import React, { useState, useEffect } from "react";
 import { api } from "@/Service/api";
 import { useTranslation } from "react-i18next";
 
+interface Schedule {
+  mode: "ODD" | "EVEN" | "CUSTOM";
+  startTime: string;
+  endTime: string;
+  days: string[];
+}
+
+interface EditingGroup {
+  id: string;
+  name: string;
+  room?: { id: string; name: string };
+  capacity?: number;
+  monthlyFee?: number;
+  schedule?: Schedule;
+}
+
 interface AddGroupFormProps {
-  editingGroup?: {
-    id: string;
-    name: string;
-    room?: { id: string; name: string };
-    capacity?: number;
-    monthlyFee?: number;
-    schedule?: {
-      mode: "ODD" | "EVEN" | "CUSTOM";
-      startTime: string;
-      endTime: string;
-      days?: string[];
-    };
-  } | null;
+  editingGroup?: EditingGroup | null;
   onSuccess?: () => void;
+}
+
+interface Room {
+  id: string;
+  name: string;
 }
 
 export default function AddGroupForm({
@@ -26,7 +35,7 @@ export default function AddGroupForm({
   onSuccess,
 }: AddGroupFormProps) {
   const { t } = useTranslation();
-  const [rooms, setRooms] = useState<{ id: string; name: string }[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -36,24 +45,27 @@ export default function AddGroupForm({
     capacity: 1,
     monthlyFee: 0,
     schedule: {
-      mode: "ODD" as "ODD" | "EVEN" | "CUSTOM",
+      mode: "ODD" as Schedule["mode"],
       startTime: "",
       endTime: "",
       days: [] as string[],
     },
   });
+
+  // Fetch rooms
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const res = await api.get("/rooms");
+        const res = await api.get<Room[]>("/rooms");
         setRooms(res.data);
-      } catch (err: any) {
-        console.error("Xonalarni olishda xatolik:", err.response?.data || err);
+      } catch (err: unknown) {
+        console.error("Xonalarni olishda xatolik:", err);
       }
     };
     fetchRooms();
   }, []);
 
+  // Populate form when editing
   useEffect(() => {
     if (editingGroup) {
       setForm({
@@ -78,7 +90,7 @@ export default function AddGroupForm({
     if (["mode", "startTime", "endTime"].includes(name)) {
       setForm((f) => ({ ...f, schedule: { ...f.schedule, [name]: value } }));
     } else {
-      setForm((f) => ({ ...f, [name]: value }));
+      setForm((f) => ({ ...f, [name]: name === "capacity" || name === "monthlyFee" ? Number(value) : value }));
     }
   };
 
@@ -97,16 +109,24 @@ export default function AddGroupForm({
     setMessage("");
 
     try {
-      const payload: any = {
+      const payload: {
+        name: string;
+        capacity: number;
+        monthlyFee: number;
+        daysPattern: Schedule["mode"];
+        startTime: string;
+        endTime: string;
+        roomId?: string;
+      } = {
         name: form.name,
-        capacity: Number(form.capacity),
+        capacity: form.capacity,
         daysPattern: form.schedule.mode,
         startTime: form.schedule.startTime,
         endTime: form.schedule.endTime,
-        monthlyFee: Number(form.monthlyFee),
+        monthlyFee: form.monthlyFee,
       };
 
-      if (form.roomId && form.roomId.trim() !== "") {
+      if (form.roomId.trim() !== "") {
         payload.roomId = form.roomId;
       }
 
@@ -119,9 +139,9 @@ export default function AddGroupForm({
       }
 
       setTimeout(() => onSuccess?.(), 500);
-    } catch (err: any) {
-      console.error("Error:", err.response?.data);
-      setMessage(err.response?.data?.message || t("group_error"));
+    } catch (err: unknown) {
+      console.error("Error:", err);
+      setMessage(t("group_error"));
     } finally {
       setLoading(false);
     }
