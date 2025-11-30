@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { api } from "@/Service/api";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -6,37 +7,34 @@ import { Label } from "@/components/ui/label";
 import { Loader2, Edit, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { RoomService, type Room } from "@/Store/room";
 
 export default function RoomsPage() {
   const { t } = useTranslation();
 
-  const [rooms, setRooms] = useState<Room[]>([]);
+  const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const [name, setName] = useState("");
   const [capacity, setCapacity] = useState("");
+  const [editRoom, setEditRoom] = useState(null);
 
-  const [editRoom, setEditRoom] = useState<Room | null>(null);
+  useEffect(() => {
+    loadRooms();
+  }, []);
 
   const loadRooms = async () => {
     try {
-      const data = await RoomService.getAll();
+      const { data } = await api.get("/rooms");
       setRooms(data.filter((x) => x.isActive !== false));
     } catch (err) {
       console.error("Xonalar yuklanmadi:", err);
     }
   };
 
-  useEffect(() => {
-    loadRooms();
-  }, []);
-
-  const createRoom = async (e: React.FormEvent) => {
+  const createRoom = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await RoomService.create({
+      await api.post("/rooms", {
         name,
         capacity: capacity ? Number(capacity) : undefined,
       });
@@ -52,16 +50,11 @@ export default function RoomsPage() {
 
   const updateRoom = async () => {
     if (!editRoom) return;
-
     try {
-      await RoomService.update(editRoom.id, {
+      await api.patch(`/rooms/${editRoom.id}`, {
         name: editRoom.name,
-        capacity:
-          editRoom.capacity === undefined
-            ? undefined
-            : Number(editRoom.capacity),
+        capacity: editRoom.capacity ? Number(editRoom.capacity) : undefined,
       });
-
       setEditRoom(null);
       loadRooms();
     } catch (err) {
@@ -69,9 +62,9 @@ export default function RoomsPage() {
     }
   };
 
-  const deleteRoom = async (id: string) => {
+  const deleteRoom = async (id) => {
     try {
-      await RoomService.delete(id);
+      await api.patch(`/rooms/${id}`, { isActive: false });
       setRooms((prev) => prev.filter((x) => x.id !== id));
     } catch (err) {
       console.error("Xona o‘chirilmadi:", err);
@@ -80,7 +73,8 @@ export default function RoomsPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <Card className="shadow-sm border dark:border-neutral-800 dark:bg-neutral-900">
+      {/* Xona qo‘shish form */}
+      <Card className="shadow-sm border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900">
         <CardHeader>
           <CardTitle className="dark:text-white">{t("add_room")}</CardTitle>
         </CardHeader>
@@ -117,7 +111,8 @@ export default function RoomsPage() {
         </CardContent>
       </Card>
 
-      <Card className="shadow-sm border dark:border-neutral-800 dark:bg-neutral-900">
+      {/* Ro‘yxat */}
+      <Card className="shadow-sm border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900">
         <CardHeader>
           <CardTitle className="dark:text-white">{t("rooms_list")}</CardTitle>
         </CardHeader>
@@ -127,6 +122,7 @@ export default function RoomsPage() {
               <motion.div
                 key={r.id}
                 layout
+                transition={{ duration: 0.45, ease: "easeOut" }}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{
@@ -137,7 +133,6 @@ export default function RoomsPage() {
                   y: (Math.random() - 0.5) * 200,
                   filter: "blur(4px)",
                 }}
-                transition={{ duration: 0.45 }}
                 className="flex justify-between items-center p-3 border rounded-lg bg-white dark:bg-neutral-800 dark:border-neutral-700 hover:shadow-md transition"
               >
                 <div>
@@ -170,6 +165,7 @@ export default function RoomsPage() {
         </CardContent>
       </Card>
 
+      {/* Edit Modal */}
       {editRoom && (
         <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <motion.div
@@ -196,15 +192,9 @@ export default function RoomsPage() {
               <Label className="dark:text-neutral-300">{t("capacity")}</Label>
               <Input
                 type="number"
-                value={editRoom.capacity ?? ""}
+                value={editRoom.capacity}
                 onChange={(e) =>
-                  setEditRoom({
-                    ...editRoom,
-                    capacity:
-                      e.target.value === ""
-                        ? undefined
-                        : Number(e.target.value),
-                  })
+                  setEditRoom({ ...editRoom, capacity: e.target.value })
                 }
                 className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
               />
@@ -213,8 +203,8 @@ export default function RoomsPage() {
             <div className="flex justify-end gap-2">
               <Button
                 variant="outline"
-                onClick={() => setEditRoom(null)}
                 className="dark:border-neutral-600"
+                onClick={() => setEditRoom(null)}
               >
                 {t("cancel")}
               </Button>

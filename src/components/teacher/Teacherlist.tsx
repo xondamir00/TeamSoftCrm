@@ -34,8 +34,12 @@ export default function TeacherList() {
       console.log(data);
 
       setTeachers((data.items || []).filter((t) => t.isActive));
-    } catch (err: any) {
-      setError(err?.response?.data?.message || t("fetch_error"));
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError(t("fetch_error"));
+      }
     } finally {
       setLoading(false);
     }
@@ -182,7 +186,6 @@ export default function TeacherList() {
           </motion.div>
         </div>
       )}
-      
 
       {/* Delete Dialog */}
       <DeleteTeacherDialog

@@ -27,19 +27,13 @@ export default function GroupList() {
   const fetchGroups = async () => {
     try {
       setLoading(true);
-      setError("");
-      const data: GroupsResponse = await GroupService.getGroups({
-        page: 1,
-        limit: 30,
-        search: search || undefined,
+      const { data } = await api.get("/groups", {
+        params: { page: 1, limit: 30, search },
       });
 
-      const activeGroups = (data.items || []).filter(
-        (g: Group) => g.isActive !== false
-      );
-      setGroups(activeGroups);
-    } catch (err) {
-      console.error("Error:", err);
+      setGroups((data.items || []).filter((g: any) => g.isActive !== false));
+    } catch (err: any) {
+      setError(err?.response?.data?.message || t("fetch_error"));
     } finally {
       setLoading(false);
     }
@@ -66,12 +60,14 @@ export default function GroupList() {
       await GroupService.deleteGroup(deleteTarget.id);
       setGroups((prev) => prev.filter((g) => g.id !== deleteTarget.id));
       setDeleteTarget(null);
+    } catch (err: any) {
+      alert(err?.response?.data?.message || "O‘chirishda xatolik yuz berdi");
     } finally {
       setLoading(false);
     }
   };
 
-  const formatTime = (time?: string): string => {
+  const formatTime = (time?: string) => {
     if (!time) return "-";
     try {
       const date = new Date(`1970-01-01T${time}`);
@@ -121,7 +117,7 @@ export default function GroupList() {
       {/* Top Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <Input
-          placeholder={t("search_groups")}
+          placeholder="Search groups..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-md w-full dark:bg-gray-800 dark:text-gray-200"
@@ -135,12 +131,7 @@ export default function GroupList() {
         </Button>
       </div>
 
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
-          {error}
-        </div>
-      )}
-
+      {/* Table */}
       <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm dark:shadow-black/30">
         <table className="w-full">
           <thead className="bg-gray-100 dark:bg-gray-900">
@@ -150,9 +141,7 @@ export default function GroupList() {
               <th className="p-3 text-left dark:text-gray-300">
                 {t("capacity")}
               </th>
-              <th className="p-3 text-left dark:text-gray-300">
-                {t("days_pattern")}
-              </th>
+              <th className="p-3 text-left dark:text-gray-300">Days</th>
               <th className="p-3 text-left dark:text-gray-300">{t("time")}</th>
               <th className="p-3 text-right dark:text-gray-300">
                 {t("actions")}
@@ -174,45 +163,35 @@ export default function GroupList() {
                 </td>
               </tr>
             ) : (
-              groups.map((group) => (
+              groups.map((g) => (
                 <tr
-                  key={group.id}
+                  key={g.id}
                   className="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
                 >
-                  <td className="p-3 dark:text-gray-300">{group.name}</td>
-                  <td className="p-3 dark:text-gray-300">
-                    {getRoomName(group.roomId)}
+                  <td className="p-3">{g.name}</td>
+                  <td className="p-3">{getRoomName(g.roomId)}</td>
+                  <td className="p-3">{g.capacity ?? "-"}</td>
+                  <td className="p-3">{g.daysPattern || "-"}</td>
+                  <td className="p-3">
+                    {formatTime(g.startTime)} - {formatTime(g.endTime)}
                   </td>
-                  <td className="p-3 dark:text-gray-300">
-                    {group.capacity ?? "-"}
-                  </td>
-                  <td className="p-3 dark:text-gray-300">
-                    {getDaysPatternText(group.daysPattern)}
-                  </td>
-                  <td className="p-3 dark:text-gray-300">
-                    {formatTime(group.startTime)} - {formatTime(group.endTime)}
-                  </td>
-                  <td className="p-3 text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        onClick={() => openModal(group)}
-                        className="dark:border-gray-600 dark:text-gray-300"
-                        title={t("edit")}
-                      >
-                        <Pencil className="w-4 h-4" />
-                      </Button>
+                  <td className="p-3 text-right flex justify-end gap-2">
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => openModal(g)}
+                      className="dark:border-gray-600"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </Button>
 
-                      <Button
-                        size="icon"
-                        variant="destructive"
-                        onClick={() => setDeleteTarget(group)}
-                        title={t("delete")}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
+                    <Button
+                      size="icon"
+                      variant="destructive"
+                      onClick={() => setDeleteTarget(g)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </td>
                 </tr>
               ))
@@ -221,6 +200,7 @@ export default function GroupList() {
         </table>
       </div>
 
+      {/* Drawer / Modal */}
       {modalOpen && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-end z-50">
           <motion.div
@@ -230,18 +210,17 @@ export default function GroupList() {
             transition={{ duration: 0.3 }}
             className="bg-white dark:bg-gray-900 w-full sm:max-w-md h-full flex flex-col shadow-xl"
           >
+            {/* Header */}
             <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
               <h2 className="text-lg font-semibold dark:text-white">
                 {editingGroup ? t("edit_group") : t("add_group")}
               </h2>
-              <Button
-                variant="outline"
-                onClick={closeModal}
-                className="dark:border-gray-600 dark:text-gray-300"
-              >
+              <Button variant="outline" onClick={() => setModalOpen(false)}>
                 {t("close")}
               </Button>
             </div>
+
+            {/* Form */}
             <div className="p-4 overflow-y-auto flex-1">
               <AddGroupForm
                 editingGroup={editingGroup}
@@ -252,6 +231,7 @@ export default function GroupList() {
         </div>
       )}
 
+      {/* Delete Modal */}
       {deleteTarget && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <motion.div
@@ -265,24 +245,13 @@ export default function GroupList() {
             <p className="dark:text-gray-300 mb-4">
               {t("delete_confirm_text")} "{deleteTarget.name}"?
             </p>
+
             <div className="flex justify-end gap-2">
-              <Button
-                variant="outline"
-                onClick={() => setDeleteTarget(null)}
-                className="dark:border-gray-600 dark:text-gray-300"
-              >
+              <Button variant="outline" onClick={() => setDeleteTarget(null)}>
                 {t("cancel")}
               </Button>
-              <Button
-                variant="destructive"
-                onClick={handleDelete}
-                disabled={loading}
-              >
-                {loading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  t("delete")
-                )}
+              <Button variant="destructive" onClick={handleDelete}>
+                {t("delete")}
               </Button>
             </div>
           </motion.div>

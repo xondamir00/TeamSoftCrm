@@ -20,7 +20,7 @@ import AddGroupForm from "./components/Group/AddGoup";
 import TeacherList from "./components/teacher/Teacherlist";
 import AddManagerForm from "./components/form/AddManeger";
 import AttendancePage from "./components/attendance/AttendancePage";
-import Teacherdetail from "./components/attendance/teacher/teacher-detail";
+import Teacherdetail from "./components/teacher/teacher-detail";
 import ManagerList from "./components/Maneger/ManagerList";
 import Trash from "./components/page/trash";
 

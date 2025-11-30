@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useAuth } from "@/Store";
 import { Button } from "@/components/ui/button";
@@ -14,17 +16,33 @@ const LogoutButton: React.FC = () => {
     <Button
       onClick={handleLogout}
       variant="ghost"
-      size="icon"
-      className="w-10 h-10 cursor-pointer rounded-full ring-2 ring-red-600  hover:ring-red-600 dark:ring-red-600 hover:dark:ring-red-600
-      transition-colors duration-200 group bg-white hover:bg-[] dark:bg-black "
+      className="
+        flex items-center gap-2
+        px-2 
+        bg-transparent
+        hover:bg-gray-100 dark:hover:bg-gray-800
+        transition
+      "
     >
-      <LogOut
-        size={10}
-        strokeWidth={2}
-        className="text-black dark:text-white 
-        group-hover:text-red-600 dark:group-hover:text-red-600 
-        transition-colors duration-200 "
-      />
+      <div
+        className="
+          w-6 h-6 flex items-center justify-center
+          rounded-full
+          ring-2 ring-red-600 dark:ring-red-600
+          bg-white dark:bg-black
+          hover:ring-red-700 dark:hover:ring-red-500
+          transition 
+        "
+      >
+        <LogOut
+          size={12}
+          strokeWidth={2}
+          className="text-red-600 dark:text-red-500"
+        />
+      </div>
+      <span className="text-black dark:text-white ">
+        Chiqish
+      </span>
     </Button>
   );
 };

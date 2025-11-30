@@ -83,7 +83,6 @@ export default function AttendancePage() {
       const { data } = await api.get<Sheet[]>("/attendance/sheets", {
         params: { groupId: selectedGroup },
       });
-
       setSheets(data);
     } catch (err) {
       console.error(err);

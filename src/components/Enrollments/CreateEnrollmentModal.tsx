@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { api } from "@/Service/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -43,15 +42,18 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Store state va actions
+  const students = useEnrollmentStore((state) => state.students);
+  const groups = useEnrollmentStore((state) => state.groups);
+  const fetchStudents = useEnrollmentStore((state) => state.fetchStudents);
+  const fetchGroups = useEnrollmentStore((state) => state.fetchGroups);
+  const createEnrollment = useEnrollmentStore((state) => state.createEnrollment);
+
+  // Ma'lumotlarni yuklash
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [resStudents, resGroups] = await Promise.all([
-          api.get("/students"),
-          api.get("/groups"),
-        ]);
-        setStudents(resStudents.data.items ?? []);
-        setGroups(resGroups.data.items ?? []);
+        await Promise.all([fetchStudents(), fetchGroups()]);
       } catch (err) {
         setError(t("fetch_error"));
       }
@@ -65,13 +67,10 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
       setError(t("select_student_group"));
       return;
     }
+
     setLoading(true);
     try {
-      await api.post("/enrollments", {
-        studentId,
-        groupId,
-        joinDate: joinDate || undefined,
-      });
+      await createEnrollment({ studentId, groupId, joinDate: joinDate || undefined });
       onSuccess?.();
     } catch (err: any) {
       setError(err.response?.data?.message || t("server_error"));

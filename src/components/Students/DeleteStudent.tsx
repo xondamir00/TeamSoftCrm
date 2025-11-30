@@ -8,12 +8,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { api } from "@/Service/api";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { useStudentStore } from "@/Store/Student";
+
+// Student interfeysi
+interface Student {
+  id: number;
+  fullName: string;
+  // agar boshqa fieldlar ham kerak bo'lsa qo'shishingiz mumkin
+}
 
 interface DeleteStudentProps {
-  student: any | null;
+  student: Student | null; // any o'rniga Student
   open: boolean;
   onClose: () => void;
   onDeleted?: () => void;
@@ -26,14 +33,15 @@ export default function DeleteStudentDialog({
   onDeleted,
 }: DeleteStudentProps) {
   const [loading, setLoading] = useState(false);
+  const deleteStudent = useStudentStore((state) => state.deleteStudent);
 
   if (!student) return null;
 
   const handleDelete = async () => {
     setLoading(true);
     try {
-      await api.delete(`/students/${student.id}`);
-      if (onDeleted) onDeleted();
+      await deleteStudent(student.id); // store orqali o'chirish
+      onDeleted?.();
       onClose();
     } catch (err) {
       console.error(err);

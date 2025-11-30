@@ -6,6 +6,8 @@ export type Role = "admin" | "teacher" | "MANAGER" | "USER";
 
 export type User = {
   id: string;
+  avatarUrl?: string; // optional bo‘lishi mumkin
+  phone?: string;
   email: string;
   role: Role;
   mustChangePassword?: boolean;
@@ -63,20 +65,6 @@ export interface Sheet {
     room?: { name: string } | null;
   };
   students: Student[];
-}
-export interface AttendanceState {
-  sheets: Sheet[];
-  loading: boolean;
-  saving: boolean;
-  groupName: string;
-  fetchSheet: (groupId: string, date: string, lesson: number) => Promise<void>;
-  updateLocalStatus: (
-    sheetId: string,
-    studentId: string,
-    status: StudentStatus
-  ) => void;
-
-  saveSheet: (sheetId: string) => Promise<void>;
 }
 
 export interface Student {
