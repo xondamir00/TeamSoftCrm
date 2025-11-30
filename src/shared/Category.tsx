@@ -59,7 +59,7 @@ export default function CategoryNav() {
                               shadow-sm hover:shadow-md
                               ${
                                 active
-                                  ? "bg-blue-600 text-white dark:bg-white/10 dark:text-white shadow-blue-300/50"
+                                  ? "bg-[#0208B0] text-white dark:bg-white/10 dark:text-white shadow-blue-300/50"
                                   : "text-black dark:text-white hover:bg-gray-100/50 dark:hover:bg-white/10"
                               }
                             `}

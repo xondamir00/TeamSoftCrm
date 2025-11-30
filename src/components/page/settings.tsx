@@ -26,7 +26,7 @@ const TeacherGroup = () => {
       </motion.h1>
 
       {/* Grid */}
-      <div className="w-[70%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="w-[70%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {CreateForm.map((item, index) => {
           const Icon = item.icon;
           const dir = directions[index % directions.length];
@@ -44,13 +44,21 @@ const TeacherGroup = () => {
             >
               <Link
                 to={item.href}
-                className="group rounded-xl bg-white dark:bg-neutral-900 
-                border border-gray-200 dark:border-neutral-700 
-                p-6 flex flex-col items-center justify-center gap-3
-                hover:shadow-lg transition-all duration-300"
+                className="
+                  group
+                  relative
+                  rounded-4xl
+                  bg-white dark:bg-black
+                  border border-gray-200 dark:border-neutral-700
+                  p-6
+                  flex flex-col items-center justify-center gap-3
+                  shadow-sm hover:shadow-lg
+                  transition-all duration-300
+                  hover:-translate-y-1
+                "
               >
                 {/* Icon Box */}
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300">
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center  transition-all duration-300 group-hover:scale-105">
                   <Icon
                     size={28}
                     className="transition-transform duration-300 group-hover:scale-110"
@@ -58,7 +66,7 @@ const TeacherGroup = () => {
                 </div>
 
                 {/* Name */}
-                <span className="text-lg font-medium transition-colors duration-300">
+                <span className="text-lg font-medium text-gray-900 dark:text-gray-100 transition-colors duration-300 ">
                   {t(item.nameKey)}
                 </span>
               </Link>
