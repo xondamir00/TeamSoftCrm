@@ -25,8 +25,14 @@ import AddStudentDrawer from "./AddStudentDrawer";
 import EditStudentDrawer from "./EditStudentDrawer";
 import type { Student } from "@/Store/Student";
 import { api } from "@/Service/api";
+import { useNavigate } from "react-router-dom";
+import { Eye } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const ListStudent = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -75,7 +81,7 @@ const ListStudent = () => {
       setInactiveCount(0);
     } catch (err: unknown) {
       console.error("Error fetching students:", err);
-      setError("Error loading students");
+      setError(t("studentManagement.error") || "Error loading students");
     } finally {
       setLoading(false);
     }
@@ -168,7 +174,7 @@ const ListStudent = () => {
         <div className="text-center">
           <Loader2 className="animate-spin mx-auto mb-4 w-12 h-12 text-blue-600 dark:text-blue-400" />
           <p className="text-slate-600 dark:text-slate-400 font-medium">
-            Loading students...
+            {t("studentManagement.loading") || "Loading students..."}
           </p>
         </div>
       </div>
@@ -178,10 +184,12 @@ const ListStudent = () => {
     return (
       <div className="h-screen w-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 flex items-center justify-center p-4">
         <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 p-6 rounded-2xl shadow-lg max-w-md">
-          <p className="font-semibold text-lg mb-2">Error</p>
+          <p className="font-semibold text-lg mb-2">
+            {t("studentManagement.error") || "Error"}
+          </p>
           <p>{error}</p>
           <Button onClick={fetchStudents} className="mt-4" variant="outline">
-            Try Again
+            {t("studentManagement.tryAgain") || "Try Again"}
           </Button>
         </div>
       </div>
@@ -195,10 +203,10 @@ const ListStudent = () => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">
-                  Student Management
+                  {t("studentManagement.title") || "Student Management"}
                 </h1>
                 <p className="text-slate-600 dark:text-slate-400">
-                  Manage and track active students
+                  {t("studentManagement.subtitle") || "Manage and track active students"}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -213,7 +221,7 @@ const ListStudent = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-blue-700 dark:text-blue-300 text-xs sm:text-sm font-medium mb-1">
-                      Total Students
+                      {t("studentManagement.totalStudents") || "Total Students"}
                     </p>
                     <p className="text-2xl sm:text-3xl font-bold text-blue-900 dark:text-blue-100">
                       {totalStudents}
@@ -229,7 +237,7 @@ const ListStudent = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-emerald-700 dark:text-emerald-300 text-xs sm:text-sm font-medium mb-1">
-                      Active Students
+                      {t("studentManagement.activeStudents") || "Active Students"}
                     </p>
                     <p className="text-2xl sm:text-3xl font-bold text-emerald-900 dark:text-emerald-100">
                       {activeCount}
@@ -245,7 +253,7 @@ const ListStudent = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-medium mb-1">
-                      Inactive
+                      {t("studentManagement.inactive") || "Inactive"}
                     </p>
                     <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
                       {inactiveCount}
@@ -263,7 +271,7 @@ const ListStudent = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 w-5 h-5" />
                 <Input
                   type="text"
-                  placeholder="Search by name or phone..."
+                  placeholder={t("studentManagement.searchPlaceholder") || "Search by name or phone..."}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="pl-10 w-full"
@@ -273,7 +281,7 @@ const ListStudent = () => {
                 onClick={() => setOpenAddDrawer(true)}
                 className="flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
               >
-                <Plus className="w-4 h-4" /> Add Student
+                <Plus className="w-4 h-4" /> {t("studentManagement.addStudent") || "Add Student"}
               </Button>
             </div>
           </div>
@@ -284,25 +292,25 @@ const ListStudent = () => {
                 <TableHeader className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700">
                   <TableRow className="border-b-2 border-slate-200 dark:border-slate-600">
                     <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                      #
+                      {t("studentManagement.tableHeaders.number") || "#"}
                     </TableHead>
                     <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                      Name
+                      {t("studentManagement.tableHeaders.name") || "Name"}
                     </TableHead>
                     <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm hidden sm:table-cell">
-                      Phone
+                      {t("studentManagement.tableHeaders.phone") || "Phone"}
                     </TableHead>
                     <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                      Status
+                      {t("studentManagement.tableHeaders.status") || "Status"}
                     </TableHead>
                     <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm hidden md:table-cell">
-                      Birth Date
+                      {t("studentManagement.tableHeaders.birthDate") || "Birth Date"}
                     </TableHead>
                     <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm hidden lg:table-cell">
-                      Start Date
+                      {t("studentManagement.tableHeaders.startDate") || "Start Date"}
                     </TableHead>
                     <TableHead className="text-right font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                      Actions
+                      {t("studentManagement.tableHeaders.actions") || "Actions"}
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -313,10 +321,10 @@ const ListStudent = () => {
                       <TableCell colSpan={7} className="text-center py-12">
                         <Users className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
                         <p className="text-slate-500 dark:text-slate-400 font-medium">
-                          No active students found
+                          {t("studentManagement.noStudents") || "No active students found"}
                         </p>
                         <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-                          Try adjusting your search or add new students
+                          {t("studentManagement.noStudentsHint") || "Try adjusting your search or add new students"}
                         </p>
                       </TableCell>
                     </TableRow>
@@ -340,7 +348,7 @@ const ListStudent = () => {
                             className={`px-2 sm:px-3 py-1 sm:py-1.5 text-xs font-semibold rounded-full inline-flex items-center gap-1 bg-emerald-100 text-emerald-700 border border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-700`}
                           >
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            Active
+                            {t("studentManagement.statuses.active") || "Active"}
                           </span>
                         </TableCell>
                         <TableCell className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm hidden md:table-cell">
@@ -351,19 +359,37 @@ const ListStudent = () => {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-1 sm:gap-2">
+                            {/* VIEW PROFILE BUTTON */}
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              onClick={() =>
+                                navigate(`${student.id}`)
+                              }
+                              className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+                              title={t("studentManagement.buttons.viewProfile") || "View Profile"}
+                            >
+                              <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                            </Button>
+
+                            {/* EDIT */}
                             <Button
                               variant="outline"
                               size="icon"
                               onClick={() => handleEdit(student)}
                               className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-amber-50 dark:hover:bg-amber-900/30 hover:border-amber-300 dark:hover:border-amber-700 hover:text-amber-700 dark:hover:text-amber-400"
+                              title={t("studentManagement.buttons.edit") || "Edit"}
                             >
                               <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             </Button>
+
+                            {/* DELETE */}
                             <Button
                               variant="destructive"
                               size="icon"
                               onClick={() => handleDelete(student)}
                               className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-red-700 dark:hover:bg-red-800"
+                              title={t("studentManagement.buttons.delete") || "Delete"}
                             >
                               <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             </Button>
@@ -383,16 +409,16 @@ const ListStudent = () => {
                 disabled={page === 1}
                 className="w-full sm:w-auto text-xs sm:text-sm"
               >
-                Previous
+                {t("studentManagement.previous") || "Previous"}
               </Button>
 
               <div className="flex items-center gap-2">
                 <span className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm">
-                  Page{" "}
+                  {t("studentManagement.page") || "Page"}{" "}
                   <span className="font-bold text-slate-900 dark:text-white">
                     {page}
                   </span>{" "}
-                  of{" "}
+                  {t("studentManagement.of") || "of"}{" "}
                   <span className="font-bold text-slate-900 dark:text-white">
                     {totalPages}
                   </span>
@@ -407,7 +433,7 @@ const ListStudent = () => {
                 disabled={page === totalPages}
                 className="w-full sm:w-auto text-xs sm:text-sm"
               >
-                Next
+                {t("studentManagement.next") || "Next"}
               </Button>
             </div>
           </div>

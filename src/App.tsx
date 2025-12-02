@@ -20,6 +20,7 @@ import TeacherList from "./components/teacher/Teacherlist";
 import AddManagerForm from "./components/form/AddManeger";
 import ManagerList from "./components/Maneger/ManagerList";
 import Trash from "./components/page/trash";
+import StudentPage from "./components/Students/StudentPage";
 import Attendancepage from "./components/attendance/attendance-page";
 
 const App = () => {
@@ -38,11 +39,12 @@ const App = () => {
               </RoleRoute>
             }
           >
+            <Route path="student/:id" element={<StudentPage />} />
             <Route index element={<Home />} />
             <Route path="settings" element={<Settings />} />
             <Route path="student" element={<ListStudent />} />
             <Route path="teachers" element={<TeacherList />} />
-
+          
             {/* Teaching Assignments routes */}
             <Route
               path="settings/assignments"

@@ -218,5 +218,65 @@
   "assignment_teacher": "Assignment Teacher",
   "assignment_list": "Assignment List",
   "student_hub": "Student Hub",
-  "archive": "Archive"
+  "archive": "Archive",
+  "student_not_found": "Student not found",
+  "student_id": "Student ID",
+  "birth_date": "Birth Date",
+  "student_management": "Student Management",
+  "manage_and_track": "Manage and track active students",
+  "total_students": "Total Students",
+  "active_students": "Active Students",
+  "inactive_students": "Inactive Students",
+  "no_students_sub": "Try adjusting your search or add new students",
+  "page_of": "of",
+  "page": "Page",
+  "studentManagement": {
+    "title": "Student Management",
+    "subtitle": "Manage and track active students",
+    "totalStudents": "Total Students",
+    "activeStudents": "Active Students",
+    "inactive": "Inactive",
+    "searchPlaceholder": "Search by name or phone...",
+    "addStudent": "Add Student",
+    "noStudents": "No active students found",
+    "noStudentsHint": "Try adjusting your search or add new students",
+    "tableHeaders": {
+      "number": "#",
+      "name": "Name",
+      "phone": "Phone",
+      "status": "Status",
+      "birthDate": "Birth Date",
+      "startDate": "Start Date",
+      "actions": "Actions"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "loading": "Loading students...",
+    "error": "Error",
+    "tryAgain": "Try Again",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "buttons": {
+      "viewProfile": "View Profile",
+      "edit": "Edit",
+      "delete": "Delete"
+    }
+  },
+
+  "student_not_found_description": "Sorry, the student could not be found.",
+  "go_back": "Go back",
+  "back": "Back",
+  "personal_information": "Personal Information",
+  "address": "Address",
+  "call": "Call",
+  "send_message": "Send Message",
+  "no_groups_assigned": "No groups assigned",
+  "student_stats": "Student Statistics",
+  "attendance_rate": "Attendance Rate",
+  "average_grade": "Average Grade",
+  "completed_courses": "Completed Courses"
 }
