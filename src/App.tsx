@@ -21,12 +21,13 @@ import TeacherList from "./components/teacher/Teacherlist";
 import AddManagerForm from "./components/form/AddManeger";
 import AttendancePage from "./components/attendance/AttendancePage";
 import Teacherdetail from "./components/teacher/teacher-detail";
-import Trash from "./components/page/Trash";
+import ManagerList from "./components/Maneger/ManagerList";
+import Trash from "./components/page/trash";
 
 const App = () => {
   return (
     <AuthRefresh>
-      <div className="light:bg-[#f2f2f2] min-h-screen dark:bg-gray-900">
+      <div className="bg-white min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900">
         <Routes>
           {/* Public route */}
           <Route path="/sign" element={<Login />} />
@@ -67,6 +68,7 @@ const App = () => {
               path="settings/create-manager"
               element={<AddManagerForm />}
             />
+            <Route path="settings/menegers-list" element={<ManagerList />} />
             <Route path="settings/create-group" element={<AddGroupForm />} />
             <Route path="settings/create-room" element={<AddRoom />} />
 

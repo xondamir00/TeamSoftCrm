@@ -1,12 +1,13 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { api } from "@/Service/api";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Loader2, Edit, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Loader2, Edit, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function RoomsPage() {
   const { t } = useTranslation();
@@ -71,109 +72,125 @@ export default function RoomsPage() {
     }
   };
 
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, scale: 0.85, y: -20 },
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      {/* Xona qo‘shish form */}
-      <Card className="shadow-sm border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900">
-        <CardHeader>
-          <CardTitle className="dark:text-white">{t("add_room")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form
-            onSubmit={createRoom}
-            className="flex gap-4 flex-wrap items-end"
-          >
-            <div className="flex-1 min-w-[200px]">
-              <Label className="dark:text-neutral-300">{t("room_name")}</Label>
-              <Input
-                value={name}
-                required
-                onChange={(e) => setName(e.target.value)}
-                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
-              />
-            </div>
+    <div className="max-w-7xl mx-auto p-4 md:p-6 space-y-8">
+      <motion.div
+        className="bg-white/70 dark:bg-black backdrop-blur-md p-6 rounded-2xl shadow-xl"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+          {t("add_room")}
+        </h2>
+        <form
+          onSubmit={createRoom}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end"
+        >
+          <div>
+            <Label className="text-gray-900 dark:text-white">{t("room_name")}</Label>
+            <Input
+              value={name}
+              required
+              onChange={(e) => setName(e.target.value)}
+              placeholder={t("room_name")}
+              className="mt-1 dark:bg-black dark:border-neutral-700 dark:text-white"
+            />
+          </div>
 
-            <div className="min-w-[120px]">
-              <Label className="dark:text-neutral-300">{t("capacity")}</Label>
-              <Input
-                type="number"
-                value={capacity}
-                onChange={(e) => setCapacity(e.target.value)}
-                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
-              />
-            </div>
+          <div>
+            <Label className="text-gray-900 dark:text-white">{t("capacity")}</Label>
+            <Input
+              type="number"
+              value={capacity}
+              onChange={(e) => setCapacity(e.target.value)}
+              placeholder={t("capacity")}
+              className="mt-1 dark:bg-black dark:border-neutral-700 dark:text-white"
+            />
+          </div>
 
-            <Button disabled={loading} className="flex gap-2">
-              {loading && <Loader2 className="w-4 h-4 animate-spin" />}{" "}
+          <div className="flex justify-start md:justify-end">
+            <Button
+              type="submit"
+              className="bg-[#0208B0] hover:bg-[#0208B0] dark:bg-white dark:text-black text-white  duration-200  font-semibold rounded-xl shadow-lg transition flex items-center gap-2"
+              disabled={loading}
+            >
+              {loading && <Loader2 className="w-4 h-4 animate-spin" />}
               {t("add")}
             </Button>
-          </form>
-        </CardContent>
-      </Card>
+          </div>
+        </form>
+      </motion.div>
 
-      {/* Ro‘yxat */}
-      <Card className="shadow-sm border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900">
-        <CardHeader>
-          <CardTitle className="dark:text-white">{t("rooms_list")}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <AnimatePresence>
-            {rooms.map((r) => (
-              <motion.div
-                key={r.id}
-                layout
-                transition={{ duration: 0.45, ease: "easeOut" }}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{
-                  opacity: 0,
-                  scale: 0.4,
-                  rotate: Math.random() * 40 - 20,
-                  x: (Math.random() - 0.5) * 200,
-                  y: (Math.random() - 0.5) * 200,
-                  filter: "blur(4px)",
-                }}
-                className="flex justify-between items-center p-3 border rounded-lg bg-white dark:bg-neutral-800 dark:border-neutral-700 hover:shadow-md transition"
-              >
-                <div>
-                  <p className="font-medium dark:text-white">{r.name}</p>
-                  <p className="text-sm opacity-60 dark:text-neutral-400">
-                    {t("capacity")}: {r.capacity ?? "—"}
-                  </p>
-                </div>
+      <AnimatePresence>
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          {rooms.length === 0 && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="col-span-full text-center text-gray-500 dark:text-neutral-400 py-4"
+            >
+              {t("no_rooms")}
+            </motion.p>
+          )}
 
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="dark:border-neutral-600"
-                    onClick={() => setEditRoom({ ...r })}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    onClick={() => deleteRoom(r.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </CardContent>
-      </Card>
+          {rooms.map((r) => (
+            <motion.div
+              key={r.id}
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ duration: 0.3 }}
+              className="bg-white/70 dark:bg-black backdrop-blur-md p-5 rounded-2xl shadow-lg hover:shadow-2xl transition flex flex-col justify-between"
+            >
+              <div>
+                <h3 className="text-lg md:text-xl font-bold dark:text-white">{r.name}</h3>
+                <p className="text-sm opacity-70 dark:text-neutral-400 mt-1">
+                  {t("capacity")}: {r.capacity ?? "—"}
+                </p>
+              </div>
 
-      {/* Edit Modal */}
+              <div className="flex justify-end gap-3 mt-4">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="dark:border-neutral-600 hover:bg-gray-200/20 dark:hover:bg-gray-700/20 transition"
+                  onClick={() => setEditRoom({ ...r })}
+                >
+                  <Edit className="h-5 w-5" />
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  onClick={() => deleteRoom(r.id)}
+                >
+                  <Trash2 className="h-5 w-5" />
+                </Button>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
+
       {editRoom && (
-        <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/50 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <motion.div
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-white dark:bg-neutral-900 p-6 rounded-xl w-full max-w-sm space-y-4 shadow-lg"
+            exit={{ scale: 0.85, opacity: 0 }}
+            className="bg-white dark:bg-black p-6 rounded-2xl w-full max-w-md space-y-5 shadow-2xl"
           >
-            <h2 className="text-lg font-semibold dark:text-white">
+            <h2 className="text-xl md:text-2xl font-semibold dark:text-white">
               {t("edit_room")}
             </h2>
 
@@ -184,7 +201,7 @@ export default function RoomsPage() {
                 onChange={(e) =>
                   setEditRoom({ ...editRoom, name: e.target.value })
                 }
-                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+                className="mt-1 dark:bg-black dark:border-neutral-700 dark:text-white"
               />
             </div>
 
@@ -196,11 +213,11 @@ export default function RoomsPage() {
                 onChange={(e) =>
                   setEditRoom({ ...editRoom, capacity: e.target.value })
                 }
-                className="dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+                className="mt-1 dark:bg-black dark:border-neutral-700 dark:text-white"
               />
             </div>
 
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-3 mt-4">
               <Button
                 variant="outline"
                 className="dark:border-neutral-600"

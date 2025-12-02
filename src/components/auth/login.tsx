@@ -13,18 +13,13 @@ import { cn } from "@/lib/utils";
 export function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const [phone, setPhone] = useState("+998900001122");
   const [password, setPassword] = useState("Admin@12345");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +93,7 @@ console.log('Sending password:', password);
         transition={{ duration: 0.6 }}
         className="w-full max-w-md px-6 md:px-8 py-10 z-20"
       >
-        <Card className="relative shadow-[0_8px_20px_-10px_rgba(59,130,246,0.5)] border border-blue-100 dark:border-gray-800 bg-white/70 dark:bg-gray-900/80 backdrop-blur-2xl rounded-2xl transition-all duration-500 hover:shadow-[0_8px_40px_-10px_rgba(59,130,246,0.7)] hover:scale-[1.02]">
+        <Card className="relative shadow-[0_8px_20px_-10px_rgba(59,130,246,0.5)] p-4 border border-blue-100 dark:border-gray-800 bg-white/70 dark:bg-gray-900/80 backdrop-blur-2xl rounded-2xl transition-all duration-500 hover:shadow-[0_8px_40px_-10px_rgba(59,130,246,0.7)] hover:scale-[1.02]">
           <CardHeader className="relative z-10 text-center space-y-2">
             <CardTitle className="text-3xl font-extrabold text-[#3F8CFF]">
               {t("login_title")}

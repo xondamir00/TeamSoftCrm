@@ -6,6 +6,8 @@ export type Role = "admin" | "teacher" | "MANAGER" | "USER";
 
 export type User = {
   id: string;
+  avatarUrl?: string; // optional bo‘lishi mumkin
+  phone?: string;
   email: string;
   role: Role;
   mustChangePassword?: boolean;
@@ -73,7 +75,6 @@ export interface Student {
   isActive: boolean;
   dateOfBirth?: string;
   startDate?: string;
-  createdAt: string;
 }
 export interface Enrollment {
   id: string;
@@ -113,6 +114,15 @@ type AuthState = {
     newPassword: string
   ) => Promise<void>;
 };
+export interface Student {
+  id: string;
+  fullName: string;
+  phone: string;
+  isActive: boolean;
+  dateOfBirth?: string;
+  startDate?: string;
+  createdAt?: string;
+}
 
 export const useAuth = create<AuthState>()(
   persist(

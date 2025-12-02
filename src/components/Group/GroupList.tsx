@@ -44,9 +44,10 @@ export default function GroupList() {
     }
   };
 
+
   const fetchRooms = async () => {
     try {
-      const { data } = await api.get("/rooms");
+      const data: Room[] = await GroupService.getRooms();
       setRooms(data);
     } catch (err) {
       console.error("Room fetch error:", err);

@@ -25,7 +25,7 @@ export function ModeToggle() {
   return (
     <motion.button
       onClick={handleToggle}
-      className="relative flex items-center justify-center w-10 h-10 ring-2 ring-white rounded-full border  bg-[#3F8CFF]  dark:bg-black"
+      className="relative flex items-center justify-center w-10 h-10 ring-2 ring-white rounded-full border  bg-[#0208B0]  dark:bg-black"
       whileTap={{ scale: 1.1 }}
       whileHover={{ scale: 1.05 }}
       aria-label="Toggle Theme"

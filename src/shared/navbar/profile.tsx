@@ -12,10 +12,11 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import LogoutButton from "./Logout";
 
 export default function ProfileMenu() {
   const navigate = useNavigate();
-  const { user } = useAuth(); // ✅ useAuth store-dan real foydalanuvchi ma’lumotini oling
+  const { user } = useAuth();
 
   return (
     <DropdownMenu>
@@ -53,19 +54,16 @@ export default function ProfileMenu() {
 
         <DropdownMenuItem
           onClick={() => navigate("/admin/settings")}
-          className="flex gap-2 cursor-pointer"
+          className="flex p-2 gap-2 cursor-pointer"
         >
           <Settings size={16} />
           Sozlamalar
         </DropdownMenuItem>
-
         <DropdownMenuSeparator />
-
-        <DropdownMenuItem
-          onClick={() => navigate("/admin/settings/archive")}
-          className="flex gap-2 cursor-pointer text-red-500 focus:text-red-600"
+               <DropdownMenuItem
+          className="flex gap-2 cursor-pointer"
         >
-          Archive
+          <LogoutButton/>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

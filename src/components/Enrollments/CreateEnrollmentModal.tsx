@@ -16,16 +16,8 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { useTranslation } from "react-i18next";
+import { useEnrollmentStore } from "@/Store/Enrollment";
 
-interface Student {
-  id: string;
-  fullName: string;
-  phone?: string;
-}
-interface Group {
-  id: string;
-  name: string;
-}
 interface Props {
   onClose?: () => void;
   onSuccess?: () => void;
@@ -34,14 +26,6 @@ interface Props {
 export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
   const { t } = useTranslation();
 
-  const [students, setStudents] = useState<Student[]>([]);
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [studentId, setStudentId] = useState("");
-  const [groupId, setGroupId] = useState("");
-  const [joinDate, setJoinDate] = useState<string>("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   // Store state va actions
   const students = useEnrollmentStore((state) => state.students);
   const groups = useEnrollmentStore((state) => state.groups);
@@ -49,20 +33,28 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
   const fetchGroups = useEnrollmentStore((state) => state.fetchGroups);
   const createEnrollment = useEnrollmentStore((state) => state.createEnrollment);
 
+  const [studentId, setStudentId] = useState("");
+  const [groupId, setGroupId] = useState("");
+  const [joinDate, setJoinDate] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   // Ma'lumotlarni yuklash
   useEffect(() => {
     const fetchData = async () => {
       try {
         await Promise.all([fetchStudents(), fetchGroups()]);
-      } catch (err) {
+      } catch {
         setError(t("fetch_error"));
       }
     };
+
     fetchData();
   }, [t]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!studentId || !groupId) {
       setError(t("select_student_group"));
       return;
@@ -70,7 +62,12 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
 
     setLoading(true);
     try {
-      await createEnrollment({ studentId, groupId, joinDate: joinDate || undefined });
+      await createEnrollment({
+        studentId: Number(studentId),
+        groupId: Number(groupId),
+        joinDate: joinDate || undefined,
+      });
+
       onSuccess?.();
     } catch (err: any) {
       setError(err.response?.data?.message || t("server_error"));
@@ -128,7 +125,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
               onChange={(e) => setStudentId(e.target.value)}
             >
               <option value="">{t("select")}</option>
-              {(students ?? []).map((s) => (
+              {students?.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.fullName}
                 </option>
@@ -145,7 +142,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
               onChange={(e) => setGroupId(e.target.value)}
             >
               <option value="">{t("select")}</option>
-              {(groups ?? []).map((g) => (
+              {groups?.map((g) => (
                 <option key={g.id} value={g.id}>
                   {g.name}
                 </option>
@@ -168,9 +165,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
               {t("cancel")}
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading && (
-                <Loader2 className="w-4 h-4 animate-spin mr-2 inline-block" />
-              )}
+              {loading && <Loader2 className="w-4 h-4 animate-spin mr-2 inline-block" />}
               {t("create")}
             </Button>
           </div>
