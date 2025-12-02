@@ -11,7 +11,7 @@ import {
   LineElement,
   Title,
 } from "chart.js";
-import { TrendingUp, TrendingDown, DollarSign, PieChart, Moon, Sun } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, PieChart } from "lucide-react";
 
 ChartJS.register(
   ArcElement,
@@ -32,7 +32,6 @@ export default function Home() {
   const [range, setRange] = useState<Range>("yillik");
   const [darkMode, setDarkMode] = useState(false);
 
-  // Dark mode ni tekshirish
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
@@ -41,7 +40,6 @@ export default function Home() {
     }
   }, [darkMode]);
 
-  // Rang konstantalari (light va dark mode uchun)
   const COLORS = {
     tushumlar: {
       primary: "#10b981",
@@ -86,10 +84,6 @@ export default function Home() {
       default: "border-slate-200 dark:border-gray-700",
       dark: "border-slate-300 dark:border-gray-600",
       card: "border-gray-200 dark:border-gray-700"
-    },
-    button: {
-      active: "bg-slate-900 dark:bg-gray-700 text-white dark:text-gray-100",
-      inactive: "bg-slate-100 dark:bg-gray-700 text-slate-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-gray-600"
     }
   };
 
@@ -139,17 +133,10 @@ export default function Home() {
     labels: selected.labels,
     datasets: [
       {
-        label:
-          category === "tushumlar"
-            ? "Tushumlar"
-            : category === "chiqimlar"
-            ? "Chiqimlar"
-            : "Foyda",
+        label: category === "tushumlar" ? "Tushumlar" : category === "chiqimlar" ? "Chiqimlar" : "Foyda",
         data: activeValues,
         borderColor: darkMode ? COLORS[category].primaryDark : COLORS[category].primary,
-        backgroundColor: darkMode 
-          ? `${COLORS[category].primaryDark}20`
-          : `${COLORS[category].primary}20`,
+        backgroundColor: darkMode ? `${COLORS[category].primaryDark}20` : `${COLORS[category].primary}20`,
         tension: 0.4,
         fill: true,
         pointBackgroundColor: darkMode ? COLORS[category].primaryDark : COLORS[category].primary,
@@ -222,7 +209,7 @@ export default function Home() {
           size: 13,
         },
         callbacks: {
-          label: function (context: any) {
+          label: function (context: { parsed: { y: number } }) {
             return `${context.parsed.y} mln so'm`;
           },
         },
@@ -250,8 +237,11 @@ export default function Home() {
           font: {
             size: 12,
           },
-          callback: function (value: any) {
-            return value + " mln";
+          callback: function (value: string | number) {
+            if (typeof value === "number") {
+              return value + " mln";
+            }
+            return value;
           },
         },
       },
@@ -280,7 +270,7 @@ export default function Home() {
         bodyColor: darkMode ? "#d1d5db" : "#e5e7eb",
         padding: 12,
         callbacks: {
-          label: function (context: any) {
+          label: function (context: { label: string; parsed: number }) {
             return `${context.label}: ${context.parsed} mln so'm`;
           },
         },
@@ -300,9 +290,8 @@ export default function Home() {
   };
 
   return (
-    <div className={`min-h-screen  bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 p-4 md:p-8 transition-colors duration-300`}>
+    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 p-4 md:p-8 transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Sarlavha va dark mode toggle */}
         <div className="flex justify-between items-center">
           <div className="text-center space-y-2 flex-1">
             <h1 className={`text-3xl md:text-4xl font-bold ${COLORS.text.primary}`}>
@@ -312,10 +301,8 @@ export default function Home() {
               Tushumlar, chiqimlar va foydaning vizual ko'rinishi
             </p>
           </div>
-       
         </div>
 
-        {/* Statistik ma'lumotlar */}
         <div className={`border-2 ${COLORS.border.card} rounded-2xl shadow-xl p-6 ${COLORS.background.card} transition-colors duration-300`}>
           <h3 className={`text-lg font-bold ${COLORS.text.primary} mb-6`}>
             Statistik Ma'lumotlar
@@ -336,39 +323,22 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Asosiy kontent */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Chap tomon - Asosiy diagramma */}
           <div className="lg:col-span-2 border shadow-md rounded-2xl p-6 bg-white dark:bg-gray-800 transition-colors duration-300">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className={`text-xl font-bold ${COLORS.text.primary}`}>
-                  {category === "tushumlar"
-                    ? "Tushumlar"
-                    : category === "chiqimlar"
-                    ? "Chiqimlar"
-                    : "Foyda"}{" "}
-                  Diagrammasi
+                  {category === "tushumlar" ? "Tushumlar" : category === "chiqimlar" ? "Chiqimlar" : "Foyda"} Diagrammasi
                 </h2>
                 <p className={`text-sm mt-1 ${COLORS.text.muted}`}>
-                  {range === "yillik"
-                    ? "Yillik"
-                    : range === "oylik"
-                    ? "Oylik"
-                    : "Haftalik"}{" "}
-                  ko'rinish
+                  {range === "yillik" ? "Yillik" : range === "oylik" ? "Oylik" : "Haftalik"} ko'rinish
                 </p>
               </div>
-              <div
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r ${
-                  darkMode ? COLORS[category].gradientDark : COLORS[category].gradient
-                } ${COLORS.text.light} transition-colors duration-300`}
-              >
+              <div className={`flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r ${darkMode ? COLORS[category].gradientDark : COLORS[category].gradient} ${COLORS.text.light} transition-colors duration-300`}>
                 {getCategoryIcon(category)}
               </div>
             </div>
 
-            {/* Kategoriya tugmalari (tushumlar diagrammasi uchun) */}
             <div className="flex flex-wrap gap-3 mb-6">
               {(["tushumlar", "chiqimlar", "foyda"] as Category[]).map((cat) => (
                 <button
@@ -376,19 +346,13 @@ export default function Home() {
                   onClick={() => setCategory(cat)}
                   className={`px-4 py-2.5 rounded-lg font-medium transition-all duration-300 flex items-center gap-2 ${
                     category === cat
-                      ? `bg-gradient-to-r ${
-                          darkMode ? COLORS[cat].gradientDark : COLORS[cat].gradient
-                        } ${COLORS.text.light} shadow-lg`
+                      ? `bg-gradient-to-r ${darkMode ? COLORS[cat].gradientDark : COLORS[cat].gradient} ${COLORS.text.light} shadow-lg`
                       : `bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600`
                   }`}
                 >
                   {getCategoryIcon(cat)}
                   <span>
-                    {cat === "tushumlar"
-                      ? "Tushumlar"
-                      : cat === "chiqimlar"
-                      ? "Chiqimlar"
-                      : "Foyda"}
+                    {cat === "tushumlar" ? "Tushumlar" : cat === "chiqimlar" ? "Chiqimlar" : "Foyda"}
                   </span>
                 </button>
               ))}
@@ -398,7 +362,6 @@ export default function Home() {
               <Line data={chartData} options={lineChartOptions} />
             </div>
 
-            {/* Vaqt oralig'i tugmalari */}
             <div className="flex flex-wrap justify-center gap-3 mt-6">
               {(["yillik", "oylik", "haftalik"] as Range[]).map((r) => (
                 <button
@@ -410,22 +373,13 @@ export default function Home() {
                       : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 shadow-lg"
                   }`}
                 >
-                  {r === "yillik"
-                    ? "Yillik"
-                    : r === "oylik"
-                    ? "Oylik"
-                    : "Haftalik"}
+                  {r === "yillik" ? "Yillik" : r === "oylik" ? "Oylik" : "Haftalik"}
                 </button>
               ))}
             </div>
-
-            {/* Jami miqdor paneli */}
-         
           </div>
 
-          {/* O'ng tomon - Yon panel */}
           <div className="space-y-6">
-            {/* Hozirgi oy tushumlari */}
             <div className={`border-2 ${COLORS.border.card} rounded-2xl shadow-xl p-6 ${COLORS.background.card} transition-colors duration-300`}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -435,47 +389,32 @@ export default function Home() {
                   </h3>
                 </div>
                 <div className="flex items-center gap-2">
-                  {(["tushumlar", "chiqimlar", "foyda"] as Category[]).map(
-                    (cat) => (
-                      <button
-                        key={cat}
-                        onClick={() => setCategory(cat)}
-                        className={`p-2.5 rounded-lg transition-all duration-300 ${
-                          category === cat
-                            ? `bg-gradient-to-r ${
-                                darkMode ? COLORS[cat].gradientDark : COLORS[cat].gradient
-                              } ${COLORS.text.light} shadow-lg`
-                            : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-                        }`}
-                        title={
-                          cat === "tushumlar"
-                            ? "Tushumlar"
-                            : cat === "chiqimlar"
-                            ? "Chiqimlar"
-                            : "Foyda"
-                        }
-                      >
-                        {getCategoryIcon(cat)}
-                      </button>
-                    )
-                  )}
+                  {(["tushumlar", "chiqimlar", "foyda"] as Category[]).map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setCategory(cat)}
+                      className={`p-2.5 rounded-lg transition-all duration-300 ${
+                        category === cat
+                          ? `bg-gradient-to-r ${darkMode ? COLORS[cat].gradientDark : COLORS[cat].gradient} ${COLORS.text.light} shadow-lg`
+                          : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      }`}
+                      title={cat === "tushumlar" ? "Tushumlar" : cat === "chiqimlar" ? "Chiqimlar" : "Foyda"}
+                    >
+                      {getCategoryIcon(cat)}
+                    </button>
+                  ))}
                 </div>
               </div>
               <div className="w-full h-[220px]">
-                <Doughnut
-                  data={currentMonthChartData}
-                  options={pieChartOptions}
-                />
+                <Doughnut data={currentMonthChartData} options={pieChartOptions} />
               </div>
               <div className={`mt-4 p-4 ${COLORS.tushumlar.light} rounded-lg border ${COLORS.tushumlar.border} transition-colors duration-300`}>
                 <p className={`text-sm ${COLORS.tushumlar.text} font-medium`}>
-                  Jami: {currentMonthData.tushumlar.reduce((a, b) => a + b, 0)}{" "}
-                  mln so'm
+                  Jami: {currentMonthData.tushumlar.reduce((a, b) => a + b, 0)} mln so'm
                 </p>
               </div>
             </div>
 
-            {/* Chiqimlar turlari (faqat chiqimlar tanlanganida) */}
             {category === "chiqimlar" && (
               <div className={`border ${COLORS.border.card} rounded-2xl shadow-xl p-6 ${COLORS.background.card} transition-colors duration-300`}>
                 <h3 className={`text-lg font-bold ${COLORS.text.primary} mb-4`}>
