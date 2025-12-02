@@ -8,15 +8,16 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { Room } from "@/Store/room";
 
 export default function RoomsPage() {
   const { t } = useTranslation();
 
-  const [rooms, setRooms] = useState([]);
+  const [rooms, setRooms] = useState<Room>([]);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [capacity, setCapacity] = useState("");
-  const [editRoom, setEditRoom] = useState(null);
+  const [editRoom, setEditRoom] = useState<Room>();
 
   useEffect(() => {
     loadRooms();
@@ -93,7 +94,9 @@ export default function RoomsPage() {
           className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end"
         >
           <div>
-            <Label className="text-gray-900 dark:text-white">{t("room_name")}</Label>
+            <Label className="text-gray-900 dark:text-white">
+              {t("room_name")}
+            </Label>
             <Input
               value={name}
               required
@@ -104,7 +107,9 @@ export default function RoomsPage() {
           </div>
 
           <div>
-            <Label className="text-gray-900 dark:text-white">{t("capacity")}</Label>
+            <Label className="text-gray-900 dark:text-white">
+              {t("capacity")}
+            </Label>
             <Input
               type="number"
               value={capacity}
@@ -154,7 +159,9 @@ export default function RoomsPage() {
               className="bg-white/70 dark:bg-black backdrop-blur-md p-5 rounded-2xl shadow-lg hover:shadow-2xl transition flex flex-col justify-between"
             >
               <div>
-                <h3 className="text-lg md:text-xl font-bold dark:text-white">{r.name}</h3>
+                <h3 className="text-lg md:text-xl font-bold dark:text-white">
+                  {r.name}
+                </h3>
                 <p className="text-sm opacity-70 dark:text-neutral-400 mt-1">
                   {t("capacity")}: {r.capacity ?? "—"}
                 </p>

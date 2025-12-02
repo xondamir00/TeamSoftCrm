@@ -14,15 +14,13 @@ import ListStudent from "./components/Students/ListStudent";
 import EnrollmentsPage from "./components/page/EnrollmentsPage";
 import { TeachingAssignmentForm } from "./components/TeachingAssignmentsList/TeachingAssignmentForm";
 import { TeachingAssignmentsList } from "./components/TeachingAssignmentsList/TeachingAssignmentsList";
-import AddTeacherForm from "./components/teacher/AddTeacherForm";
 import CreateStudentForm from "./components/form/addStudent";
 import AddGroupForm from "./components/Group/AddGoup";
 import TeacherList from "./components/teacher/Teacherlist";
 import AddManagerForm from "./components/form/AddManeger";
-import AttendancePage from "./components/attendance/AttendancePage";
-import Teacherdetail from "./components/teacher/teacher-detail";
 import ManagerList from "./components/Maneger/ManagerList";
 import Trash from "./components/page/trash";
+import Attendancepage from "./components/attendance/attendance-page";
 
 const App = () => {
   return (
@@ -58,7 +56,7 @@ const App = () => {
             {/* Create forms */}
             <Route
               path="settings/create-teacher"
-              element={<AddTeacherForm />}
+              element={<AddManagerForm />}
             />
             <Route
               path="settings/create-student"
@@ -89,8 +87,7 @@ const App = () => {
             }
           >
             <Route index element={<Teacher />} />
-            <Route path="attendance" element={<AttendancePage />} />
-            <Route path="group/:groupId" element={<Teacherdetail />} />
+            <Route path="group/:groupId" element={<Attendancepage/>}/>
           </Route>
 
           {/* Catch-all route */}

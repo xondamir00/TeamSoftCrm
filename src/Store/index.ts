@@ -6,8 +6,6 @@ export type Role = "admin" | "teacher" | "MANAGER" | "USER";
 
 export type User = {
   id: string;
-  avatarUrl?: string; // optional bo‘lishi mumkin
-  phone?: string;
   email: string;
   role: Role;
   mustChangePassword?: boolean;
