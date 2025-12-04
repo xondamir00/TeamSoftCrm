@@ -62,7 +62,7 @@ export default function TeacherList() {
           search: debouncedSearch,
           page,
           limit,
-          isActive: true, // <-- faqat aktivlarni chiqarish
+          isActive: true,
         },
       });
 
@@ -73,8 +73,6 @@ export default function TeacherList() {
 
       const active = items.filter((t) => t.isActive).length;
       setActiveCount(active);
-
-      // Inactive lar faqat statsdan keladi
     } catch (err: unknown) {
       console.error("Error fetching teachers:", err);
       setError(t("fetch_error") || "Error loading teachers");
@@ -159,7 +157,7 @@ export default function TeacherList() {
         <div className="text-center">
           <Loader2 className="animate-spin mx-auto mb-4 w-12 h-12 text-blue-600 dark:text-blue-400" />
           <p className="text-slate-600 dark:text-slate-400 font-medium">
-            Loading teachers...
+            {t("loading_teachers") || "Loading teachers..."}
           </p>
         </div>
       </div>
@@ -169,10 +167,12 @@ export default function TeacherList() {
     return (
       <div className="h-screen w-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 flex items-center justify-center p-4">
         <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 p-6 rounded-2xl shadow-lg max-w-md">
-          <p className="font-semibold text-lg mb-2">Error</p>
+          <p className="font-semibold text-lg mb-2">
+            {t("error") || "Error"}
+          </p>
           <p>{error}</p>
           <Button onClick={fetchTeachers} className="mt-4" variant="outline">
-            Try Again
+            {t("try_again") || "Try Again"}
           </Button>
         </div>
       </div>
@@ -186,10 +186,10 @@ export default function TeacherList() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">
-                  Teacher Management
+                  {t("teacher_management") || "Teacher Management"}
                 </h1>
                 <p className="text-slate-600 dark:text-slate-400">
-                  Manage and track all teachers
+                  {t("manage_track_teachers") || "Manage and track all teachers"}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -204,7 +204,7 @@ export default function TeacherList() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-blue-700 dark:text-blue-300 text-xs sm:text-sm font-medium mb-1">
-                      Total Teachers
+                      {t("total_teachers") || "Total Teachers"}
                     </p>
                     <p className="text-2xl sm:text-3xl font-bold text-blue-900 dark:text-blue-100">
                       {totalTeachers}
@@ -220,7 +220,7 @@ export default function TeacherList() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-emerald-700 dark:text-emerald-300 text-xs sm:text-sm font-medium mb-1">
-                      Active Teachers
+                      {t("active_teachers") || "Active Teachers"}
                     </p>
                     <p className="text-2xl sm:text-3xl font-bold text-emerald-900 dark:text-emerald-100">
                       {activeCount}
@@ -236,7 +236,7 @@ export default function TeacherList() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-medium mb-1">
-                      Inactive
+                      {t("inactive_teachers") || "Inactive"}
                     </p>
                     <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
                       {inactiveCount}
@@ -254,7 +254,7 @@ export default function TeacherList() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 w-5 h-5" />
                 <Input
                   type="text"
-                  placeholder="Search by name or phone..."
+                  placeholder={t("search_placeholder") || "Search by name or phone..."}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="pl-10 w-full"
@@ -264,7 +264,7 @@ export default function TeacherList() {
                 onClick={() => setOpenAddDrawer(true)}
                 className="flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
               >
-                <Plus className="w-4 h-4" /> Add Teacher
+                <Plus className="w-4 h-4" /> {t("add_teacher") || "Add Teacher"}
               </Button>
             </div>
           </div>
@@ -278,22 +278,22 @@ export default function TeacherList() {
                       #
                     </TableHead>
                     <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                      Photo
+                      {t("photo") || "Photo"}
                     </TableHead>
                     <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                      Name
+                      {t("name") || "Name"}
                     </TableHead>
                     <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm hidden sm:table-cell">
-                      Phone
+                      {t("phone") || "Phone"}
                     </TableHead>
                     <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                      Status
+                      {t("status") || "Status"}
                     </TableHead>
                     <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm hidden md:table-cell">
-                      Date Added
+                      {t("date_added") || "Date Added"}
                     </TableHead>
                     <TableHead className="text-right font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                      Actions
+                      {t("actions") || "Actions"}
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -304,10 +304,10 @@ export default function TeacherList() {
                       <TableCell colSpan={7} className="text-center py-12">
                         <Users className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
                         <p className="text-slate-500 dark:text-slate-400 font-medium">
-                          No teachers found
+                          {t("no_teachers") || "No teachers found"}
                         </p>
                         <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-                          Try adjusting your search or add new teachers
+                          {t("no_teachers_desc") || "Try adjusting your search or add new teachers"}
                         </p>
                       </TableCell>
                     </TableRow>
@@ -349,7 +349,9 @@ export default function TeacherList() {
                                   : "bg-slate-500"
                               }`}
                             />
-                            {teacher.isActive ? "Active" : "Inactive"}
+                            {teacher.isActive 
+                              ? t("active") || "Active"
+                              : t("inactive") || "Inactive"}
                           </span>
                         </TableCell>
                         <TableCell className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm hidden md:table-cell">
@@ -362,6 +364,7 @@ export default function TeacherList() {
                               size="icon"
                               onClick={() => handleEdit(teacher)}
                               className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-amber-50 dark:hover:bg-amber-900/30 hover:border-amber-300 dark:hover:border-amber-700 hover:text-amber-700 dark:hover:text-amber-400"
+                              title={t("edit") || "Edit"}
                             >
                               <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             </Button>
@@ -370,6 +373,7 @@ export default function TeacherList() {
                               size="icon"
                               onClick={() => handleDelete(teacher)}
                               className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-red-700 dark:hover:bg-red-800"
+                              title={t("delete") || "Delete"}
                             >
                               <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             </Button>
@@ -389,16 +393,16 @@ export default function TeacherList() {
                 disabled={page === 1}
                 className="w-full sm:w-auto text-xs sm:text-sm"
               >
-                Previous
+                {t("previous") || "Previous"}
               </Button>
 
               <div className="flex items-center gap-2">
                 <span className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm">
-                  Page{" "}
+                  {t("page") || "Page"}{" "}
                   <span className="font-bold text-slate-900 dark:text-white">
                     {page}
                   </span>{" "}
-                  of{" "}
+                  {t("of") || "of"}{" "}
                   <span className="font-bold text-slate-900 dark:text-white">
                     {totalPages}
                   </span>
@@ -413,7 +417,7 @@ export default function TeacherList() {
                 disabled={page === totalPages}
                 className="w-full sm:w-auto text-xs sm:text-sm"
               >
-                Next
+                {t("next") || "Next"}
               </Button>
             </div>
           </div>
@@ -422,7 +426,6 @@ export default function TeacherList() {
 
       {selectedTeacher && (
         <>
-          {/* Delete dialog with blur */}
           {deleteDialogOpen && (
             <DeleteTeacherDialog
               teacher={selectedTeacher}
@@ -432,7 +435,6 @@ export default function TeacherList() {
             />
           )}
 
-          {/* Edit drawer */}
           <UpdateTeacherDrawer
             open={openEditDrawer}
             onClose={() => setOpenEditDrawer(false)}

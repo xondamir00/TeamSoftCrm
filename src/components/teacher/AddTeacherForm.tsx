@@ -24,6 +24,7 @@ export default function AddTeacherForm({
   onAdded,
 }: AddTeacherDrawerProps) {
   const { t } = useTranslation();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState(false);
@@ -44,7 +45,7 @@ export default function AddTeacherForm({
     if (name === "monthlySalary" || name === "percentShare") {
       setForm((prev) => ({
         ...prev,
-        [name]: value.trim() === "" ? undefined : value, // string
+        [name]: value.trim() === "" ? undefined : value,
       }));
       return;
     }
@@ -68,9 +69,7 @@ export default function AddTeacherForm({
       };
 
       if (payload.monthlySalary && payload.percentShare) {
-        setError(
-          t("salary_warning") || "Cannot set both salary and percent share"
-        );
+        setError(t("salary_warning"));
         setLoading(false);
         return;
       }
@@ -101,9 +100,7 @@ export default function AddTeacherForm({
       }, 1500);
     } catch (err) {
       const apiError = err as AxiosError<ApiError>;
-      setError(
-        apiError.response?.data?.message || t("error") || "An error occurred"
-      );
+      setError(apiError.response?.data?.message || t("error"));
     } finally {
       setLoading(false);
     }
@@ -113,26 +110,27 @@ export default function AddTeacherForm({
 
   return (
     <div className="fixed inset-0 z-50">
+      {/* Overlay */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
         onClick={onClose}
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
       />
 
+      {/* Drawer */}
       <motion.div
         initial={{ x: "100%" }}
         animate={{ x: 0 }}
-        exit={{ x: "100%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="absolute right-0 top-0 h-full w-full sm:max-w-md bg-white dark:bg-slate-900 shadow-2xl flex flex-col border-l border-slate-200 dark:border-slate-700"
       >
+        {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200 dark:border-slate-700">
           <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
-            Add Teacher
+            {t("add_teacher")}
           </h2>
+
           <Button
             variant="ghost"
             size="icon"
@@ -143,87 +141,91 @@ export default function AddTeacherForm({
           </Button>
         </div>
 
+        {/* Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Error */}
             {error && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 p-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
 
+            {/* Success */}
             {success && (
               <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 p-3 rounded-lg text-sm">
-                Teacher added successfully!
+                {t("success")}
               </div>
             )}
 
+            {/* First Name */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                First Name
+                {t("first_name")}
               </label>
               <Input
                 type="text"
                 name="firstName"
                 value={form.firstName}
                 onChange={handleChange}
-                placeholder="First name"
+                placeholder={t("first_name")}
                 required
                 disabled={loading}
-                className="dark:bg-slate-800 dark:border-slate-700"
               />
             </div>
 
+            {/* Last Name */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Last Name
+                {t("last_name")}
               </label>
               <Input
                 type="text"
                 name="lastName"
                 value={form.lastName}
                 onChange={handleChange}
-                placeholder="Last name"
+                placeholder={t("last_name")}
                 required
                 disabled={loading}
-                className="dark:bg-slate-800 dark:border-slate-700"
               />
             </div>
 
+            {/* Phone */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Phone
+                {t("phone")}
               </label>
               <Input
                 type="text"
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
-                placeholder="Phone number"
+                placeholder={t("phone")}
                 required
                 disabled={loading}
-                className="dark:bg-slate-800 dark:border-slate-700"
               />
             </div>
 
+            {/* Password */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Password
+                {t("password")}
               </label>
               <Input
                 type="password"
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                placeholder="Password"
+                placeholder={t("password")}
                 required
                 disabled={loading}
-                className="dark:bg-slate-800 dark:border-slate-700"
               />
             </div>
 
+            {/* Photo URL */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Photo URL
+                {t("photo_url")}
               </label>
               <Input
                 type="text"
@@ -232,13 +234,13 @@ export default function AddTeacherForm({
                 onChange={handleChange}
                 placeholder="https://example.com/photo.jpg"
                 disabled={loading}
-                className="dark:bg-slate-800 dark:border-slate-700"
               />
             </div>
 
+            {/* Monthly Salary */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Monthly Salary
+                {t("monthly_salary")}
               </label>
               <Input
                 type="number"
@@ -247,13 +249,13 @@ export default function AddTeacherForm({
                 onChange={handleChange}
                 placeholder="0"
                 disabled={loading}
-                className="dark:bg-slate-800 dark:border-slate-700"
               />
             </div>
 
+            {/* Percent Share */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Percent Share
+                {t("percent_share")}
               </label>
               <Input
                 type="number"
@@ -262,24 +264,25 @@ export default function AddTeacherForm({
                 onChange={handleChange}
                 placeholder="0"
                 disabled={loading}
-                className="dark:bg-slate-800 dark:border-slate-700"
               />
             </div>
 
+            {/* Note */}
             <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-xs text-slate-600 dark:text-slate-400">
-              Note: Set either monthly salary or percent share, not both.
+              {t("note")}
             </div>
           </form>
         </div>
 
+        {/* Footer */}
         <div className="p-4 sm:p-6 border-t border-slate-200 dark:border-slate-700 flex gap-3">
           <Button
             variant="outline"
             onClick={onClose}
             disabled={loading}
-            className="flex-1 dark:border-slate-700"
+            className="flex-1"
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             onClick={handleSubmit}
@@ -287,7 +290,7 @@ export default function AddTeacherForm({
             className="flex-1 flex items-center justify-center gap-2"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {loading ? "Adding..." : "Add Teacher"}
+            {loading ? t("adding") : t("add_teacher")}
           </Button>
         </div>
       </motion.div>

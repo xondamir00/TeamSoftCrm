@@ -29,7 +29,7 @@ export const CreateForm = [
     icon: FaUserTie,
   },
    {
-    nameKey: "Manager List",
+    nameKey: "managerManagement.title",
     href: "menegers-list",
     icon: MdAddModerator,
   },

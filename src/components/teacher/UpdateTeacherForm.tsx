@@ -46,6 +46,7 @@ export default function UpdateTeacherDrawer({
     const fetchTeacher = async () => {
       try {
         setFetching(true);
+        setError("");
         const res = await api.get(`/teachers/${teacherId}`);
         const teacher = res.data.data || res.data;
 
@@ -60,7 +61,7 @@ export default function UpdateTeacherDrawer({
         });
       } catch (err) {
         console.error("Error fetching teacher:", err);
-        setError(t("error") || "Error loading teacher data");
+        setError(t("updateTeacher.error") || t("error") || "Error loading teacher data");
       } finally {
         setFetching(false);
       }
@@ -105,7 +106,7 @@ export default function UpdateTeacherDrawer({
       payload.percentShare = form.percentShare;
 
       if (payload.monthlySalary && payload.percentShare) {
-        setError(t("salary_warning") || "Cannot set both salary and percent share");
+        setError(t("updateTeacher.salaryWarning") || "Cannot set both salary and percent share");
         setLoading(false);
         return;
       }
@@ -121,7 +122,7 @@ export default function UpdateTeacherDrawer({
       }, 1500);
     } catch (err) {
       const apiError = err as AxiosError<ApiError>;
-      setError(apiError.response?.data?.message || t("error") || "An error occurred");
+      setError(apiError.response?.data?.message || t("updateTeacher.error") || "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -149,7 +150,7 @@ export default function UpdateTeacherDrawer({
       >
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200 dark:border-slate-700">
           <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
-            Edit Teacher
+            {t("updateTeacher.title") || "Edit Teacher"}
           </h2>
           <Button
             variant="ghost"
@@ -164,8 +165,11 @@ export default function UpdateTeacherDrawer({
 
         <div className="flex-1 overflow-y-auto p-4 sm:p-6">
           {fetching ? (
-            <div className="flex items-center justify-center h-full">
-              <Loader2 className="w-6 h-6 animate-spin text-blue-600 dark:text-blue-400" />
+            <div className="flex flex-col items-center justify-center h-full space-y-3">
+              <Loader2 className="w-8 h-8 animate-spin text-blue-600 dark:text-blue-400" />
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
+                {t("updateTeacher.loadingTeacher") || "Loading teacher data..."}
+              </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -177,65 +181,68 @@ export default function UpdateTeacherDrawer({
 
               {success && (
                 <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 p-3 rounded-lg text-sm">
-                  Teacher updated successfully!
+                  {t("updateTeacher.success") || "Teacher updated successfully!"}
                 </div>
               )}
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  First Name
+                  {t("updateTeacher.firstName") || "First Name"}
                 </label>
                 <Input
                   type="text"
                   name="firstName"
                   value={form.firstName}
                   onChange={handleChange}
-                  placeholder="First name"
+                  placeholder={t("updateTeacher.placeholder.firstName") || "First name"}
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
+                  required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Last Name
+                  {t("updateTeacher.lastName") || "Last Name"}
                 </label>
                 <Input
                   type="text"
                   name="lastName"
                   value={form.lastName}
                   onChange={handleChange}
-                  placeholder="Last name"
+                  placeholder={t("updateTeacher.placeholder.lastName") || "Last name"}
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
+                  required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Phone
+                  {t("updateTeacher.phone") || "Phone"}
                 </label>
                 <Input
                   type="text"
                   name="phone"
                   value={form.phone}
                   onChange={handleChange}
-                  placeholder="Phone number"
+                  placeholder={t("updateTeacher.placeholder.phone") || "Phone number"}
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
+                  required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Password (leave empty to keep current)
+                  {t("updateTeacher.password") || "Password (leave empty to keep current)"}
                 </label>
                 <Input
                   type="password"
                   name="password"
                   value={form.password}
                   onChange={handleChange}
-                  placeholder="New password"
+                  placeholder={t("updateTeacher.placeholder.password") || "New password"}
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
                 />
@@ -243,14 +250,14 @@ export default function UpdateTeacherDrawer({
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Photo URL
+                  {t("updateTeacher.photoUrl") || "Photo URL"}
                 </label>
                 <Input
                   type="text"
                   name="photoUrl"
                   value={form.photoUrl}
                   onChange={handleChange}
-                  placeholder="https://example.com/photo.jpg"
+                  placeholder={t("updateTeacher.placeholder.photoUrl") || "https://example.com/photo.jpg"}
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
                 />
@@ -258,14 +265,14 @@ export default function UpdateTeacherDrawer({
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Monthly Salary
+                  {t("updateTeacher.monthlySalary") || "Monthly Salary"}
                 </label>
                 <Input
                   type="number"
                   name="monthlySalary"
                   value={form.monthlySalary ?? ""}
                   onChange={handleChange}
-                  placeholder="0"
+                  placeholder={t("updateTeacher.placeholder.salary") || "0"}
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
                 />
@@ -273,21 +280,21 @@ export default function UpdateTeacherDrawer({
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Percent Share
+                  {t("updateTeacher.percentShare") || "Percent Share"}
                 </label>
                 <Input
                   type="number"
                   name="percentShare"
                   value={form.percentShare ?? ""}
                   onChange={handleChange}
-                  placeholder="0"
+                  placeholder={t("updateTeacher.placeholder.percent") || "0"}
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
                 />
               </div>
 
               <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-xs text-slate-600 dark:text-slate-400">
-                Note: Set either monthly salary or percent share, not both.
+                {t("updateTeacher.note") || "Note: Set either monthly salary or percent share, not both."}
               </div>
             </form>
           )}
@@ -300,7 +307,7 @@ export default function UpdateTeacherDrawer({
             disabled={loading || fetching}
             className="flex-1 dark:border-slate-700"
           >
-            Cancel
+            {t("updateTeacher.cancel") || "Cancel"}
           </Button>
           <Button
             onClick={handleSubmit}
@@ -308,7 +315,9 @@ export default function UpdateTeacherDrawer({
             className="flex-1 flex items-center justify-center gap-2"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {loading ? "Saving..." : "Save Changes"}
+            {loading 
+              ? t("updateTeacher.saving") || "Saving..." 
+              : t("updateTeacher.saveChanges") || "Save Changes"}
           </Button>
         </div>
       </motion.div>
