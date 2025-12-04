@@ -31,17 +31,14 @@ export function Login() {
 
       const { user, accessToken, refreshToken } = data;
 
-      // ✔ TO‘G‘RI TASNIF
       if (!accessToken || !refreshToken || !user) {
         setError(t("error_invalid"));
         return;
       }
       console.log(data);
 
-      // Token va userni storega saqlash
       login(accessToken, refreshToken, user);
 
-      // Rolga qarab redirect
       switch (user.role) {
         case "ADMIN":
         case "MANAGER":
@@ -114,8 +111,6 @@ console.log('Sending password:', password);
                   {error}
                 </motion.p>
               )}
-
-              {/* Phone input */}
               <div className="relative">
                 <Phone
                   className="absolute left-3 top-3 text-gray-400"
@@ -130,8 +125,6 @@ console.log('Sending password:', password);
                   required
                 />
               </div>
-
-              {/* Password */}
               <div className="relative">
                 <Lock
                   className="absolute left-3 top-3 text-gray-400"
@@ -153,7 +146,6 @@ console.log('Sending password:', password);
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-
               <Button
                 type="submit"
                 disabled={loading}

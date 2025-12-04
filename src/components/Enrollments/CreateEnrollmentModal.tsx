@@ -16,6 +16,7 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { useTranslation } from "react-i18next";
+import { useEnrollmentStore } from "@/Store/Enrollment";
 
 interface Student {
   id: string;
@@ -42,14 +43,12 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Store state va actions
   const students = useEnrollmentStore((state) => state.students);
   const groups = useEnrollmentStore((state) => state.groups);
   const fetchStudents = useEnrollmentStore((state) => state.fetchStudents);
   const fetchGroups = useEnrollmentStore((state) => state.fetchGroups);
   const createEnrollment = useEnrollmentStore((state) => state.createEnrollment);
 
-  // Ma'lumotlarni yuklash
   useEffect(() => {
     const fetchData = async () => {
       try {

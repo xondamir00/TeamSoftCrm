@@ -1,4 +1,3 @@
-// app/attendance/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -74,7 +73,6 @@ const Attendancepage = () => {
     saveComment();
   };
 
-  // Sheet saqlash
   const handleSaveSheet = async (sheetId: string) => {
     try {
       clearError();
@@ -84,7 +82,6 @@ const Attendancepage = () => {
     }
   };
 
-  // Sheet o'chirish
   const handleDeleteSheet = async (sheetId: string) => {
     if (!confirm("Haqiqatan ham bu sheetni o'chirmoqchimisiz?")) return;
     try {

@@ -1,4 +1,3 @@
-// src/components/auth/Auth-Refresh.tsx
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/Store";
@@ -13,7 +12,6 @@ export function AuthRefresh({ children }: AuthRefreshProps) {
   const { token, setBooted, booted } = useAuth();
 
   useEffect(() => {
-    // token yo‘q bo‘lsa faqat /sign sahifasiga yo‘naltir
     if (!token && location.pathname !== "/sign") {
       navigate("/sign");
     } else {
@@ -21,7 +19,7 @@ export function AuthRefresh({ children }: AuthRefreshProps) {
     }
   }, [token, location, navigate, setBooted]);
 
-  if (!booted) return null; // token tekshirilmaguncha hech narsa ko‘rsatmaydi
+  if (!booted) return null;
 
   return <>{children}</>;
 }

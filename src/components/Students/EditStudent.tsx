@@ -7,7 +7,7 @@ import { Label } from "../ui/label";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Card, CardHeader, CardContent, CardTitle } from "../ui/card"; // Agar Card komponenti mavjud bo‘lsa
+import { Card, CardHeader, CardContent, CardTitle } from "../ui/card";
 import { api } from "@/Service/api";
 
 interface EditStudentProps {

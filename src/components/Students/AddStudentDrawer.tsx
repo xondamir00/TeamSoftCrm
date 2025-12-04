@@ -16,16 +16,14 @@ export default function AddStudentDrawer({ open, onClose }: DrawerProps) {
     <AnimatePresence>
       {open && (
         <>
-          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.5 }}y
+            animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="fixed inset-0 bg-black z-40 cursor-pointer"
           />
 
-          {/* Drawer */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -33,7 +31,6 @@ export default function AddStudentDrawer({ open, onClose }: DrawerProps) {
             transition={{ type: "spring", stiffness: 260, damping: 30 }}
             className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white dark:bg-gray-900 shadow-xl z-50 overflow-y-auto"
           >
-            {/* Header */}
             <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Add New Student
@@ -46,8 +43,6 @@ export default function AddStudentDrawer({ open, onClose }: DrawerProps) {
                 <X className="w-5 h-5 text-gray-800 dark:text-white" />
               </Button>
             </div>
-
-            {/* Form */}
             <div className="p-4">
               <AddStudentForm />
             </div>

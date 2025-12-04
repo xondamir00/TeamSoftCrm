@@ -1,4 +1,3 @@
-// components/attendance/StudentsList.tsx
 "use client";
 
 import { Check, X, Edit } from "lucide-react";
@@ -11,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Sheet, StudentStatus, Student } from "@/Store/index";
+import type { Sheet, StudentStatus } from "@/Store/index";
 
 interface StudentsListProps {
   sheet: Sheet;
@@ -87,7 +86,6 @@ const StudentsList = ({
                   : "bg-gray-50 dark:bg-[rgba(0,0,0,0.1)]"
               }
             >
-              {/* Student Info */}
               <td className="p-4 min-w-[300px]">
                 <div className="flex items-center gap-3">
                   <img
@@ -100,8 +98,6 @@ const StudentsList = ({
                   <span className="font-medium">{student.fullName}</span>
                 </div>
               </td>
-
-              {/* Status */}
               <td className="p-4 text-center">
                 {sheet.status === "OPEN" ? (
                   <Select
@@ -142,8 +138,6 @@ const StudentsList = ({
                   </div>
                 )}
               </td>
-
-              {/* Comment */}
               <td className="p-4">
                 <div className="max-w-xs">
                   {student.comment ? (
@@ -157,8 +151,6 @@ const StudentsList = ({
                   )}
                 </div>
               </td>
-
-              {/* Actions */}
               <td className="p-4 text-center">
                 {sheet.status === "OPEN" && (
                   <Button

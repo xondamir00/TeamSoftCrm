@@ -1,10 +1,9 @@
-// components/attendance/SheetCard.tsx
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
 import type { Sheet, StudentStatus } from "@/Store/index";
 import SheetHeader from "./sheed-header";
-import StudentsList from "./attendance-list";
+import StudentsList from "./Attendance-List";
 
 interface SheetCardProps {
   sheet: Sheet;

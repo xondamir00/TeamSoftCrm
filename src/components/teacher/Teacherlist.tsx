@@ -62,7 +62,7 @@ export default function TeacherList() {
           search: debouncedSearch,
           page,
           limit,
-          isActive: true, // <-- faqat aktivlarni chiqarish
+          isActive: true,
         },
       });
 
@@ -74,7 +74,6 @@ export default function TeacherList() {
       const active = items.filter((t) => t.isActive).length;
       setActiveCount(active);
 
-      // Inactive lar faqat statsdan keladi
     } catch (err: unknown) {
       console.error("Error fetching teachers:", err);
       setError(t("fetch_error") || "Error loading teachers");
@@ -422,7 +421,6 @@ export default function TeacherList() {
 
       {selectedTeacher && (
         <>
-          {/* Delete dialog with blur */}
           {deleteDialogOpen && (
             <DeleteTeacherDialog
               teacher={selectedTeacher}
@@ -432,7 +430,6 @@ export default function TeacherList() {
             />
           )}
 
-          {/* Edit drawer */}
           <UpdateTeacherDrawer
             open={openEditDrawer}
             onClose={() => setOpenEditDrawer(false)}

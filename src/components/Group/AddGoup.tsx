@@ -65,8 +65,6 @@ export default function AddGroupForm({
       days: [],
     },
   });
-
-  // Fetch rooms
   useEffect(() => {
     const fetchRooms = async () => {
       try {
@@ -78,8 +76,6 @@ export default function AddGroupForm({
     };
     fetchRooms();
   }, []);
-
-  // Populate form when editing
   useEffect(() => {
     if (editingGroup) {
       setForm({

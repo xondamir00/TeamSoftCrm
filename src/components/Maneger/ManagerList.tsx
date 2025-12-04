@@ -51,7 +51,6 @@ export default function ManagerList() {
     fetchManagers();
   }, []);
 
-  // Open Edit form only
   const openEditForm = (manager: any) => {
     setSelectedManager(manager);
     setForm({
@@ -156,7 +155,6 @@ export default function ManagerList() {
         </CardContent>
       </Card>
 
-      {/* Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-md rounded-2xl">
           <DialogHeader>
@@ -220,8 +218,6 @@ export default function ManagerList() {
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Delete Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent className="max-w-sm rounded-2xl">
           <DialogHeader>
@@ -244,8 +240,6 @@ export default function ManagerList() {
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Alert */}
       {alertMessage && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
