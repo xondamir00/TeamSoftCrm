@@ -36,7 +36,7 @@ export default function CategoryNav() {
             bg-white/80 dark:bg-black/80 backdrop-blur-xl
             border border-gray-200 dark:border-white/10 
             shadow-xl rounded-2xl
-            w-[98%] mx-auto p-3
+            w-[98%] mx-auto p-3 
           "
         >
           <NavigationMenu className="w-full">
