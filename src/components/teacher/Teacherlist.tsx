@@ -74,7 +74,6 @@ export default function TeacherList() {
       const active = items.filter((t) => t.isActive).length;
       setActiveCount(active);
 
-      // Inactive lar faqat statsdan keladi
     } catch (err: unknown) {
       console.error("Error fetching teachers:", err);
       setError(t("fetch_error") || "Error loading teachers");
@@ -155,7 +154,7 @@ export default function TeacherList() {
 
   if (loading)
     return (
-      <div className="h-screen w-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 flex justify-center items-center">
+      <div className="h-screen  bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 flex justify-center items-center">
         <div className="text-center">
           <Loader2 className="animate-spin mx-auto mb-4 w-12 h-12 text-blue-600 dark:text-blue-400" />
           <p className="text-slate-600 dark:text-slate-400 font-medium">
@@ -167,7 +166,7 @@ export default function TeacherList() {
 
   if (error)
     return (
-      <div className="h-screen w-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 flex items-center justify-center p-4">
+      <div className="h-screen  bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 flex items-center justify-center p-4">
         <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 p-6 rounded-2xl shadow-lg max-w-md">
           <p className="font-semibold text-lg mb-2">Error</p>
           <p>{error}</p>
@@ -179,7 +178,7 @@ export default function TeacherList() {
     );
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 overflow-hidden flex flex-col transition-colors duration-300">
+    <div className="h-screen  bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 overflow-hidden flex flex-col transition-colors duration-300">
       <div className="flex-1 overflow-y-auto">
         <div className="w-full p-4 sm:p-6 space-y-6">
           <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-4 sm:p-6 lg:p-8 transition-colors duration-300">

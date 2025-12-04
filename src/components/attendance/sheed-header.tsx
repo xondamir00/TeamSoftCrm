@@ -1,23 +1,11 @@
-// components/attendance/SheetHeader.tsx
 "use client";
 
 import { BookOpen, Check, X, Save, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CardHeader, CardTitle } from "@/components/ui/card";
-import type { Sheet } from "@/Store/index";
+import type { SheetHeaderProps } from "@/Store/Atendens";
 
-interface SheetHeaderProps {
-  sheet: Sheet;
-  stats: {
-    present: number;
-    absent: number;
-    total: number;
-  };
-  onSave: (sheetId: string) => void;
-  onDelete: (sheetId: string) => void;
-  saving: boolean;
-}
 
 const SheetHeader = ({ 
   sheet, 
@@ -26,7 +14,7 @@ const SheetHeader = ({
   saving 
 }: SheetHeaderProps) => {
   return (
-    <CardHeader className="bg-gray-50 border-b-2 dark:border-gray-605 dark:bg-gray-800">
+    <CardHeader className="bg-gray-50 border-b-2 p-2 dark:border-gray-605 dark:bg-gray-800">
       <div className="flex justify-between items-center">
         <div className="flex justify-between  w-full">
           <CardTitle className="flex items-center gap-2 p-2">
@@ -45,12 +33,12 @@ const SheetHeader = ({
             >
               {sheet.status === "OPEN" ? "OCHIQ" : "YOPILGAN"}
             </Badge>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm ">
               <Check className="w-4 h-4 text-green-600" />
               <span>{stats.present}</span>
               <X className="w-4 h-4 text-red-600 ml-2" />
               <span>{stats.absent}</span>
-              <span className="ml-2 ">Jami: {stats.total}</span>
+              <span className="ml-2  ">Jami: {stats.total}</span>
             </div>
           </div>
         </div>
@@ -60,7 +48,7 @@ const SheetHeader = ({
             <Button
               onClick={() => onSave(sheet.sheetId)}
               disabled={saving}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-green-600 text-white mx-2 hover:bg-green-700"
             >
               {saving ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
