@@ -71,7 +71,7 @@ export const TeachingAssignmentsList = () => {
       </h2>
       <div className="hidden md:block overflow-x-auto rounded-2xl shadow-lg border border-gray-200  dark:border-gray-700">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-black">
+          <thead className="bg-gray-50 dark:bg-slate-900">
             <tr className="">
               <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">#</th>
               <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{t("teacher_id")}</th>
@@ -81,7 +81,7 @@ export const TeachingAssignmentsList = () => {
               <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{t("note")}</th>
             </tr>
           </thead>
-          <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody className="bg-white dark:bg-slate-900 divide-y divide-gray-200 dark:divide-gray-700">
             {assignments.map((a, i) => (
               <motion.tr
                 key={a.id}

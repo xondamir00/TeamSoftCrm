@@ -18,6 +18,15 @@ import {
 import { useTranslation } from "react-i18next";
 import { useEnrollmentStore } from "@/Store/Enrollment";
 
+interface Student {
+  id: string;
+  fullName: string;
+  phone?: string;
+}
+interface Group {
+  id: string;
+  name: string;
+}
 interface Props {
   onClose?: () => void;
   onSuccess?: () => void;
@@ -26,20 +35,20 @@ interface Props {
 export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
   const { t } = useTranslation();
 
-  // Store state va actions
+  const [students, setStudents] = useState<Student[]>([]);
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [studentId, setStudentId] = useState("");
+  const [groupId, setGroupId] = useState("");
+  const [joinDate, setJoinDate] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const students = useEnrollmentStore((state) => state.students);
   const groups = useEnrollmentStore((state) => state.groups);
   const fetchStudents = useEnrollmentStore((state) => state.fetchStudents);
   const fetchGroups = useEnrollmentStore((state) => state.fetchGroups);
   const createEnrollment = useEnrollmentStore((state) => state.createEnrollment);
 
-  const [studentId, setStudentId] = useState("");
-  const [groupId, setGroupId] = useState("");
-  const [joinDate, setJoinDate] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Ma'lumotlarni yuklash
   useEffect(() => {
     const fetchData = async () => {
       try {

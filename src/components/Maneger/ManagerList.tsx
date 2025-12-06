@@ -16,16 +16,36 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { motion } from "framer-motion";
 import { Edit, Trash2 } from "lucide-react";
 import { managerAPI } from "./manager";
+import { useTranslation } from "react-i18next";
+
+interface Manager {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  photoUrl?: string;
+  monthlySalary?: number;
+}
+
+interface FormData {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  password: string;
+  photoUrl: string;
+  monthlySalary: string;
+}
 
 export default function ManagerList() {
-  const [managers, setManagers] = useState<any[]>([]);
+  const { t } = useTranslation();
+  const [managers, setManagers] = useState<Manager[]>([]);
   const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [selectedManager, setSelectedManager] = useState<any | null>(null);
+  const [selectedManager, setSelectedManager] = useState<Manager | null>(null);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormData>({
     firstName: "",
     lastName: "",
     phone: "",
@@ -41,7 +61,7 @@ export default function ManagerList() {
       setManagers(data);
     } catch (e) {
       console.error(e);
-      setAlertMessage("Xatolik yuz berdi");
+      setAlertMessage(t("managerManagement.error") || "Xatolik yuz berdi");
     } finally {
       setLoading(false);
     }
@@ -51,7 +71,7 @@ export default function ManagerList() {
     fetchManagers();
   }, []);
 
-  const openEditForm = (manager: any) => {
+  const openEditForm = (manager: Manager) => {
     setSelectedManager(manager);
     setForm({
       firstName: manager.firstName || "",
@@ -82,12 +102,12 @@ export default function ManagerList() {
           : undefined,
       };
       await managerAPI.update(selectedManager.id, payload);
-      setAlertMessage("Updated successfully");
+      setAlertMessage(t("managerManagement.updatedSuccess") || "Updated successfully");
       setDialogOpen(false);
       fetchManagers();
     } catch (e: any) {
       console.error(e);
-      setAlertMessage(e.response?.data?.message || "Xatolik yuz berdi");
+      setAlertMessage(e.response?.data?.message || t("managerManagement.error") || "Xatolik yuz berdi");
     }
   };
 
@@ -95,28 +115,42 @@ export default function ManagerList() {
     if (!selectedManager) return;
     try {
       await managerAPI.delete(selectedManager.id);
-      setAlertMessage("Deleted successfully");
+      setAlertMessage(t("managerManagement.deletedSuccess") || "Deleted successfully");
       setDeleteDialogOpen(false);
       fetchManagers();
     } catch (e: any) {
       console.error(e);
-      setAlertMessage(e.response?.data?.message || "O'chirishda xatolik");
+      setAlertMessage(e.response?.data?.message || t("managerManagement.deleteError") || "O'chirishda xatolik");
     }
   };
 
-  return (
-    <div className="max-w-5xl mx-auto mt-10  space-y-6">
-      <h1 className="text-3xl font-bold">Managers List</h1>
+  const formatPhone = (phone: string): string => {
+    if (!phone) return "";
+    if (phone.startsWith("+998")) return phone;
+    if (phone.startsWith("998")) return "+" + phone;
+    if (phone.startsWith("0")) return "+998" + phone.substring(1);
+    return "+998" + phone;
+  };
 
-      <Card className="shadow-xl p-2 rounded-2xl">
+  return (
+    <div className="max-w-5xl mx-auto mt-10 space-y-6">
+      <h1 className="text-3xl font-bold">
+        {t("managerManagement.title") || "Managers List"}
+      </h1>
+
+      <Card className="shadow-xl p-2 rounded-2xl bg-white dark:bg-slate-900">
         <CardContent>
           {loading ? (
-            <p className="text-center py-6">Loading...</p>
+            <p className="text-center py-6">
+              {t("managerManagement.loading") || "Loading..."}
+            </p>
           ) : managers.length === 0 ? (
-            <p className="text-center py-6 text-gray-500">No managers found</p>
+            <p className="text-center py-6 text-gray-500">
+              {t("managerManagement.noManagers") || "No managers found"}
+            </p>
           ) : (
             <div className="space-y-4">
-              {managers.map((m: any) => (
+              {managers.map((m: Manager) => (
                 <motion.div
                   key={m.id}
                   initial={{ opacity: 0, y: 10 }}
@@ -127,15 +161,21 @@ export default function ManagerList() {
                     <p className="font-semibold text-lg">
                       {m.firstName} {m.lastName}
                     </p>
-                    <p className="text-sm text-gray-600">📞 {m.phone}</p>
+                    <p className="text-sm text-gray-600">
+                      📞 {formatPhone(m.phone)}
+                    </p>
                     {m.monthlySalary && (
                       <p className="text-sm text-gray-600">
-                        💰 {m.monthlySalary} so'm
+                        💰 {m.monthlySalary.toLocaleString()} so'm
                       </p>
                     )}
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => openEditForm(m)}>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => openEditForm(m)}
+                      title={t("managerManagement.editManager") || "Edit Manager"}
+                    >
                       <Edit className="w-4 h-4" />
                     </Button>
                     <Button
@@ -144,6 +184,7 @@ export default function ManagerList() {
                         setSelectedManager(m);
                         setDeleteDialogOpen(true);
                       }}
+                      title={t("managerManagement.delete") || "Delete"}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -156,75 +197,96 @@ export default function ManagerList() {
       </Card>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-md rounded-2xl">
+        <DialogContent className="max-w-md rounded-2xl bg-white dark:bg-slate-900">
           <DialogHeader>
-            <DialogTitle>Edit Manager</DialogTitle>
+            <DialogTitle>
+              {t("managerManagement.editManager") || "Edit Manager"}
+            </DialogTitle>
             <DialogDescription>
-              Update the manager details below.
+              {t("managerManagement.editDescription") || "Update the manager details below."}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 mt-3">
             <div>
-              <Label>First Name</Label>
+              <Label>
+                {t("managerManagement.firstName") || "First Name"}
+              </Label>
               <Input
                 value={form.firstName}
                 onChange={(e) =>
                   setForm({ ...form, firstName: e.target.value })
                 }
+                placeholder={t("managerManagement.firstName") || "First Name"}
               />
             </div>
             <div>
-              <Label>Last Name</Label>
+              <Label>
+                {t("managerManagement.lastName") || "Last Name"}
+              </Label>
               <Input
                 value={form.lastName}
                 onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+                placeholder={t("managerManagement.lastName") || "Last Name"}
               />
             </div>
             <div>
-              <Label>Phone (+998XXXXXXXXX)</Label>
+              <Label>
+                {t("managerManagement.phone") || "Phone (+998XXXXXXXXX)"}
+              </Label>
               <Input
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                placeholder={t("managerManagement.phonePlaceholder") || "Phone"}
               />
             </div>
             <div>
-              <Label>Password</Label>
+              <Label>
+                {t("managerManagement.password") || "Password"}
+              </Label>
               <Input
                 type="password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
+                placeholder={t("managerManagement.password") || "Password"}
               />
             </div>
             <div>
-              <Label>Photo URL</Label>
+              <Label>
+                {t("managerManagement.photoUrl") || "Photo URL"}
+              </Label>
               <Input
                 value={form.photoUrl}
                 onChange={(e) => setForm({ ...form, photoUrl: e.target.value })}
+                placeholder={t("managerManagement.photoUrl") || "Photo URL"}
               />
             </div>
             <div>
-              <Label>Monthly Salary</Label>
+              <Label>
+                {t("managerManagement.monthlySalary") || "Monthly Salary"}
+              </Label>
               <Input
                 type="number"
                 value={form.monthlySalary}
                 onChange={(e) =>
                   setForm({ ...form, monthlySalary: e.target.value })
                 }
+                placeholder={t("managerManagement.salaryPlaceholder") || "Salary"}
               />
             </div>
             <Button className="w-full mt-2" onClick={handleUpdate}>
-              Save Changes
+              {t("managerManagement.saveChanges") || "Save Changes"}
             </Button>
           </div>
         </DialogContent>
       </Dialog>
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="max-w-sm rounded-2xl">
+        <DialogContent className="max-w-sm rounded-2xl dark:bg-slate-900 bg-white">
           <DialogHeader>
-            <DialogTitle>Delete Manager?</DialogTitle>
+            <DialogTitle>
+              {t("managerManagement.deleteManager") || "Delete Manager?"}
+            </DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this manager? This action cannot
-              be undone.
+              {t("managerManagement.deleteDescription") || "Are you sure you want to delete this manager? This action cannot be undone."}
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-end gap-3 mt-4">
@@ -232,10 +294,10 @@ export default function ManagerList() {
               variant="outline"
               onClick={() => setDeleteDialogOpen(false)}
             >
-              Cancel
+              {t("managerManagement.cancel") || "Cancel"}
             </Button>
             <Button variant="destructive" onClick={handleDelete}>
-              Delete
+              {t("managerManagement.delete") || "Delete"}
             </Button>
           </div>
         </DialogContent>

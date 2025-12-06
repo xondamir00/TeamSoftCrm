@@ -5,7 +5,7 @@ import TrashTeacherPage from "../trash/TrashTeacher";
 const Trash = () => {
   return (
     <>
-      <div className="flex  justify-around flex-wrap">
+      <div className="flex   justify-around flex-wrap">
         <div className="w-[45%]">
           <TrashRoomsPage />
         </div>
