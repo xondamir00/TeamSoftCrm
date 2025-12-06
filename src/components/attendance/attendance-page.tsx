@@ -102,6 +102,7 @@ const Attendancepage = () => {
       </div>
     );
   }
+console.log(group?.groupName);
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -201,7 +202,7 @@ const Attendancepage = () => {
               >
                 Bekor qilish
               </Button>
-              <Button onClick={handleSaveComment} className="flex-1">
+              <Button onClick={handleSaveComment} className="flex-1  ">
                 Saqlash
               </Button>
             </div>

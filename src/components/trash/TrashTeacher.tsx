@@ -40,7 +40,7 @@ export default function TrashTeacherPage() {
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
-      <Card className="shadow-lg border-red-200">
+      <Card className="shadow-lg p-5 border-red-200">
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-red-600 flex items-center gap-2">
             <Trash2 className="h-5 w-5" />

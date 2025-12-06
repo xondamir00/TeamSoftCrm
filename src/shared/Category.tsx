@@ -53,16 +53,7 @@ export default function CategoryNav() {
                         >
                           <Button
                             variant="ghost"
-                            className={`
-                              flex items-center gap-2 px-5 py-4 text-lg rounded-xl
-                              transition-all duration-200 
-                              shadow-sm hover:shadow-md
-                              ${
-                                active
-                                  ? "bg-[#0208B0] text-white dark:bg-white/10 dark:text-white shadow-blue-300/50"
-                                  : "text-black dark:text-white hover:bg-gray-100/50 dark:hover:bg-white/10"
-                              }
-                            `}
+                            className='flex items-center gap-2 px-5 py-4 text-lg rounded-xl transition-all duration-200 '
                           >
                             <img
                               src={item.icon}

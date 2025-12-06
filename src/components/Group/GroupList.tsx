@@ -106,7 +106,7 @@ export default function GroupList() {
   const inactiveGroupsCount = groups.filter((g) => g.isActive === false).length;
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 overflow-hidden flex flex-col transition-colors duration-300">
+    <div className="h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 overflow-hidden flex flex-col transition-colors duration-300">
       <div className="flex-1 overflow-y-auto p-4 sm:p-6">
         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-4 sm:p-6 lg:p-8 transition-colors duration-300">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">

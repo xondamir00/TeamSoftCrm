@@ -25,6 +25,17 @@ interface AttendanceState {
   clearError: () => void;
   resetEditing: () => void;
 }
+export interface SheetHeaderProps {
+  sheet: Sheet;
+  stats: {
+    present: number;
+    absent: number;
+    total: number;
+  };
+  onSave: (sheetId: string) => void;
+  onDelete: (sheetId: string) => void;
+  saving: boolean;
+}
 
 export const useAttendanceStore = create<AttendanceState>((set, get) => ({
   sheets: [],

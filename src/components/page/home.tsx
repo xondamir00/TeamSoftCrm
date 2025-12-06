@@ -258,16 +258,16 @@ export default function Home() {
     <div className="min-h-screen  p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-3xl md:text-4xl font-bold dark:text-amber-50 text-slate-900">
+          <h1 className="text-3xl md:text-4xl font-bold ">
             Moliyaviy Hisobot
           </h1>
-          <p className=" dark:text-gray-500 text-slate-900 text-sm md:text-base">
+          <p className="  text-sm md:text-base">
             Tushumlar, chiqimlar va foydaning vizual ko'rinishi
           </p>
         </div>
 
         <div className="border-2   rounded-2xl shadow-xl p-6">
-          <h3 className="text-lg font-bold text-slate-900 mb-6">
+          <h3 className="text-lg font-bold mb-6">
             Statistik Ma'lumotlar
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -290,7 +290,7 @@ export default function Home() {
           <div className="lg:col-span-2 border shadow-md rounded-2xl  p-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-xl font-bold text-slate-900">
+                <h2 className="text-xl font-bold">
                   {category === "tushumlar"
                     ? "Tushumlar"
                     : category === "chiqimlar"
@@ -362,7 +362,7 @@ export default function Home() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <PieChart className="w-5 h-5 text-emerald-600" />
-                  <h3 className="text-lg font-bold text-slate-900">
+                  <h3 className="text-lg font-bold">
                     Hozirgi Oy Tushumlari
                   </h3>
                 </div>

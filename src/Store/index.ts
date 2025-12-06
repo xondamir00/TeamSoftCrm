@@ -94,7 +94,39 @@ export interface Enrollment {
     name: string;
   };
 }
+// types/index.ts ga qo'shing
+export interface StudentGroup {
+  enrollmentId: string;
+  groupId: string;
+  name: string;
+  room?: {
+    id: string;
+    name: string;
+  };
+  teacher?: {
+    id: string;
+    fullName: string;
+  };
+  daysPattern?: string;
+  startTime?: string;
+  endTime?: string;
+  monthlyFee?: number;
+  joinDate: string;
+  status: string;
+}
 
+export interface StudentWithGroups {
+  id: string;
+  fullName: string;
+  phone: string;
+  email?: string;
+  dateOfBirth?: string;
+  startDate?: string;
+  address?: string;
+  isActive: boolean;
+  groups: StudentGroup[];
+  totalGroups: number;
+}
 type AuthState = {
   token: string | null;
   refreshToken: string | null;

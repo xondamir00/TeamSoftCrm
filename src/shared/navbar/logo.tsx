@@ -22,7 +22,7 @@ const Logo = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <Link
-        to="/"
+        to=""
         aria-label="Home"
         className="flex items-center gap-2 text-white select-none"
       >
