@@ -82,7 +82,7 @@ export default function RoomsPage() {
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-6 space-y-8">
       <motion.div
-        className="bg-white/70 dark:bg-black backdrop-blur-md p-6 rounded-2xl shadow-xl"
+        className="bg-white/70 dark:bg-slate-900 backdrop-blur-md p-6 rounded-2xl shadow-xl"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -102,7 +102,7 @@ export default function RoomsPage() {
               required
               onChange={(e) => setName(e.target.value)}
               placeholder={t("room_name")}
-              className="mt-1 dark:bg-black dark:border-neutral-700 dark:text-white"
+              className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"
             />
           </div>
 
@@ -115,14 +115,14 @@ export default function RoomsPage() {
               value={capacity}
               onChange={(e) => setCapacity(e.target.value)}
               placeholder={t("capacity")}
-              className="mt-1 dark:bg-black dark:border-neutral-700 dark:text-white"
+              className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"
             />
           </div>
 
           <div className="flex justify-start md:justify-end">
             <Button
               type="submit"
-              className="bg-[#0208B0] hover:bg-[#0208B0] dark:bg-white dark:text-black text-white  duration-200  font-semibold rounded-xl shadow-lg transition flex items-center gap-2"
+              className="bg-[#0208B0] hover:bg-[#0208B0]  text-white  duration-200  font-semibold rounded-xl shadow-lg transition flex items-center gap-2"
               disabled={loading}
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
@@ -156,7 +156,7 @@ export default function RoomsPage() {
               animate="visible"
               exit="exit"
               transition={{ duration: 0.3 }}
-              className="bg-white/70 dark:bg-black backdrop-blur-md p-5 rounded-2xl shadow-lg hover:shadow-2xl transition flex flex-col justify-between"
+              className="bg-white/70 dark:bg-slate-900 backdrop-blur-md p-5 rounded-2xl shadow-lg hover:shadow-2xl transition flex flex-col justify-between"
             >
               <div>
                 <h3 className="text-lg md:text-xl font-bold dark:text-white">
@@ -195,7 +195,7 @@ export default function RoomsPage() {
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.85, opacity: 0 }}
-            className="bg-white dark:bg-black p-6 rounded-2xl w-full max-w-md space-y-5 shadow-2xl"
+            className="bg-white dark:bg-slate-900 p-6 rounded-2xl w-full max-w-md space-y-5 shadow-2xl"
           >
             <h2 className="text-xl md:text-2xl font-semibold dark:text-white">
               {t("edit_room")}
@@ -208,7 +208,7 @@ export default function RoomsPage() {
                 onChange={(e) =>
                   setEditRoom({ ...editRoom, name: e.target.value })
                 }
-                className="mt-1 dark:bg-black dark:border-neutral-700 dark:text-white"
+                className="mt-1 dark:bg-bg-slate-900 dark:border-neutral-700 dark:text-white"
               />
             </div>
 
@@ -220,7 +220,7 @@ export default function RoomsPage() {
                 onChange={(e) =>
                   setEditRoom({ ...editRoom, capacity: e.target.value })
                 }
-                className="mt-1 dark:bg-black dark:border-neutral-700 dark:text-white"
+                className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"
               />
             </div>
 

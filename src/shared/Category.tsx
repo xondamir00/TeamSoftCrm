@@ -44,14 +44,12 @@ export default function CategoryNav() {
             <NavigationMenuList className="flex w-full justify-between gap-3 flex-wrap">
               {CategoryNavigate.map((item) => {
                 const active = isActive(item.href);
+
                 return (
                   <NavigationMenuItem key={item.label}>
                     <NavigationMenuLink asChild>
                       <Link to={item.href}>
-                        <motion.div
-                          whileHover={{ scale: 1.04 }}
-                          whileTap={{ scale: 0.97 }}
-                        >
+                        <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
                           <Button
                             variant="ghost"
                             className={`
@@ -61,7 +59,7 @@ export default function CategoryNav() {
                               ${
                                 active
                                   ? "bg-blue-600 text-white dark:bg-blue-500 dark:text-white shadow-blue-300/50"
-                                  : "text-gray-800 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-slate-700/50"
+                                  : "text-gray-800 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-slate-800"
                               }
                             `}
                           >
@@ -69,7 +67,7 @@ export default function CategoryNav() {
                               src={item.icon}
                               width={22}
                               height={22}
-                              className="dark:invert"
+                              className={`transition ${active ? "brightness-0 invert" : "dark:invert"}`}
                               alt=""
                             />
                             {t(item.label)}
@@ -90,7 +88,7 @@ export default function CategoryNav() {
         <Button
           variant="outline"
           size="icon"
-          className="border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-200/20 dark:hover:bg-gray-700/30"
+          className="border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-200/20 dark:hover:bg-slate-800"
           onClick={() => setOpen(true)}
         >
           <Menu className="h-5 w-5" />
@@ -122,11 +120,12 @@ export default function CategoryNav() {
                   <h2 className="text-gray-900 dark:text-white text-lg font-semibold tracking-wide">
                     {t("categories")}
                   </h2>
+
                   <motion.button
                     onClick={() => setOpen(false)}
                     whileHover={{ scale: 1.15, rotate: 10 }}
                     whileTap={{ scale: 0.9 }}
-                    className="p-2 rounded-full hover:bg-gray-200/30 dark:hover:bg-gray-700/30 transition flex items-center justify-center"
+                    className="p-2 rounded-full hover:bg-gray-200/30 dark:hover:bg-slate-800 transition"
                   >
                     <svg
                       className="w-5 h-5 text-gray-900 dark:text-white"
@@ -135,11 +134,7 @@ export default function CategoryNav() {
                       strokeWidth="2"
                       viewBox="0 0 24 24"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </motion.button>
                 </div>
@@ -157,12 +152,9 @@ export default function CategoryNav() {
                 >
                   {CategoryNavigate.map((item) => {
                     const active = isActive(item.href);
+
                     return (
-                      <Link
-                        to={item.href}
-                        key={item.label}
-                        onClick={() => setOpen(false)}
-                      >
+                      <Link to={item.href} key={item.label} onClick={() => setOpen(false)}>
                         <motion.div
                           variants={{
                             hidden: { opacity: 0, x: 30 },
@@ -177,7 +169,7 @@ export default function CategoryNav() {
                               ${
                                 active
                                   ? "bg-blue-600 text-white shadow-md shadow-blue-300/50"
-                                  : "text-gray-800 dark:text-gray-200 hover:bg-gray-100/20 dark:hover:bg-gray-700/30"
+                                  : "text-gray-800 dark:text-gray-200 hover:bg-gray-100/20 dark:hover:bg-slate-800"
                               }
                             `}
                           >
@@ -186,7 +178,7 @@ export default function CategoryNav() {
                               width={26}
                               height={26}
                               alt=""
-                              style={{ filter: active ? "brightness(0) invert(1)" : "brightness(0) invert(0.9)" }}
+                              className={`transition ${active ? "brightness-0 invert" : "dark:invert"}`}
                             />
                             {t(item.label)}
                           </div>

@@ -94,7 +94,7 @@ export default function AddManagerForm() {
         transition={{ duration: 0.4 }}
         className="w-full max-w-xl"
       >
-        <Card className="p-5 shadow-xl rounded-2xl">
+        <Card className="p-5 shadow-xl rounded-2xl bg-white dark:bg-slate-900">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center">
               {t("add_manager")}
@@ -133,7 +133,7 @@ export default function AddManagerForm() {
                 <Input type="number" name="monthlySalary" value={form.monthlySalary} onChange={handleChange} />
               </div>
 
-              <Button disabled={loading} type="submit" className="w-full text-lg rounded-xl">
+              <Button disabled={loading} type="submit" className="w-full text-lg rounded-xl bg-[#0208B0] hover:bg-[#0208B0] text-white  shadow-lg transition-all duration-200">
                 {loading ? t("loading") : t("add_button")}
               </Button>
             </form>

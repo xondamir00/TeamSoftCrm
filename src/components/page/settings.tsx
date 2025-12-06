@@ -46,7 +46,7 @@ const TeacherGroup = () => {
                   group
                   relative
                   rounded-4xl
-                  bg-white dark:bg-black
+                  bg-white dark:bg-slate-900
                   border border-gray-200 dark:border-neutral-700
                   p-6
                   flex flex-col items-center justify-center gap-3

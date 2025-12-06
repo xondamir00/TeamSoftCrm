@@ -138,7 +138,7 @@ export default function ManagerList() {
         {t("managerManagement.title") || "Managers List"}
       </h1>
 
-      <Card className="shadow-xl p-2 rounded-2xl">
+      <Card className="shadow-xl p-2 rounded-2xl bg-white dark:bg-slate-900">
         <CardContent>
           {loading ? (
             <p className="text-center py-6">
@@ -197,7 +197,7 @@ export default function ManagerList() {
       </Card>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-md rounded-2xl">
+        <DialogContent className="max-w-md rounded-2xl bg-white dark:bg-slate-900">
           <DialogHeader>
             <DialogTitle>
               {t("managerManagement.editManager") || "Edit Manager"}
@@ -280,7 +280,7 @@ export default function ManagerList() {
         </DialogContent>
       </Dialog>
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="max-w-sm rounded-2xl">
+        <DialogContent className="max-w-sm rounded-2xl dark:bg-slate-900 bg-white">
           <DialogHeader>
             <DialogTitle>
               {t("managerManagement.deleteManager") || "Delete Manager?"}

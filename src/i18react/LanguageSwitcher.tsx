@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -18,16 +18,17 @@ type LangOption = {
 const languages: LangOption[] = [
   { code: "uz", name: "O‘zbek", flag: "/flags/uz.png" },
   { code: "ru", name: "Русский", flag: "/flags/ru.png" },
-   { code: "en", name: "English", flag: "/flags/en.png" },
+  { code: "en", name: "English", flag: "/flags/en.png" },
 ];
+
 export function LanguageSwitcher() {
   const { i18n: i18next } = useTranslation();
   const [lang, setLang] = useState(i18next.language || "uz");
+
   const toggleLanguage = () => {
     const currentIndex = languages.findIndex((l) => l.code === lang);
     const nextIndex = (currentIndex + 1) % languages.length;
     const nextLang = languages[nextIndex].code;
-
     i18next.changeLanguage(nextLang);
     setLang(nextLang);
   };
@@ -47,11 +48,19 @@ export function LanguageSwitcher() {
             toggleLanguage();
           }}
         >
-          <img
-            src={currentLang.flag}
-            alt={currentLang.name}
-            className="w-6 h-6 rounded-full object-cover"
-          />
+          {/* Smooth flag animation */}
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={currentLang.code}
+              src={currentLang.flag}
+              alt={currentLang.name}
+              className="w-6 h-6 rounded-full object-cover"
+              initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              exit={{ opacity: 0, scale: 0.5, rotate: 45 }}
+              transition={{ duration: 0.25 }}
+            />
+          </AnimatePresence>
         </motion.button>
       </DropdownMenuTrigger>
     </DropdownMenu>

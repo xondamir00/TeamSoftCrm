@@ -4,13 +4,9 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import AddGroupForm from "./AddGoup";
 import type { Group } from "@/Store/group";
+import type { GroupModalProps } from "@/Store";
 
-interface GroupModalProps {
-  isOpen: boolean;
-  editingGroup: Group | null;
-  onClose: () => void;
-  onSuccess: () => void;
-}
+
 
 export function GroupModal({
   isOpen,

@@ -17,7 +17,6 @@ import {
 import { useTranslation } from "react-i18next";
 import { useEnrollmentStore } from "@/Store/Enrollment";
 import type { Student, Group } from "@/Store/Enrollment";
-import type { Props } from "@/Store";
 
 export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
   const { t } = useTranslation();

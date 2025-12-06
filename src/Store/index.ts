@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { api } from "../Service/api";
-import type { Room } from "./room";
 
 export type Role = "admin" | "teacher" | "MANAGER" | "USER";
 
@@ -35,7 +34,12 @@ export interface CreateTeacherPayload {
   monthlySalary?: number | null;
   percentShare?: number | null;
 }
-
+export interface GroupModalProps {
+  isOpen: boolean;
+  editingGroup: Group | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}
 export interface Group {
   groupId: string;
   groupName: string;
@@ -46,6 +50,10 @@ export interface Group {
   };
   startTime?: string;
   endTime?: string;
+   capacity: number;
+  monthlyFee: number;
+  schedule?:Schedule
+
   daysPattern?: string;
 }
 
@@ -121,7 +129,36 @@ export interface StudentWithGroups {
   groups: StudentGroup[];
   totalGroups: number;
 }
+export interface Schedule {
+  mode: 'ODD' | 'EVEN' | 'CUSTOM';
+  startTime: string;
+  endTime: string;
+  days: string[];
+}
 
+export interface FormState {
+  name: string;
+  roomId: string;
+  capacity: number;
+  monthlyFee: number;
+  schedule: Schedule;
+}
+
+export interface AddGroupFormProps {
+  editingGroup?: Group;
+  onSuccess?: () => void;
+}
+
+export interface GroupPayload {
+  name: string;
+  capacity: number;
+  monthlyFee: number;
+  daysPattern: string;
+  startTime: string;
+  endTime: string;
+  days?: string[];
+  roomId?: string;
+}
 // ApiError interfeysini qo'shamiz
 interface ApiError {
   response?: {

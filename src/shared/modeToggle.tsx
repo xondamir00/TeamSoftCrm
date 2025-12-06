@@ -39,7 +39,7 @@ export function ModeToggle() {
             exit={{ rotate: 90, scale: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Sun className="w-5 h-5 text-white" />
+            <Sun className="w-5 h-5 text-yellow-400" />
           </motion.span>
         ) : (
           <motion.span

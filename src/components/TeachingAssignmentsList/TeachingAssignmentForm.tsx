@@ -139,7 +139,7 @@ export const TeachingAssignmentForm = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="flex flex-col gap-5 p-6 mt-7 bg-white dark:bg-black rounded-3xl shadow-xl border border-gray-200 dark:border-gray-900 max-w-3xl mx-auto"
+        className="flex flex-col gap-5 p-6 mt-7 bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-900 max-w-3xl mx-auto"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
@@ -150,7 +150,7 @@ export const TeachingAssignmentForm = ({
               value={form.teacherId}
               onValueChange={(v) => updateForm("teacherId", v)}
             >
-              <SelectTrigger className="w-full border rounded-lg dark:bg-black dark:border-gray-700">
+              <SelectTrigger className="w-full border rounded-lg dark:bg-slate-900 dark:border-gray-700">
                 <SelectValue placeholder={t("select_teacher")} />
               </SelectTrigger>
               <SelectContent>
@@ -177,7 +177,7 @@ export const TeachingAssignmentForm = ({
               value={form.groupId}
               onValueChange={(v) => updateForm("groupId", v)}
             >
-              <SelectTrigger className="w-full border rounded-lg dark:bg-black dark:border-gray-700">
+              <SelectTrigger className="w-full border rounded-lg dark:bg-slate-900 dark:border-gray-700">
                 <SelectValue placeholder={t("select_group")} />
               </SelectTrigger>
               <SelectContent>
@@ -201,7 +201,7 @@ export const TeachingAssignmentForm = ({
             value={form.role}
             onValueChange={(v) => updateForm("role", v)}
           >
-            <SelectTrigger className="w-full border rounded-lg dark:bg-black dark:border-gray-700">
+            <SelectTrigger className="w-full border rounded-lg dark:bg-slate-900 dark:border-gray-700">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -221,7 +221,7 @@ export const TeachingAssignmentForm = ({
               type="date"
               value={form.fromDate}
               onChange={(e) => updateForm("fromDate", e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 dark:bg-black dark:border-gray-700"
+              className="w-full border rounded-lg px-3 py-2 dark:bg-slate-900 dark:border-gray-700"
             />
           </div>
           <div>
@@ -232,7 +232,7 @@ export const TeachingAssignmentForm = ({
               type="date"
               value={form.toDate}
               onChange={(e) => updateForm("toDate", e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 dark:bg-black dark:border-gray-700"
+              className="w-full border rounded-lg px-3 py-2 dark:bg-slate-900 dark:border-gray-700"
             />
           </div>
         </div>
@@ -243,7 +243,7 @@ export const TeachingAssignmentForm = ({
             type="checkbox"
             checked={form.inheritSchedule}
             onChange={(e) => updateForm("inheritSchedule", e.target.checked)}
-            className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 dark:bg-black"
+            className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 dark:bg-slate-900"
           />
           <label
             htmlFor="inherit"
@@ -263,7 +263,7 @@ export const TeachingAssignmentForm = ({
                 value={form.daysPatternOverride}
                 onValueChange={(v) => updateForm("daysPatternOverride", v)}
               >
-                <SelectTrigger className="w-full border rounded-lg dark:bg-black dark:border-gray-700">
+                <SelectTrigger className="w-full border rounded-lg dark:bg-slate-900 dark:border-gray-700">
                   <SelectValue placeholder={t("select_days_pattern")} />
                 </SelectTrigger>
                 <SelectContent>
@@ -289,7 +289,7 @@ export const TeachingAssignmentForm = ({
                   onChange={(e) =>
                     updateForm("startTimeOverride", e.target.value)
                   }
-                  className="w-full border rounded-lg px-3 py-2 dark:bg-black dark:border-gray-700"
+                  className="w-full border rounded-lg px-3 py-2 dark:bg-slate-900 dark:border-gray-700"
                 />
               </div>
               <div>
@@ -302,7 +302,7 @@ export const TeachingAssignmentForm = ({
                   onChange={(e) =>
                     updateForm("endTimeOverride", e.target.value)
                   }
-                  className="w-full border rounded-lg px-3 py-2 dark:bg-black dark:border-gray-700"
+                  className="w-full border rounded-lg px-3 py-2 dark:bg-slate-900 dark:border-gray-700"
                 />
               </div>
             </div>
@@ -318,7 +318,7 @@ export const TeachingAssignmentForm = ({
             value={form.note}
             onChange={(e) => updateForm("note", e.target.value)}
             placeholder={t("placeholder_note")}
-            className="w-full border rounded-lg px-3 py-2 dark:bg-black dark:border-gray-700"
+            className="w-full border rounded-lg px-3 py-2 dark:bg-slate-900 dark:border-gray-700"
           />
         </div>
         <Button

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/Service/api";
-import { Plus } from "lucide-react";
 import { GroupService, type Group } from "@/Store/group";
 import { useTranslation } from "react-i18next";
 import type { Room } from "@/Store/room";
@@ -13,7 +12,6 @@ import { GroupStats } from "./GroupStatus";
 import { GroupModal } from "./Groupmodal";
 
 export default function GroupList() {
-  const { t } = useTranslation();
   const [groups, setGroups] = useState<Group[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(false);

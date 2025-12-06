@@ -13,7 +13,7 @@ export function GroupStats({ total, active, inactive }: GroupStatsProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+    <div className="grid my-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
       <StatCard
         title={t("groupManagement.totalGroups") || "Total Groups"}
         value={total}

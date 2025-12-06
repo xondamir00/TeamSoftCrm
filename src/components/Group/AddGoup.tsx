@@ -25,6 +25,7 @@ export default function AddGroupForm({
       days: [],
     },
   });
+  
   useEffect(() => {
     const fetchRooms = async () => {
       try {
@@ -39,7 +40,7 @@ export default function AddGroupForm({
   useEffect(() => {
     if (editingGroup) {
       setForm({
-        name: editingGroup.name || "",
+        name: editingGroup.groupName || "",
         roomId: editingGroup.room?.id || "",
         capacity: editingGroup.capacity ?? 1,
         monthlyFee: editingGroup.monthlyFee ?? 0,
@@ -97,7 +98,7 @@ export default function AddGroupForm({
       };
 
       if (editingGroup) {
-        await GroupService.updateGroup(editingGroup.id, payload);
+        await GroupService.updateGroup(editingGroup.groupId, payload);
         setMessage(t("group_updated_success"));
       } else {
         await GroupService.createGroup(payload);

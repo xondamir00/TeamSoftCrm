@@ -12,6 +12,17 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+
+import { Card, CardContent } from "@/components/ui/card";
+
 export default function EnrollmentPage() {
   const { t } = useTranslation();
 
@@ -64,57 +75,77 @@ export default function EnrollmentPage() {
   };
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">
-        {t("assign_students_to_group")}
-      </h1>
-      <div className="flex gap-2 w-full justify-between">
-        <input
-          type="text"
-          placeholder={t("search_student")}
-          className="border p-2 rounded-md"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+    <div className="min-h-screen p-8 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-900 dark:via-indigo-950 dark:to-slate-950 transition-all">
+      <div className="max-w-3xl mx-auto space-y-8">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 text-center drop-shadow-sm">
+          {t("assign_students_to_group")}
+        </h1>
 
-        <select
-          className="border p-2 rounded-md"
-          value={selectedGroup ?? ""}
-          onChange={(e) => setSelectedGroup(e.target.value)}
-        >
-          <option value="">{t("select_group")}</option>
-          {groups.map((g) => (
-            <option key={g.id} value={g.id}>
-              {g.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="space-y-4">
-        {unassignedStudents.length === 0 ? (
-          <p className="text-gray-600">{t("no_students_found")}</p>
-        ) : (
-          unassignedStudents.map((s) => (
-            <div
-              key={s.id}
-              className="flex items-center justify-between p-4 bg-white shadow rounded-lg border"
+        {/* Search + Group Select */}
+        <Card className="backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 shadow-xl border border-white/30 dark:border-slate-700/40">
+          <CardContent className="p-6 flex flex-col md:flex-row gap-4 justify-between">
+            <Input
+              placeholder={t("search_student")}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="bg-white/70 dark:bg-slate-700/70 backdrop-blur rounded-md"
+            />
+
+            <Select
+              onValueChange={(v) => setSelectedGroup(v)}
+              value={selectedGroup ?? ""}
             >
-              <div>
-                <p className="text-lg font-semibold">{s.fullName}</p>
-                <p className="text-gray-500">{s.phone}</p>
-              </div>
-              <Button
-                onClick={() => handleAssign(s.id)}
-                disabled={loadingId === s.id}
+              <SelectTrigger className="bg-white/70 dark:bg-slate-700/70 backdrop-blur rounded-md">
+                <SelectValue placeholder={t("select_group")} />
+              </SelectTrigger>
+              <SelectContent>
+                {groups.map((g) => (
+                  <SelectItem key={g.id} value={g.id}>
+                    {g.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </CardContent>
+        </Card>
+
+        {/* Students List */}
+        <div className="space-y-4">
+          {unassignedStudents.length === 0 ? (
+            <p className="text-center text-gray-600 dark:text-gray-400 text-lg">
+              {t("no_students_found")}
+            </p>
+          ) : (
+            unassignedStudents.map((s) => (
+              <Card
+                key={s.id}
+                className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-white/40 dark:border-slate-700/50 shadow-lg hover:shadow-xl transition-all"
               >
-                {loadingId === s.id && (
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                )}
-                {t("assign")}
-              </Button>
-            </div>
-          ))
-        )}
+                <CardContent className="p-5 flex items-center justify-between">
+                  <div>
+                    <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                      {s.fullName}
+                    </p>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      {s.phone}
+                    </p>
+                  </div>
+
+                  <Button
+                    onClick={() => handleAssign(s.id)}
+                    disabled={loadingId === s.id}
+                    className="px-6 bg-blue-600 hover:bg-blue-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-700"
+                  >
+                    {loadingId === s.id && (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    )}
+                    {t("assign")}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
