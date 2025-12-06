@@ -25,6 +25,7 @@ export default function CategoryNav() {
 
   return (
     <>
+      {/* Desktop Navbar */}
       <AnimatePresence>
         <motion.div
           key="desktop-nav"
@@ -33,7 +34,7 @@ export default function CategoryNav() {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="
             hidden md:flex mt-4
-            bg-white/80 dark:bg-black/80 backdrop-blur-xl
+            bg-white dark:bg-slate-900 backdrop-blur-xl
             border border-gray-200 dark:border-white/10 
             shadow-xl rounded-2xl
             w-[98%] mx-auto p-3 
@@ -53,13 +54,23 @@ export default function CategoryNav() {
                         >
                           <Button
                             variant="ghost"
-                            className='flex items-center gap-2 px-5 py-4 text-lg rounded-xl transition-all duration-200 '
+                            className={`
+                              flex items-center gap-2 px-5 py-4 text-lg rounded-xl
+                              transition-all duration-200 
+                              shadow-sm hover:shadow-md
+                              ${
+                                active
+                                  ? "bg-blue-600 text-white dark:bg-blue-500 dark:text-white shadow-blue-300/50"
+                                  : "text-gray-800 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-slate-700/50"
+                              }
+                            `}
                           >
                             <img
                               src={item.icon}
                               width={22}
                               height={22}
                               className="dark:invert"
+                              alt=""
                             />
                             {t(item.label)}
                           </Button>
@@ -73,11 +84,13 @@ export default function CategoryNav() {
           </NavigationMenu>
         </motion.div>
       </AnimatePresence>
-      <div className="md:hidden flex justify-end p-3 bg-[#0208B0] dark:bg-black shadow-md">
+
+      {/* Mobile Navbar */}
+      <div className="md:hidden flex justify-end p-3 bg-white dark:bg-slate-900 shadow-md">
         <Button
           variant="outline"
           size="icon"
-          className="border-white/40 bg-transparent text-white hover:bg-white/20"
+          className="border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-200/20 dark:hover:bg-gray-700/30"
           onClick={() => setOpen(true)}
         >
           <Menu className="h-5 w-5" />
@@ -86,6 +99,7 @@ export default function CategoryNav() {
         <AnimatePresence>
           {open && (
             <>
+              {/* Overlay */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.5 }}
@@ -94,25 +108,28 @@ export default function CategoryNav() {
                 className="fixed inset-0 bg-black z-40"
                 onClick={() => setOpen(false)}
               />
+
+              {/* Mobile Sidebar */}
               <motion.div
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{ duration: 0.35, ease: "easeOut" }}
-                className="fixed top-0 right-0 w-72 h-full bg-[#0208B0] dark:bg-black shadow-xl z-50 flex flex-col"
+                className="fixed top-0 right-0 w-72 h-full bg-white dark:bg-slate-900 shadow-xl z-50 flex flex-col"
               >
-                <div className="p-4 border-b border-white/30 flex items-center justify-between">
-                  <h2 className="text-white text-lg font-semibold tracking-wide">
+                {/* Header */}
+                <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                  <h2 className="text-gray-900 dark:text-white text-lg font-semibold tracking-wide">
                     {t("categories")}
                   </h2>
                   <motion.button
                     onClick={() => setOpen(false)}
                     whileHover={{ scale: 1.15, rotate: 10 }}
                     whileTap={{ scale: 0.9 }}
-                    className="p-2 rounded-full hover:bg-white/20 transition flex items-center justify-center"
+                    className="p-2 rounded-full hover:bg-gray-200/30 dark:hover:bg-gray-700/30 transition flex items-center justify-center"
                   >
                     <svg
-                      className="w-5 h-5 text-white"
+                      className="w-5 h-5 text-gray-900 dark:text-white"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="2"
@@ -126,6 +143,8 @@ export default function CategoryNav() {
                     </svg>
                   </motion.button>
                 </div>
+
+                {/* Categories List */}
                 <motion.div
                   initial="hidden"
                   animate="visible"
@@ -157,8 +176,8 @@ export default function CategoryNav() {
                               transition-all duration-200
                               ${
                                 active
-                                  ? "bg-white/20 text-white border border-white/40 shadow-md shadow-white/30"
-                                  : "text-white hover:bg-white/10"
+                                  ? "bg-blue-600 text-white shadow-md shadow-blue-300/50"
+                                  : "text-gray-800 dark:text-gray-200 hover:bg-gray-100/20 dark:hover:bg-gray-700/30"
                               }
                             `}
                           >
@@ -167,7 +186,7 @@ export default function CategoryNav() {
                               width={26}
                               height={26}
                               alt=""
-                              style={{ filter: "brightness(0) invert(1)" }}
+                              style={{ filter: active ? "brightness(0) invert(1)" : "brightness(0) invert(0.9)" }}
                             />
                             {t(item.label)}
                           </div>

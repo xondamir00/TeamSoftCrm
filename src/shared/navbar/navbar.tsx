@@ -7,7 +7,7 @@ import LanguageSwitcher from "@/i18react/LanguageSwitcher";
 import ProfileModal from "@/shared/navbar/profile";
 const Navbar = () => {
   return (
-    <motion.header className="w-full py-3 bg-[#0208B0] shadow-sm dark:bg-[rgb(0,0,0)]">
+    <motion.header  className="w-full py-3 bg-[#0208B0] shadow-sm dark:bg-[rgb(0,0,0,0.5)]">
       <div className="mx-auto px-4 lg:px-6 flex justify-between items-center">
 
         <motion.div
