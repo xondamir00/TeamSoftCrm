@@ -15,7 +15,6 @@ const TeacherGroup = () => {
 
   return (
     <div className="mt-16 space-y-14">
-      {/* Title */}
       <motion.h1
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -25,7 +24,6 @@ const TeacherGroup = () => {
         {t("createForms.title")}
       </motion.h1>
 
-      {/* Grid */}
       <div className="w-[70%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {CreateForm.map((item, index) => {
           const Icon = item.icon;
@@ -57,7 +55,6 @@ const TeacherGroup = () => {
                   hover:-translate-y-1
                 "
               >
-                {/* Icon Box */}
                 <div className="w-16 h-16 rounded-xl flex items-center justify-center  transition-all duration-300 group-hover:scale-105">
                   <Icon
                     size={28}
@@ -65,7 +62,6 @@ const TeacherGroup = () => {
                   />
                 </div>
 
-                {/* Name */}
                 <span className="text-lg font-medium text-gray-900 dark:text-gray-100 transition-colors duration-300 ">
                   {t(item.nameKey)}
                 </span>

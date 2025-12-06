@@ -1,6 +1,5 @@
 import { BsHouseAddFill } from "react-icons/bs";
 import { MdAddModerator } from "react-icons/md";
-import { PiTrashSimpleFill } from "react-icons/pi";
 import { FaUserTie } from "react-icons/fa6";
 import { GiTeacher } from "react-icons/gi";
 import { FaUserPlus } from "react-icons/fa6";

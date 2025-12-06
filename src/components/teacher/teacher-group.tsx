@@ -11,7 +11,6 @@ export default function MyGroups() {
 
   const fetchMyGroups = async () => {
     try {
-      // setLoading(true);
       const { data } = await api.get<Group[]>("/teachers/my-groups");
       setGroups(data || []);
     } catch (error) {

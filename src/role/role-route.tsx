@@ -1,4 +1,3 @@
-// src/role/role-route.tsx
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/Store";
 
@@ -15,7 +14,6 @@ export const RoleRoute = ({ roles, children }: RoleRouteProps) => {
   }
 
   if (user && !roles.includes(user.role.toLowerCase())) {
-    // Agar roli mos kelmasa
     return <Navigate to="/sign" replace />;
   }
 

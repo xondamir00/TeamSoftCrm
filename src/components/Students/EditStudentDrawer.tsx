@@ -23,7 +23,6 @@ export default function EditStudentDrawer({
     <AnimatePresence>
       {open && (
         <>
-          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.5 }}
@@ -31,8 +30,6 @@ export default function EditStudentDrawer({
             onClick={onClose}
             className="fixed inset-0 dark:bg-black z-40 cursor-pointer"
           />
-
-          {/* Drawer */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -51,7 +48,6 @@ export default function EditStudentDrawer({
                 <X className="w-5 h-5" />
               </Button>
             </div>
-
             <EditStudent studentId={studentId} onUpdated={onUpdated} />
           </motion.div>
         </>

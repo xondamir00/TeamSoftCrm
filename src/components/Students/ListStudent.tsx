@@ -67,7 +67,7 @@ const ListStudent = () => {
           search: debouncedSearch,
           page,
           limit,
-          isActive: true, // Faqat active studentlarni olish
+          isActive: true,
         },
       });
 
@@ -75,8 +75,6 @@ const ListStudent = () => {
       setStudents(items);
       setTotalPages(res.data.meta?.pages || 1);
       setTotalStudents(res.data.meta?.total || 0);
-
-      // Faqat active studentlar bo'lgani uchun
       setActiveCount(items.length);
       setInactiveCount(0);
     } catch (err: unknown) {
@@ -87,10 +85,8 @@ const ListStudent = () => {
     }
   };
 
-  // Barcha studentlarni umumiy sonini olish uchun alohida funksiya
   const fetchStudentStats = async () => {
     try {
-      // Active studentlar statistikasi
       const activeRes = await api.get("/students", {
         params: {
           limit: 1000,
@@ -98,7 +94,6 @@ const ListStudent = () => {
         },
       });
 
-      // Inactive studentlar statistikasi
       const inactiveRes = await api.get("/students", {
         params: {
           limit: 1000,
@@ -114,7 +109,6 @@ const ListStudent = () => {
       setInactiveCount(inactiveStudents.length);
     } catch (err) {
       console.error("Error fetching stats:", err);
-      // Agar stats olishda xatolik bo'lsa, joriy studentlar asosida hisoblaymiz
       const activeStudents = students.filter((s) => s.isActive);
       setActiveCount(activeStudents.length);
       setInactiveCount(students.length - activeStudents.length);
@@ -126,7 +120,6 @@ const ListStudent = () => {
     fetchStudents();
   }, [debouncedSearch, page]);
 
-  // Komponent yuklanganda statistikani olish
   useEffect(() => {
     fetchStudentStats();
   }, []);
@@ -148,7 +141,7 @@ const ListStudent = () => {
 
   const handleUpdated = () => {
     fetchStudents();
-    fetchStudentStats(); // Statistikani yangilash
+    fetchStudentStats();
     setDeleteDialogOpen(false);
     setRestoreDialogOpen(false);
     setOpenEditDrawer(false);
@@ -359,7 +352,6 @@ const ListStudent = () => {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-1 sm:gap-2">
-                            {/* VIEW PROFILE BUTTON */}
                             <Button
                               variant="outline"
                               size="icon"
@@ -372,7 +364,6 @@ const ListStudent = () => {
                               <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             </Button>
 
-                            {/* EDIT */}
                             <Button
                               variant="outline"
                               size="icon"
@@ -383,7 +374,6 @@ const ListStudent = () => {
                               <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             </Button>
 
-                            {/* DELETE */}
                             <Button
                               variant="destructive"
                               size="icon"

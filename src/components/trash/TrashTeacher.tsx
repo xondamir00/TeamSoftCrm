@@ -49,28 +49,24 @@ export default function TrashTeacherPage() {
         </CardHeader>
 
         <CardContent className="space-y-3">
-          {/* Loading */}
           {loading && (
             <div className="py-6 text-center">
               <Loader2 className="h-6 w-6 animate-spin mx-auto text-gray-500" />
             </div>
           )}
 
-          {/* Error */}
           {error && (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
 
-          {/* Empty */}
           {!loading && !error && teachers.length === 0 && (
             <p className="text-center text-sm opacity-60 py-4">
               {t("emptyText")}
             </p>
           )}
 
-          {/* List */}
           <AnimatePresence>
             {teachers.map((teacher) => (
               <motion.div
@@ -105,8 +101,6 @@ export default function TrashTeacherPage() {
           </AnimatePresence>
         </CardContent>
       </Card>
-
-      {/* Restore Dialog */}
       <DeleteTeacherDialog
         teacher={selectedTeacher}
         open={restoreOpen}

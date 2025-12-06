@@ -1,4 +1,3 @@
-// components/attendance/EmptyState.tsx
 "use client";
 
 import { Button } from "@/components/ui/button";

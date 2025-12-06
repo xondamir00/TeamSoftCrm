@@ -62,7 +62,7 @@ export default function TeacherList() {
           search: debouncedSearch,
           page,
           limit,
-          isActive: true, // <-- faqat aktivlarni chiqarish
+          isActive: true,
         },
       });
 
@@ -421,7 +421,6 @@ export default function TeacherList() {
 
       {selectedTeacher && (
         <>
-          {/* Delete dialog with blur */}
           {deleteDialogOpen && (
             <DeleteTeacherDialog
               teacher={selectedTeacher}
@@ -431,7 +430,6 @@ export default function TeacherList() {
             />
           )}
 
-          {/* Edit drawer */}
           <UpdateTeacherDrawer
             open={openEditDrawer}
             onClose={() => setOpenEditDrawer(false)}

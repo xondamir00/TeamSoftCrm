@@ -68,8 +68,6 @@ export default function EnrollmentPage() {
       <h1 className="text-2xl font-semibold">
         {t("assign_students_to_group")}
       </h1>
-
-      {/* Search + Group Dropdown */}
       <div className="flex gap-2 w-full justify-between">
         <input
           type="text"
@@ -92,8 +90,6 @@ export default function EnrollmentPage() {
           ))}
         </select>
       </div>
-
-      {/* Students list */}
       <div className="space-y-4">
         {unassignedStudents.length === 0 ? (
           <p className="text-gray-600">{t("no_students_found")}</p>
@@ -107,7 +103,6 @@ export default function EnrollmentPage() {
                 <p className="text-lg font-semibold">{s.fullName}</p>
                 <p className="text-gray-500">{s.phone}</p>
               </div>
-
               <Button
                 onClick={() => handleAssign(s.id)}
                 disabled={loadingId === s.id}

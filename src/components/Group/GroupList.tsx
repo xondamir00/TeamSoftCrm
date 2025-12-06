@@ -100,7 +100,6 @@ export default function GroupList() {
   return (
     <div className="h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 overflow-hidden flex flex-col transition-colors duration-300">
       <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-        {/* Header */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-4 sm:p-6 lg:p-8 transition-colors duration-300">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
             <div>
@@ -118,9 +117,7 @@ export default function GroupList() {
             </div>
           </div>
 
-          {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
-            {/* Total Groups */}
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 rounded-xl p-4 border border-blue-200 dark:border-blue-800 transition-colors duration-300">
               <div className="flex items-center justify-between">
                 <div>
@@ -136,8 +133,6 @@ export default function GroupList() {
                 </div>
               </div>
             </div>
-
-            {/* Active Groups */}
             <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900 rounded-xl p-4 border border-emerald-200 dark:border-emerald-800 transition-colors duration-300">
               <div className="flex items-center justify-between">
                 <div>
@@ -153,8 +148,6 @@ export default function GroupList() {
                 </div>
               </div>
             </div>
-
-            {/* Inactive Groups */}
             <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 rounded-xl p-4 border border-slate-200 dark:border-slate-600 transition-colors duration-300">
               <div className="flex items-center justify-between">
                 <div>
@@ -171,8 +164,6 @@ export default function GroupList() {
               </div>
             </div>
           </div>
-
-          {/* Top Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <Input
               placeholder="Search groups..."
@@ -188,8 +179,6 @@ export default function GroupList() {
             </Button>
           </div>
         </div>
-
-        {/* Table */}
         <div className="mt-4 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-lg overflow-x-auto dark:shadow-black/40 bg-white dark:bg-gray-900 transition-colors duration-300">
           <table className="w-full min-w-[600px]">
             <thead className="bg-gray-100 dark:bg-gray-800/60">
@@ -264,8 +253,6 @@ export default function GroupList() {
             </tbody>
           </table>
         </div>
-
-        {/* Drawer / Modal */}
         {modalOpen && (
           <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-end z-50">
             <motion.div
@@ -299,8 +286,6 @@ export default function GroupList() {
             </motion.div>
           </div>
         )}
-
-        {/* Delete modal */}
         {deleteTarget && (
           <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <motion.div

@@ -141,7 +141,6 @@ export const TeachingAssignmentForm = ({
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="flex flex-col gap-5 p-6 mt-7 bg-white dark:bg-black rounded-3xl shadow-xl border border-gray-200 dark:border-gray-900 max-w-3xl mx-auto"
       >
-        {/* Teacher & Group (Responsive Grid) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -194,7 +193,6 @@ export const TeachingAssignmentForm = ({
           </div>
         </div>
 
-        {/* Role */}
         <div>
           <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
             {t("role")}
@@ -214,7 +212,6 @@ export const TeachingAssignmentForm = ({
           </Select>
         </div>
 
-        {/* Period */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
@@ -240,7 +237,6 @@ export const TeachingAssignmentForm = ({
           </div>
         </div>
 
-        {/* Inherit toggle */}
         <div className="flex items-center gap-3">
           <input
             id="inherit"
@@ -257,7 +253,6 @@ export const TeachingAssignmentForm = ({
           </label>
         </div>
 
-        {/* Overrides */}
         {!form.inheritSchedule && (
           <>
             <div>
@@ -314,7 +309,6 @@ export const TeachingAssignmentForm = ({
           </>
         )}
 
-        {/* Note */}
         <div>
           <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
             {t("note")}
@@ -327,8 +321,6 @@ export const TeachingAssignmentForm = ({
             className="w-full border rounded-lg px-3 py-2 dark:bg-black dark:border-gray-700"
           />
         </div>
-
-        {/* Submit */}
         <Button
           type="submit"
           className="bg-[#0208B0] hover:bg-[#0208B0] text-white rounded-lg shadow-lg transition-all duration-200"
@@ -336,8 +328,6 @@ export const TeachingAssignmentForm = ({
           {t("add_assignment")}
         </Button>
       </motion.form>
-
-      {/* Alert */}
       <AlertDialog open={openAlert} onOpenChange={setOpenAlert}>
         <AlertDialogContent>
           <AlertDialogHeader>

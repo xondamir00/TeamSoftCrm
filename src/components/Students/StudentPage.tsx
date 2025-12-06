@@ -94,7 +94,6 @@ const StudentPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 p-4 md:p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <Button
             onClick={() => navigate(-1)}
@@ -168,11 +167,8 @@ const StudentPage = () => {
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Personal Info */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Contact Info Card */}
             <Card className="border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
@@ -238,7 +234,6 @@ const StudentPage = () => {
               </CardContent>
             </Card>
 
-            {/* Groups Card */}
             <Card className="border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
@@ -272,9 +267,7 @@ const StudentPage = () => {
             </Card>
           </div>
 
-          {/* Right Column - Stats & Notes */}
           <div className="space-y-6">
-            {/* Stats Card */}
             <Card className="border-slate-200 dark:border-slate-700 shadow-sm">
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold text-slate-800 dark:text-white mb-6">
