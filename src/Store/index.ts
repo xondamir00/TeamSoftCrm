@@ -15,6 +15,7 @@ export type User = {
 };
 export interface Teacher {
   id: string;
+  isActive:boolean;
   fullName?: string;
   firstName: string;
   lastName: string;

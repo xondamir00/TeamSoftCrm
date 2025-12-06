@@ -66,10 +66,10 @@ export default function TeacherList() {
         },
       });
 
-      const items = res.data.items || [];
-      setTeachers(items);
-      setTotalPages(res.data.meta?.pages || 1);
-      setTotalTeachers(res.data.meta?.total || 0);
+    const items = res.data.items || [];
+    setTeachers(items);
+    setTotalPages(res.data.meta?.pages || 1);
+    setTotalTeachers(res.data.meta?.total || 0);
 
       const active = items.filter((t) => t.isActive).length;
       setActiveCount(active);

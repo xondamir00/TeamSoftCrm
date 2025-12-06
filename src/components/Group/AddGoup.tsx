@@ -18,24 +18,15 @@ interface FormState {
   schedule: Schedule;
 }
 
-interface Schedule {
-  mode: "ODD" | "EVEN" | "CUSTOM";
-  startTime: string;
-  endTime: string;
-  days: string[];
-}
-
-interface EditingGroup {
-  id: string;
-  name: string;
-  room?: { id: string; name: string };
-  capacity?: number;
-  monthlyFee?: number;
-  schedule?: Schedule;
-}
-
 interface AddGroupFormProps {
-  editingGroup?: EditingGroup | null;
+  editingGroup?: {
+    id: string;
+    name: string;
+    room?: Room;
+    capacity?: number;
+    monthlyFee?: number;
+    schedule?: Schedule;
+  } | null;
   onSuccess?: () => void;
 }
 
@@ -59,20 +50,19 @@ export default function AddGroupForm({
     capacity: 1,
     monthlyFee: 0,
     schedule: {
-      mode: "ODD" as Schedule["mode"],
+      mode: "ODD",
       startTime: "",
       endTime: "",
       days: [],
     },
   });
 
-  // Fetch rooms
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const res = await api.get<Room[]>("/rooms");
-        setRooms(res.data);
-      } catch (err: unknown) {
+        const data = await GroupService.getRooms();
+        setRooms(data);
+      } catch (err) {
         console.error("Xonalarni olishda xatolik:", err);
       }
     };
@@ -129,26 +119,16 @@ export default function AddGroupForm({
     setMessage("");
 
     try {
-      const payload: {
-        name: string;
-        capacity: number;
-        monthlyFee: number;
-        daysPattern: Schedule["mode"];
-        startTime: string;
-        endTime: string;
-        roomId?: string;
-      } = {
+      const payload: GroupPayload = {
         name: form.name,
         capacity: form.capacity,
+        monthlyFee: form.monthlyFee,
         daysPattern: form.schedule.mode,
         startTime: form.schedule.startTime,
         endTime: form.schedule.endTime,
-        monthlyFee: form.monthlyFee,
+        days: form.schedule.mode === "CUSTOM" ? form.schedule.days : undefined,
+        roomId: form.roomId || undefined,
       };
-
-      if (form.roomId.trim() !== "") {
-        payload.roomId = form.roomId;
-      }
 
       if (editingGroup) {
         await GroupService.updateGroup(editingGroup.id, payload);
@@ -159,7 +139,7 @@ export default function AddGroupForm({
       }
 
       setTimeout(() => onSuccess?.(), 500);
-    } catch (err: unknown) {
+    } catch (err) {
       console.error("Error:", err);
       setMessage(t("group_error"));
     } finally {

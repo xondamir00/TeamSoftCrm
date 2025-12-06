@@ -2,15 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/Service/api";
-import {
-  Loader2,
-  Pencil,
-  Trash2,
-  Plus,
-  Users,
-  UserCheck,
-  UserX,
-} from "lucide-react";
+import { Loader2, Pencil, Trash2, Plus, Users, UserCheck, UserX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
@@ -55,6 +47,7 @@ export default function GroupList() {
     }
   };
 
+
   const fetchRooms = async () => {
     try {
       const data: Room[] = await GroupService.getRooms();
@@ -74,7 +67,7 @@ export default function GroupList() {
     try {
       setLoading(true);
       await api.delete(`/groups/${deleteTarget.id}`);
-      setGroups((prev) => prev.filter((g) => g.id !== deleteTarget.id));
+      setGroups(prev => prev.filter(g => g.id !== deleteTarget.id));
       setDeleteTarget(null);
     } finally {
       setLoading(false);
@@ -94,16 +87,15 @@ export default function GroupList() {
     }
   };
 
-  const getRoomName = (roomId?: string) =>
-    rooms.find((r) => r.id === roomId)?.name || "-";
+  const getRoomName = (roomId?: string) => rooms.find(r => r.id === roomId)?.name || "-";
 
   const openModal = (group: Group | null) => {
     setEditingGroup(group);
     setModalOpen(true);
   };
 
-  const activeGroups = groups.filter((g) => g.isActive !== false);
-  const inactiveGroupsCount = groups.filter((g) => g.isActive === false).length;
+  const activeGroups = groups.filter(g => g.isActive !== false);
+  const inactiveGroupsCount = groups.filter(g => g.isActive === false).length;
 
   return (
     <div className="h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 overflow-hidden flex flex-col transition-colors duration-300">
