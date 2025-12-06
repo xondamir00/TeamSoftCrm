@@ -12,7 +12,6 @@ import {
   Title,
 } from "chart.js";
 import { TrendingUp, TrendingDown, DollarSign, PieChart } from "lucide-react";
-import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   ArcElement,
@@ -25,81 +24,108 @@ ChartJS.register(
   Title
 );
 
-type Category = "income" | "expenses" | "profit";
-type Range = "yearly" | "monthly" | "weekly";
+type Category = "tushumlar" | "chiqimlar" | "foyda";
+type Range = "yillik" | "oylik" | "haftalik";
 
-export default function FinancialDashboard() {
-  const { t } = useTranslation();
-  const [category, setCategory] = useState<Category>("income");
-  const [range, setRange] = useState<Range>("yearly");
+export default function Home() {
+  const [category, setCategory] = useState<Category>("tushumlar");
+  const [range, setRange] = useState<Range>("yillik");
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
+  const COLORS = {
+    tushumlar: {
+      primary: "#10b981",
+      primaryDark: "#059669",
+      gradient: "from-emerald-500 to-teal-600",
+      gradientDark: "from-emerald-600 to-teal-700",
+      light: "bg-emerald-50 dark:bg-emerald-900/20",
+      text: "text-emerald-700 dark:text-emerald-300",
+      border: "border-emerald-200 dark:border-emerald-800"
+    },
+    chiqimlar: {
+      primary: "#f59e0b",
+      primaryDark: "#d97706",
+      gradient: "from-amber-500 to-orange-600",
+      gradientDark: "from-amber-600 to-orange-700",
+      light: "bg-amber-50 dark:bg-amber-900/20",
+      text: "text-amber-700 dark:text-amber-300",
+      border: "border-amber-200 dark:border-amber-800"
+    },
+    foyda: {
+      primary: "#3b82f6",
+      primaryDark: "#2563eb",
+      gradient: "from-blue-500 to-indigo-600",
+      gradientDark: "from-blue-600 to-indigo-700",
+      light: "bg-blue-50 dark:bg-blue-900/20",
+      text: "text-blue-700 dark:text-blue-300",
+      border: "border-blue-200 dark:border-blue-800"
+    },
+    background: {
+      light: "bg-gray-50 dark:bg-gray-900",
+      white: "bg-white dark:bg-gray-800",
+      dark: "bg-slate-900 dark:bg-gray-950",
+      card: "bg-white dark:bg-gray-800"
+    },
+    text: {
+      primary: "text-slate-900 dark:text-gray-100",
+      secondary: "text-slate-700 dark:text-gray-300",
+      muted: "text-slate-500 dark:text-gray-400",
+      light: "text-white dark:text-gray-100"
+    },
+    border: {
+      default: "border-slate-200 dark:border-gray-700",
+      dark: "border-slate-300 dark:border-gray-600",
+      card: "border-gray-200 dark:border-gray-700"
+    }
+  };
 
   const currentMonthData = {
-    labels: [
-      t("financialDashboard.weeks.week1") || "1-hafta",
-      t("financialDashboard.weeks.week2") || "2-hafta",
-      t("financialDashboard.weeks.week3") || "3-hafta",
-      t("financialDashboard.weeks.week4") || "4-hafta"
-    ],
-    income: [15, 18, 22, 25],
-    expenses: [8, 10, 12, 14],
-    profit: [7, 8, 10, 11],
+    labels: ["1-hafta", "2-hafta", "3-hafta", "4-hafta"],
+    tushumlar: [15, 18, 22, 25],
+    chiqimlar: [8, 10, 12, 14],
+    foyda: [7, 8, 10, 11],
   };
 
   const dataSets = {
-    yearly: {
+    yillik: {
       labels: [
-        t("financialDashboard.months.jan") || "Yan",
-        t("financialDashboard.months.feb") || "Fev",
-        t("financialDashboard.months.mar") || "Mar",
-        t("financialDashboard.months.apr") || "Apr",
-        t("financialDashboard.months.may") || "May",
-        t("financialDashboard.months.jun") || "Iyn",
-        t("financialDashboard.months.jul") || "Iyl",
-        t("financialDashboard.months.aug") || "Avg",
-        t("financialDashboard.months.sep") || "Sen",
-        t("financialDashboard.months.oct") || "Okt",
-        t("financialDashboard.months.nov") || "Noy",
-        t("financialDashboard.months.dec") || "Dek",
+        "Yan", "Fev", "Mar", "Apr", "May", "Iyn",
+        "Iyl", "Avg", "Sen", "Okt", "Noy", "Dek"
       ],
-      income: [5, 6, 8, 9, 10, 11, 12, 13, 15, 17, 18, 20],
-      expenses: [3, 3.5, 4, 4.5, 5, 5.2, 6, 7, 8, 9, 10, 11],
-      profit: [2, 2.5, 4, 4.5, 5, 5.8, 6, 6.5, 7, 8, 8, 9],
+      tushumlar: [5, 6, 8, 9, 10, 11, 12, 13, 15, 17, 18, 20],
+      chiqimlar: [3, 3.5, 4, 4.5, 5, 5.2, 6, 7, 8, 9, 10, 11],
+      foyda: [2, 2.5, 4, 4.5, 5, 5.8, 6, 6.5, 7, 8, 8, 9],
     },
-    monthly: {
-      labels: [
-        t("financialDashboard.weeks.week1") || "1-hafta",
-        t("financialDashboard.weeks.week2") || "2-hafta",
-        t("financialDashboard.weeks.week3") || "3-hafta",
-        t("financialDashboard.weeks.week4") || "4-hafta"
-      ],
-      income: [12, 14, 16, 18],
-      expenses: [4, 5, 6, 7],
-      profit: [8, 9, 10, 11],
+    oylik: {
+      labels: ["1-hafta", "2-hafta", "3-hafta", "4-hafta"],
+      tushumlar: [12, 14, 16, 18],
+      chiqimlar: [4, 5, 6, 7],
+      foyda: [8, 9, 10, 11],
     },
-    weekly: {
-      labels: [
-        t("financialDashboard.days.mon") || "Du",
-        t("financialDashboard.days.tue") || "Se",
-        t("financialDashboard.days.wed") || "Cho",
-        t("financialDashboard.days.thu") || "Pa",
-        t("financialDashboard.days.fri") || "Ju",
-        t("financialDashboard.days.sat") || "Sha",
-        t("financialDashboard.days.sun") || "Ya"
-      ],
-      income: [3, 4, 3.5, 5, 6, 7, 6],
-      expenses: [1, 1.5, 2, 2.5, 3, 3, 2.5],
-      profit: [2, 2.5, 1.5, 2.5, 3, 4, 3.5],
+    haftalik: {
+      labels: ["Du", "Se", "Cho", "Pa", "Ju", "Sha", "Ya"],
+      tushumlar: [3, 4, 3.5, 5, 6, 7, 6],
+      chiqimlar: [1, 1.5, 2, 2.5, 3, 3, 2.5],
+      foyda: [2, 2.5, 1.5, 2.5, 3, 4, 3.5],
     },
   };
 
   const selected = dataSets[range];
 
   const activeValues =
-    category === "income"
-      ? selected.income
-      : category === "expenses"
-      ? selected.expenses
-      : selected.profit;
+    category === "tushumlar"
+      ? selected.tushumlar
+      : category === "chiqimlar"
+      ? selected.chiqimlar
+      : selected.foyda;
 
   const totalAmount = activeValues.reduce((sum, v) => sum + v, 0);
 
@@ -107,34 +133,14 @@ export default function FinancialDashboard() {
     labels: selected.labels,
     datasets: [
       {
-        label: 
-          category === "income"
-            ? t("financialDashboard.income") || "Tushumlar"
-            : category === "expenses"
-            ? t("financialDashboard.expenses") || "Chiqimlar"
-            : t("financialDashboard.profit") || "Foyda",
+        label: category === "tushumlar" ? "Tushumlar" : category === "chiqimlar" ? "Chiqimlar" : "Foyda",
         data: activeValues,
-        borderColor:
-          category === "income"
-            ? "#10b981"
-            : category === "expenses"
-            ? "#f59e0b"
-            : "#3b82f6",
-        backgroundColor:
-          category === "income"
-            ? "rgba(16, 185, 129, 0.1)"
-            : category === "expenses"
-            ? "rgba(245, 158, 11, 0.1)"
-            : "rgba(59, 130, 246, 0.1)",
+        borderColor: darkMode ? COLORS[category].primaryDark : COLORS[category].primary,
+        backgroundColor: darkMode ? `${COLORS[category].primaryDark}20` : `${COLORS[category].primary}20`,
         tension: 0.4,
         fill: true,
-        pointBackgroundColor:
-          category === "income"
-            ? "#10b981"
-            : category === "expenses"
-            ? "#f59e0b"
-            : "#3b82f6",
-        pointBorderColor: "#fff",
+        pointBackgroundColor: darkMode ? COLORS[category].primaryDark : COLORS[category].primary,
+        pointBorderColor: darkMode ? "#1f2937" : "#fff",
         pointBorderWidth: 2,
         pointRadius: 4,
         pointHoverRadius: 6,
@@ -146,14 +152,21 @@ export default function FinancialDashboard() {
     labels: currentMonthData.labels,
     datasets: [
       {
-        label: t("financialDashboard.currentMonthIncome") || "Hozirgi oy tushumlari",
-        data: currentMonthData.income,
-        backgroundColor: [
-          "rgba(16, 185, 129, 0.8)",
-          "rgba(52, 211, 153, 0.8)",
-          "rgba(110, 231, 183, 0.8)",
-          "rgba(167, 243, 208, 0.8)",
-        ],
+        label: "Hozirgi oy tushumlari",
+        data: currentMonthData.tushumlar,
+        backgroundColor: darkMode
+          ? [
+              "rgba(16, 185, 129, 0.7)",
+              "rgba(52, 211, 153, 0.7)",
+              "rgba(110, 231, 183, 0.7)",
+              "rgba(167, 243, 208, 0.7)",
+            ]
+          : [
+              "rgba(16, 185, 129, 0.8)",
+              "rgba(52, 211, 153, 0.8)",
+              "rgba(110, 231, 183, 0.8)",
+              "rgba(167, 243, 208, 0.8)",
+            ],
         borderColor: ["#10b981", "#34d399", "#6ee7b7", "#a7f3d0"],
         borderWidth: 2,
       },
@@ -161,11 +174,7 @@ export default function FinancialDashboard() {
   };
 
   const chiqimDetails = {
-    labels: [
-      t("financialDashboard.expenseCategories.rent") || "Ijara",
-      t("financialDashboard.expenseCategories.advertising") || "Reklama",
-      t("financialDashboard.expenseCategories.salary") || "Maosh"
-    ],
+    labels: ["Ijara", "Reklama", "Maosh"],
     datasets: [
       {
         data: [200, 300, 250],
@@ -200,8 +209,8 @@ export default function FinancialDashboard() {
           size: 13,
         },
         callbacks: {
-          label: function (context: any) {
-            return `${context.parsed.y} ${t("financialDashboard.currency") || "mln so'm"}`;
+          label: function (context: { parsed: { y: number } }) {
+            return `${context.parsed.y} mln so'm`;
           },
         },
       },
@@ -261,123 +270,71 @@ export default function FinancialDashboard() {
         bodyColor: darkMode ? "#d1d5db" : "#e5e7eb",
         padding: 12,
         callbacks: {
-          label: function (context: any) {
-            return `${context.label}: ${context.parsed} ${t("financialDashboard.currency") || "mln so'm"}`;
+          label: function (context: { label: string; parsed: number }) {
+            return `${context.label}: ${context.parsed} mln so'm`;
           },
         },
       },
     },
   };
 
-  const getCategoryColor = (cat: Category) => {
-    switch (cat) {
-      case "income":
-        return "from-emerald-500 to-teal-600";
-      case "expenses":
-        return "from-amber-500 to-orange-600";
-      case "profit":
-        return "from-blue-500 to-indigo-600";
-    }
-  };
-
   const getCategoryIcon = (cat: Category) => {
     switch (cat) {
-      case "income":
+      case "tushumlar":
         return <TrendingUp className="w-6 h-6" />;
-      case "expenses":
+      case "chiqimlar":
         return <TrendingDown className="w-6 h-6" />;
-      case "profit":
+      case "foyda":
         return <DollarSign className="w-6 h-6" />;
     }
   };
 
-  const getCategoryLabel = (cat: Category): string => {
-    switch (cat) {
-      case "income":
-        return t("financialDashboard.income");
-      case "expenses":
-        return t("financialDashboard.expenses") || "Chiqimlar";
-      case "profit":
-        return t("financialDashboard.profit") || "Foyda";
-    }
-  };
-
-  const getRangeLabel = (r: Range): string => {
-    switch (r) {
-      case "yearly":
-        return t("financialDashboard.yearly") || "Yillik";
-      case "monthly":
-        return t("financialDashboard.monthly") || "Oylik";
-      case "weekly":
-        return t("financialDashboard.weekly") || "Haftalik";
-    }
-  };
-
-  const getCategoryKey = (cat: Category): string => {
-    switch (cat) {
-      case "income":
-        return "tushumlar";
-      case "expenses":
-        return "chiqimlar";
-      case "profit":
-        return "foyda";
-    }
-  };
-
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 p-4 md:p-8 transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl md:text-4xl font-bold dark:text-amber-50 text-slate-900">
-            {t("financialDashboard.title") || "Moliyaviy Hisobot"}
-          </h1>
-          <p className="dark:text-gray-500 text-slate-900 text-sm md:text-base">
-            {t("financialDashboard.subtitle") || "Tushumlar, chiqimlar va foydaning vizual ko'rinishi"}
-          </p>
+        <div className="flex justify-between items-center">
+          <div className="text-center space-y-2 flex-1">
+            <h1 className={`text-3xl md:text-4xl font-bold ${COLORS.text.primary}`}>
+              Moliyaviy Hisobot
+            </h1>
+            <p className={`${COLORS.text.muted} text-sm md:text-base`}>
+              Tushumlar, chiqimlar va foydaning vizual ko'rinishi
+            </p>
+          </div>
         </div>
 
-        <div className="border-2 rounded-2xl shadow-xl p-6">
-          <h3 className="text-lg font-bold text-slate-900 mb-6">
-            {t("financialDashboard.statistics") || "Statistik Ma'lumotlar"}
+        <div className={`border-2 ${COLORS.border.card} rounded-2xl shadow-xl p-6 ${COLORS.background.card} transition-colors duration-300`}>
+          <h3 className={`text-lg font-bold ${COLORS.text.primary} mb-6`}>
+            Statistik Ma'lumotlar
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex justify-between items-center p-4 bg-emerald-50 rounded-lg">
-              <span className="text-sm text-slate-700">
-                {t("financialDashboard.averageIncome") || "O'rtacha tushum"}
-              </span>
-              <span className="font-bold text-emerald-700">14.2 {t("financialDashboard.currency")?.split(" ")[0] || "mln"}</span>
+            <div className={`flex justify-between items-center p-4 ${COLORS.tushumlar.light} rounded-lg border ${COLORS.tushumlar.border} transition-colors duration-300`}>
+              <span className={`text-sm ${COLORS.text.secondary}`}>O'rtacha tushum</span>
+              <span className={`font-bold ${COLORS.tushumlar.text}`}>14.2 mln</span>
             </div>
-            <div className="flex justify-between items-center p-4 bg-amber-50 rounded-lg">
-              <span className="text-sm text-slate-700">
-                {t("financialDashboard.averageExpense") || "O'rtacha chiqim"}
-              </span>
-              <span className="font-bold text-amber-700">8.7 {t("financialDashboard.currency")?.split(" ")[0] || "mln"}</span>
+            <div className={`flex justify-between items-center p-4 ${COLORS.chiqimlar.light} rounded-lg border ${COLORS.chiqimlar.border} transition-colors duration-300`}>
+              <span className={`text-sm ${COLORS.text.secondary}`}>O'rtacha chiqim</span>
+              <span className={`font-bold ${COLORS.chiqimlar.text}`}>8.7 mln</span>
             </div>
-            <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
-              <span className="text-sm text-slate-700">
-                {t("financialDashboard.averageProfit") || "O'rtacha foyda"}
-              </span>
-              <span className="font-bold text-blue-700">5.5 {t("financialDashboard.currency")?.split(" ")[0] || "mln"}</span>
+            <div className={`flex justify-between items-center p-4 ${COLORS.foyda.light} rounded-lg border ${COLORS.foyda.border} transition-colors duration-300`}>
+              <span className={`text-sm ${COLORS.text.secondary}`}>O'rtacha foyda</span>
+              <span className={`font-bold ${COLORS.foyda.text}`}>5.5 mln</span>
             </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 border shadow-md rounded-2xl p-6">
+          <div className="lg:col-span-2 border shadow-md rounded-2xl p-6 bg-white dark:bg-gray-800 transition-colors duration-300">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-xl font-bold text-slate-900">
-                  {getCategoryLabel(category)} {t("financialDashboard.diagram") || "Diagrammasi"}
+                <h2 className={`text-xl font-bold ${COLORS.text.primary}`}>
+                  {category === "tushumlar" ? "Tushumlar" : category === "chiqimlar" ? "Chiqimlar" : "Foyda"} Diagrammasi
                 </h2>
-                <p className="text-sm mt-1">
-                  {getRangeLabel(range)} {t("financialDashboard.view") || "ko'rinish"}
+                <p className={`text-sm mt-1 ${COLORS.text.muted}`}>
+                  {range === "yillik" ? "Yillik" : range === "oylik" ? "Oylik" : "Haftalik"} ko'rinish
                 </p>
               </div>
-              <div
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl ${getCategoryColor(
-                  category
-                )} text-white`}
-              >
+              <div className={`flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r ${darkMode ? COLORS[category].gradientDark : COLORS[category].gradient} ${COLORS.text.light} transition-colors duration-300`}>
                 {getCategoryIcon(category)}
               </div>
             </div>
@@ -406,7 +363,7 @@ export default function FinancialDashboard() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-3 mt-6">
-              {(["yearly", "monthly", "weekly"] as Range[]).map((r) => (
+              {(["yillik", "oylik", "haftalik"] as Range[]).map((r) => (
                 <button
                   key={r}
                   onClick={() => setRange(r)}
@@ -416,27 +373,9 @@ export default function FinancialDashboard() {
                       : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 shadow-lg"
                   }`}
                 >
-                  {getRangeLabel(r)}
+                  {r === "yillik" ? "Yillik" : r === "oylik" ? "Oylik" : "Haftalik"}
                 </button>
               ))}
-            </div>
-
-            <div
-              className={`mt-6 p-4 rounded-xl bg-gradient-to-r ${getCategoryColor(
-                category
-              )} text-white`}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm opacity-90">
-                    {t("financialDashboard.totalAmount") || "Jami miqdor"}
-                  </p>
-                  <p className="text-3xl font-bold mt-1">
-                    {totalAmount.toFixed(1)} {t("financialDashboard.currency")?.split(" ")[0] || "mln"}
-                  </p>
-                </div>
-                <DollarSign className="w-12 h-12 opacity-50" />
-              </div>
             </div>
           </div>
 
@@ -444,46 +383,42 @@ export default function FinancialDashboard() {
             <div className={`border-2 ${COLORS.border.card} rounded-2xl shadow-xl p-6 ${COLORS.background.card} transition-colors duration-300`}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <PieChart className="w-5 h-5 text-emerald-600" />
-                  <h3 className="text-lg font-bold text-slate-900">
-                    {t("financialDashboard.currentMonthIncome") || "Hozirgi Oy Tushumlari"}
+                  <PieChart className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                  <h3 className={`text-lg font-bold ${COLORS.text.primary}`}>
+                    Hozirgi Oy Tushumlari
                   </h3>
                 </div>
                 <div className="flex items-center gap-2">
-                  {(["income", "expenses", "profit"] as Category[]).map(
-                    (cat) => (
-                      <button
-                        key={cat}
-                        onClick={() => setCategory(cat)}
-                        className={`p-2.5 rounded-lg transition-all duration-300 ${
-                          category === cat
-                            ? `bg-gradient-to-r ${getCategoryColor(
-                                cat
-                              )} text-white shadow-lg`
-                            : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                        }`}
-                        title={getCategoryLabel(cat)}
-                      >
-                        {getCategoryIcon(cat)}
-                      </button>
-                    )
-                  )}
+                  {(["tushumlar", "chiqimlar", "foyda"] as Category[]).map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setCategory(cat)}
+                      className={`p-2.5 rounded-lg transition-all duration-300 ${
+                        category === cat
+                          ? `bg-gradient-to-r ${darkMode ? COLORS[cat].gradientDark : COLORS[cat].gradient} ${COLORS.text.light} shadow-lg`
+                          : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      }`}
+                      title={cat === "tushumlar" ? "Tushumlar" : cat === "chiqimlar" ? "Chiqimlar" : "Foyda"}
+                    >
+                      {getCategoryIcon(cat)}
+                    </button>
+                  ))}
                 </div>
               </div>
               <div className="w-full h-[220px]">
                 <Doughnut data={currentMonthChartData} options={pieChartOptions} />
               </div>
-              <div className="mt-4 p-4 bg-emerald-50 rounded-lg">
-                <p className="text-sm text-emerald-700 font-medium">
-                  {t("financialDashboard.total") || "Jami"}: {currentMonthData.income.reduce((a, b) => a + b, 0)} {t("financialDashboard.currency") || "mln so'm"}
+              <div className={`mt-4 p-4 ${COLORS.tushumlar.light} rounded-lg border ${COLORS.tushumlar.border} transition-colors duration-300`}>
+                <p className={`text-sm ${COLORS.tushumlar.text} font-medium`}>
+                  Jami: {currentMonthData.tushumlar.reduce((a, b) => a + b, 0)} mln so'm
                 </p>
               </div>
             </div>
 
-            {category === "expenses" && (
-              <div className="bg-white rounded-2xl shadow-xl p-6">
-                <h3 className="text-lg font-bold text-slate-900 mb-4">
-                  {t("financialDashboard.expenseTypes") || "Chiqimlar Turlari"}
+            {category === "chiqimlar" && (
+              <div className={`border ${COLORS.border.card} rounded-2xl shadow-xl p-6 ${COLORS.background.card} transition-colors duration-300`}>
+                <h3 className={`text-lg font-bold ${COLORS.text.primary} mb-4`}>
+                  Chiqimlar Turlari
                 </h3>
                 <div className="w-full h-[220px]">
                   <Pie data={chiqimDetails} options={pieChartOptions} />
