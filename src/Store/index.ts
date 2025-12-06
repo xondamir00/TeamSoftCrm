@@ -13,9 +13,10 @@ export type User = {
   lastname: string;
   isActive: boolean;
 };
+
 export interface Teacher {
   id: string;
-  isActive:boolean;
+  isActive: boolean;
   fullName?: string;
   firstName: string;
   lastName: string;
@@ -23,6 +24,7 @@ export interface Teacher {
   createdAt: string;
   photoUrl?: string | null;
 }
+
 export interface CreateTeacherPayload {
   firstName: string;
   lastName: string;
@@ -32,6 +34,7 @@ export interface CreateTeacherPayload {
   monthlySalary?: number | null;
   percentShare?: number | null;
 }
+
 export interface Group {
   groupId: string;
   groupName: string;
@@ -44,14 +47,8 @@ export interface Group {
   endTime?: string;
   daysPattern?: string;
 }
-export type StudentStatus = "PRESENT" | "ABSENT" | "UNKNOWN";
 
-export interface Student {
-  studentId: string;
-  fullName: string;
-  status: StudentStatus;
-  comment?: string | null;
-}
+export type StudentStatus = "PRESENT" | "ABSENT" | "UNKNOWN";
 
 export interface Sheet {
   sheetId: string;
@@ -63,18 +60,14 @@ export interface Sheet {
     name: string;
     room?: { name: string } | null;
   };
-  students: Student[];
+  students: Array<{
+    studentId: string;
+    fullName: string;
+    status: StudentStatus;
+    comment?: string | null;
+  }>;
 }
 
-export interface Student {
-  id: string;
-  userId: string;
-  fullName: string;
-  phone: string;
-  isActive: boolean;
-  dateOfBirth?: string;
-  startDate?: string;
-}
 export interface Enrollment {
   id: string;
   studentId: string;
@@ -83,7 +76,6 @@ export interface Enrollment {
   createdAt: string;
   updatedAt: string;
 
-  // backend join qaytarsa optional
   student?: {
     id: string;
     firstName: string;
@@ -95,7 +87,7 @@ export interface Enrollment {
     name: string;
   };
 }
-// types/index.ts ga qo'shing
+
 export interface StudentGroup {
   enrollmentId: string;
   groupId: string;
@@ -128,6 +120,20 @@ export interface StudentWithGroups {
   groups: StudentGroup[];
   totalGroups: number;
 }
+
+// ApiError interfeysini qo'shamiz
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+      errors?: string[];
+      [key: string]: unknown;
+    };
+    status?: number;
+  };
+  message: string;
+}
+
 type AuthState = {
   token: string | null;
   refreshToken: string | null;
@@ -145,15 +151,6 @@ type AuthState = {
     newPassword: string
   ) => Promise<void>;
 };
-export interface Student {
-  id: string;
-  fullName: string;
-  phone: string;
-  isActive: boolean;
-  dateOfBirth?: string;
-  startDate?: string;
-  createdAt?: string;
-}
 
 export const useAuth = create<AuthState>()(
   persist(
@@ -169,25 +166,44 @@ export const useAuth = create<AuthState>()(
 
       changing: false,
       changeError: null,
-      async changePassword(currentPassword, newPassword) {
+      async changePassword(currentPassword: string, newPassword: string) {
         set({ changing: true, changeError: null });
+        
         try {
           const { data } = await api.post("/auth/change-password", {
             currentPassword,
             newPassword,
           });
+          
           const u = get().user;
-          if (u) set({ user: { ...u, mustChangePassword: false } });
+          if (u) {
+            set({ user: { ...u, mustChangePassword: false } });
+          }
+          
           console.log(data.message);
-        } catch (err: any) {
-          const msg =
-            err?.response?.data?.message ||
-            (Array.isArray(err?.response?.data)
-              ? err.response.data.join(", ")
-              : "") ||
-            "Parolni almashtirishda xatolik";
-          set({ changeError: msg });
-          throw err;
+        } catch (err: unknown) {
+          let errorMessage = "Parolni almashtirishda xatolik";
+          
+          // Type-safe error handling
+          if (err && typeof err === 'object') {
+            const error = err as ApiError;
+            
+            // 1. API dan kelgan xabar
+            if (error.response?.data?.message) {
+              errorMessage = error.response.data.message;
+            } 
+            // 2. Array formatdagi xatolar
+            else if (Array.isArray(error.response?.data)) {
+              errorMessage = error.response.data.join(", ");
+            }
+            // 3. Standart error message
+            else if (error.message && typeof error.message === 'string') {
+              errorMessage = error.message;
+            }
+          }
+          
+          set({ changeError: errorMessage });
+          throw err; // Original error'ni throw qilish
         } finally {
           set({ changing: false });
         }
