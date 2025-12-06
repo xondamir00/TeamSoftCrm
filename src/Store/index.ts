@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { api } from "../Service/api";
+import type { Room } from "./room";
 
 export type Role = "admin" | "teacher" | "MANAGER" | "USER";
 
@@ -13,6 +14,40 @@ export type User = {
   lastname: string;
   isActive: boolean;
 };
+
+export interface Props {
+  onClose?: () => void;
+  onSuccess?: () => void;
+}
+
+interface Schedule {
+  mode: "ODD" | "EVEN" | "CUSTOM";
+  startTime: string;
+  endTime: string;
+  days: string[];
+}
+
+export interface FormState {
+  name: string;
+  roomId: string;
+  capacity: number;
+  monthlyFee: number;
+  schedule: Schedule;
+}
+
+export interface AddGroupFormProps {
+  editingGroup?: {
+    id: string;
+    name: string;
+    room?: Room;
+    capacity?: number;
+    monthlyFee?: number;
+    schedule?: Schedule;
+  } | null;
+  onSuccess?: () => void;
+}
+
+
 export interface Teacher {
   id: string;
   isActive:boolean;

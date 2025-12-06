@@ -2,20 +2,21 @@ import { create } from "zustand";
 import { api } from "@/Service/api";
 
 export interface Student {
-  id: string;
+  id: string; // yoki number
   fullName: string;
   phone?: string;
 }
 
+
 export interface Group {
-  id: string;
+  id: number; // string -> number
   name: string;
 }
 
 export interface Enrollment {
-  id: string;
-  studentId: string;
-  groupId: string;
+  id: number; // string -> number
+  studentId: number; // string -> number
+  groupId: number; // string -> number
   joinDate?: string;
 }
 

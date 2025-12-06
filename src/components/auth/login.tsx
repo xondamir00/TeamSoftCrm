@@ -1,3 +1,4 @@
+// src/pages/Login.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -35,11 +36,12 @@ export function Login() {
         setError(t("error_invalid"));
         return;
       }
-      console.log(data);
 
+      // Store ga tokenlarni saqlash
       login(accessToken, refreshToken, user);
 
-      switch (user.role) {
+      // Role bo'yicha yo'naltirish
+      switch (user.role.toUpperCase()) {
         case "ADMIN":
         case "MANAGER":
           navigate("/admin");
@@ -52,14 +54,12 @@ export function Login() {
           break;
       }
     } catch (err: any) {
-      setError(t("error_invalid"));
+      console.error("Login error:", err);
+      setError(err.response?.data?.message || t("error_invalid"));
     } finally {
       setLoading(false);
     }
   };
-
-  console.log('Sending phone:', phone);
-console.log('Sending password:', password);
 
   return (
     <div className="relative min-h-screen flex flex-col md:flex-row items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">

@@ -75,7 +75,7 @@ export default function TrashTeacherPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.7, x: 40 }}
                 transition={{ duration: 0.25 }}
-                className="flex justify-between items-center p-3 rounded-lg border bg-red-50 shadow-sm hover:bg-red-100 transition"
+                className="flex justify-between items-center p-3 rounded-lg border shadow-sm  transition"
               >
                 <div>
                   <p className="font-medium line-through text-red-700">

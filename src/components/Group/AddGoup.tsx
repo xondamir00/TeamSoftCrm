@@ -1,39 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { GroupService } from "@/Store/group";
-import { api } from "@/Service/api";
-
-interface Schedule {
-  mode: "ODD" | "EVEN" | "CUSTOM";
-  startTime: string;
-  endTime: string;
-  days: string[];
-}
-
-interface FormState {
-  name: string;
-  roomId: string;
-  capacity: number;
-  monthlyFee: number;
-  schedule: Schedule;
-}
-
-interface AddGroupFormProps {
-  editingGroup?: {
-    id: string;
-    name: string;
-    room?: Room;
-    capacity?: number;
-    monthlyFee?: number;
-    schedule?: Schedule;
-  } | null;
-  onSuccess?: () => void;
-}
-
-interface Room {
-  id: string;
-  name: string;
-}
+import { GroupService, type GroupPayload } from "@/Store/group";
+import type { Room } from "@/Store/room";
+import type { AddGroupFormProps, FormState } from "@/Store";
 
 export default function AddGroupForm({
   editingGroup,
