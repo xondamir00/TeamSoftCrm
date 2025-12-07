@@ -16,18 +16,25 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useTranslation } from "react-i18next";
 import { useEnrollmentStore } from "@/Store/Enrollment";
-import type { Student, Group } from "@/Store/Enrollment";
+
+// Props interface'ini qo'shamiz
+interface Props {
+  onClose: () => void;
+  onSuccess?: () => void;
+}
 
 export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
   const { t } = useTranslation();
 
-  const [localStudents, setLocalStudents] = useState<Student[]>([]);
-  const [localGroups, setLocalGroups] = useState<Group[]>([]);
+  const [localStudents, setLocalStudents] = useState<any[]>([]);
+  const [localGroups, setLocalGroups] = useState<any[]>([]);
   const [studentId, setStudentId] = useState<string>("");
   const [groupId, setGroupId] = useState<string>("");
   const [joinDate, setJoinDate] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Store'dan ma'lumotlarni olish
   const { 
     students: storeStudents, 
     groups: storeGroups, 
@@ -53,35 +60,39 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
   }, [fetchStudents, fetchGroups, t]);
 
   useEffect(() => {
-    setLocalStudents(storeStudents);
-    setLocalGroups(storeGroups);
+    setLocalStudents(storeStudents || []);
+    setLocalGroups(storeGroups || []);
   }, [storeStudents, storeGroups]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!studentId || !groupId) {
-      setError(t("select_student_group"));
+      setError(t("select_student_group") || "Talaba va guruhni tanlang");
       return;
     }
+    
     setLoading(true);
     try {
-      const enrollmentData = {
+      const enrollmentData: any = {
         studentId: studentId,
         groupId: groupId,
       };
+      
       if (joinDate && joinDate.trim()) {
-        Object.assign(enrollmentData, { joinDate: joinDate });
+        enrollmentData.joinDate = joinDate;
       }
+      
       await createEnrollment(enrollmentData);
       onSuccess?.();
       onClose?.();
     } catch (err: any) {
-      setError(err.response?.data?.message || t("server_error"));
+      setError(err.response?.data?.message || t("server_error") || "Server xatosi");
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <motion.div
       className="fixed inset-0 z-50 flex justify-end bg-black bg-opacity-20"
@@ -106,18 +117,18 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
           <X className="w-5 h-5" />
         </button>
 
-        <h2 className="text-2xl font-bold mb-4">{t("create_enrollment")}</h2>
+        <h2 className="text-2xl font-bold mb-4">{t("create_enrollment") || "Yangi qo'shilish yaratish"}</h2>
 
         {error && (
           <AlertDialog open={!!error} onOpenChange={() => setError(null)}>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t("error_occurred")}</AlertDialogTitle>
+                <AlertDialogTitle>{t("error_occurred") || "Xatolik yuz berdi"}</AlertDialogTitle>
                 <AlertDialogDescription>{error}</AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel onClick={() => setError(null)}>
-                  {t("close")}
+                  {t("close") || "Yopish"}
                 </AlertDialogCancel>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -126,7 +137,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="student">{t("student")}</Label>
+            <Label htmlFor="student">{t("student") || "Talaba"}</Label>
             <select
               id="student"
               className="border rounded w-full p-2 mt-1"
@@ -135,7 +146,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
               disabled={loading}
               required
             >
-              <option value="">{t("select")}</option>
+              <option value="">{t("select") || "Tanlash"}</option>
               {localStudents.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.fullName}
@@ -145,7 +156,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
           </div>
 
           <div>
-            <Label htmlFor="group">{t("group")}</Label>
+            <Label htmlFor="group">{t("group") || "Guruh"}</Label>
             <select
               id="group"
               className="border rounded w-full p-2 mt-1"
@@ -154,7 +165,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
               disabled={loading}
               required
             >
-              <option value="">{t("select")}</option>
+              <option value="">{t("select") || "Tanlash"}</option>
               {localGroups.map((g) => (
                 <option key={g.id} value={g.id}>
                   {g.name}
@@ -164,7 +175,7 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
           </div>
 
           <div>
-            <Label htmlFor="joinDate">{t("join_date")}</Label>
+            <Label htmlFor="joinDate">{t("join_date") || "Qo'shilish sanasi"}</Label>
             <Input
               id="joinDate"
               type="date"
@@ -181,14 +192,15 @@ export default function CreateEnrollmentDrawer({ onClose, onSuccess }: Props) {
               type="button"
               disabled={loading}
             >
-              {t("cancel")}
+              {t("cancel") || "Bekor qilish"}
             </Button>
             <Button 
               type="submit" 
               disabled={loading}
+              className="bg-blue-600 hover:bg-blue-700"
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin mr-2 inline-block" />}
-              {t("create")}
+              {t("create") || "Yaratish"}
             </Button>
           </div>
         </form>

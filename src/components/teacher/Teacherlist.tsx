@@ -38,7 +38,7 @@ export default function TeacherList() {
   }, [fetchTeachers, fetchTeacherStats]);
 
   return (
-    <div className="h-screen overflow-hidden p-4">
+    <div className=" overflow-hidden p-4">
       <TeacherSearchBar />
       <TeacherStats />
       <TeacherTable />

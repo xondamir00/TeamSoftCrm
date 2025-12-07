@@ -41,8 +41,8 @@ export interface GroupModalProps {
   onSuccess: () => void;
 }
 export interface Group {
-  groupId: string;
-  groupName: string;
+  id: string;           // groupId emas
+  name: string;         // groupName emas
   room?: {
     id: string;
     name: string;
@@ -50,13 +50,13 @@ export interface Group {
   };
   startTime?: string;
   endTime?: string;
-   capacity: number;
+  capacity: number;
   monthlyFee: number;
-  schedule?:Schedule
-
+  schedule?: Schedule;
   daysPattern?: string;
+  isActive?: boolean;
+  course?: string;
 }
-
 export type StudentStatus = "PRESENT" | "ABSENT" | "UNKNOWN";
 
 export interface Sheet {
@@ -159,7 +159,24 @@ export interface Payment {
   createdAt: string;
   summary?: StudentFinanceSummary;
 }
-
+export interface Student {
+  id: number;
+  firstName: string;
+  lastName: string;
+  fullName: string; // required qilish
+  phone: string;
+  dateOfBirth: string; // required qilish
+  startDate: string; // required qilish
+  isActive: boolean;
+  address?: string; // ixtiyoriy qilish
+  email?: string;
+  avatar?: string;
+  groups?: Array<{
+    name: string;
+    course?: string;
+    schedule?: string;
+  }>;
+}
 export interface Expense {
   id: string;
   title: string;
@@ -190,6 +207,21 @@ export interface FinanceOverview {
   profit: number;
 }
 
+export interface FinanceSummary {
+  studentId: string;
+  totalCharges: number;
+  totalPaid: number;
+  debt: number;
+  lastPayments: Array<{
+    id: string;
+    amount: string;
+    method: string;
+    status: string;
+    paidAt: string;
+    comment?: string;
+    createdAt: string;
+  }>;
+}
 export interface FinanceStats {
   totalIncome: number;
   totalExpense: number;
