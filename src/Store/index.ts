@@ -143,7 +143,73 @@ export interface FormState {
   monthlyFee: number;
   schedule: Schedule;
 }
+// src/finance/types/finance.ts
+export interface Payment {
+  id: string;
+  studentId: string;
+  studentName?: string;
+  amount: number;
+  method: 'CASH' | 'CARD' | 'TRANSFER' | 'OTHER';
+  status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
+  paidAt: string;
+  reference?: string;
+  comment?: string;
+  recordedById: string;
+  recordedByName?: string;
+  createdAt: string;
+  summary?: StudentFinanceSummary;
+}
 
+export interface Expense {
+  id: string;
+  title: string;
+  category: 'SALARY' | 'RENT' | 'UTILITIES' | 'EQUIPMENT' | 'MARKETING' | 'OTHER';
+  amount: number;
+  method: 'CASH' | 'CARD' | 'TRANSFER' | 'OTHER';
+  paidAt: string;
+  note?: string;
+  recordedById: string;
+  recordedByName?: string;
+  createdAt: string;
+}
+
+export interface StudentFinanceSummary {
+  studentId: string;
+  totalCharges: number;
+  totalPaid: number;
+  debt: number;
+  lastPayments: Payment[];
+}
+
+export interface FinanceOverview {
+  from: Date;
+  to: Date;
+  method?: string;
+  totalIncome: number;
+  totalExpense: number;
+  profit: number;
+}
+
+export interface FinanceStats {
+  totalIncome: number;
+  totalExpense: number;
+  profit: number;
+  paymentCount: number;
+  expenseCount: number;
+}
+
+export interface ApiResponse<T> {
+  data?: T;
+  items?: T[];
+  meta?: {
+    total: number;
+    pages: number;
+    page: number;
+    limit: number;
+  };
+  message?: string;
+  error?: string;
+}
 export interface AddGroupFormProps {
   editingGroup?: Group;
   onSuccess?: () => void;

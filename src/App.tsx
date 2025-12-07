@@ -22,7 +22,7 @@ import ManagerList from "./components/Maneger/ManagerList";
 import Trash from "./components/page/trash";
 import StudentPage from "./components/Students/StudentPage";
 import Attendancepage from "./components/attendance/attendance-page";
-import FinanceDashboard from "./components/finance/FinanceDashboard";
+import FinancePage from "./components/page/Finance";
 
 const App = () => {
   return (
@@ -78,7 +78,7 @@ const App = () => {
             <Route path="settings/enrollments" element={<EnrollmentsPage />} />
             <Route path="rooms" element={<RoomsList />} />
             <Route path="groups" element={<Groups />} />
-             <Route path="finance" element={<FinanceDashboard />} />
+             <Route path="finance" element={<FinancePage />} />
           </Route>
 
           {/* Teacher routes */}
