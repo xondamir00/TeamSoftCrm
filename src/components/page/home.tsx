@@ -166,7 +166,7 @@ export default function FinanceDashboard() {
       "Iyul", "Avg", "Sen", "Okt", "Noy", "Dek"
     ];
     
-    const weeks = ["Hafta 1", "Hafta 2", "Hafta 3", "Hafta 4"];
+    const weeks = ["Hafta 1", "Hafta 22", "Hafta 3", "Hafta 4"];
     const weekdays = ["Du", "Se", "Cho", "Pa", "Ju", "Sha", "Yak"];
     
     let labels: string[];
