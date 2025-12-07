@@ -96,7 +96,10 @@ export const TeachingAssignmentsList = () => {
                 <td className="px-5 py-3 text-gray-700 dark:text-gray-300">{a.groupId}</td>
                 <td className="px-5 py-3 text-gray-700 dark:text-gray-200 capitalize">{a.role}</td>
                 <td className="px-5 py-3">
-                  <Badge variant={a.isActive ? "success" : "destructive"} className="px-3 py-1 text-sm">
+                  <Badge 
+                    variant={a.isActive ? "default" : "destructive"} 
+                    className={`px-3 py-1 text-sm ${a.isActive ? "bg-green-500 hover:bg-green-600" : ""}`}
+                  >
                     {a.isActive ? t("active") : t("inactive")}
                   </Badge>
                 </td>
@@ -118,7 +121,12 @@ export const TeachingAssignmentsList = () => {
           >
             <div className="flex justify-between items-center">
               <span className="font-semibold text-gray-800 dark:text-gray-200">{a.teacherId}</span>
-              <Badge variant={a.isActive ? "success" : "destructive"}>{a.isActive ? t("active") : t("inactive")}</Badge>
+              <Badge 
+                variant={a.isActive ? "default" : "destructive"} 
+                className={a.isActive ? "bg-green-500 hover:bg-green-600" : ""}
+              >
+                {a.isActive ? t("active") : t("inactive")}
+              </Badge>
             </div>
             <p className="text-gray-700 dark:text-gray-300 font-medium">{t("group_id")}: {a.groupId}</p>
             <p className="text-gray-700 dark:text-gray-200 capitalize">{t("role")}: {a.role}</p>

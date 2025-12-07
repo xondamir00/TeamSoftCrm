@@ -419,5 +419,48 @@
     "deletedSuccess": "Muvaffaqiyatli o'chirildi",
     "error": "Xatolik yuz berdi",
     "deleteError": "O'chirishda xatolik"
-  }
+  }, "finance_report": "Moliyaviy Hisobot",
+  "income_expense_profit": "Tushumlar, chiqimlar va foyda",
+
+  "tushumlar": "Tushumlar",
+  "chiqimlar": "Chiqimlar",
+  "foyda": "Foyda",
+
+  "chart": "Diagramma",
+  "current_month_income": "Hozirgi oy tushumlari",
+  "current_month": "Hozirgi oy",
+
+  "week1": "1-hafta",
+  "week2": "2-hafta",
+  "week3": "3-hafta",
+  "week4": "4-hafta",
+
+  "mln": "mln",
+  "mln_sum": "mln so'm",
+
+  "mon": "Du",
+  "tue": "Se",
+  "wed": "Cho",
+  "thu": "Pa",
+  "fri": "Ju",
+  "sat": "Sha",
+  "sun": "Ya",
+
+  "jan": "Yan",
+  "feb": "Fev",
+  "mar": "Mar",
+  "apr": "Apr",
+  "may": "May",
+  "jun": "Iyn",
+  "jul": "Iyl",
+  "aug": "Avg",
+  "sep": "Sen",
+  "oct": "Okt",
+  "nov": "Noy",
+  "dec": "Dek",
+
+  "yillik": "Yillik",
+  "oylik": "Oylik",
+  "haftalik": "Haftalik"
+
 }

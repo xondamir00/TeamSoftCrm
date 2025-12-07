@@ -1,4 +1,3 @@
-// components/TeacherTable.tsx
 import {
   Table,
   TableBody,
@@ -15,8 +14,6 @@ import type { Teacher } from "@/Store";
 
 export default function TeacherTable() {
   const { t } = useTranslation();
-  
-  // Store'dan kerakli ma'lumotlarni olish
   const { 
     teachers, 
     loading, 
@@ -26,13 +23,11 @@ export default function TeacherTable() {
     setDeleteDialogOpen 
   } = useTeacherStore();
 
-  // Edit handler
   const handleEdit = (teacher: Teacher) => {
     setSelectedTeacher(teacher);
     setOpenEditDrawer(true);
   };
 
-  // Delete handler
   const handleDelete = (teacher: Teacher) => {
     setSelectedTeacher(teacher);
     setDeleteDialogOpen(true);

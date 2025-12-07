@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { api } from "@/Service/api";
 import { GroupService, type Group } from "@/Store/group";
-import { useTranslation } from "react-i18next";
 import type { Room } from "@/Store/room";
 import { GroupTable } from "./GroupTable";
 import { DeleteModal } from "./DeleteModal";

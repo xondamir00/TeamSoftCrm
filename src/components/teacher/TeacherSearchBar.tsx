@@ -1,4 +1,3 @@
-// components/TeacherSearchBar.tsx
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Plus } from "lucide-react";

@@ -1,4 +1,3 @@
-// src/pages/Login.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -37,10 +36,8 @@ export function Login() {
         return;
       }
 
-      // Store ga tokenlarni saqlash
       login(accessToken, refreshToken, user);
 
-      // Role bo'yicha yo'naltirish
       switch (user.role.toUpperCase()) {
         case "ADMIN":
         case "MANAGER":
@@ -66,7 +63,7 @@ export function Login() {
       <img
         src="/public/loginbg/loginbg.avif"
         alt="background"
-        className="absolute inset-0 w-full h-full object-cover opacity-20 dark:opacity-10"
+        className="absolute inset-0 w-full h-full object-cover opacity-20 dark:opacity-10 select-none pointer-events-none"
       />
       <motion.div
         initial={{ opacity: 0, x: -40 }}
