@@ -2,33 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/Service/api";
-import { Loader2, Pencil, Trash2, Plus, Users, UserCheck, UserX } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { motion } from "framer-motion";
-import { GroupService } from "@/Store/group";
+import { GroupService, type Group } from "@/Store/group";
 import { useTranslation } from "react-i18next";
-import AddGroupForm from "./AddGoup";
-
-interface Group {
-  id: string;
-  name: string;
-  roomId?: string;
-  capacity?: number;
-  daysPattern?: string;
-  startTime?: string;
-  endTime?: string;
-  createdAt: string;
-  isActive?: boolean;
-}
-
-interface Room {
-  id: string;
-  name: string;
-}
+import type { Room } from "@/Store/room";
+import { GroupTable } from "./GroupTable";
+import { DeleteModal } from "./DeleteModal";
+import { PageHeader } from "./PageHeader";
+import { GroupStats } from "./GroupStatus";
+import { GroupModal } from "./Groupmodal";
 
 export default function GroupList() {
-  const { t } = useTranslation();
   const [groups, setGroups] = useState<Group[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(false);
@@ -50,7 +33,6 @@ export default function GroupList() {
       setLoading(false);
     }
   };
-
 
   const fetchRooms = async () => {
     try {
@@ -94,278 +76,52 @@ export default function GroupList() {
     }
   };
 
-  const getRoomName = (roomId?: string) => rooms.find(r => r.id === roomId)?.name || "-";
-
-  const openModal = (group: Group | null) => {
-    setEditingGroup(group);
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-    setEditingGroup(null);
-  };
-
-  const handleSuccess = () => {
-    closeModal();
-    fetchGroups();
-  };
-
   const activeGroups = groups.filter((g) => g.isActive !== false);
   const inactiveGroupsCount = groups.filter((g) => g.isActive === false).length;
 
   return (
     <div className="h-screen w-full bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-950 dark:via-blue-950 dark:to-slate-900 overflow-hidden flex flex-col transition-colors duration-300">
       <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-4 sm:p-6 lg:p-8 transition-colors duration-300">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-1">
-                {t("groupManagement.title") || "Group Management"}
-              </h1>
-              <p className="text-slate-600 dark:text-slate-400 text-sm">
-                {t("groupManagement.subtitle") || "Manage and track all groups"}
-              </p>
-            </div>
-            <div className="flex items-center">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 text-white p-3 rounded-2xl shadow-lg">
-                <Users className="w-6 h-6 sm:w-8 sm:h-8" />
-              </div>
-            </div>
-          </div>
+        <PageHeader
+          search={search}
+          onSearchChange={setSearch}
+          onAddGroup={() => setModalOpen(true)}
+        />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 rounded-xl p-4 border border-blue-200 dark:border-blue-800 transition-colors duration-300">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-blue-700 dark:text-blue-300 text-xs sm:text-sm font-medium mb-1">
-                    {t("groupManagement.totalGroups") || "Total Groups"}
-                  </p>
-                  <p className="text-2xl sm:text-3xl font-bold text-blue-900 dark:text-blue-100">
-                    {groups.length}
-                  </p>
-                </div>
-                <div className="bg-blue-500 dark:bg-blue-600 text-white p-2 sm:p-3 rounded-xl">
-                  <Users className="w-5 h-5 sm:w-6 sm:h-6" />
-                </div>
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900 rounded-xl p-4 border border-emerald-200 dark:border-emerald-800 transition-colors duration-300">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-emerald-700 dark:text-emerald-300 text-xs sm:text-sm font-medium mb-1">
-                    {t("groupManagement.activeGroups") || "Active Groups"}
-                  </p>
-                  <p className="text-2xl sm:text-3xl font-bold text-emerald-900 dark:text-emerald-100">
-                    {activeGroups.length}
-                  </p>
-                </div>
-                <div className="bg-emerald-500 dark:bg-emerald-600 text-white p-2 sm:p-3 rounded-xl">
-                  <UserCheck className="w-5 h-5 sm:w-6 sm:h-6" />
-                </div>
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 rounded-xl p-4 border border-slate-200 dark:border-slate-600 transition-colors duration-300">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-medium mb-1">
-                    {t("groupManagement.inactiveGroups") || "Inactive Groups"}
-                  </p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
-                    {inactiveGroupsCount}
-                  </p>
-                </div>
-                <div className="bg-slate-500 dark:bg-slate-600 text-white p-2 sm:p-3 rounded-xl">
-                  <UserX className="w-5 h-5 sm:w-6 sm:h-6" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <Input
-              placeholder={t("groupManagement.searchPlaceholder") || "Search groups..."}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="max-w-md dark:bg-gray-800 dark:text-gray-200"
-            />
-            <Button
-              className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md rounded-xl px-5 py-2"
-              onClick={() => openModal(null)}
-            >
-              <Plus className="w-4 h-4" /> {t("groupManagement.addGroup") || "Add Group"}
-            </Button>
-          </div>
-        </div>
-        <div className="mt-4 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-lg overflow-x-auto dark:shadow-black/40 bg-white dark:bg-gray-900 transition-colors duration-300">
-          <table className="w-full min-w-[600px]">
-            <thead className="bg-gray-100 dark:bg-gray-800/60">
-              <tr>
-                <th className="p-3 text-left dark:text-gray-200">
-                  {t("groupManagement.name") || "Name"}
-                </th>
-                <th className="p-3 text-left dark:text-gray-200">
-                  {t("groupManagement.room") || "Room"}
-                </th>
-                <th className="p-3 text-left dark:text-gray-200">
-                  {t("groupManagement.capacity") || "Capacity"}
-                </th>
-                <th className="p-3 text-left dark:text-gray-200">
-                  {t("groupManagement.days") || "Days"}
-                </th>
-                <th className="p-3 text-left dark:text-gray-200">
-                  {t("groupManagement.time") || "Time"}
-                </th>
-                <th className="p-3 text-right dark:text-gray-200">
-                  {t("groupManagement.actions") || "Actions"}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td
-                    colSpan={6}
-                    className="text-center py-6 dark:text-gray-300"
-                  >
-                    <Loader2 className="w-6 h-6 animate-spin mx-auto" />
-                    <p className="mt-2 text-sm dark:text-gray-400">
-                      {t("groupManagement.loading") || "Loading..."}
-                    </p>
-                  </td>
-                </tr>
-              ) : activeGroups.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={6}
-                    className="text-center py-6 dark:text-gray-400"
-                  >
-                    <Users className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-                    <p className="text-gray-500 dark:text-gray-400 font-medium">
-                      {t("groupManagement.noGroups") || "No groups found"}
-                    </p>
-                  </td>
-                </tr>
-              ) : (
-                activeGroups.map((g) => (
-                  <tr
-                    key={g.id}
-                    className="border-t dark:border-gray-800 transition-all hover:bg-gray-50 dark:hover:bg-gray-800/60"
-                  >
-                    <td className="p-3 dark:text-gray-200">{g.name}</td>
-                    <td className="p-3 dark:text-gray-200">
-                      {getRoomName(g.roomId)}
-                    </td>
-                    <td className="p-3 dark:text-gray-200">
-                      {g.capacity ?? "-"}
-                    </td>
-                    <td className="p-3 dark:text-gray-200">
-                      {g.daysPattern || "-"}
-                    </td>
-                    <td className="p-3 dark:text-gray-200">
-                      {formatTime(g.startTime)} - {formatTime(g.endTime)}
-                    </td>
-                    <td className="p-3 flex justify-end gap-2">
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        onClick={() => openModal(g)}
-                        className="rounded-xl dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/30"
-                        title={t("groupManagement.editGroup") || "Edit Group"}
-                      >
-                        <Pencil className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="destructive"
-                        onClick={() => setDeleteTarget(g)}
-                        className="rounded-xl hover:bg-red-700 dark:hover:bg-red-800"
-                        title={t("groupManagement.deleteGroup") || "Delete Group"}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-        {modalOpen && (
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-end z-50">
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.3 }}
-              className="bg-white dark:bg-gray-900 w-full sm:max-w-md h-full flex flex-col shadow-xl border-l border-gray-200 dark:border-gray-700"
-            >
-              <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between">
-                <h2 className="text-lg font-semibold dark:text-white">
-                  {editingGroup 
-                    ? t("groupManagement.editGroup") || "Edit Group"
-                    : t("groupManagement.addGroupTitle") || "Add Group"}
-                </h2>
-                <Button
-                  variant="outline"
-                  onClick={closeModal}
-                  className="rounded-xl dark:border-gray-600"
-                >
-                  {t("groupManagement.close") || "Close"}
-                </Button>
-              </div>
-              <div className="p-4 overflow-y-auto flex-1">
-                  <AddGroupForm
-                  editingGroup={editingGroup}
-                  onSuccess={() => {
-                    setModalOpen(false);
-                    fetchGroups();
-                  }}
-                />
-              </div>
-            </motion.div>
-          </div>
-        )}
-        {deleteTarget && (
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-xl max-w-sm w-full border border-gray-200 dark:border-gray-700"
-            >
-              <h2 className="text-lg font-semibold dark:text-white mb-2">
-                {t("groupManagement.deleteGroup") || "Delete Group"}
-              </h2>
-              <p className="dark:text-gray-300 mb-4">
-                {t("groupManagement.deleteConfirm", { name: deleteTarget.name }) || 
-                  `Are you sure you want to delete "${deleteTarget.name}"?`}
-              </p>
-              <div className="flex justify-end gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setDeleteTarget(null)}
-                  className="rounded-xl dark:border-gray-600"
-                >
-                  {t("groupManagement.cancel") || "Cancel"}
-                </Button>
-                <Button
-                  variant="destructive"
-                  onClick={handleDelete}
-                  className="rounded-xl"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      {t("groupManagement.loading") || "Loading..."}
-                    </>
-                  ) : (
-                    t("groupManagement.delete") || "Delete"
-                  )}
-                </Button>
-              </div>
-            </motion.div>
-          </div>
-        )}
+        <GroupStats
+          total={groups.length}
+          active={activeGroups.length}
+          inactive={inactiveGroupsCount}
+        />
+
+        <GroupTable
+          groups={activeGroups}
+          rooms={rooms}
+          loading={loading}
+          onEdit={(group) => {
+            setEditingGroup(group);
+            setModalOpen(true);
+          }}
+          onDelete={setDeleteTarget}
+          formatTime={formatTime}
+        />
+
+        <GroupModal
+          isOpen={modalOpen}
+          editingGroup={editingGroup}
+          onClose={() => {
+            setModalOpen(false);
+            setEditingGroup(null);
+          }}
+          onSuccess={fetchGroups}
+        />
+
+        <DeleteModal
+          group={deleteTarget}
+          loading={loading}
+          onCancel={() => setDeleteTarget(null)}
+          onConfirm={handleDelete}
+        />
       </div>
     </div>
   );

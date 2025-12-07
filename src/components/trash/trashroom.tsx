@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { api } from "@/Service/api";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -5,21 +7,21 @@ import { Button } from "@/components/ui/button";
 import { RotateCcw, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import type { Room } from "@/Store/room";
 
 export default function TrashRoomsPage() {
-  const [rooms, setRooms] = useState([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
   const { t } = useTranslation();
 
   const load = async () => {
-    const { data } = await api.get("/rooms");
-    setRooms(data.filter((r) => r.isActive === false));
+    const { data } = await api.get<Room[]>("/rooms");
+    setRooms(data.filter((r: Room) => r.isActive === false));
   };
-
   useEffect(() => {
     load();
   }, []);
 
-  const restore = async (id) => {
+  const restore = async (id: string) => {
     await api.patch(`/rooms/${id}`, { isActive: true });
     setRooms((prev) => prev.filter((x) => x.id !== id));
   };
@@ -30,12 +32,11 @@ export default function TrashRoomsPage() {
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-red-600 dark:text-red-600 flex items-center gap-2">
             <Trash2 className="h-5 w-5" />
-            {t("trashTitle")}
+            {t("trashTitle") || "Trash"}
           </CardTitle>
         </CardHeader>
 
         <CardContent className="space-y-3">
-
           {rooms.length === 0 && (
             <p className="text-center text-sm opacity-60 py-4 dark:text-gray-300">
               {t("emptyText")}
@@ -43,7 +44,7 @@ export default function TrashRoomsPage() {
           )}
 
           <AnimatePresence>
-            {rooms.map((r) => (
+            {rooms.map((r: Room) => (
               <motion.div
                 key={r.id}
                 initial={{ opacity: 0, y: 10 }}
@@ -68,12 +69,11 @@ export default function TrashRoomsPage() {
                   onClick={() => restore(r.id)}
                 >
                   <RotateCcw className="h-4 w-4" />
-                  {t("restore")}
+                  {t("restore") || "Restore"}
                 </Button>
               </motion.div>
             ))}
           </AnimatePresence>
-
         </CardContent>
       </Card>
     </div>
