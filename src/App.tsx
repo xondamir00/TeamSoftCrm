@@ -23,7 +23,7 @@ import StudentPage from "./components/Students/studentpage/StudentPage";
 import Attendancepage from "./components/attendance/attendance-page";
 import FinancePage from "./components/page/Finance";
 import Debtors from "./components/debtors/Debtors";
-import Home from "./components/page/home/Home";
+import FinanceDashboard from "./components/page/home";
 
 const App = () => {
   return (
@@ -42,7 +42,7 @@ const App = () => {
               </RoleRoute>
             }
           >
-            <Route index element={<Home />} /> {/* ✅ DEFAULT COMPONENT */}
+            <Route index element={<FinanceDashboard />} /> {/* ✅ DEFAULT COMPONENT */}
             <Route path="student/:id" element={<StudentPage />} />
             <Route path="settings" element={<Settings />} />
             <Route path="student" element={<ListStudent />} />

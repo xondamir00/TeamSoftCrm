@@ -25,10 +25,7 @@ import {
   AlertCircle,
   Loader2,
   BarChart3,
-  Calendar,
   Filter,
-  Download,
-  RefreshCw,
   ChevronRight
 } from "lucide-react";
 import { format, subMonths, startOfMonth, endOfMonth } from "date-fns";
