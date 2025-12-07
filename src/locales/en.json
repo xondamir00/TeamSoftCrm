@@ -422,5 +422,48 @@
     "deletedSuccess": "Deleted successfully",
     "error": "An error occurred",
     "deleteError": "Delete error"
-  }
+  },
+  "finance_report": "Financial Report",
+  "income_expense_profit": "Income, expenses and profit",
+
+  "tushumlar": "Income",
+  "chiqimlar": "Expenses",
+  "foyda": "Profit",
+
+  "chart": "Chart",
+  "current_month_income": "Current Month Income",
+  "current_month": "Current Month",
+
+  "week1": "Week 1",
+  "week2": "Week 2",
+  "week3": "Week 3",
+  "week4": "Week 4",
+
+  "mln": "mln",
+  "mln_sum": "mln sum",
+
+  "mon": "Mon",
+  "tue": "Tue",
+  "wed": "Wed",
+  "thu": "Thu",
+  "fri": "Fri",
+  "sat": "Sat",
+  "sun": "Sun",
+
+  "jan": "Jan",
+  "feb": "Feb",
+  "mar": "Mar",
+  "apr": "Apr",
+  "may": "May",
+  "jun": "Jun",
+  "jul": "Jul",
+  "aug": "Aug",
+  "sep": "Sep",
+  "oct": "Oct",
+  "nov": "Nov",
+  "dec": "Dec",
+
+  "yillik": "Yearly",
+  "oylik": "Monthly",
+  "haftalik": "Weekly"
 }
