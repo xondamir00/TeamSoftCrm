@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import type { Student } from "@/Store";
-import { useStudentStore } from "@/Store/Student";
+import { useStudentStore, type Student } from "@/Store/Student";
 
 interface RestoreStudentDialogProps {
   student: Student | null;

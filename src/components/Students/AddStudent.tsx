@@ -4,6 +4,12 @@ import React, { useState } from "react";
 import { api } from "@/Service/api";
 import { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2 } from "lucide-react";
 
 interface ApiError {
   message?: string;
@@ -27,7 +33,6 @@ export default function AddStudentForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setForm((prev) => ({
       ...prev,
       [name]: value,
@@ -47,7 +52,6 @@ export default function AddStudentForm() {
         groupId: form.groupId || undefined,
       };
 
-      // undefined fieldlarni tozalash:
       Object.keys(payload).forEach((key) => {
         if (payload[key as keyof typeof payload] === undefined) {
           delete payload[key as keyof typeof payload];
@@ -55,8 +59,7 @@ export default function AddStudentForm() {
       });
 
       await api.post("/students", payload);
-
-      setMessage(t("success"));
+      setMessage(t("success") || "Student added successfully!");
 
       setForm({
         firstName: "",
@@ -69,90 +72,151 @@ export default function AddStudentForm() {
       });
     } catch (error) {
       const err = error as AxiosError<ApiError>;
-      setMessage(err.response?.data?.message || t("error"));
+      setMessage(err.response?.data?.message || t("error") || "An error occurred");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-semibold mb-4">{t("add_student")}</h2>
+    <Card className="w-full p-2">
+      <CardHeader>
+        <CardTitle>{t("add_student") || "Add New Student"}</CardTitle>
+        <CardDescription>
+          {t("add_student_description") || "Fill in the student information below"}
+        </CardDescription>
+      </CardHeader>
+      
+      <CardContent>
+        {message && (
+          <Alert className={`mb-4 ${message.includes("error") ? "bg-red-50 text-red-800 dark:bg-red-950 dark:text-red-300" : "bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-300"}`}>
+            <AlertDescription>{message}</AlertDescription>
+          </Alert>
+        )}
 
-      {message && (
-        <p className="text-sm mb-3 text-center text-green-600">{message}</p>
-      )}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* First Name and Last Name - Horizontal on larger screens */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="firstName">
+                {t("first_name") || "First Name"} <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="firstName"
+                name="firstName"
+                value={form.firstName}
+                onChange={handleChange}
+                placeholder={t("first_name_placeholder") || "John"}
+                required
+              />
+            </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <input
-          name="firstName"
-          value={form.firstName}
-          onChange={handleChange}
-          placeholder={t("first_name")}
-          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-          required
-        />
+            <div className="space-y-2">
+              <Label htmlFor="lastName">
+                {t("last_name") || "Last Name"} <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="lastName"
+                name="lastName"
+                value={form.lastName}
+                onChange={handleChange}
+                placeholder={t("last_name_placeholder") || "Doe"}
+                required
+              />
+            </div>
+          </div>
 
-        <input
-          name="lastName"
-          value={form.lastName}
-          onChange={handleChange}
-          placeholder={t("last_name")}
-          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-          required
-        />
+          {/* Phone */}
+          <div className="space-y-2">
+            <Label htmlFor="phone">
+              {t("phone_number") || "Phone Number"} <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="phone"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              placeholder={t("phone_placeholder") || "+998901234567"}
+              required
+            />
+          </div>
 
-        <input
-          name="phone"
-          value={form.phone}
-          onChange={handleChange}
-          placeholder={t("phone_number")}
-          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-          required
-        />
+          {/* Password */}
+          <div className="space-y-2">
+            <Label htmlFor="password">
+              {t("password") || "Password"} <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              placeholder={t("password_placeholder") || "••••••••"}
+              required
+            />
+          </div>
 
-        <input
-          name="password"
-          type="password"
-          value={form.password}
-          onChange={handleChange}
-          placeholder={t("password")}
-          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-          required
-        />
+          {/* Date of Birth and Start Date */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="dateOfBirth">
+                {t("date_of_birth") || "Date of Birth"}
+              </Label>
+              <Input
+                id="dateOfBirth"
+                type="date"
+                name="dateOfBirth"
+                value={form.dateOfBirth}
+                onChange={handleChange}
+              />
+            </div>
 
-        <input
-          type="date"
-          name="dateOfBirth"
-          value={form.dateOfBirth}
-          onChange={handleChange}
-          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-        />
+            <div className="space-y-2">
+              <Label htmlFor="startDate">
+                {t("start_date") || "Start Date"}
+              </Label>
+              <Input
+                id="startDate"
+                type="date"
+                name="startDate"
+                value={form.startDate}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
 
-        <input
-          type="date"
-          name="startDate"
-          value={form.startDate}
-          onChange={handleChange}
-          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-        />
+          {/* Group ID */}
+          <div className="space-y-2">
+            <Label htmlFor="groupId">
+              {t("group_id_optional") || "Group ID (Optional)"}
+            </Label>
+            <Input
+              id="groupId"
+              name="groupId"
+              value={form.groupId}
+              onChange={handleChange}
+              placeholder={t("group_id_placeholder") || "Enter group ID"}
+            />
+          </div>
 
-        <input
-          name="groupId"
-          value={form.groupId}
-          onChange={handleChange}
-          placeholder={t("group_id_optional")}
-          className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700"
-        />
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-500 text-white rounded p-2 hover:bg-blue-600 disabled:opacity-60"
-        >
-          {loading ? t("loading") : t("add_button")}
-        </button>
-      </form>
-    </div>
+          {/* Submit Button */}
+          <Button 
+            type="submit" 
+            disabled={loading} 
+            className="w-full mt-2"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {t("loading") || "Adding..."}
+              </>
+            ) : (
+              t("add_button") || "Add Student"
+            )}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

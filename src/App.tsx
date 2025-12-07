@@ -10,7 +10,7 @@ import AddRoom from "./components/Rooms/addRoom";
 import RoomsList from "./components/Rooms/RoomsList";
 import Groups from "./components/Group/GroupList";
 import { Login } from "./components/auth/login";
-import ListStudent from "./components/Students/ListStudent";
+import ListStudent from "./components/Students/studentList/ListStudent";
 import EnrollmentsPage from "./components/page/EnrollmentsPage";
 import { TeachingAssignmentForm } from "./components/TeachingAssignmentsList/TeachingAssignmentForm";
 import { TeachingAssignmentsList } from "./components/TeachingAssignmentsList/TeachingAssignmentsList";
@@ -22,6 +22,7 @@ import ManagerList from "./components/Maneger/ManagerList";
 import Trash from "./components/page/trash";
 import StudentPage from "./components/Students/StudentPage";
 import Attendancepage from "./components/attendance/attendance-page";
+import FinanceDashboard from "./components/finance/FinanceDashboard";
 
 const App = () => {
   return (
@@ -77,6 +78,7 @@ const App = () => {
             <Route path="settings/enrollments" element={<EnrollmentsPage />} />
             <Route path="rooms" element={<RoomsList />} />
             <Route path="groups" element={<Groups />} />
+             <Route path="finance" element={<FinanceDashboard />} />
           </Route>
 
           {/* Teacher routes */}

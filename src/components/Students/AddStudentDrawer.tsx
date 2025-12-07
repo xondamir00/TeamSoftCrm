@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-
 import { X } from "lucide-react";
 import { Button } from "../ui/button";
 import AddStudentForm from "./AddStudent";
