@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { api } from "@/Service/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Edit, Trash2 } from "lucide-react";
@@ -13,11 +13,11 @@ import type { Room } from "@/Store/room";
 export default function RoomsPage() {
   const { t } = useTranslation();
 
-  const [rooms, setRooms] = useState<Room>([]);
+  const [rooms, setRooms] = useState<Room[]>([]); // Room[] deb to'g'irladim
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [capacity, setCapacity] = useState("");
-  const [editRoom, setEditRoom] = useState<Room>();
+  const [editRoom, setEditRoom] = useState<Room | null>(null); // null qo'shdim
 
   useEffect(() => {
     loadRooms();
@@ -25,14 +25,14 @@ export default function RoomsPage() {
 
   const loadRooms = async () => {
     try {
-      const { data } = await api.get("/rooms");
+      const { data } = await api.get<Room[]>("/rooms");
       setRooms(data.filter((x) => x.isActive !== false));
     } catch (err) {
       console.error("Xonalar yuklanmadi:", err);
     }
   };
 
-  const createRoom = async (e) => {
+  const createRoom = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -44,7 +44,7 @@ export default function RoomsPage() {
       setCapacity("");
       loadRooms();
     } catch (err) {
-      console.error("Xona qo‘shilmadi:", err);
+      console.error("Xona qo'shilmadi:", err);
     } finally {
       setLoading(false);
     }
@@ -64,12 +64,12 @@ export default function RoomsPage() {
     }
   };
 
-  const deleteRoom = async (id) => {
+  const deleteRoom = async (id: string) => {
     try {
       await api.patch(`/rooms/${id}`, { isActive: false });
       setRooms((prev) => prev.filter((x) => x.id !== id));
     } catch (err) {
-      console.error("Xona o‘chirilmadi:", err);
+      console.error("Xona o'chirilmadi:", err);
     }
   };
 
@@ -100,7 +100,7 @@ export default function RoomsPage() {
             <Input
               value={name}
               required
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
               placeholder={t("room_name")}
               className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"
             />
@@ -113,7 +113,7 @@ export default function RoomsPage() {
             <Input
               type="number"
               value={capacity}
-              onChange={(e) => setCapacity(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setCapacity(e.target.value)}
               placeholder={t("capacity")}
               className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"
             />
@@ -205,7 +205,7 @@ export default function RoomsPage() {
               <Label className="dark:text-neutral-300">{t("room_name")}</Label>
               <Input
                 value={editRoom.name}
-                onChange={(e) =>
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setEditRoom({ ...editRoom, name: e.target.value })
                 }
                 className="mt-1 dark:bg-bg-slate-900 dark:border-neutral-700 dark:text-white"
@@ -216,8 +216,8 @@ export default function RoomsPage() {
               <Label className="dark:text-neutral-300">{t("capacity")}</Label>
               <Input
                 type="number"
-                value={editRoom.capacity}
-                onChange={(e) =>
+                value={editRoom.capacity || ""}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setEditRoom({ ...editRoom, capacity: e.target.value })
                 }
                 className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"

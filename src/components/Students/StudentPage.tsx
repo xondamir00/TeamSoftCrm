@@ -94,7 +94,6 @@ const StudentPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 p-4 md:p-6">
       <div className="max-w-6xl mx-auto space-y-6">
-        {/* Back Button */}
         <Button
           onClick={() => navigate(-1)}
           variant="ghost"
@@ -103,8 +102,6 @@ const StudentPage = () => {
           <ChevronLeft className="w-4 h-4 mr-2" />
           {t("back")}
         </Button>
-
-        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-6">
             <Avatar className="w-24 h-24 border-4 border-white dark:border-slate-800 shadow-lg">
@@ -165,12 +162,8 @@ const StudentPage = () => {
             </Button>
           </div>
         </div>
-
-        {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Personal Info */}
             <Card className="border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
@@ -235,15 +228,12 @@ const StudentPage = () => {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Groups Info */}
             <Card className="border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
                   <BookOpen className="w-5 h-5" />
                   {t("groups")}
                 </h2>
-
                 {student.groups && student.groups.length > 0 ? (
                   <div className="flex flex-wrap gap-3">
                     {student.groups.map((group: any, index: number) => (
@@ -269,8 +259,6 @@ const StudentPage = () => {
               </CardContent>
             </Card>
           </div>
-
-          {/* Right Column */}
           <div className="space-y-6">
             <Card className="border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">

@@ -110,7 +110,6 @@ export default function AddTeacherForm({
 
   return (
     <div className="fixed inset-0 z-50">
-      {/* Overlay */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -118,14 +117,12 @@ export default function AddTeacherForm({
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
       />
 
-      {/* Drawer */}
       <motion.div
         initial={{ x: "100%" }}
         animate={{ x: 0 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="absolute right-0 top-0 h-full w-full sm:max-w-md bg-white dark:bg-slate-900 shadow-2xl flex flex-col border-l border-slate-200 dark:border-slate-700"
       >
-        {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200 dark:border-slate-700">
           <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
             {t("add_teacher")}
@@ -140,25 +137,18 @@ export default function AddTeacherForm({
             <X className="w-5 h-5" />
           </Button>
         </div>
-
-        {/* Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Error */}
             {error && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 p-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
-
-            {/* Success */}
             {success && (
               <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 p-3 rounded-lg text-sm">
                 {t("success")}
               </div>
             )}
-
-            {/* First Name */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                 {t("first_name")}
@@ -173,8 +163,6 @@ export default function AddTeacherForm({
                 disabled={loading}
               />
             </div>
-
-            {/* Last Name */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                 {t("last_name")}
@@ -189,8 +177,6 @@ export default function AddTeacherForm({
                 disabled={loading}
               />
             </div>
-
-            {/* Phone */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                 {t("phone")}
@@ -205,8 +191,6 @@ export default function AddTeacherForm({
                 disabled={loading}
               />
             </div>
-
-            {/* Password */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                 {t("password")}
@@ -221,8 +205,6 @@ export default function AddTeacherForm({
                 disabled={loading}
               />
             </div>
-
-            {/* Photo URL */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                 {t("photo_url")}
@@ -236,8 +218,6 @@ export default function AddTeacherForm({
                 disabled={loading}
               />
             </div>
-
-            {/* Monthly Salary */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                 {t("monthly_salary")}
@@ -251,8 +231,6 @@ export default function AddTeacherForm({
                 disabled={loading}
               />
             </div>
-
-            {/* Percent Share */}
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                 {t("percent_share")}
@@ -266,15 +244,11 @@ export default function AddTeacherForm({
                 disabled={loading}
               />
             </div>
-
-            {/* Note */}
             <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-xs text-slate-600 dark:text-slate-400">
               {t("note")}
             </div>
           </form>
         </div>
-
-        {/* Footer */}
         <div className="p-4 sm:p-6 border-t border-slate-200 dark:border-slate-700 flex gap-3">
           <Button
             variant="outline"

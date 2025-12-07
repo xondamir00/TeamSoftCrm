@@ -80,8 +80,6 @@ export default function EnrollmentPage() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 text-center drop-shadow-sm">
           {t("assign_students_to_group")}
         </h1>
-
-        {/* Search + Group Select */}
         <Card className="backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 shadow-xl border border-white/30 dark:border-slate-700/40">
           <CardContent className="p-6 flex flex-col md:flex-row gap-4 justify-between">
             <Input
@@ -108,8 +106,6 @@ export default function EnrollmentPage() {
             </Select>
           </CardContent>
         </Card>
-
-        {/* Students List */}
         <div className="space-y-4">
           {unassignedStudents.length === 0 ? (
             <p className="text-center text-gray-600 dark:text-gray-400 text-lg">

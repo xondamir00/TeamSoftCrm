@@ -1,4 +1,3 @@
-// components/TeacherList.tsx
 import { useEffect } from "react";
 import DeleteTeacherDialog from "./deleteTeacher";
 import UpdateTeacherDrawer from "./UpdateTeacherForm";
@@ -25,8 +24,6 @@ export default function TeacherList() {
     fetchTeacherStats,
     handleUpdated,
   } = useTeacherStore();
-
-  // Debounce search
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
@@ -35,7 +32,6 @@ export default function TeacherList() {
     return () => clearTimeout(handler);
   }, [search, setDebouncedSearch, setPage]);
 
-  // Initial fetch
   useEffect(() => {
     fetchTeachers();
     fetchTeacherStats();

@@ -1,4 +1,3 @@
-// components/TeacherPagination.tsx
 import { Button } from "@/components/ui/button";
 import useTeacherStore from "@/Store/teacherStore";
 import { useTranslation } from "react-i18next";
@@ -6,7 +5,6 @@ import { useTranslation } from "react-i18next";
 export default function TeacherPagination() {
   const { t } = useTranslation();
   
-  // Store'dan page bilan bog'liq ma'lumotlarni olish
   const { page, totalPages, setPage } = useTeacherStore();
 
   const handlePrevious = () => {
