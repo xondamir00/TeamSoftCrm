@@ -13,7 +13,7 @@ import {
   LineElement,
   Title,
 } from "chart.js";
-import { TrendingUp, TrendingDown, DollarSign, PieChart, Moon, Sun, Globe } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, PieChart, } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 ChartJS.register(

@@ -23,7 +23,7 @@ import StudentPage from "./components/Students/studentpage/StudentPage";
 import Attendancepage from "./components/attendance/attendance-page";
 import FinancePage from "./components/page/Finance";
 import Debtors from "./components/debtors/Debtors";
-import Home from "./components/page/home/home";
+import Home from "./components/page/home/Home";
 
 const App = () => {
   return (
