@@ -39,7 +39,6 @@ export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
   const [language, setLanguage] = useState<Language>("uz");
 
-  // Dark mode effect
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
@@ -50,7 +49,6 @@ export default function Home() {
     }
   }, [darkMode]);
 
-  // Check initial theme
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
@@ -58,12 +56,10 @@ export default function Home() {
     }
   }, []);
 
-  // Language change effect
   useEffect(() => {
     i18n.changeLanguage(language);
   }, [language]);
 
-  // Color definitions
   const COLORS = {
     tushumlar: {
       primary: "#10b981",
@@ -96,15 +92,11 @@ export default function Home() {
       border: "border-blue-200 dark:border-blue-800"
     }
   };
-
-  // Languages list
   const languages: { code: Language; name: string; flag: string }[] = [
     { code: "uz", name: "O'zbek", flag: "🇺🇿" },
     { code: "ru", name: "Русский", flag: "🇷🇺" },
     { code: "en", name: "English", flag: "🇺🇸" },
   ];
-
-  // Data sets
   const dataSets = {
     yillik: {
       labels: [t("jan"), t("feb"), t("mar"), t("apr"), t("may"), t("jun"), t("jul"), t("aug"), t("sep"), t("oct"), t("nov"), t("dec")],
@@ -132,11 +124,8 @@ export default function Home() {
     chiqimlar: [8, 10, 12, 14],
     foyda: [7, 8, 10, 11],
   };
-
   const selected = dataSets[range];
   const activeValues = selected[category];
-
-  // Chart data
   const chartData = {
     labels: selected.labels,
     datasets: [
@@ -237,8 +226,6 @@ export default function Home() {
       },
     },
   };
-
-  // Icons
   const getCategoryIcon = (cat: Category) => {
     switch (cat) {
       case "tushumlar": return <TrendingUp className="w-5 h-5" />;
@@ -250,8 +237,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto p-3 sm:p-4 md:p-6 lg:p-8 space-y-4 sm:space-y-6">
-        
-        {/* Header with controls */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="text-center sm:text-left">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-1">
@@ -262,7 +247,6 @@ export default function Home() {
             </p>
           </div>
         </div>
-        {/* Summary Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {(["tushumlar", "chiqimlar", "foyda"] as Category[]).map((cat) => {
             const total = currentMonthData[cat].reduce((a, b) => a + b, 0);
@@ -294,16 +278,12 @@ export default function Home() {
           })}
         </div>
 
-        {/* Main Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-          {/* Line Chart Section */}
           <div className="lg:col-span-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-4 sm:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 sm:mb-6">
               <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                 {t(category)} {t("chart")}
               </h2>
-              
-              {/* Category Buttons */}
               <div className="flex gap-2">
                 {(["tushumlar", "chiqimlar", "foyda"] as Category[]).map((cat) => (
                   <button
@@ -320,13 +300,9 @@ export default function Home() {
                 ))}
               </div>
             </div>
-
-            {/* Chart Container */}
             <div className="w-full h-64 sm:h-72 md:h-80 lg:h-96">
               <Line data={chartData} options={lineChartOptions} />
             </div>
-
-            {/* Range Selector */}
             <div className="flex gap-2 mt-4 sm:mt-6">
               {(["yillik", "oylik", "haftalik"] as Range[]).map((r) => (
                 <button
@@ -343,8 +319,6 @@ export default function Home() {
               ))}
             </div>
           </div>
-
-          {/* Pie Chart Section */}
           <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-4 sm:p-6">
             <div className="flex items-center gap-3 mb-4 sm:mb-6">
               <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
@@ -359,13 +333,9 @@ export default function Home() {
                 </p>
               </div>
             </div>
-
-            {/* Chart Container */}
             <div className="w-full h-56 sm:h-64 md:h-72">
               <Doughnut data={pieChartData} options={pieChartOptions} />
             </div>
-
-            {/* Stats Summary */}
             <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
               <div className="grid grid-cols-2 gap-3">
                 <div className="text-center p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">
