@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import Homelayout from "./components/layout/homelayout";
-import Home from "./components/page/home";
 import Teacherlayout from "./components/layout/teacherlayout";
 import Teacher from "./components/page/Teacher";
 import { RoleRoute } from "./role/role-route";
@@ -24,6 +23,7 @@ import StudentPage from "./components/Students/studentpage/StudentPage";
 import Attendancepage from "./components/attendance/attendance-page";
 import FinancePage from "./components/page/Finance";
 import Debtors from "./components/debtors/Debtors";
+import Home from "./components/page/home/home";
 
 const App = () => {
   return (
@@ -32,6 +32,7 @@ const App = () => {
         <Routes>
           {/* Public route */}
           <Route path="/sign" element={<Login />} />
+          
           {/* Admin routes */}
           <Route
             path="/admin"
@@ -41,8 +42,8 @@ const App = () => {
               </RoleRoute>
             }
           >
+            <Route index element={<Home />} /> {/* ✅ DEFAULT COMPONENT */}
             <Route path="student/:id" element={<StudentPage />} />
-            <Route index element={<Home />} />
             <Route path="settings" element={<Settings />} />
             <Route path="student" element={<ListStudent />} />
             <Route path="teachers" element={<TeacherList />} />
@@ -80,7 +81,7 @@ const App = () => {
             <Route path="rooms" element={<RoomsList />} />
             <Route path="groups" element={<Groups />} />
             <Route path="debtors" element={<Debtors/>}/>
-             <Route path="finance" element={<FinancePage />} />
+            <Route path="finance" element={<FinancePage />} />
           </Route>
 
           {/* Teacher routes */}

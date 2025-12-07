@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { User } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PaymentModal } from "@/components/Students/studentpage/paymetsmodal";
+import { PaymentModal } from "@/components/debtors/paymetsmodal";
 import { toast } from "sonner";
 import { StudentProfile } from "./StudentProfile";
 import { PersonalInfo } from "./PersonalInfo";
