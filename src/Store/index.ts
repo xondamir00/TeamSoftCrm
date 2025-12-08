@@ -2,7 +2,7 @@ import { api } from "@/Service/api";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { StudentFinanceSummary } from "./finance";
-import type { Group, Schedule } from "./Group/GroupInterface";
+import type {  Schedule } from "./Group/GroupInterface";
 
 export type Role = "admin" | "teacher" | "MANAGER" | "USER";
 
@@ -37,13 +37,7 @@ export interface Enrollment {
 }
 
 
-export interface FormState {
-  name: string;
-  roomId: string;
-  capacity: number;
-  monthlyFee: number;
-  schedule: Schedule;
-}
+
 // src/finance/types/finance.ts
 export interface Payment {
   id: string;

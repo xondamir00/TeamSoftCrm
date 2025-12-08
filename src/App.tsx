@@ -15,7 +15,7 @@ import { TeachingAssignmentsList } from "./components/TeachingAssignmentsList/Te
 import CreateStudentForm from "./components/form/addStudent";
 import TeacherList from "./Featured/teacher/Teacherlist";
 import AddManagerForm from "./components/form/AddManeger";
-import ManagerList from "./components/Maneger/ManagerList";
+import ManagerList from "./Featured/Maneger/ManagerList";
 import Trash from "./components/page/trash";
 import StudentPage from "./Featured/Students/StudentFinancepage/StudentPage";
 import FinancePage from "./components/page/Finance";

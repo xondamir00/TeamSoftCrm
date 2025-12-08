@@ -1,3 +1,4 @@
+import type { Schedule } from "../Group/GroupInterface";
 
 export interface Room {
   id: string;
@@ -18,3 +19,10 @@ export interface UpdateRoomPayload {
   isActive?: boolean;
 }
 
+export interface FormState {
+  name: string;
+  roomId: string;
+  capacity: number;
+  monthlyFee: number;
+  schedule: Schedule;
+}

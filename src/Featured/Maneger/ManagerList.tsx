@@ -15,26 +15,10 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { motion } from "framer-motion";
 import { Edit, Trash2 } from "lucide-react";
-import { managerAPI } from "./manager";
+import { managerAPI } from "../../Service/ManagerService";
 import { useTranslation } from "react-i18next";
+import type { FormData, Manager } from "@/Store/Meneger/MenegerInterface";
 
-interface Manager {
-  id: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  photoUrl?: string;
-  monthlySalary?: number;
-}
-
-interface FormData {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  password: string;
-  photoUrl: string;
-  monthlySalary: string;
-}
 
 export default function ManagerList() {
   const { t } = useTranslation();
