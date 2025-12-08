@@ -1,12 +1,7 @@
 import { create } from "zustand";
 import { api } from "@/Service/api";
 import type { Group } from "./Group/GroupInterface";
-
-export interface Student {
-  id: string; // Frontend uchun string
-  fullName: string;
-  phone?: string;
-}
+import type { Student } from "./Student/StudentInterface";
 
 
 export interface Enrollment {

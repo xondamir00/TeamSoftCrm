@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Room } from '../room';
+import type { Room } from '../Room/RoomInterface';
 
 export interface Group {
   id: string; // groupId emas
@@ -50,11 +50,16 @@ export interface GroupModalStore {
   isOpen: boolean;
   editingGroup: Group | null;
   openModal: (group?: Group | null) => void;
-  closeModal: () => void;
+  closeModal: () => void
   onSuccess?: () => void;
   setEditingGroup: (group: Group | null) => void;
 }
-
+export interface GroupModalProps {
+  isOpen: boolean;
+  editingGroup: Group | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}
 export interface StatCardProps {
   title: string;
   value: number;

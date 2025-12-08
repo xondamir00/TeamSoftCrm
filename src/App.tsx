@@ -5,16 +5,14 @@ import Teacher from "./components/page/Teacher";
 import { RoleRoute } from "./role/role-route";
 import { AuthRefresh } from "./components/auth/Auth-Refresh";
 import Settings from "./components/page/settings";
-import AddRoom from "./components/Rooms/addRoom";
-import RoomsList from "./components/Rooms/RoomsList";
-import Groups from "./Featured/Group/GroupList";
+import AddRoom from "./Featured/Rooms/addRoom";
+import RoomsList from "./Featured/Rooms/RoomsList";
 import { Login } from "./components/auth/login";
 import ListStudent from "./Featured/Students/studentList/ListStudent";
 import EnrollmentsPage from "./components/page/EnrollmentsPage";
 import { TeachingAssignmentForm } from "./components/TeachingAssignmentsList/TeachingAssignmentForm";
 import { TeachingAssignmentsList } from "./components/TeachingAssignmentsList/TeachingAssignmentsList";
 import CreateStudentForm from "./components/form/addStudent";
-import AddGroupForm from "./Featured/Group/AddGoup";
 import TeacherList from "./Featured/teacher/Teacherlist";
 import AddManagerForm from "./components/form/AddManeger";
 import ManagerList from "./components/Maneger/ManagerList";
@@ -24,6 +22,7 @@ import FinancePage from "./components/page/Finance";
 import Debtors from "./components/debtors/Debtors";
 import FinanceDashboard from "./components/page/home";
 import Attendancepage from "./Featured/Attendance/attendance-page";
+import GroupList from "./Featured/Group/GroupList";
 
 const App = () => {
   return (
@@ -71,13 +70,12 @@ const App = () => {
               element={<AddManagerForm />}
             />
             <Route path="settings/menegers-list" element={<ManagerList />} />
-            <Route path="settings/create-group" element={<AddGroupForm />} />
             <Route path="settings/create-room" element={<AddRoom />} />
             {/* Other admin pages */}
             <Route path="settings/archive" element={<Trash />} />
             <Route path="settings/enrollments" element={<EnrollmentsPage />} />
             <Route path="rooms" element={<RoomsList />} />
-            <Route path="groups" element={<Groups />} />
+            <Route path="groups" element={<GroupList />} />
             <Route path="debtors" element={<Debtors />} />
             <Route path="finance" element={<FinancePage />} />
           </Route>
