@@ -4,14 +4,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import type { Group } from "@/Store/group";
-
-interface DeleteModalProps {
-  group: Group | null;
-  loading: boolean;
-  onCancel: () => void;
-  onConfirm: () => void;
-}
+import type { DeleteModalProps } from "@/Store/Group/GroupInterface";
 
 export function DeleteModal({
   group,

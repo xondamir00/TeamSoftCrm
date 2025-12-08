@@ -4,12 +4,8 @@ import { Plus, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
+import type { PageHeaderProps } from "@/Store/Group/GroupInterface";
 
-interface PageHeaderProps {
-  search: string;
-  onSearchChange: (value: string) => void;
-  onAddGroup: () => void;
-}
 
 export function PageHeader({
   search,

@@ -7,7 +7,7 @@ import { DebtorList } from "@/components/debtors/debtorList";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Debtor } from "@/Store/debtor";
-import { debtorService } from "@/Service/debtorService";
+import { debtorService } from "@/Service/Debtor";
 
 const Debtors = () => {
   const [debtors, setDebtors] = useState<Debtor[]>([]);

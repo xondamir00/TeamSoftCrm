@@ -20,6 +20,18 @@ export interface Student {
 }
 export type StudentStatus = "PRESENT" | "ABSENT" | "UNKNOWN";
 
+export interface StudentWithGroups {
+  id: string;
+  fullName: string;
+  phone: string;
+  email?: string;
+  dateOfBirth?: string;
+  startDate?: string;
+  address?: string;
+  isActive: boolean;
+  groups: StudentGroup[];
+  totalGroups: number;
+}
 export interface DeleteStudentProps {
   student: Student | null;
   open: boolean;

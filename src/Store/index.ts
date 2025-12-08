@@ -1,8 +1,8 @@
 import { api } from "@/Service/api";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { StudentGroup } from "./Student/StudentInterface";
 import type { StudentFinanceSummary } from "./finance";
+import type { Group, Schedule } from "./Group/GroupInterface";
 
 export type Role = "admin" | "teacher" | "MANAGER" | "USER";
 
@@ -15,30 +15,6 @@ export type User = {
   lastname: string;
   isActive: boolean;
 };
-
-export interface GroupModalProps {
-  isOpen: boolean;
-  editingGroup: Group | null;
-  onClose: () => void;
-  onSuccess: () => void;
-}
-export interface Group {
-  id: string; // groupId emas
-  name: string; // groupName emas
-  room?: {
-    id: string;
-    name: string;
-    capacity?: number;
-  };
-  startTime?: string;
-  endTime?: string;
-  capacity: number;
-  monthlyFee: number;
-  schedule?: Schedule;
-  daysPattern?: string;
-  isActive?: boolean;
-  course?: string;
-}
 
 export interface Enrollment {
   id: string;
@@ -60,24 +36,6 @@ export interface Enrollment {
   };
 }
 
-export interface StudentWithGroups {
-  id: string;
-  fullName: string;
-  phone: string;
-  email?: string;
-  dateOfBirth?: string;
-  startDate?: string;
-  address?: string;
-  isActive: boolean;
-  groups: StudentGroup[];
-  totalGroups: number;
-}
-export interface Schedule {
-  mode: "ODD" | "EVEN" | "CUSTOM";
-  startTime: string;
-  endTime: string;
-  days: string[];
-}
 
 export interface FormState {
   name: string;
@@ -165,21 +123,7 @@ export interface ApiResponse<T> {
   message?: string;
   error?: string;
 }
-export interface AddGroupFormProps {
-  editingGroup?: Group;
-  onSuccess?: () => void;
-}
 
-export interface GroupPayload {
-  name: string;
-  capacity: number;
-  monthlyFee: number;
-  daysPattern: string;
-  startTime: string;
-  endTime: string;
-  days?: string[];
-  roomId?: string;
-}
 // ApiError interfeysini qo'shamiz
 export interface ApiError {
   response?: {

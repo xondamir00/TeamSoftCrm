@@ -3,17 +3,8 @@
 import { Loader2, Pencil, Trash2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
-import type { Group } from "@/Store/group";
-import type { Room } from "@/Store/room";
+import type { Group, GroupTableProps } from "@/Store/Group/GroupInterface";
 
-interface GroupTableProps {
-  groups: Group[];
-  rooms: Room[];
-  loading: boolean;
-  onEdit: (group: Group) => void;
-  onDelete: (group: Group) => void;
-  formatTime: (time?: string) => string;
-}
 
 export function GroupTable({
   groups,
@@ -63,7 +54,7 @@ export function GroupTable({
               <GroupRow
                 key={group.id}
                 group={group}
-                roomName={getRoomName(group.roomId)}
+                roomName={getRoomName(group.room?.id)}
                 formatTime={formatTime}
                 onEdit={onEdit}
                 onDelete={onDelete}

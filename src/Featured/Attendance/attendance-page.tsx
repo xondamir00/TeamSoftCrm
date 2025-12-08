@@ -102,7 +102,6 @@ const Attendancepage = () => {
       </div>
     );
   }
-console.log(group?.groupName);
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -116,8 +115,8 @@ console.log(group?.groupName);
               Davomat Jadvali
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-              {group?.groupName || `Guruh ${groupId}`}
-              {group?.room && ` • ${group.room.name}`}
+              {group?.name || `Guruh ${groupId}`}
+              {group?.roomId && ` `}
             </p>
           </div>
         </div>

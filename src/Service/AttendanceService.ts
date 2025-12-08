@@ -1,5 +1,5 @@
 import type { AttendanceState } from "@/Store/Attendance/Atendens";
-import type { Group } from "@/Store/group";
+import type { Group } from "@/Service/GroupService";
 import type { Sheet } from "@/Store/Teacher/SheetInterdace";
 import { create } from "zustand";
 import { api } from "./api";

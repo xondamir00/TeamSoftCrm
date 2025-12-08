@@ -2,18 +2,17 @@
 
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import AddGroupForm from "./AddGoup";
-import type { Group } from "@/Store/group";
-import type { GroupModalProps } from "@/Store";
+import type {  GroupModalStore } from "@/Store/Group/GroupInterface";
+import AddGroupForm from "../Group/AddGoup";
 
 
 
 export function GroupModal({
   isOpen,
   editingGroup,
-  onClose,
+  closeModal,
   onSuccess,
-}: GroupModalProps) {
+}: GroupModalStore) {
   if (!isOpen) return null;
 
   return (
@@ -25,13 +24,13 @@ export function GroupModal({
         transition={{ duration: 0.3 }}
         className="bg-white dark:bg-gray-900 w-full sm:max-w-md h-full flex flex-col shadow-xl border-l border-gray-200 dark:border-gray-700"
       >
-        <ModalHeader editingGroup={editingGroup} onClose={onClose} />
+        <ModalHeader editingGroup={editingGroup} onClose={closeModal} />
         <div className="p-4 overflow-y-auto flex-1">
           <AddGroupForm
             editingGroup={editingGroup}
             onSuccess={() => {
-              onClose();
-              onSuccess();
+              closeModal();
+              onSuccess?.();
             }}
           />
         </div>
@@ -40,12 +39,8 @@ export function GroupModal({
   );
 }
 
-interface ModalHeaderProps {
-  editingGroup: Group | null;
-  onClose: () => void;
-}
 
-function ModalHeader({ editingGroup, onClose }: ModalHeaderProps) {
+function ModalHeader({ editingGroup, closeModal }: GroupModalStore) {
   const title = editingGroup ? "Edit Group" : "Add Group";
   
   return (
@@ -53,7 +48,7 @@ function ModalHeader({ editingGroup, onClose }: ModalHeaderProps) {
       <h2 className="text-lg font-semibold dark:text-white">{title}</h2>
       <Button
         variant="outline"
-        onClick={onClose}
+        onClick={closeModal}
         className="rounded-xl dark:border-gray-600"
       >
         Close

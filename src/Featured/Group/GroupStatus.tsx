@@ -1,15 +1,11 @@
 "use client";
 
+import type { GroupsResponse, StatCardProps } from "@/Store/Group/GroupInterface";
 import { Users, UserCheck, UserX } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-interface GroupStatsProps {
-  total: number;
-  active: number;
-  inactive: number;
-}
 
-export function GroupStats({ total, active, inactive }: GroupStatsProps) {
+export function GroupStats({ total, active, inactive }: GroupsResponse) {
   const { t } = useTranslation();
 
   return (
@@ -34,13 +30,6 @@ export function GroupStats({ total, active, inactive }: GroupStatsProps) {
       />
     </div>
   );
-}
-
-interface StatCardProps {
-  title: string;
-  value: number;
-  icon: React.ReactNode;
-  color: "blue" | "emerald" | "slate";
 }
 
 function StatCard({ title, value, icon, color }: StatCardProps) {
