@@ -4,7 +4,7 @@ import { BookOpen, Check, X, Save, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CardHeader, CardTitle } from "@/components/ui/card";
-import type { SheetHeaderProps } from "@/Store/Atendens";
+import type { SheetHeaderProps } from "@/Store/Attendance/Atendens";
 
 
 const SheetHeader = ({ 

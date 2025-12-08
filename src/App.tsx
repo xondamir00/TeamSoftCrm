@@ -20,10 +20,10 @@ import AddManagerForm from "./components/form/AddManeger";
 import ManagerList from "./components/Maneger/ManagerList";
 import Trash from "./components/page/trash";
 import StudentPage from "./Featured/Students/StudentFinancepage/StudentPage";
-import Attendancepage from "./components/attendance/attendance-page";
 import FinancePage from "./components/page/Finance";
 import Debtors from "./components/debtors/Debtors";
 import FinanceDashboard from "./components/page/home";
+import Attendancepage from "./Featured/Attendance/attendance-page";
 
 const App = () => {
   return (
