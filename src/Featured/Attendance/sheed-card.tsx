@@ -1,18 +1,11 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import type { Sheet, StudentStatus } from "@/Store/index";
 import SheetHeader from "./sheed-header";
 import StudentsList from "./Attendance-List";
+import type { SheetCardProps } from "@/Store/Attendance/Atendens";
 
-interface SheetCardProps {
-  sheet: Sheet;
-  onStatusChange: (sheetId: string, studentId: string, status: StudentStatus) => void;
-  onAddComment: (sheetId: string, studentId: string) => void;
-  onSave: (sheetId: string) => void;
-  onDelete: (sheetId: string) => void;
-  saving: boolean;
-}
+
 
 const SheetCard = ({ 
   sheet, 

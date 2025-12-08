@@ -10,14 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Sheet, StudentStatus } from "@/Store/index";
+import type { StudentsListProps } from "@/Store/Attendance/Atendens";
+import type { StudentStatus } from "@/Store/Student/StudentInterface";
 
-interface StudentsListProps {
-  sheet: Sheet;
-  onStatusChange: (sheetId: string, studentId: string, status: StudentStatus) => void;
-  onAddComment: (sheetId: string, studentId: string) => void;
-  saving?: boolean;
-}
+
 
 const StudentsList = ({ 
   sheet, 
