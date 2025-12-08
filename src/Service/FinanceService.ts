@@ -6,7 +6,7 @@ import type {
   FinanceOverview,
   StudentFinanceSummary,
   ApiResponse,
-} from "../Store/finance";
+} from "../Store/FinanceInterface";
 
 class FinanceService {
   // To'lov yaratish - backend: POST /finance/payments

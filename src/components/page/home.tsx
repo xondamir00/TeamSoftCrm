@@ -31,6 +31,7 @@ import {
 import { format, subMonths, startOfMonth, endOfMonth } from "date-fns";
 import { financeApi, type Debtor, type GlobalBalance } from "./homeApi";
 import type { FinanceOverview } from "@/Store";
+import { Link } from "react-router-dom";
 
 // Chart.js elementlarini register qilish
 ChartJS.register(
@@ -359,7 +360,7 @@ export default function FinanceDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-950 transition-all duration-500">
+    <div className="min-h-screen bg-gradient-to-br transition-all duration-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 space-y-6 lg:space-y-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
@@ -557,33 +558,7 @@ export default function FinanceDashboard() {
 
           {/* Side Charts */}
           <div className="space-y-6 lg:space-y-8">
-            {/* Payment Methods */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 p-6 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20">
-                    <PieChart className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      To'lov usullari
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      To'lov turlari bo'yicha taqsimoti
-                    </p>
-                  </div>
-                </div>
-                <Filter className="w-5 h-5 text-gray-400" />
-              </div>
-              
-              <div className="w-full h-64">
-                <Doughnut 
-                  ref={doughnutChartRef}
-                  data={doughnutChartData} 
-                  options={doughnutChartOptions} 
-                />
-              </div>
-            </div>
+          
 
             {/* Finance Overview */}
             {financeOverview && (
@@ -649,7 +624,10 @@ export default function FinanceDashboard() {
                 </div>
                 
                 <button className="px-4 py-2.5 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white rounded-xl flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300">
+                <Link to={"debtors"}>
                   <span className="text-sm font-medium">Barchasini ko'rish</span>
+                
+                </Link>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
@@ -731,7 +709,7 @@ export default function FinanceDashboard() {
             {debtors.length > 5 && (
               <div className="p-4 border-t border-gray-200 dark:border-gray-700 text-center">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  ... va yana {debtors.length - 5} ta qarzdor ko'rsatilmagan
+                  ... va yana {debtors.length  -5} ta qarzdor ko'rsatilmagan
                 </p>
               </div>
             )}

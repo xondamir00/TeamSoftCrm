@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import type { FinanceStats } from '@/Store/finance';
+import type { FinanceStats } from '@/Store/FinanceInterface';
 import { DollarSign, TrendingUp, TrendingDown } from 'lucide-react';
 
 interface FinanceStatsProps {

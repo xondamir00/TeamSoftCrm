@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { DollarSign, TrendingDown } from "lucide-react";
 import { api } from "@/Service/api";
-import { type FinanceStats as FinanceStatsType } from "../../Store/finance";
+import { type FinanceStats as FinanceStatsType } from "../../Store/FinanceInterface";
 import CreatePaymentForm from "../finance/form/payment/CreatePaymentForm";
 import CreateExpenseForm from "../finance/form/expence/CreateExpenseForm";
 import FinanceStatss from "../finance/FinanceStats";
