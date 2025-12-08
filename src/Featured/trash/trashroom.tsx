@@ -1,29 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { api } from "@/Service/ApiService/api";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RotateCcw, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import type { Room } from "@/Store/room";
+import type { Room } from "@/Store/Room/RoomInterface";
+import { trashRoomService } from "@/Service/TrashService";
 
 export default function TrashRoomsPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const { t } = useTranslation();
 
-  const load = async () => {
-    const { data } = await api.get<Room[]>("/rooms");
-    setRooms(data.filter((r: Room) => r.isActive === false));
+  const loadRooms = async () => {
+    const data = await trashRoomService.getAll();
+    setRooms(data.items ?? []);
   };
+
   useEffect(() => {
-    load();
+    loadRooms();
   }, []);
 
-  const restore = async (id: string) => {
-    await api.patch(`/rooms/${id}`, { isActive: true });
-    setRooms((prev) => prev.filter((x) => x.id !== id));
+  const restoreRoom = async (id: string) => {
+    await trashRoomService.restore(id);
+    setRooms((prev) => prev.filter((r) => r.id !== id));
   };
 
   return (
@@ -66,7 +67,7 @@ export default function TrashRoomsPage() {
                   size="sm"
                   variant="outline"
                   className="flex items-center gap-1 border-red-400 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/40"
-                  onClick={() => restore(r.id)}
+                  onClick={() => restoreRoom(r.id)}
                 >
                   <RotateCcw className="h-4 w-4" />
                   {t("restore") || "Restore"}

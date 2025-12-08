@@ -1,32 +1,23 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { api } from "@/Service/ApiService/api";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RotateCcw, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-
-interface Student {
-  id: string;
-  fullName: string;
-  phone: string;
-  isActive: boolean;
-  dateOfBirth?: string;
-  startDate?: string;
-  createdAt?: string;
-}
+import { trashStudentService } from "@/Service/TrashService";
+import type { Student } from "@/Store/FinanceInterface";
 
 export default function TrashStudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
-  const load = async () => {
+  const loadStudents = async () => {
     try {
       setLoading(true);
-      const { data } = await api.get("/students", {
-        params: { isActive: false },
-      });
+      const data = await trashStudentService.getAll();
       setStudents(data.items ?? []);
     } finally {
       setLoading(false);
@@ -34,11 +25,11 @@ export default function TrashStudentsPage() {
   };
 
   useEffect(() => {
-    load();
+    loadStudents();
   }, []);
 
-  const restore = async (id: string) => {
-    await api.patch(`/students/${id}/restore`);
+  const restoreStudent = async (id: string) => {
+    await trashStudentService.restore(id);
     setStudents((prev) => prev.filter((s) => s.id !== id));
   };
 
@@ -88,7 +79,7 @@ export default function TrashStudentsPage() {
                   size="sm"
                   variant="outline"
                   className="flex items-center gap-1 border-red-400 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/40"
-                  onClick={() => restore(s.id)}
+                  onClick={() => restoreStudent(s.id)}
                 >
                   <RotateCcw className="h-4 w-4" />
                   {t("restore")}

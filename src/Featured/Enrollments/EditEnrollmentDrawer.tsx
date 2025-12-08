@@ -17,15 +17,9 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { useTranslation } from "react-i18next";
+import type { Enrollment } from "@/Store/Enrollment/EnrollmentInterface";
 
-interface Enrollment {
-  id: string;
-  status: "ACTIVE" | "PAUSED" | "LEFT";
-  joinDate: string;
-  leaveDate?: string;
-  student: { id: string; fullName: string };
-  group: { id: string; name: string };
-}
+
 
 interface Props {
   enrollment: Enrollment;

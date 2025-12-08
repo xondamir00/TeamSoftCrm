@@ -1,8 +1,8 @@
 // Store/teacherStore.ts
 import { create } from "zustand";
 import { api } from "@/Service/ApiService/api";
-import type { Teacher, TeacherState } from "../Store/Teacher/TeacherInterface";
 import type { Group } from "@/Store/Group/GroupInterface";
+import type { Teacher, TeacherState } from "@/Store/Teacher/TeacherInterface";
 
 const useTeacherStore = create<TeacherState>((set, get) => ({
   // Initial state

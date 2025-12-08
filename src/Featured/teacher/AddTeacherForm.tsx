@@ -8,7 +8,7 @@ import type {
   AddTeacherDrawerProps,
   CreateTeacherPayload,
 } from "@/Store/Teacher/TeacherInterface";
-import useTeacherStore from "@/Service/TeacherService";
+import useTeacherStore from "@/Service/TeacherService/TeacherService";
 
 export default function AddTeacherForm({
   open,

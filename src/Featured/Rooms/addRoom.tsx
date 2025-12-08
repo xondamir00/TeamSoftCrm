@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
-import { RoomService } from "@/Service/RoomService";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Edit, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -9,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Room } from "@/Store/Room/RoomInterface";
+import { RoomService } from "@/Service/RoomService/RoomService";
 
 export default function RoomsPage() {
   const { t } = useTranslation();

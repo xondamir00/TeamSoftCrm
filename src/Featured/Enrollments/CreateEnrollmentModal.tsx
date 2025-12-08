@@ -15,9 +15,8 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { useTranslation } from "react-i18next";
-import { useEnrollmentStore } from "@/Store/Enrollment";
+import { useEnrollmentStore } from "@/Service/EnrollmentService/EnrollmentService";
 
-// Props interface'ini qo'shamiz
 interface Props {
   onClose: () => void;
   onSuccess?: () => void;

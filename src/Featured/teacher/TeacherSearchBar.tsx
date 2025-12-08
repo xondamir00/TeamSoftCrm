@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import useTeacherStore from "@/Service/TeacherService";
+import useTeacherStore from "@/Service/TeacherService/TeacherService";
 
 export default function TeacherSearchBar() {
   const { t } = useTranslation();

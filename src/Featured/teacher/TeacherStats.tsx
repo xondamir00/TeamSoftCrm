@@ -1,6 +1,6 @@
+import useTeacherStore from "@/Service/TeacherService/TeacherService";
 import { Users, UserCheck, UserX } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import useTeacherStore from "@/Service/TeacherService";
 
 export default function TeacherStats() {
   const { t } = useTranslation();

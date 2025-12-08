@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import useTeacherStore from "@/Service/TeacherService";
+import useTeacherStore from "@/Service/TeacherService/TeacherService";
 
 export default function MyGroups() {
   const { t } = useTranslation();

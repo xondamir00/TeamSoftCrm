@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import SheetCard from "./sheed-card";
 import EmptyState from "./emty-state";
-import { useAttendanceStore } from "@/Service/AttendanceService";
+import { useAttendanceStore } from "@/Service/AtendanceService/AttendanceService";
 
 const Attendancepage = () => {
   const { groupId } = useParams<{ groupId: string }>();

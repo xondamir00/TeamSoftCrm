@@ -1,6 +1,6 @@
-import TrashRoomsPage from "../trash/trashroom";
-import TrashStudentsPage from "../trash/trashstudents";
-import TrashTeacherPage from "../trash/TrashTeacher";
+import TrashRoomsPage from "../components/trash/trashroom";
+import TrashStudentsPage from "../components/trash/trashstudents";
+import TrashTeacherPage from "../components/trash/TrashTeacher";
 
 const Trash = () => {
   return (

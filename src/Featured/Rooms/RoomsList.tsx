@@ -13,7 +13,7 @@ import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import type { AxiosError } from "axios";
 import type { Room } from "@/Store/Room/RoomInterface";
-import { RoomService } from "@/Service/RoomService";
+import { RoomService } from "@/Service/RoomService/RoomService";
 
 
 const RoomsList = () => {

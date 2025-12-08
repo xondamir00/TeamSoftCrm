@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import useTeacherStore from "@/Service/TeacherService";
+import useTeacherStore from "@/Service/TeacherService/TeacherService";
 import { useTranslation } from "react-i18next";
 
 export default function TeacherPagination() {

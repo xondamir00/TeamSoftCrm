@@ -9,8 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2, Pencil, Trash2, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import useTeacherStore from "@/Service/TeacherService";
 import type { Teacher } from "@/Store/Teacher/TeacherInterface";
+import useTeacherStore from "@/Service/TeacherService/TeacherService";
 
 export default function TeacherTable() {
   const { t } = useTranslation();

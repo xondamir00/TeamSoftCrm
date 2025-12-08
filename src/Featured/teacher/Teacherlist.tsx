@@ -6,7 +6,7 @@ import TeacherSearchBar from "./TeacherSearchBar";
 import TeacherStats from "./TeacherStats";
 import TeacherTable from "./TeacherTable";
 import TeacherPagination from "./TeacherPageNavigation";
-import useTeacherStore from "@/Service/TeacherService";
+import useTeacherStore from "@/Service/TeacherService/TeacherService";
 
 export default function TeacherList() {
   const {

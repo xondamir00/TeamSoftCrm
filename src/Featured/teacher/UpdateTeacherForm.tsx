@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { X, Loader2 } from "lucide-react";
 import type { AddTeacherDrawerProps } from "@/Store/Teacher/TeacherInterface";
-import useTeacherStore from "@/Service/TeacherService";
+import useTeacherStore from "@/Service/TeacherService/TeacherService";
 
 
 export default function UpdateTeacherDrawer({
