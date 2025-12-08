@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { api } from "@/Service/api";
 import { Loader2, RotateCcw, Trash2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { Teacher } from "@/Store";
 import DeleteTeacherDialog from "../../Featured/teacher/DeleteTeacher";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import type { Teacher } from "@/Store/Teacher/TeacherInterface";
+import { trashTeacherService } from "@/Service/TrashService";
 
 export default function TrashTeacherPage() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -20,15 +20,28 @@ export default function TrashTeacherPage() {
 
   const { t } = useTranslation();
 
+  // Type-safe error parser
+  const parseError = (err: unknown): string => {
+    if (
+      typeof err === "object" &&
+      err !== null &&
+      "response" in err &&
+      typeof (err as { response?: { data?: { message?: string } } }).response
+        ?.data?.message === "string"
+    ) {
+      return (err as { response: { data: { message: string } } }).response.data
+        .message;
+    }
+    return t("errorDefault");
+  };
+
   const fetchTrashTeachers = async () => {
     try {
       setLoading(true);
-      const { data } = await api.get("/teachers", {
-        params: { isActive: false },
-      });
-      setTeachers(data.items || []);
-    } catch (err: any) {
-      setError(err?.response?.data?.message || t("errorDefault"));
+      const data = await trashTeacherService.getAll(); // data: { items: Teacher[] }
+      setTeachers(data.items ?? []);
+    } catch (err: unknown) {
+      setError(parseError(err));
     } finally {
       setLoading(false);
     }
@@ -40,15 +53,7 @@ export default function TrashTeacherPage() {
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
-      <Card
-        className="
-        shadow-lg p-5 
-        bg-white dark:bg-slate-900
-        backdrop-blur 
-        border border-red-200 dark:border-red-900/40 
-        transition-colors
-      "
-      >
+      <Card className="shadow-lg p-5 bg-white dark:bg-slate-900 backdrop-blur border border-red-200 dark:border-red-900/40 transition-colors">
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-red-600 dark:text-red-600 flex items-center gap-2">
             <Trash2 className="h-5 w-5" />
@@ -83,14 +88,7 @@ export default function TrashTeacherPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.7, x: 40 }}
                 transition={{ duration: 0.25 }}
-                className="
-                  flex justify-between items-center p-3 rounded-lg border 
-                  bg-red-50 dark:bg-red-900/20 
-                  dark:border-red-900/40 
-                  shadow-sm 
-                  hover:bg-red-100 dark:hover:bg-red-900/30 
-                  transition
-                "
+                className="flex justify-between items-center p-3 rounded-lg border bg-red-50 dark:bg-red-900/20 dark:border-red-900/40 shadow-sm hover:bg-red-100 dark:hover:bg-red-900/30 transition"
               >
                 <div>
                   <p className="font-medium line-through text-red-700 dark:text-red-400">
@@ -104,12 +102,7 @@ export default function TrashTeacherPage() {
                 <Button
                   size="sm"
                   variant="outline"
-                  className="
-                    flex items-center gap-1 
-                    border-red-400 dark:border-red-700 
-                    text-red-600 dark:text-red-400 
-                    hover:bg-red-200 dark:hover:bg-red-900/40
-                  "
+                  className="flex items-center gap-1 border-red-400 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/40"
                   onClick={() => {
                     setSelectedTeacher(teacher);
                     setRestoreOpen(true);

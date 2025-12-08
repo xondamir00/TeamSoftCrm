@@ -7,7 +7,7 @@ export function ModeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [mode, setMode] = useState<"light" | "dark" | "system">(
-    theme || "system"
+    theme || "dark"
   );
 
   useEffect(() => {
