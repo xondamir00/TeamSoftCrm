@@ -1,4 +1,4 @@
-import type { CreateRoomPayload, Room, UpdateRoomPayload } from "@/Store/Room/RoomStore";
+import type { CreateRoomPayload, Room, UpdateRoomPayload } from "@/Store/Room/RoomInterface";
 import { api } from "./api";
 
 export const RoomService = {
