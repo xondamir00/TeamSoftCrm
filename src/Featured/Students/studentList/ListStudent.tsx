@@ -110,7 +110,7 @@ export const ListStudent = () => {
   return (
     <div className="h-screen overflow-hidden flex flex-col">
       <div className="flex-1 overflow-y-auto p-4">
-        <div className="bg-white rounded-2xl shadow-lg p-4">
+        <div className="dark:bg-slate-900 rounded-2xl shadow-lg p-4">
           <PageHeader />
 
           <StudentStats
