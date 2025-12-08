@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import { api } from "@/Service/api";
 import type { Teacher, TeacherState } from "../Store/Teacher/TeacherInterface";
-import type { Group } from "@/Store"; // Group type'ni import qilamiz
+import type { Group } from "@/Store/Group/GroupInterface";
 
 const useTeacherStore = create<TeacherState>((set, get) => ({
   // Initial state

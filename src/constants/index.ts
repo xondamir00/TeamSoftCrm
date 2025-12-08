@@ -5,6 +5,11 @@ import { GiTeacher } from "react-icons/gi";
 import { FaUserPlus } from "react-icons/fa6";
 import { FaUserGraduate } from "react-icons/fa6";
 import { FaTrashAlt } from "react-icons/fa";
+export const DAYS_PATTERNS = [
+  { value: "ADD", labelKey: "weekdays" },
+  { value: "ODD", labelKey: "weekend" },
+  { value: "ALL", labelKey: "all_days" },
+];
 
 export const CreateForm = [
   {

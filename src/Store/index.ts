@@ -2,7 +2,6 @@ import { api } from "@/Service/api";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { StudentFinanceSummary } from "./finance";
-import type {  Schedule } from "./Group/GroupInterface";
 
 export type Role = "admin" | "teacher" | "MANAGER" | "USER";
 

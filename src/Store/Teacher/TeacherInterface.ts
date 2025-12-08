@@ -1,5 +1,6 @@
 // Store/Teacher/TeacherInterface.ts
-import type { Group } from "@/Store";
+
+import type { Group } from "../Group/GroupInterface";
 
 export interface Teacher {
   id: string;
@@ -13,7 +14,75 @@ export interface Teacher {
    monthlySalary?: number | null; 
   percentShare?: number | null;  
 }
+export interface TeachingAssignmentState {
+  // State
+  assignments: TeacherAssignment[];
+  loading: boolean;
+  error: string | null;
+  teachers: any[]; // Form uchun teacherlar ro'yxati
+  groups: any[]; // Form uchun guruhlar ro'yxati
+  formLoading: boolean; // Form yuklanishi uchun
+  
+  // Setters
+  setAssignments: (assignments: TeacherAssignment[]) => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+  setTeachers: (teachers: any[]) => void;
+  setGroups: (groups: any[]) => void;
+  setFormLoading: (loading: boolean) => void;
+  
+  // Actions - CRUD operations
+  fetchAssignments: () => Promise<void>;
+  
+  // Form uchun metodlar
+  fetchFormData: () => Promise<void>; // Teacher va group ma'lumotlarini olish
+  createAssignment: (payload: {
+    teacherId: string;
+    groupId: string;
+    role?: string;
+    note?: string;
+    fromDate?: string;
+    toDate?: string;
+    inheritSchedule?: boolean;
+    daysPatternOverride?: string;
+    startTimeOverride?: string;
+    endTimeOverride?: string;
+  }) => Promise<TeacherAssignment>;
+  
+  updateAssignment: (
+    id: string, 
+    payload: Partial<{
+      role?: string;
+      note?: string;
+      isActive?: boolean;
+    }>
+  ) => Promise<TeacherAssignment>;
+  
+  deleteAssignment: (id: string) => Promise<void>;
+}
+export interface TeachingAssignmentFormProps {
+  onSuccess: () => void;
+}
 
+export interface TeacherAssignment {
+  id: string;
+  teacherId: string;
+  groupId: string;
+  role: string;
+  isActive: boolean;
+  note?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  teacher?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+  };
+  group?: {
+    id: string;
+    name: string;
+  };
+}
 export interface CreateTeacherPayload {
   firstName: string;
   lastName: string;
