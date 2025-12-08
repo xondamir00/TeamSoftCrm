@@ -1,4 +1,4 @@
-import TeacherGroup from "../teacher/teacher-group";
+import TeacherGroup from "../../Featured/teacher/teacher-group";
 
 const Teacher: React.FC = () => {
   return (

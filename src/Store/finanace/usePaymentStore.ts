@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { api } from '@/Service/api';
-import { financeService } from '../../Store/FinanceService';
+import { create } from "zustand";
+import { api } from "@/Service/api";
+import { financeService } from "../../Service/FinanceService";
 
 export interface Student {
   id: string;
@@ -14,7 +14,7 @@ export interface Student {
 export interface PaymentData {
   studentId: string;
   amount: number;
-  method: 'CASH' | 'CARD' | 'TRANSFER' | 'OTHER';
+  method: "CASH" | "CARD" | "TRANSFER" | "OTHER";
   reference?: string;
   comment?: string;
   paidAt?: string;
@@ -32,7 +32,7 @@ interface PaymentStore {
   alertContent: {
     title: string;
     description: string;
-    type: 'success' | 'error';
+    type: "success" | "error";
   };
   isDropdownOpen: boolean;
 
@@ -44,7 +44,11 @@ interface PaymentStore {
   submitPayment: (paymentData: PaymentData) => Promise<void>;
   setDropdownOpen: (open: boolean) => void;
   setSearchQuery: (query: string) => void;
-  setAlert: (alert: { title: string; description: string; type: 'success' | 'error' }) => void;
+  setAlert: (alert: {
+    title: string;
+    description: string;
+    type: "success" | "error";
+  }) => void;
   setAlertOpen: (open: boolean) => void;
   setIsSubmitting: (submitting: boolean) => void;
   resetForm: () => void;
@@ -55,14 +59,14 @@ export const usePaymentStore = create<PaymentStore>((set, get) => ({
   students: [],
   filteredStudents: [],
   selectedStudent: null,
-  searchQuery: '',
+  searchQuery: "",
   isLoadingStudents: false,
   isSubmitting: false,
   alertOpen: false,
   alertContent: {
-    title: '',
-    description: '',
-    type: 'success',
+    title: "",
+    description: "",
+    type: "success",
   },
   isDropdownOpen: false,
 
@@ -70,7 +74,7 @@ export const usePaymentStore = create<PaymentStore>((set, get) => ({
   fetchStudents: async () => {
     set({ isLoadingStudents: true });
     try {
-      const res = await api.get('/students', {
+      const res = await api.get("/students", {
         params: {
           limit: 1000,
           isActive: true,
@@ -78,16 +82,16 @@ export const usePaymentStore = create<PaymentStore>((set, get) => ({
       });
 
       const items = res.data?.items || res.data || [];
-      set({ 
+      set({
         students: items,
         filteredStudents: items,
       });
     } catch (error) {
-      console.error('Talabalar yuklashda xatolik:', error);
+      console.error("Talabalar yuklashda xatolik:", error);
       get().setAlert({
-        title: 'Xatolik',
-        description: 'Talabalar ro\'yxatini yuklashda xatolik yuz berdi',
-        type: 'error'
+        title: "Xatolik",
+        description: "Talabalar ro'yxatini yuklashda xatolik yuz berdi",
+        type: "error",
       });
     } finally {
       set({ isLoadingStudents: false });
@@ -96,12 +100,13 @@ export const usePaymentStore = create<PaymentStore>((set, get) => ({
 
   filterStudents: (query) => {
     const { students } = get();
-    if (query.trim() === '') {
+    if (query.trim() === "") {
       set({ filteredStudents: students, searchQuery: query });
     } else {
-      const filtered = students.filter(student =>
-        student.fullName.toLowerCase().includes(query.toLowerCase()) ||
-        student.phone.includes(query)
+      const filtered = students.filter(
+        (student) =>
+          student.fullName.toLowerCase().includes(query.toLowerCase()) ||
+          student.phone.includes(query)
       );
       set({ filteredStudents: filtered, searchQuery: query });
     }
@@ -109,18 +114,18 @@ export const usePaymentStore = create<PaymentStore>((set, get) => ({
 
   selectStudent: (studentId) => {
     const { students } = get();
-    const student = students.find(s => s.id === studentId);
-    set({ 
+    const student = students.find((s) => s.id === studentId);
+    set({
       selectedStudent: student || null,
       isDropdownOpen: false,
-      searchQuery: '',
+      searchQuery: "",
     });
   },
 
   clearSelectedStudent: () => {
-    set({ 
+    set({
       selectedStudent: null,
-      searchQuery: '',
+      searchQuery: "",
     });
   },
 
@@ -131,22 +136,22 @@ export const usePaymentStore = create<PaymentStore>((set, get) => ({
         ...paymentData,
         paidAt: paymentData.paidAt || new Date().toISOString(),
       });
-      
-      console.log('To\'lov muvaffaqiyatli:', result);
-      
+
+      console.log("To'lov muvaffaqiyatli:", result);
+
       get().setAlert({
-        title: 'Muvaffaqiyatli',
-        description: 'Toʻlov muvaffaqiyatli qoʻshildi',
-        type: 'success',
+        title: "Muvaffaqiyatli",
+        description: "Toʻlov muvaffaqiyatli qoʻshildi",
+        type: "success",
       });
-      
+
       return result;
     } catch (error: any) {
-      console.error('Toʻlov qoʻshishda xatolik:', error);
+      console.error("Toʻlov qoʻshishda xatolik:", error);
       get().setAlert({
-        title: 'Xatolik',
-        description: error.message || 'Toʻlov qoʻshishda xatolik yuz berdi',
-        type: 'error',
+        title: "Xatolik",
+        description: error.message || "Toʻlov qoʻshishda xatolik yuz berdi",
+        type: "error",
       });
       throw error;
     } finally {
@@ -156,15 +161,15 @@ export const usePaymentStore = create<PaymentStore>((set, get) => ({
 
   setDropdownOpen: (open) => set({ isDropdownOpen: open }),
   setSearchQuery: (query) => get().filterStudents(query),
-  
+
   setAlert: (alert) => set({ alertContent: alert }),
   setAlertOpen: (open) => set({ alertOpen: open }),
   setIsSubmitting: (submitting) => set({ isSubmitting: submitting }),
-  
+
   resetForm: () => {
     set({
       selectedStudent: null,
-      searchQuery: '',
+      searchQuery: "",
       alertOpen: false,
       isSubmitting: false,
     });

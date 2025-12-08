@@ -1,6 +1,8 @@
+import { api } from "@/Service/api";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { api } from "../Service/api";
+import type { StudentGroup } from "./Student/StudentInterface";
+import type { StudentFinanceSummary } from "./finance";
 
 export type Role = "admin" | "teacher" | "MANAGER" | "USER";
 
@@ -14,26 +16,6 @@ export type User = {
   isActive: boolean;
 };
 
-export interface Teacher {
-  id: string;
-  isActive: boolean;
-  fullName?: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  createdAt: string;
-  photoUrl?: string | null;
-}
-
-export interface CreateTeacherPayload {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  password: string;
-  photoUrl?: string | null;
-  monthlySalary?: number | null;
-  percentShare?: number | null;
-}
 export interface GroupModalProps {
   isOpen: boolean;
   editingGroup: Group | null;
@@ -41,8 +23,8 @@ export interface GroupModalProps {
   onSuccess: () => void;
 }
 export interface Group {
-  id: string;           // groupId emas
-  name: string;         // groupName emas
+  id: string; // groupId emas
+  name: string; // groupName emas
   room?: {
     id: string;
     name: string;
@@ -56,25 +38,6 @@ export interface Group {
   daysPattern?: string;
   isActive?: boolean;
   course?: string;
-}
-export type StudentStatus = "PRESENT" | "ABSENT" | "UNKNOWN";
-
-export interface Sheet {
-  sheetId: string;
-  date: string;
-  lesson: number;
-  status: "OPEN" | "CLOSED";
-  group: {
-    id: string;
-    name: string;
-    room?: { name: string } | null;
-  };
-  students: Array<{
-    studentId: string;
-    fullName: string;
-    status: StudentStatus;
-    comment?: string | null;
-  }>;
 }
 
 export interface Enrollment {
@@ -97,26 +60,6 @@ export interface Enrollment {
   };
 }
 
-export interface StudentGroup {
-  enrollmentId: string;
-  groupId: string;
-  name: string;
-  room?: {
-    id: string;
-    name: string;
-  };
-  teacher?: {
-    id: string;
-    fullName: string;
-  };
-  daysPattern?: string;
-  startTime?: string;
-  endTime?: string;
-  monthlyFee?: number;
-  joinDate: string;
-  status: string;
-}
-
 export interface StudentWithGroups {
   id: string;
   fullName: string;
@@ -130,7 +73,7 @@ export interface StudentWithGroups {
   totalGroups: number;
 }
 export interface Schedule {
-  mode: 'ODD' | 'EVEN' | 'CUSTOM';
+  mode: "ODD" | "EVEN" | "CUSTOM";
   startTime: string;
   endTime: string;
   days: string[];
@@ -149,8 +92,8 @@ export interface Payment {
   studentId: string;
   studentName?: string;
   amount: number;
-  method: 'CASH' | 'CARD' | 'TRANSFER' | 'OTHER';
-  status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
+  method: "CASH" | "CARD" | "TRANSFER" | "OTHER";
+  status: "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
   paidAt: string;
   reference?: string;
   comment?: string;
@@ -159,43 +102,23 @@ export interface Payment {
   createdAt: string;
   summary?: StudentFinanceSummary;
 }
-export interface Student {
-  id: number;
-  firstName: string;
-  lastName: string;
-  fullName: string; // required qilish
-  phone: string;
-  dateOfBirth: string; // required qilish
-  startDate: string; // required qilish
-  isActive: boolean;
-  address?: string; // ixtiyoriy qilish
-  email?: string;
-  avatar?: string;
-  groups?: Array<{
-    name: string;
-    course?: string;
-    schedule?: string;
-  }>;
-}
 export interface Expense {
   id: string;
   title: string;
-  category: 'SALARY' | 'RENT' | 'UTILITIES' | 'EQUIPMENT' | 'MARKETING' | 'OTHER';
+  category:
+    | "SALARY"
+    | "RENT"
+    | "UTILITIES"
+    | "EQUIPMENT"
+    | "MARKETING"
+    | "OTHER";
   amount: number;
-  method: 'CASH' | 'CARD' | 'TRANSFER' | 'OTHER';
+  method: "CASH" | "CARD" | "TRANSFER" | "OTHER";
   paidAt: string;
   note?: string;
   recordedById: string;
   recordedByName?: string;
   createdAt: string;
-}
-
-export interface StudentFinanceSummary {
-  studentId: string;
-  totalCharges: number;
-  totalPaid: number;
-  debt: number;
-  lastPayments: Payment[];
 }
 
 export interface FinanceOverview {
@@ -258,7 +181,7 @@ export interface GroupPayload {
   roomId?: string;
 }
 // ApiError interfeysini qo'shamiz
-interface ApiError {
+export interface ApiError {
   response?: {
     data?: {
       message?: string;
@@ -287,7 +210,6 @@ type AuthState = {
     newPassword: string
   ) => Promise<void>;
 };
-
 export const useAuth = create<AuthState>()(
   persist(
     (set, get) => ({
@@ -304,40 +226,40 @@ export const useAuth = create<AuthState>()(
       changeError: null,
       async changePassword(currentPassword: string, newPassword: string) {
         set({ changing: true, changeError: null });
-        
+
         try {
           const { data } = await api.post("/auth/change-password", {
             currentPassword,
             newPassword,
           });
-          
+
           const u = get().user;
           if (u) {
             set({ user: { ...u, mustChangePassword: false } });
           }
-          
+
           console.log(data.message);
         } catch (err: unknown) {
           let errorMessage = "Parolni almashtirishda xatolik";
-          
+
           // Type-safe error handling
-          if (err && typeof err === 'object') {
+          if (err && typeof err === "object") {
             const error = err as ApiError;
-            
+
             // 1. API dan kelgan xabar
             if (error.response?.data?.message) {
               errorMessage = error.response.data.message;
-            } 
+            }
             // 2. Array formatdagi xatolar
             else if (Array.isArray(error.response?.data)) {
               errorMessage = error.response.data.join(", ");
             }
             // 3. Standart error message
-            else if (error.message && typeof error.message === 'string') {
+            else if (error.message && typeof error.message === "string") {
               errorMessage = error.message;
             }
           }
-          
+
           set({ changeError: errorMessage });
           throw err; // Original error'ni throw qilish
         } finally {

@@ -73,12 +73,24 @@ export const TeachingAssignmentsList = () => {
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-gray-50 dark:bg-slate-900">
             <tr className="">
-              <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">#</th>
-              <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{t("teacher_id")}</th>
-              <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{t("group_id")}</th>
-              <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{t("role")}</th>
-              <th className="px-5 py-3 text-left text-sm font-semibold text-green-500 dark:text-green-500">{t("status")}</th>
-              <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">{t("note")}</th>
+              <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                #
+              </th>
+              <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                {t("teacher_id")}
+              </th>
+              <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                {t("group_id")}
+              </th>
+              <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                {t("role")}
+              </th>
+              <th className="px-5 py-3 text-left text-sm font-semibold text-green-500 dark:text-green-500">
+                {t("status")}
+              </th>
+              <th className="px-5 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                {t("note")}
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-slate-900 divide-y divide-gray-200 dark:divide-gray-700">
@@ -91,19 +103,31 @@ export const TeachingAssignmentsList = () => {
                 transition={{ duration: 0.3, delay: i * 0.05 }}
                 className="hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer even:bg-gray-50 dark:even:bg-gray-900"
               >
-                <td className="px-5 py-3 text-gray-700 dark:text-gray-200 font-medium">{i + 1}</td>
-                <td className="px-5 py-3 text-gray-800 dark:text-gray-200">{a.teacherId}</td>
-                <td className="px-5 py-3 text-gray-700 dark:text-gray-300">{a.groupId}</td>
-                <td className="px-5 py-3 text-gray-700 dark:text-gray-200 capitalize">{a.role}</td>
+                <td className="px-5 py-3 text-gray-700 dark:text-gray-200 font-medium">
+                  {i + 1}
+                </td>
+                <td className="px-5 py-3 text-gray-800 dark:text-gray-200">
+                  {a.teacherId}
+                </td>
+                <td className="px-5 py-3 text-gray-700 dark:text-gray-300">
+                  {a.groupId}
+                </td>
+                <td className="px-5 py-3 text-gray-700 dark:text-gray-200 capitalize">
+                  {a.role}
+                </td>
                 <td className="px-5 py-3">
-                  <Badge 
-                    variant={a.isActive ? "default" : "destructive"} 
-                    className={`px-3 py-1 text-sm ${a.isActive ? "bg-green-500 hover:bg-green-600" : ""}`}
+                  <Badge
+                    variant={a.isActive ? "default" : "destructive"}
+                    className={`px-3 py-1 text-sm ${
+                      a.isActive ? "bg-green-500 hover:bg-green-600" : ""
+                    }`}
                   >
                     {a.isActive ? t("active") : t("inactive")}
                   </Badge>
                 </td>
-                <td className="px-5 py-3 text-gray-600 dark:text-gray-300">{a.note ?? "—"}</td>
+                <td className="px-5 py-3 text-gray-600 dark:text-gray-300">
+                  {a.note ?? "—"}
+                </td>
               </motion.tr>
             ))}
           </tbody>
@@ -120,17 +144,25 @@ export const TeachingAssignmentsList = () => {
             className="bg-white dark:bg-black border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md p-4 flex flex-col gap-2 hover:shadow-lg transition"
           >
             <div className="flex justify-between items-center">
-              <span className="font-semibold text-gray-800 dark:text-gray-200">{a.teacherId}</span>
-              <Badge 
-                variant={a.isActive ? "default" : "destructive"} 
+              <span className="font-semibold text-gray-800 dark:text-gray-200">
+                {a.teacherId}
+              </span>
+              <Badge
+                variant={a.isActive ? "default" : "destructive"}
                 className={a.isActive ? "bg-green-500 hover:bg-green-600" : ""}
               >
                 {a.isActive ? t("active") : t("inactive")}
               </Badge>
             </div>
-            <p className="text-gray-700 dark:text-gray-300 font-medium">{t("group_id")}: {a.groupId}</p>
-            <p className="text-gray-700 dark:text-gray-200 capitalize">{t("role")}: {a.role}</p>
-            <p className="text-gray-600 dark:text-gray-400">{t("note")}: {a.note ?? "—"}</p>
+            <p className="text-gray-700 dark:text-gray-300 font-medium">
+              {t("group_id")}: {a.groupId}
+            </p>
+            <p className="text-gray-700 dark:text-gray-200 capitalize">
+              {t("role")}: {a.role}
+            </p>
+            <p className="text-gray-600 dark:text-gray-400">
+              {t("note")}: {a.note ?? "—"}
+            </p>
           </motion.div>
         ))}
       </div>

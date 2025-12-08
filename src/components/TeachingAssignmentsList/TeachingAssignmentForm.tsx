@@ -72,7 +72,9 @@ export const TeachingAssignmentForm = ({
         setTeachers(
           Array.isArray(teacherRes.data.items) ? teacherRes.data.items : []
         );
-        setGroups(Array.isArray(groupRes.data.items) ? groupRes.data.items : []);
+        setGroups(
+          Array.isArray(groupRes.data.items) ? groupRes.data.items : []
+        );
       } catch (err: any) {
         setError(t("error"));
         setOpenAlert(true);
@@ -83,7 +85,10 @@ export const TeachingAssignmentForm = ({
   }, []);
 
   const teacherLabel = (tch: any) =>
-    tch.name || tch.fullName || `${tch.firstName ?? ""} ${tch.lastName ?? ""}`.trim() || tch.id;
+    tch.name ||
+    tch.fullName ||
+    `${tch.firstName ?? ""} ${tch.lastName ?? ""}`.trim() ||
+    tch.id;
 
   const buildDto = () => {
     const dto: any = {

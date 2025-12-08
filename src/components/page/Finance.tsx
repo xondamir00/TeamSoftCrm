@@ -1,17 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { DollarSign, TrendingDown } from 'lucide-react';
-import { api } from '@/Service/api';
-import { type FinanceStats as FinanceStatsType } from '../../Store/finance';
-import CreatePaymentForm from '../finance/form/payment/CreatePaymentForm';
-import CreateExpenseForm from '../finance/form/expence/CreateExpenseForm';
-import FinanceStatss from '../finance/FinanceStats';
-import {
-  Dialog,
-  DialogContent,
-
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { DollarSign, TrendingDown } from "lucide-react";
+import { api } from "@/Service/api";
+import { type FinanceStats as FinanceStatsType } from "../../Store/finance";
+import CreatePaymentForm from "../finance/form/payment/CreatePaymentForm";
+import CreateExpenseForm from "../finance/form/expence/CreateExpenseForm";
+import FinanceStatss from "../finance/FinanceStats";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 export default function FinancePage() {
   const [stats, setStats] = useState<FinanceStatsType>({
@@ -26,7 +21,7 @@ export default function FinancePage() {
 
   const fetchOverviewData = async () => {
     try {
-      const res = await api.get('/finance/overview');
+      const res = await api.get("/finance/overview");
       setStats(res.data);
     } catch (error) {
       console.log(error);
@@ -39,7 +34,6 @@ export default function FinancePage() {
 
   return (
     <div className="container mx-auto p-4 md:p-6 space-y-8">
-
       {/* Header Section */}
       <div className="p-6 rounded-2xl dark:bg-gradient-to-br from-blue-600/10  dark:from-slate-800/40  border shadow-md">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -53,7 +47,6 @@ export default function FinancePage() {
           </div>
 
           <div className="flex gap-2">
-
             {/* Payment Modal */}
             <Dialog>
               <DialogTrigger asChild>
@@ -63,13 +56,15 @@ export default function FinancePage() {
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[500px] p-8 max-h-[90vh] overflow-y-auto">
-              
                 <CreatePaymentForm />
               </DialogContent>
             </Dialog>
 
             {/* Expense Modal */}
-            <Dialog open={isExpenseModalOpen} onOpenChange={setIsExpenseModalOpen}>
+            <Dialog
+              open={isExpenseModalOpen}
+              onOpenChange={setIsExpenseModalOpen}
+            >
               <DialogTrigger asChild>
                 <Button className="glass-card bg-gradient-to-r from-red-600 to-red-700 text-white shadow hover:scale-105 transition">
                   <TrendingDown className="h-4 w-4 mr-2" />
@@ -77,11 +72,9 @@ export default function FinancePage() {
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[500px] p-8 max-h-[90vh] overflow-y-auto">
-            
                 <CreateExpenseForm />
               </DialogContent>
             </Dialog>
-
           </div>
         </div>
       </div>

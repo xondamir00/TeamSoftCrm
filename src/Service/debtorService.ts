@@ -29,14 +29,19 @@ export const debtorService = {
     highestDebt: number;
   }> => {
     const debtors = await debtorService.getDebtors();
-    
-    const totalAmount = debtors.reduce((sum, debtor) => sum + debtor.totalDebt, 0);
-    const highestDebt = Math.max(...debtors.map(d => d.totalDebt));
-    
+
+    const totalAmount = debtors.reduce(
+      (sum, debtor) => sum + debtor.totalDebt,
+      0
+    );
+    const highestDebt = Math.max(...debtors.map((d) => d.totalDebt));
+
     return {
       totalDebtors: debtors.length,
       totalAmount,
-      averageDebt: debtors.length ? Math.round(totalAmount / debtors.length) : 0,
+      averageDebt: debtors.length
+        ? Math.round(totalAmount / debtors.length)
+        : 0,
       highestDebt,
     };
   },
@@ -44,7 +49,9 @@ export const debtorService = {
   /**
    * Qarzdorga eslatma yuborish
    */
-  sendReminder: async (studentId: string): Promise<{ success: boolean; message: string }> => {
+  sendReminder: async (
+    studentId: string
+  ): Promise<{ success: boolean; message: string }> => {
     const response = await api.post(`/finance/debtors/${studentId}/remind`);
     return response.data;
   },
@@ -52,7 +59,10 @@ export const debtorService = {
   /**
    * Barcha qarzdorlarga eslatma yuborish
    */
-  sendReminderToAll: async (): Promise<{ success: boolean; message: string }> => {
+  sendReminderToAll: async (): Promise<{
+    success: boolean;
+    message: string;
+  }> => {
     const response = await api.post("/finance/debtors/remind-all");
     return response.data;
   },
@@ -60,10 +70,10 @@ export const debtorService = {
   /**
    * Qarzdorlar hisobotini yuklab olish
    */
-  exportDebtors: async (format: 'excel' | 'pdf' = 'excel'): Promise<Blob> => {
+  exportDebtors: async (format: "excel" | "pdf" = "excel"): Promise<Blob> => {
     const response = await api.get("/finance/debtors/export", {
       params: { format },
-      responseType: 'blob'
+      responseType: "blob",
     });
     return response.data;
   },
@@ -73,7 +83,7 @@ export const debtorService = {
    */
   searchDebtors: async (query: string): Promise<Debtor[]> => {
     const response = await api.get("/finance/debtors/search", {
-      params: { q: query }
+      params: { q: query },
     });
     return response.data;
   },
@@ -92,5 +102,5 @@ export const debtorService = {
   getDebtHistory: async (studentId: string): Promise<any[]> => {
     const response = await api.get(`/finance/debtors/${studentId}/history`);
     return response.data;
-  }
+  },
 };

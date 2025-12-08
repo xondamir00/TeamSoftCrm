@@ -27,7 +27,7 @@ interface Enrollment {
   group: { id: string; name: string };
 }
 
- interface Props {
+interface Props {
   enrollment: Enrollment;
   onClose?: () => void;
   onSuccess?: () => void;

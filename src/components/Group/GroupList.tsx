@@ -53,7 +53,7 @@ export default function GroupList() {
     try {
       setLoading(true);
       await api.delete(`/groups/${deleteTarget.id}`);
-      setGroups(prev => prev.filter(g => g.id !== deleteTarget.id));
+      setGroups((prev) => prev.filter((g) => g.id !== deleteTarget.id));
       setDeleteTarget(null);
     } catch (err) {
       console.error("Error deleting group:", err);

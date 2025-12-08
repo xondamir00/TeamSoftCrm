@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Eye, Pencil, Trash2, Users } from "lucide-react";
@@ -10,18 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Student } from "@/Store/Student";
 import { Button } from "@/components/ui/button";
-
-interface StudentTableProps {
-  students: Student[];
-  page: number;
-  limit: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-  onEdit: (student: Student) => void;
-  onDelete: (student: Student) => void;
-}
+import type { StudentTableProps } from "@/Store/Student/StudentInterface";
 
 export const StudentTable = ({
   students,
@@ -56,25 +45,41 @@ export const StudentTable = ({
           <TableHeader className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700">
             <TableRow className="border-b-2 border-slate-200 dark:border-slate-600">
               <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                <label>{t("studentManagement.tableHeaders.number") || "#"}</label>
+                <label>
+                  {t("studentManagement.tableHeaders.number") || "#"}
+                </label>
               </TableHead>
               <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                <label>{t("studentManagement.tableHeaders.name") || "Name"}</label>
+                <label>
+                  {t("studentManagement.tableHeaders.name") || "Name"}
+                </label>
               </TableHead>
               <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm hidden sm:table-cell">
-                <label>{t("studentManagement.tableHeaders.phone") || "Phone"}</label>
+                <label>
+                  {t("studentManagement.tableHeaders.phone") || "Phone"}
+                </label>
               </TableHead>
               <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                <label>{t("studentManagement.tableHeaders.status") || "Status"}</label>
+                <label>
+                  {t("studentManagement.tableHeaders.status") || "Status"}
+                </label>
               </TableHead>
               <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm hidden md:table-cell">
-                <label>{t("studentManagement.tableHeaders.birthDate") || "Birth Date"}</label>
+                <label>
+                  {t("studentManagement.tableHeaders.birthDate") ||
+                    "Birth Date"}
+                </label>
               </TableHead>
               <TableHead className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm hidden lg:table-cell">
-                <label>{t("studentManagement.tableHeaders.startDate") || "Start Date"}</label>
+                <label>
+                  {t("studentManagement.tableHeaders.startDate") ||
+                    "Start Date"}
+                </label>
               </TableHead>
               <TableHead className="text-right font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
-                <label>{t("studentManagement.tableHeaders.actions") || "Actions"}</label>
+                <label>
+                  {t("studentManagement.tableHeaders.actions") || "Actions"}
+                </label>
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -85,10 +90,12 @@ export const StudentTable = ({
                 <TableCell colSpan={7} className="text-center py-12">
                   <Users className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
                   <p className="text-slate-500 dark:text-slate-400 font-medium">
-                    {t("studentManagement.noStudents") || "No active students found"}
+                    {t("studentManagement.noStudents") ||
+                      "No active students found"}
                   </p>
                   <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-                    {t("studentManagement.noStudentsHint") || "Try adjusting your search or add new students"}
+                    {t("studentManagement.noStudentsHint") ||
+                      "Try adjusting your search or add new students"}
                   </p>
                 </TableCell>
               </TableRow>
@@ -128,7 +135,10 @@ export const StudentTable = ({
                         size="icon"
                         onClick={() => navigate(`${student.id}`)}
                         className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-blue-50 dark:hover:bg-blue-900/30"
-                        title={t("studentManagement.buttons.viewProfile") || "View Profile"}
+                        title={
+                          t("studentManagement.buttons.viewProfile") ||
+                          "View Profile"
+                        }
                       >
                         <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </Button>
@@ -148,7 +158,9 @@ export const StudentTable = ({
                         size="icon"
                         onClick={() => onDelete(student)}
                         className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-red-700 dark:hover:bg-red-800"
-                        title={t("studentManagement.buttons.delete") || "Delete"}
+                        title={
+                          t("studentManagement.buttons.delete") || "Delete"
+                        }
                       >
                         <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </Button>

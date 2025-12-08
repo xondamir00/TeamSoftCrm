@@ -1,10 +1,10 @@
 import { Users, UserCheck, UserX } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import useTeacherStore from "@/Store/teacherStore";
+import useTeacherStore from "@/Service/TeacherService";
 
 export default function TeacherStats() {
   const { t } = useTranslation();
-  
+
   const { total, active, inactive } = useTeacherStore();
 
   return (

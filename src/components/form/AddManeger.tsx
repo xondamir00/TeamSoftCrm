@@ -9,7 +9,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { motion } from "framer-motion";
 
 interface ManagerPayload {
@@ -60,7 +65,9 @@ export default function AddManagerForm() {
           form.photoUrl.trim().startsWith("http") && form.photoUrl.length > 5
             ? form.photoUrl.trim()
             : null,
-        monthlySalary: form.monthlySalary ? Number(form.monthlySalary) : undefined,
+        monthlySalary: form.monthlySalary
+          ? Number(form.monthlySalary)
+          : undefined,
       };
 
       await api.post("/managers", payload);
@@ -105,35 +112,69 @@ export default function AddManagerForm() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <Label>{t("first_name")}</Label>
-                <Input name="firstName" value={form.firstName} onChange={handleChange} required />
+                <Input
+                  name="firstName"
+                  value={form.firstName}
+                  onChange={handleChange}
+                  required
+                />
               </div>
 
               <div>
                 <Label>{t("last_name")}</Label>
-                <Input name="lastName" value={form.lastName} onChange={handleChange} required />
+                <Input
+                  name="lastName"
+                  value={form.lastName}
+                  onChange={handleChange}
+                  required
+                />
               </div>
 
               <div>
                 <Label>{t("phone")}</Label>
-                <Input name="phone" value={form.phone} onChange={handleChange} required />
+                <Input
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  required
+                />
               </div>
 
               <div>
                 <Label>{t("password")}</Label>
-                <Input type="password" name="password" value={form.password} onChange={handleChange} required />
+                <Input
+                  type="password"
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                />
               </div>
 
               <div>
                 <Label>{t("photo_url_optional")}</Label>
-                <Input name="photoUrl" value={form.photoUrl} onChange={handleChange} />
+                <Input
+                  name="photoUrl"
+                  value={form.photoUrl}
+                  onChange={handleChange}
+                />
               </div>
 
               <div>
                 <Label>{t("monthly_salary_optional")}</Label>
-                <Input type="number" name="monthlySalary" value={form.monthlySalary} onChange={handleChange} />
+                <Input
+                  type="number"
+                  name="monthlySalary"
+                  value={form.monthlySalary}
+                  onChange={handleChange}
+                />
               </div>
 
-              <Button disabled={loading} type="submit" className="w-full text-lg rounded-xl bg-[#0208B0] hover:bg-[#0208B0] text-white  shadow-lg transition-all duration-200">
+              <Button
+                disabled={loading}
+                type="submit"
+                className="w-full text-lg rounded-xl bg-[#0208B0] hover:bg-[#0208B0] text-white  shadow-lg transition-all duration-200"
+              >
                 {loading ? t("loading") : t("add_button")}
               </Button>
             </form>
@@ -145,7 +186,9 @@ export default function AddManagerForm() {
         <DialogContent className="rounded-2xl">
           <DialogHeader>
             <DialogTitle>
-              {message === "success" ? t("manager_added_success") : t("manager_add_error")}
+              {message === "success"
+                ? t("manager_added_success")
+                : t("manager_add_error")}
             </DialogTitle>
           </DialogHeader>
 
@@ -154,9 +197,7 @@ export default function AddManagerForm() {
               {message === "success" ? t("success") : t("error")}
             </AlertTitle>
             <AlertDescription>
-              {message === "success"
-                ? t("manager_added_success")
-                : message}
+              {message === "success" ? t("manager_added_success") : message}
             </AlertDescription>
           </Alert>
         </DialogContent>

@@ -15,8 +15,16 @@ interface AttendanceState {
 
   // Actions
   fetchGroupInfo: (groupId: string) => Promise<void>;
-  getOrCreateSheet: (groupId: string, date: string, lesson: number) => Promise<void>;
-  updateLocalStatus: (sheetId: string, studentId: string, status: StudentStatus) => void;
+  getOrCreateSheet: (
+    groupId: string,
+    date: string,
+    lesson: number
+  ) => Promise<void>;
+  updateLocalStatus: (
+    sheetId: string,
+    studentId: string,
+    status: StudentStatus
+  ) => void;
   setEditingComment: (sheetId: string, studentId: string) => void;
   saveComment: () => void;
   updateCommentText: (comment: string) => void;
@@ -53,8 +61,9 @@ export const useAttendanceStore = create<AttendanceState>((set, get) => ({
       const { data } = await api.get<Group>(`/groups/${groupId}`);
       set({ group: data });
     } catch (err: any) {
-      set({ 
-        error: err.response?.data?.message || "Guruh ma'lumotlarini olishda xatolik" 
+      set({
+        error:
+          err.response?.data?.message || "Guruh ma'lumotlarini olishda xatolik",
       });
     } finally {
       set({ loading: false });
@@ -65,24 +74,28 @@ export const useAttendanceStore = create<AttendanceState>((set, get) => ({
     try {
       set({ loading: true, error: null });
 
-      const { data } = await api.get<Sheet>(`/teacher/attendance/group/${groupId}`, {
-        params: { date, lesson }
-      });
+      const { data } = await api.get<Sheet>(
+        `/teacher/attendance/group/${groupId}`,
+        {
+          params: { date, lesson },
+        }
+      );
 
       set((state) => {
-        const exists = state.sheets.some(s => s.sheetId === data.sheetId);
+        const exists = state.sheets.some((s) => s.sheetId === data.sheetId);
         if (exists) {
           return {
-            sheets: state.sheets.map(s => 
+            sheets: state.sheets.map((s) =>
               s.sheetId === data.sheetId ? data : s
-            )
+            ),
           };
         }
         return { sheets: [...state.sheets, data] };
       });
     } catch (err: any) {
-      set({ 
-        error: err.response?.data?.message || "Sheet yaratish/yuklashda xatolik" 
+      set({
+        error:
+          err.response?.data?.message || "Sheet yaratish/yuklashda xatolik",
       });
       throw err;
     } finally {
@@ -109,19 +122,19 @@ export const useAttendanceStore = create<AttendanceState>((set, get) => ({
 
   setEditingComment: (sheetId, studentId) => {
     const { sheets } = get();
-    const sheet = sheets.find(s => s.sheetId === sheetId);
-    const student = sheet?.students.find(s => s.studentId === studentId);
-    
+    const sheet = sheets.find((s) => s.sheetId === sheetId);
+    const student = sheet?.students.find((s) => s.studentId === studentId);
+
     set({
       editingSheetId: sheetId,
       editingStudentId: studentId,
-      comment: student?.comment || ""
+      comment: student?.comment || "",
     });
   },
 
   saveComment: () => {
     const { editingSheetId, editingStudentId, comment, sheets } = get();
-    
+
     if (!editingSheetId || !editingStudentId) return;
 
     set({
@@ -139,7 +152,7 @@ export const useAttendanceStore = create<AttendanceState>((set, get) => ({
       ),
       editingSheetId: null,
       editingStudentId: null,
-      comment: ""
+      comment: "",
     });
   },
 
@@ -172,8 +185,8 @@ export const useAttendanceStore = create<AttendanceState>((set, get) => ({
         ),
       }));
     } catch (err: any) {
-      set({ 
-        error: err.response?.data?.message || "Sheet saqlashda xatolik" 
+      set({
+        error: err.response?.data?.message || "Sheet saqlashda xatolik",
       });
       throw err;
     } finally {
@@ -184,13 +197,13 @@ export const useAttendanceStore = create<AttendanceState>((set, get) => ({
   deleteSheet: async (sheetId) => {
     try {
       await api.delete(`/teacher/attendance/sheet/${sheetId}`);
-      
+
       set((state) => ({
         sheets: state.sheets.filter((s) => s.sheetId !== sheetId),
       }));
     } catch (err: any) {
-      set({ 
-        error: err.response?.data?.message || "Sheet o'chirishda xatolik" 
+      set({
+        error: err.response?.data?.message || "Sheet o'chirishda xatolik",
       });
       throw err;
     }
@@ -198,9 +211,10 @@ export const useAttendanceStore = create<AttendanceState>((set, get) => ({
 
   clearError: () => set({ error: null }),
 
-  resetEditing: () => set({ 
-    editingSheetId: null, 
-    editingStudentId: null, 
-    comment: "" 
-  }),
+  resetEditing: () =>
+    set({
+      editingSheetId: null,
+      editingStudentId: null,
+      comment: "",
+    }),
 }));

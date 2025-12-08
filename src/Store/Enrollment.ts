@@ -26,10 +26,10 @@ interface EnrollmentStore {
   fetchStudents: () => Promise<Student[]>;
   fetchGroups: () => Promise<Group[]>;
   fetchEnrollments: () => Promise<Enrollment[]>;
-  createEnrollment: (data: { 
-    studentId: string; 
-    groupId: string; 
-    joinDate?: string 
+  createEnrollment: (data: {
+    studentId: string;
+    groupId: string;
+    joinDate?: string;
   }) => Promise<Enrollment>;
 }
 
@@ -74,12 +74,14 @@ export const useEnrollmentStore = create<EnrollmentStore>((set, get) => ({
   fetchEnrollments: async () => {
     try {
       const res = await api.get("/enrollments");
-      const enrollments: Enrollment[] = (res.data.items || []).map((item: any) => ({
-        id: String(item.id),
-        studentId: String(item.studentId),
-        groupId: String(item.groupId),
-        joinDate: item.joinDate,
-      }));
+      const enrollments: Enrollment[] = (res.data.items || []).map(
+        (item: any) => ({
+          id: String(item.id),
+          studentId: String(item.studentId),
+          groupId: String(item.groupId),
+          joinDate: item.joinDate,
+        })
+      );
       set({ enrollments });
       return enrollments;
     } catch (err) {
@@ -98,7 +100,7 @@ export const useEnrollmentStore = create<EnrollmentStore>((set, get) => ({
       };
 
       const res = await api.post("/enrollments", backendData);
-      
+
       // Backend javobini frontend formatiga o'tkazish
       const newEnrollment: Enrollment = {
         id: String(res.data.id),

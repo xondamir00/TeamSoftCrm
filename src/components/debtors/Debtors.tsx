@@ -6,8 +6,8 @@ import { DebtorFilters } from "@/components/debtors/DebtorFilters";
 import { DebtorList } from "@/components/debtors/debtorList";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { debtorService } from "@/Service/debtorService";
 import type { Debtor } from "@/Store/debtor";
+import { debtorService } from "@/Service/debtorService";
 
 const Debtors = () => {
   const [debtors, setDebtors] = useState<Debtor[]>([]);
@@ -42,12 +42,13 @@ const Debtors = () => {
       return;
     }
 
-    const filtered = debtors.filter(debtor =>
-      debtor.fullName.toLowerCase().includes(search.toLowerCase()) ||
-      debtor.phone.includes(search) ||
-      debtor.groups.some(group => 
-        group.name.toLowerCase().includes(search.toLowerCase())
-      )
+    const filtered = debtors.filter(
+      (debtor) =>
+        debtor.fullName.toLowerCase().includes(search.toLowerCase()) ||
+        debtor.phone.includes(search) ||
+        debtor.groups.some((group) =>
+          group.name.toLowerCase().includes(search.toLowerCase())
+        )
     );
     setFilteredDebtors(filtered);
   }, [search, debtors]);
@@ -63,11 +64,11 @@ const Debtors = () => {
 
   const handleExport = async () => {
     try {
-      const blob = await debtorService.exportDebtors('excel');
+      const blob = await debtorService.exportDebtors("excel");
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
-      a.download = `qarzdorlar_${new Date().toISOString().split('T')[0]}.xlsx`;
+      a.download = `qarzdorlar_${new Date().toISOString().split("T")[0]}.xlsx`;
       a.click();
       window.URL.revokeObjectURL(url);
       toast.success("Fayl yuklab olindi!");
@@ -100,11 +101,14 @@ const Debtors = () => {
   const stats = {
     totalDebtors: filteredDebtors.length,
     totalAmount: filteredDebtors.reduce((sum, d) => sum + d.totalDebt, 0),
-    averageDebt: filteredDebtors.length 
-      ? Math.round(filteredDebtors.reduce((sum, d) => sum + d.totalDebt, 0) / filteredDebtors.length)
+    averageDebt: filteredDebtors.length
+      ? Math.round(
+          filteredDebtors.reduce((sum, d) => sum + d.totalDebt, 0) /
+            filteredDebtors.length
+        )
       : 0,
-    highestDebt: filteredDebtors.length 
-      ? Math.max(...filteredDebtors.map(d => d.totalDebt))
+    highestDebt: filteredDebtors.length
+      ? Math.max(...filteredDebtors.map((d) => d.totalDebt))
       : 0,
   };
 
@@ -115,18 +119,17 @@ const Debtors = () => {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
             Qarzdorlar Ro'yxati
           </h1>
-       
         </div>
 
         <DebtorStats stats={stats} />
 
-         <DebtorFilters
-        search={search}
-        setSearch={setSearch}
-        minDebt={minDebt}
-        setMinDebt={setMinDebt}
-        debtors={debtors} 
-      />
+        <DebtorFilters
+          search={search}
+          setSearch={setSearch}
+          minDebt={minDebt}
+          setMinDebt={setMinDebt}
+          debtors={debtors}
+        />
         <DebtorList
           debtors={filteredDebtors}
           onSendReminder={handleSendReminder}
@@ -136,15 +139,27 @@ const Debtors = () => {
         {filteredDebtors.length === 0 && !loading && (
           <div className="text-center py-12">
             <div className="w-16 h-16 mx-auto mb-4 text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1}
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
             </div>
             <h3 className="text-xl font-medium text-gray-600 mb-2">
               Qarzdorlar topilmadi
             </h3>
             <p className="text-gray-500">
-              {search ? "Qidiruv bo'yicha qarzdor topilmadi" : "Hozircha qarzdorlar mavjud emas"}
+              {search
+                ? "Qidiruv bo'yicha qarzdor topilmadi"
+                : "Hozircha qarzdorlar mavjud emas"}
             </p>
           </div>
         )}

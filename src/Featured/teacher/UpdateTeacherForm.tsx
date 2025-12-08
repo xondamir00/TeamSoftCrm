@@ -61,7 +61,9 @@ export default function UpdateTeacherDrawer({
         });
       } catch (err) {
         console.error("Error fetching teacher:", err);
-        setError(t("updateTeacher.error") || t("error") || "Error loading teacher data");
+        setError(
+          t("updateTeacher.error") || t("error") || "Error loading teacher data"
+        );
       } finally {
         setFetching(false);
       }
@@ -106,7 +108,10 @@ export default function UpdateTeacherDrawer({
       payload.percentShare = form.percentShare;
 
       if (payload.monthlySalary && payload.percentShare) {
-        setError(t("updateTeacher.salaryWarning") || "Cannot set both salary and percent share");
+        setError(
+          t("updateTeacher.salaryWarning") ||
+            "Cannot set both salary and percent share"
+        );
         setLoading(false);
         return;
       }
@@ -122,7 +127,11 @@ export default function UpdateTeacherDrawer({
       }, 1500);
     } catch (err) {
       const apiError = err as AxiosError<ApiError>;
-      setError(apiError.response?.data?.message || t("updateTeacher.error") || "An error occurred");
+      setError(
+        apiError.response?.data?.message ||
+          t("updateTeacher.error") ||
+          "An error occurred"
+      );
     } finally {
       setLoading(false);
     }
@@ -181,7 +190,8 @@ export default function UpdateTeacherDrawer({
 
               {success && (
                 <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 p-3 rounded-lg text-sm">
-                  {t("updateTeacher.success") || "Teacher updated successfully!"}
+                  {t("updateTeacher.success") ||
+                    "Teacher updated successfully!"}
                 </div>
               )}
 
@@ -194,7 +204,9 @@ export default function UpdateTeacherDrawer({
                   name="firstName"
                   value={form.firstName}
                   onChange={handleChange}
-                  placeholder={t("updateTeacher.placeholder.firstName") || "First name"}
+                  placeholder={
+                    t("updateTeacher.placeholder.firstName") || "First name"
+                  }
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
                   required
@@ -210,7 +222,9 @@ export default function UpdateTeacherDrawer({
                   name="lastName"
                   value={form.lastName}
                   onChange={handleChange}
-                  placeholder={t("updateTeacher.placeholder.lastName") || "Last name"}
+                  placeholder={
+                    t("updateTeacher.placeholder.lastName") || "Last name"
+                  }
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
                   required
@@ -226,7 +240,9 @@ export default function UpdateTeacherDrawer({
                   name="phone"
                   value={form.phone}
                   onChange={handleChange}
-                  placeholder={t("updateTeacher.placeholder.phone") || "Phone number"}
+                  placeholder={
+                    t("updateTeacher.placeholder.phone") || "Phone number"
+                  }
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
                   required
@@ -235,14 +251,17 @@ export default function UpdateTeacherDrawer({
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  {t("updateTeacher.password") || "Password (leave empty to keep current)"}
+                  {t("updateTeacher.password") ||
+                    "Password (leave empty to keep current)"}
                 </label>
                 <Input
                   type="password"
                   name="password"
                   value={form.password}
                   onChange={handleChange}
-                  placeholder={t("updateTeacher.placeholder.password") || "New password"}
+                  placeholder={
+                    t("updateTeacher.placeholder.password") || "New password"
+                  }
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
                 />
@@ -257,7 +276,10 @@ export default function UpdateTeacherDrawer({
                   name="photoUrl"
                   value={form.photoUrl}
                   onChange={handleChange}
-                  placeholder={t("updateTeacher.placeholder.photoUrl") || "https://example.com/photo.jpg"}
+                  placeholder={
+                    t("updateTeacher.placeholder.photoUrl") ||
+                    "https://example.com/photo.jpg"
+                  }
                   disabled={loading}
                   className="dark:bg-slate-800 dark:border-slate-700"
                 />
@@ -294,7 +316,8 @@ export default function UpdateTeacherDrawer({
               </div>
 
               <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg text-xs text-slate-600 dark:text-slate-400">
-                {t("updateTeacher.note") || "Note: Set either monthly salary or percent share, not both."}
+                {t("updateTeacher.note") ||
+                  "Note: Set either monthly salary or percent share, not both."}
               </div>
             </form>
           )}
@@ -315,8 +338,8 @@ export default function UpdateTeacherDrawer({
             className="flex-1 flex items-center justify-center gap-2"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {loading 
-              ? t("updateTeacher.saving") || "Saving..." 
+            {loading
+              ? t("updateTeacher.saving") || "Saving..."
               : t("updateTeacher.saveChanges") || "Save Changes"}
           </Button>
         </div>

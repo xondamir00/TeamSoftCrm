@@ -13,15 +13,8 @@ import {
 import { api } from "@/Service/api";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import type { Teacher } from "@/Store";
 import { useTranslation } from "react-i18next";
-
-interface DeleteTeacherProps {
-  teacher: Teacher | null;
-  open: boolean;
-  onClose: () => void;
-  onDeleted?: () => void;
-}
+import type { DeleteTeacherProps } from "@/Store/Teacher/TeacherInterface";
 
 export default function DeleteTeacherDialog({
   teacher,

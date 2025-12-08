@@ -2,15 +2,14 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../components/ui/button";
 import AddStudentForm from "./AddStudent";
+import type { StudentDrawerProps } from "@/Store/Student/StudentInterface";
 
-interface DrawerProps {
-  open: boolean;
-  onClose: () => void;
-}
-
-export default function AddStudentDrawer({ open, onClose }: DrawerProps) {
+export default function AddStudentDrawer({
+  open,
+  onClose,
+}: StudentDrawerProps) {
   return (
     <AnimatePresence>
       {open && (

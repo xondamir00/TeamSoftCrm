@@ -1,11 +1,11 @@
-import { create } from 'zustand';
-import { financeService } from '../../Store/FinanceService';
+import { create } from "zustand";
+import { financeService } from "../../Service/FinanceService";
 
 interface Expense {
   title: string;
   category: string;
   amount: number;
-  method: 'CASH' | 'CARD' | 'TRANSFER' | 'OTHER';
+  method: "CASH" | "CARD" | "TRANSFER" | "OTHER";
   note?: string;
   paidAt?: string;
 }
@@ -16,11 +16,15 @@ interface ExpenseStore {
   alertContent: {
     title: string;
     description: string;
-    type: 'success' | 'error';
+    type: "success" | "error";
   };
   submitExpense: (expenseData: Expense) => Promise<void>;
   resetForm: () => void;
-  setAlert: (alert: { title: string; description: string; type: 'success' | 'error' }) => void;
+  setAlert: (alert: {
+    title: string;
+    description: string;
+    type: "success" | "error";
+  }) => void;
   setAlertOpen: (open: boolean) => void;
   setIsSubmitting: (submitting: boolean) => void;
 }
@@ -29,9 +33,9 @@ export const useExpenseStore = create<ExpenseStore>((set, get) => ({
   isSubmitting: false,
   alertOpen: false,
   alertContent: {
-    title: '',
-    description: '',
-    type: 'success',
+    title: "",
+    description: "",
+    type: "success",
   },
 
   submitExpense: async (expenseData: Expense) => {
@@ -41,22 +45,22 @@ export const useExpenseStore = create<ExpenseStore>((set, get) => ({
         ...expenseData,
         paidAt: expenseData.paidAt || new Date().toISOString(),
       });
-      
-      console.log('Chiqim muvaffaqiyatli:', result);
-      
+
+      console.log("Chiqim muvaffaqiyatli:", result);
+
       get().setAlert({
-        title: 'Muvaffaqiyatli',
-        description: 'Chiqim muvaffaqiyatli qoʻshildi',
-        type: 'success',
+        title: "Muvaffaqiyatli",
+        description: "Chiqim muvaffaqiyatli qoʻshildi",
+        type: "success",
       });
-      
+
       return result;
     } catch (error: any) {
-      console.error('Chiqim qoʻshishda xatolik:', error);
+      console.error("Chiqim qoʻshishda xatolik:", error);
       get().setAlert({
-        title: 'Xatolik',
-        description: error.message || 'Chiqim qoʻshishda xatolik yuz berdi',
-        type: 'error',
+        title: "Xatolik",
+        description: error.message || "Chiqim qoʻshishda xatolik yuz berdi",
+        type: "error",
       });
       throw error;
     } finally {

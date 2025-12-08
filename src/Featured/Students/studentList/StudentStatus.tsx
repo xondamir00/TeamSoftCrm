@@ -1,11 +1,6 @@
+import type { StudentStatsProps } from "@/Store/Student/StudentInterface";
 import { Users, UserCheck, UserX } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-interface StudentStatsProps {
-  totalStudents: number;
-  activeCount: number;
-  inactiveCount: number;
-}
 
 export const StudentStats = ({
   totalStudents,

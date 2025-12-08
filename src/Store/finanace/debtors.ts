@@ -41,7 +41,7 @@ export interface PaymentMethodDistribution {
 export const financeApi = {
   // Global balans olish
   getGlobalBalance: async (): Promise<GlobalBalance> => {
-    const { data } = await api.get('/finance/balance');
+    const { data } = await api.get("/finance/balance");
     return data;
   },
 
@@ -52,10 +52,10 @@ export const financeApi = {
     method?: string
   ): Promise<FinanceOverview> => {
     const params = new URLSearchParams();
-    if (from) params.append('from', from);
-    if (to) params.append('to', to);
-    if (method) params.append('method', method);
-    
+    if (from) params.append("from", from);
+    if (to) params.append("to", to);
+    if (method) params.append("method", method);
+
     const { data } = await api.get(`/finance/overview?${params.toString()}`);
     return data;
   },
@@ -63,8 +63,8 @@ export const financeApi = {
   // Qarzdorlar ro'yxati
   getDebtors: async (minDebt: number = 0): Promise<Debtor[]> => {
     const params = new URLSearchParams();
-    if (minDebt > 0) params.append('minDebt', minDebt.toString());
-    
+    if (minDebt > 0) params.append("minDebt", minDebt.toString());
+
     const { data } = await api.get(`/finance/debtors?${params.toString()}`);
     return data;
   },
@@ -76,18 +76,23 @@ export const financeApi = {
   },
 
   // Chart uchun ma'lumotlar (backenddan)
-  getChartData: async (range: 'yearly' | 'monthly' | 'weekly', period: string): Promise<ChartData> => {
+  getChartData: async (
+    range: "yearly" | "monthly" | "weekly",
+    period: string
+  ): Promise<ChartData> => {
     const params = new URLSearchParams();
-    params.append('range', range);
-    params.append('period', period);
-    
+    params.append("range", range);
+    params.append("period", period);
+
     const { data } = await api.get(`/finance/charts?${params.toString()}`);
     return data;
   },
 
   // To'lov usullari bo'yicha taqsimot
-  getPaymentMethodDistribution: async (): Promise<PaymentMethodDistribution[]> => {
-    const { data } = await api.get('/finance/payment-methods/distribution');
+  getPaymentMethodDistribution: async (): Promise<
+    PaymentMethodDistribution[]
+  > => {
+    const { data } = await api.get("/finance/payment-methods/distribution");
     return data;
   },
 

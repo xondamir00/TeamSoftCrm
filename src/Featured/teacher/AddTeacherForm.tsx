@@ -4,19 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/Service/api";
 import { useTranslation } from "react-i18next";
-import type { CreateTeacherPayload } from "@/Store";
 import { AxiosError } from "axios";
 import { X, Loader2 } from "lucide-react";
-
-interface ApiError {
-  message?: string;
-}
-
-interface AddTeacherDrawerProps {
-  open: boolean;
-  onClose: () => void;
-  onAdded: () => void;
-}
+import type {
+  AddTeacherDrawerProps,
+  CreateTeacherPayload,
+} from "@/Store/Teacher/TeacherInterface";
+import type { ApiError } from "@/Store";
 
 export default function AddTeacherForm({
   open,

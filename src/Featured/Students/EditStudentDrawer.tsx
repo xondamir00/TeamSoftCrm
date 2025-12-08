@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../components/ui/button";
 import EditStudent from "./EditStudent";
 import { useTranslation } from "react-i18next";
 

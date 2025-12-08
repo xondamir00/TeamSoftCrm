@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useStudentStore, type Student } from "@/Store/Student";
+import { useStudentStore } from "@/Service/StudentService";
+import type { Student } from "@/Store/Student/StudentInterface";
 
 interface RestoreStudentDialogProps {
   student: Student | null;
@@ -33,7 +34,7 @@ export default function RestoreStudentDialog({
   const handleToggleActive = async () => {
     setLoading(true);
     try {
-      await restoreStudent(student.id); 
+      await restoreStudent(student.id);
       if (onUpdated) onUpdated();
       onClose();
     } catch (err) {

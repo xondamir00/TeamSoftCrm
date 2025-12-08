@@ -9,17 +9,17 @@ import AddRoom from "./components/Rooms/addRoom";
 import RoomsList from "./components/Rooms/RoomsList";
 import Groups from "./components/Group/GroupList";
 import { Login } from "./components/auth/login";
-import ListStudent from "./components/Students/studentList/ListStudent";
+import ListStudent from "./Featured/Students/studentList/ListStudent";
 import EnrollmentsPage from "./components/page/EnrollmentsPage";
 import { TeachingAssignmentForm } from "./components/TeachingAssignmentsList/TeachingAssignmentForm";
 import { TeachingAssignmentsList } from "./components/TeachingAssignmentsList/TeachingAssignmentsList";
 import CreateStudentForm from "./components/form/addStudent";
 import AddGroupForm from "./components/Group/AddGoup";
-import TeacherList from "./components/teacher/Teacherlist";
+import TeacherList from "./Featured/teacher/Teacherlist";
 import AddManagerForm from "./components/form/AddManeger";
 import ManagerList from "./components/Maneger/ManagerList";
 import Trash from "./components/page/trash";
-import StudentPage from "./components/Students/studentpage/StudentPage";
+import StudentPage from "./Featured/Students/StudentFinancepage/StudentPage";
 import Attendancepage from "./components/attendance/attendance-page";
 import FinancePage from "./components/page/Finance";
 import Debtors from "./components/debtors/Debtors";
@@ -32,7 +32,7 @@ const App = () => {
         <Routes>
           {/* Public route */}
           <Route path="/sign" element={<Login />} />
-          
+
           {/* Admin routes */}
           <Route
             path="/admin"
@@ -42,12 +42,12 @@ const App = () => {
               </RoleRoute>
             }
           >
-            <Route index element={<FinanceDashboard />} /> {/* ✅ DEFAULT COMPONENT */}
+            <Route index element={<FinanceDashboard />} />{" "}
+            {/* ✅ DEFAULT COMPONENT */}
             <Route path="student/:id" element={<StudentPage />} />
             <Route path="settings" element={<Settings />} />
             <Route path="student" element={<ListStudent />} />
             <Route path="teachers" element={<TeacherList />} />
-          
             {/* Teaching Assignments routes */}
             <Route
               path="settings/assignments"
@@ -57,7 +57,6 @@ const App = () => {
               path="settings/create-assignment"
               element={<TeachingAssignmentForm onSuccess={() => {}} />}
             />
-
             {/* Create forms */}
             <Route
               path="settings/create-teacher"
@@ -74,13 +73,12 @@ const App = () => {
             <Route path="settings/menegers-list" element={<ManagerList />} />
             <Route path="settings/create-group" element={<AddGroupForm />} />
             <Route path="settings/create-room" element={<AddRoom />} />
-
             {/* Other admin pages */}
             <Route path="settings/archive" element={<Trash />} />
             <Route path="settings/enrollments" element={<EnrollmentsPage />} />
             <Route path="rooms" element={<RoomsList />} />
             <Route path="groups" element={<Groups />} />
-            <Route path="debtors" element={<Debtors/>}/>
+            <Route path="debtors" element={<Debtors />} />
             <Route path="finance" element={<FinancePage />} />
           </Route>
 
@@ -94,7 +92,7 @@ const App = () => {
             }
           >
             <Route index element={<Teacher />} />
-            <Route path="group/:groupId" element={<Attendancepage/>}/>
+            <Route path="group/:groupId" element={<Attendancepage />} />
           </Route>
 
           {/* Catch-all route */}

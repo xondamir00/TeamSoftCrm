@@ -7,7 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { Teacher } from "@/Store";
-import DeleteTeacherDialog from "../teacher/deleteTeacher";
+import DeleteTeacherDialog from "../../Featured/teacher/DeleteTeacher";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
@@ -40,14 +40,15 @@ export default function TrashTeacherPage() {
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
-
-      <Card className="
+      <Card
+        className="
         shadow-lg p-5 
         bg-white dark:bg-slate-900
         backdrop-blur 
         border border-red-200 dark:border-red-900/40 
         transition-colors
-      ">
+      "
+      >
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-red-600 dark:text-red-600 flex items-center gap-2">
             <Trash2 className="h-5 w-5" />
@@ -56,7 +57,6 @@ export default function TrashTeacherPage() {
         </CardHeader>
 
         <CardContent className="space-y-3">
-
           {loading && (
             <div className="py-6 text-center">
               <Loader2 className="h-6 w-6 animate-spin mx-auto text-gray-500 dark:text-gray-300" />
@@ -121,7 +121,6 @@ export default function TrashTeacherPage() {
               </motion.div>
             ))}
           </AnimatePresence>
-
         </CardContent>
       </Card>
 

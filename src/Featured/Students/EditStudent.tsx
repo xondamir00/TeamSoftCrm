@@ -1,13 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { Alert, AlertTitle, AlertDescription } from "../../components/ui/alert";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Card, CardHeader, CardContent, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardTitle,
+} from "../../components/ui/card";
 import { api } from "@/Service/api";
 
 interface EditStudentProps {
@@ -25,7 +30,10 @@ interface StudentForm {
   isActive: boolean;
 }
 
-export default function EditStudent({ studentId, onUpdated }: EditStudentProps) {
+export default function EditStudent({
+  studentId,
+  onUpdated,
+}: EditStudentProps) {
   const { t } = useTranslation();
 
   const [form, setForm] = useState<StudentForm>({
@@ -49,8 +57,10 @@ export default function EditStudent({ studentId, onUpdated }: EditStudentProps) 
         const student = res.data;
 
         setForm({
-          firstName: student.user?.firstName || student.fullName?.split(" ")[0] || "",
-          lastName: student.user?.lastName || student.fullName?.split(" ")[1] || "",
+          firstName:
+            student.user?.firstName || student.fullName?.split(" ")[0] || "",
+          lastName:
+            student.user?.lastName || student.fullName?.split(" ")[1] || "",
           phone: student.user?.phone || student.phone || "",
           password: "",
           dateOfBirth: student.dateOfBirth?.split("T")[0] || "",

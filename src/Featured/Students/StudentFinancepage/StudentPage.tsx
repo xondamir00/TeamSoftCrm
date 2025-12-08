@@ -1,11 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { 
-  Loader2, 
-  ChevronLeft,
-  Plus
-} from "lucide-react";
+import { Loader2, ChevronLeft, Plus } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -19,8 +15,9 @@ import { PersonalInfo } from "./PersonalInfo";
 import { FinanceStats } from "./FinanceStats";
 import { PaymentHistory } from "./PaymentHistory";
 import { FinanceCards } from "./FinanceCards";
-import type { Student, FinanceSummary } from "@/Store/index";
+import type { FinanceSummary } from "@/Store/index";
 import { api } from "@/Service/api";
+import type { Student } from "@/Store/Student/StudentInterface";
 
 const StudentPage = () => {
   const { t } = useTranslation();
@@ -59,7 +56,7 @@ const StudentPage = () => {
 
   const handlePaymentSubmit = async (paymentData: any) => {
     try {
-      await api.post('/finance/payments', paymentData);
+      await api.post("/finance/payments", paymentData);
       toast.success("To'lov muvaffaqiyatli kiritildi!");
       setPaymentModalOpen(false);
       fetchFinanceSummary();
@@ -80,40 +77,47 @@ const StudentPage = () => {
 
   const getInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
       .toUpperCase()
       .slice(0, 2);
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('uz-UZ', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("uz-UZ", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('uz-UZ', {
-      style: 'currency',
-      currency: 'UZS',
+    return new Intl.NumberFormat("uz-UZ", {
+      style: "currency",
+      currency: "UZS",
       minimumFractionDigits: 0,
     }).format(amount);
   };
 
   const getPaymentMethodIcon = (method: string) => {
     switch (method) {
-      case 'CASH': return '💵';
-      case 'CARD': return '💳';
-      case 'UZUM': return '📱';
-      case 'CLICK': return '👆';
-      case 'PAYME': return '⚡';
-      case 'TRANSFER': return '🏦';
-      default: return '💰';
+      case "CASH":
+        return "💵";
+      case "CARD":
+        return "💳";
+      case "UZUM":
+        return "📱";
+      case "CLICK":
+        return "👆";
+      case "PAYME":
+        return "⚡";
+      case "TRANSFER":
+        return "🏦";
+      default:
+        return "💰";
     }
   };
 
@@ -122,7 +126,9 @@ const StudentPage = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800">
         <div className="text-center">
           <Loader2 className="animate-spin w-12 h-12 text-blue-600 mx-auto mb-4" />
-          <p className="text-slate-600 dark:text-slate-300">{t("loading_student")}</p>
+          <p className="text-slate-600 dark:text-slate-300">
+            {t("loading_student")}
+          </p>
         </div>
       </div>
     );
@@ -161,9 +167,9 @@ const StudentPage = () => {
             <ChevronLeft className="w-4 h-4 mr-2" />
             {t("back")}
           </Button>
-          
+
           <div className="flex gap-3">
-            <Button 
+            <Button
               variant="outline"
               onClick={() => setPaymentModalOpen(true)}
               className="gap-2"
@@ -176,7 +182,7 @@ const StudentPage = () => {
 
         {/* Student Profile */}
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-          <StudentProfile 
+          <StudentProfile
             student={student}
             studentId={id!}
             getInitials={getInitials}
@@ -187,20 +193,30 @@ const StudentPage = () => {
             {finance && (
               <>
                 <div className="text-right">
-                  <p className="text-sm text-slate-500 dark:text-slate-400">Umumiy balans</p>
-                  <p className={`text-3xl font-bold ${finance.debt > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                    Umumiy balans
+                  </p>
+                  <p
+                    className={`text-3xl font-bold ${
+                      finance.debt > 0 ? "text-red-600" : "text-green-600"
+                    }`}
+                  >
                     {formatCurrency(finance.totalPaid)}
                   </p>
                 </div>
                 <div className="flex gap-4">
                   <div className="text-right">
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Qarz</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      Qarz
+                    </p>
                     <p className="text-lg font-semibold text-red-600">
                       {formatCurrency(finance.debt)}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Jami hisob</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      Jami hisob
+                    </p>
                     <p className="text-lg font-semibold text-blue-600">
                       {formatCurrency(finance.totalCharges)}
                     </p>
@@ -212,10 +228,18 @@ const StudentPage = () => {
         </div>
 
         {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="space-y-6"
+        >
           <TabsList className="grid grid-cols-2 p-2 shadow-md bg-white dark:bg-transparent border">
-            <TabsTrigger value="overview" className="p-2">Umumiy</TabsTrigger>
-            <TabsTrigger value="finance" className="p-2">Moliyaviy</TabsTrigger>
+            <TabsTrigger value="overview" className="p-2">
+              Umumiy
+            </TabsTrigger>
+            <TabsTrigger value="finance" className="p-2">
+              Moliyaviy
+            </TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -223,18 +247,18 @@ const StudentPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Personal Info */}
               <div className="lg:col-span-2">
-            <PersonalInfo 
-  phone={student.phone}
-  address={student.address}
-  dateOfBirth={student.dateOfBirth}
-  startDate={student.startDate}
-  formatDate={formatDate}
-/>
+                <PersonalInfo
+                  phone={student.phone}
+                  address={student.address}
+                  dateOfBirth={student.dateOfBirth}
+                  startDate={student.startDate}
+                  formatDate={formatDate}
+                />
               </div>
 
               {/* Finance Overview */}
               <div>
-                <FinanceStats 
+                <FinanceStats
                   finance={finance}
                   loading={financeLoading}
                   formatCurrency={formatCurrency}
@@ -245,7 +269,7 @@ const StudentPage = () => {
 
           {/* Finance Tab */}
           <TabsContent value="finance" className="space-y-6">
-            <PaymentHistory 
+            <PaymentHistory
               payments={finance?.lastPayments || []}
               loading={financeLoading}
               formatCurrency={formatCurrency}
@@ -255,24 +279,21 @@ const StudentPage = () => {
 
             {/* Finance Summary Cards */}
             {finance && (
-              <FinanceCards 
-                finance={finance}
-                formatCurrency={formatCurrency}
-              />
+              <FinanceCards finance={finance} formatCurrency={formatCurrency} />
             )}
           </TabsContent>
         </Tabs>
       </div>
 
       {/* Payment Modal */}
-    <PaymentModal
-  isOpen={paymentModalOpen}
-  onClose={() => setPaymentModalOpen(false)}
-  onSubmit={handlePaymentSubmit}
-  studentId={id!}
-  studentName={student?.fullName || ""}
-  loading={false}
-/>
+      <PaymentModal
+        isOpen={paymentModalOpen}
+        onClose={() => setPaymentModalOpen(false)}
+        onSubmit={handlePaymentSubmit}
+        studentId={id!}
+        studentName={student?.fullName || ""}
+        loading={false}
+      />
     </div>
   );
 };

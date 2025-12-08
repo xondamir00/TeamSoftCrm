@@ -100,7 +100,9 @@ export default function RoomsPage() {
             <Input
               value={name}
               required
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setName(e.target.value)
+              }
               placeholder={t("room_name")}
               className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"
             />
@@ -113,7 +115,9 @@ export default function RoomsPage() {
             <Input
               type="number"
               value={capacity}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setCapacity(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setCapacity(e.target.value)
+              }
               placeholder={t("capacity")}
               className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"
             />

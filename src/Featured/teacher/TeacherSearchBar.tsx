@@ -2,11 +2,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import useTeacherStore from "@/Store/teacherStore";
+import useTeacherStore from "@/Service/TeacherService";
 
 export default function TeacherSearchBar() {
   const { t } = useTranslation();
-  
+
   const { search, setSearch, setOpenAddDrawer } = useTeacherStore();
 
   return (
@@ -22,8 +22,8 @@ export default function TeacherSearchBar() {
         />
       </div>
 
-      <Button 
-        onClick={() => setOpenAddDrawer(true)} 
+      <Button
+        onClick={() => setOpenAddDrawer(true)}
         className="flex items-center gap-2"
       >
         <Plus className="w-4 h-4" />

@@ -1,6 +1,10 @@
 // src/Service/api.ts
 import { useAuth } from "@/Store";
-import axios, { AxiosError, type InternalAxiosRequestConfig, type AxiosRequestConfig } from "axios";
+import axios, {
+  AxiosError,
+  type InternalAxiosRequestConfig,
+  type AxiosRequestConfig,
+} from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
@@ -34,7 +38,11 @@ api.interceptors.response.use(
   async (error: AxiosError & { config?: RetryConfig }) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
       const { refreshToken, logout, login, user } = useAuth.getState();
@@ -58,7 +66,9 @@ api.interceptors.response.use(
 
           // original requestga yangi access token qo'shish
           originalRequest.headers = originalRequest.headers || {};
-          originalRequest.headers["Authorization"] = `Bearer ${data.accessToken}`;
+          originalRequest.headers[
+            "Authorization"
+          ] = `Bearer ${data.accessToken}`;
 
           // requestni qayta yuborish
           return api(originalRequest);

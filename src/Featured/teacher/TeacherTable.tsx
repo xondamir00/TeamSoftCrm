@@ -9,18 +9,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2, Pencil, Trash2, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import useTeacherStore from "@/Store/teacherStore";
+import useTeacherStore from "@/Service/TeacherService";
 import type { Teacher } from "@/Store";
 
 export default function TeacherTable() {
   const { t } = useTranslation();
-  const { 
-    teachers, 
-    loading, 
-    error, 
-    setSelectedTeacher, 
-    setOpenEditDrawer, 
-    setDeleteDialogOpen 
+  const {
+    teachers,
+    loading,
+    error,
+    setSelectedTeacher,
+    setOpenEditDrawer,
+    setDeleteDialogOpen,
   } = useTeacherStore();
 
   const handleEdit = (teacher: Teacher) => {
@@ -41,9 +41,7 @@ export default function TeacherTable() {
     );
 
   if (error)
-    return (
-      <div className="text-center py-10 text-red-600">{error}</div>
-    );
+    return <div className="text-center py-10 text-red-600">{error}</div>;
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg border overflow-hidden mb-6">
@@ -56,7 +54,9 @@ export default function TeacherTable() {
               <TableHead>{t("name") || "Name"}</TableHead>
               <TableHead>{t("phone") || "Phone"}</TableHead>
               <TableHead>{t("status") || "Status"}</TableHead>
-              <TableHead className="text-right">{t("actions") || "Actions"}</TableHead>
+              <TableHead className="text-right">
+                {t("actions") || "Actions"}
+              </TableHead>
             </TableRow>
           </TableHeader>
 
@@ -94,17 +94,17 @@ export default function TeacherTable() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Button 
-                        size="icon" 
-                        variant="outline" 
+                      <Button
+                        size="icon"
+                        variant="outline"
                         onClick={() => handleEdit(teacher)}
                       >
                         <Pencil className="w-4 h-4" />
                       </Button>
 
-                      <Button 
-                        size="icon" 
-                        variant="destructive" 
+                      <Button
+                        size="icon"
+                        variant="destructive"
                         onClick={() => handleDelete(teacher)}
                       >
                         <Trash2 className="w-4 h-4" />

@@ -7,13 +7,16 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
-
-interface ApiError {
-  message?: string;
-}
+import type { ApiError } from "@/Store";
 
 export default function AddStudentForm() {
   const { t } = useTranslation();
@@ -72,7 +75,9 @@ export default function AddStudentForm() {
       });
     } catch (error) {
       const err = error as AxiosError<ApiError>;
-      setMessage(err.response?.data?.message || t("error") || "An error occurred");
+      setMessage(
+        err.response?.data?.message || t("error") || "An error occurred"
+      );
     } finally {
       setLoading(false);
     }
@@ -83,13 +88,20 @@ export default function AddStudentForm() {
       <CardHeader>
         <CardTitle>{t("add_student") || "Add New Student"}</CardTitle>
         <CardDescription>
-          {t("add_student_description") || "Fill in the student information below"}
+          {t("add_student_description") ||
+            "Fill in the student information below"}
         </CardDescription>
       </CardHeader>
-      
+
       <CardContent>
         {message && (
-          <Alert className={`mb-4 ${message.includes("error") ? "bg-red-50 text-red-800 dark:bg-red-950 dark:text-red-300" : "bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-300"}`}>
+          <Alert
+            className={`mb-4 ${
+              message.includes("error")
+                ? "bg-red-50 text-red-800 dark:bg-red-950 dark:text-red-300"
+                : "bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-300"
+            }`}
+          >
             <AlertDescription>{message}</AlertDescription>
           </Alert>
         )}
@@ -99,7 +111,8 @@ export default function AddStudentForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="firstName">
-                {t("first_name") || "First Name"} <span className="text-red-500">*</span>
+                {t("first_name") || "First Name"}{" "}
+                <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="firstName"
@@ -113,7 +126,8 @@ export default function AddStudentForm() {
 
             <div className="space-y-2">
               <Label htmlFor="lastName">
-                {t("last_name") || "Last Name"} <span className="text-red-500">*</span>
+                {t("last_name") || "Last Name"}{" "}
+                <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="lastName"
@@ -129,7 +143,8 @@ export default function AddStudentForm() {
           {/* Phone */}
           <div className="space-y-2">
             <Label htmlFor="phone">
-              {t("phone_number") || "Phone Number"} <span className="text-red-500">*</span>
+              {t("phone_number") || "Phone Number"}{" "}
+              <span className="text-red-500">*</span>
             </Label>
             <Input
               id="phone"
@@ -144,7 +159,8 @@ export default function AddStudentForm() {
           {/* Password */}
           <div className="space-y-2">
             <Label htmlFor="password">
-              {t("password") || "Password"} <span className="text-red-500">*</span>
+              {t("password") || "Password"}{" "}
+              <span className="text-red-500">*</span>
             </Label>
             <Input
               id="password"
@@ -201,11 +217,7 @@ export default function AddStudentForm() {
           </div>
 
           {/* Submit Button */}
-          <Button 
-            type="submit" 
-            disabled={loading} 
-            className="w-full mt-2"
-          >
+          <Button type="submit" disabled={loading} className="w-full mt-2">
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

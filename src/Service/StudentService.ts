@@ -1,30 +1,7 @@
 import { create } from "zustand";
 import { api } from "@/Service/api";
-
-export interface Student {
-  id: number;
-  firstName: string;
-  lastName: string;
-  fullName?: string;
-  phone: string;
-  dateOfBirth?: string;
-  startDate?: string;
-  isActive: boolean;
-}
-
-interface StudentStore {
-  students: Student[];
-  totalPages: number;
-  loading: boolean;
-  error: string | null;
-
-  fetchStudents: (search?: string, page?: number, limit?: number) => Promise<void>;
-  getStudentById: (id: number) => Promise<Student>;
-  createStudent: (data: Partial<Student>) => Promise<void>;
-  updateStudent: (id: number, data: Partial<Student>) => Promise<void>;
-  deleteStudent: (id: number) => Promise<void>;
-  restoreStudent: (id: number) => Promise<void>;
-}
+import type { StudentStore } from "@/Store/Student/StudentInterface";
+import type { Student } from "@/Store/Student/StudentInterface";
 
 export const useStudentStore = create<StudentStore>((set, get) => ({
   students: [],
