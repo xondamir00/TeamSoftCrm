@@ -1,23 +1,23 @@
 "use client";
 
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
-import { api } from "@/Service/api";
+import { useEffect, useState, type FormEvent } from "react";
+import { RoomService } from "@/Service/RoomService";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Edit, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { Room } from "@/Store/room";
+import type { Room } from "@/Store/Room/RoomStore";
 
 export default function RoomsPage() {
   const { t } = useTranslation();
 
-  const [rooms, setRooms] = useState<Room[]>([]); // Room[] deb to'g'irladim
+  const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [capacity, setCapacity] = useState("");
-  const [editRoom, setEditRoom] = useState<Room | null>(null); // null qo'shdim
+  const [editRoom, setEditRoom] = useState<Room | null>(null);
 
   useEffect(() => {
     loadRooms();
@@ -25,7 +25,7 @@ export default function RoomsPage() {
 
   const loadRooms = async () => {
     try {
-      const { data } = await api.get<Room[]>("/rooms");
+      const data = await RoomService.getAll();
       setRooms(data.filter((x) => x.isActive !== false));
     } catch (err) {
       console.error("Xonalar yuklanmadi:", err);
@@ -36,10 +36,11 @@ export default function RoomsPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await api.post("/rooms", {
+      await RoomService.create({
         name,
         capacity: capacity ? Number(capacity) : undefined,
       });
+
       setName("");
       setCapacity("");
       loadRooms();
@@ -52,11 +53,15 @@ export default function RoomsPage() {
 
   const updateRoom = async () => {
     if (!editRoom) return;
+
     try {
-      await api.patch(`/rooms/${editRoom.id}`, {
+      await RoomService.update(editRoom.id, {
         name: editRoom.name,
-        capacity: editRoom.capacity ? Number(editRoom.capacity) : undefined,
+        capacity: editRoom.capacity
+          ? Number(editRoom.capacity)
+          : undefined,
       });
+
       setEditRoom(null);
       loadRooms();
     } catch (err) {
@@ -66,7 +71,7 @@ export default function RoomsPage() {
 
   const deleteRoom = async (id: string) => {
     try {
-      await api.patch(`/rooms/${id}`, { isActive: false });
+      await RoomService.delete(id);
       setRooms((prev) => prev.filter((x) => x.id !== id));
     } catch (err) {
       console.error("Xona o'chirilmadi:", err);
@@ -89,6 +94,7 @@ export default function RoomsPage() {
         <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900 dark:text-white">
           {t("add_room")}
         </h2>
+
         <form
           onSubmit={createRoom}
           className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end"
@@ -100,9 +106,7 @@ export default function RoomsPage() {
             <Input
               value={name}
               required
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setName(e.target.value)
-              }
+              onChange={(e) => setName(e.target.value)}
               placeholder={t("room_name")}
               className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"
             />
@@ -115,9 +119,7 @@ export default function RoomsPage() {
             <Input
               type="number"
               value={capacity}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setCapacity(e.target.value)
-              }
+              onChange={(e) => setCapacity(e.target.value)}
               placeholder={t("capacity")}
               className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"
             />
@@ -126,7 +128,7 @@ export default function RoomsPage() {
           <div className="flex justify-start md:justify-end">
             <Button
               type="submit"
-              className="bg-[#0208B0] hover:bg-[#0208B0]  text-white  duration-200  font-semibold rounded-xl shadow-lg transition flex items-center gap-2"
+              className="bg-[#0208B0] hover:bg-[#0208B0] text-white font-semibold rounded-xl shadow-lg transition flex items-center gap-2"
               disabled={loading}
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
@@ -136,6 +138,7 @@ export default function RoomsPage() {
         </form>
       </motion.div>
 
+      {/* ROOM LIST */}
       <AnimatePresence>
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -180,6 +183,7 @@ export default function RoomsPage() {
                 >
                   <Edit className="h-5 w-5" />
                 </Button>
+
                 <Button
                   variant="destructive"
                   size="icon"
@@ -193,6 +197,7 @@ export default function RoomsPage() {
         </motion.div>
       </AnimatePresence>
 
+      {/* EDIT MODAL */}
       {editRoom && (
         <div className="fixed inset-0 bg-black/50 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <motion.div
@@ -209,10 +214,10 @@ export default function RoomsPage() {
               <Label className="dark:text-neutral-300">{t("room_name")}</Label>
               <Input
                 value={editRoom.name}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                onChange={(e) =>
                   setEditRoom({ ...editRoom, name: e.target.value })
                 }
-                className="mt-1 dark:bg-bg-slate-900 dark:border-neutral-700 dark:text-white"
+                className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"
               />
             </div>
 
@@ -221,8 +226,11 @@ export default function RoomsPage() {
               <Input
                 type="number"
                 value={editRoom.capacity || ""}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setEditRoom({ ...editRoom, capacity: e.target.value })
+                onChange={(e) =>
+                  setEditRoom({
+                    ...editRoom,
+                    capacity: e.target.value,
+                  })
                 }
                 className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"
               />
@@ -236,6 +244,7 @@ export default function RoomsPage() {
               >
                 {t("cancel")}
               </Button>
+
               <Button onClick={updateRoom}>{t("save")}</Button>
             </div>
           </motion.div>
