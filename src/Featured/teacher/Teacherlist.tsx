@@ -5,7 +5,7 @@ import AddTeacherDrawer from "./AddTeacherForm";
 import TeacherSearchBar from "./TeacherSearchBar";
 import TeacherStats from "./TeacherStats";
 import TeacherTable from "./TeacherTable";
-import TeacherPagination from "./TeacherPagination";
+import TeacherPagination from "./TeacherPageNavigation";
 import useTeacherStore from "@/Service/TeacherService";
 
 export default function TeacherList() {

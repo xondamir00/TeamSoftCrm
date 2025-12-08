@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { api } from "@/Service/api";
 import { useTranslation } from "react-i18next";
-import { AxiosError } from "axios";
 import { X, Loader2 } from "lucide-react";
 import type {
   AddTeacherDrawerProps,
   CreateTeacherPayload,
 } from "@/Store/Teacher/TeacherInterface";
-import type { ApiError } from "@/Store";
+import useTeacherStore from "@/Service/TeacherService";
 
 export default function AddTeacherForm({
   open,
@@ -18,6 +16,7 @@ export default function AddTeacherForm({
   onAdded,
 }: AddTeacherDrawerProps) {
   const { t } = useTranslation();
+  const { createTeacher } = useTeacherStore() as any; 
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
@@ -68,13 +67,15 @@ export default function AddTeacherForm({
         return;
       }
 
+      // Undefined qiymatlarni olib tashlash
       Object.keys(payload).forEach((key) => {
         if (payload[key as keyof CreateTeacherPayload] === undefined) {
           delete payload[key as keyof CreateTeacherPayload];
         }
       });
 
-      await api.post("/teachers", payload);
+      // Store orqali teacher yaratish
+      await createTeacher(payload);
 
       setSuccess(true);
       setForm({
@@ -88,13 +89,14 @@ export default function AddTeacherForm({
       });
 
       setTimeout(() => {
-        onAdded();
+        onAdded(); // Bu callback yangi teacher qo'shilgandan keyin qayta fetch qilish uchun
         onClose();
         setSuccess(false);
       }, 1500);
     } catch (err) {
-      const apiError = err as AxiosError<ApiError>;
-      setError(apiError.response?.data?.message || t("error"));
+      // Error'ni teacherStore'dan kelayotgan error sifatida qabul qilamiz
+      const errorMessage = err instanceof Error ? err.message : t("error");
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

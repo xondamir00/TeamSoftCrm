@@ -2,29 +2,21 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { api } from "@/Service/api";
 import { useTranslation } from "react-i18next";
-import { AxiosError } from "axios";
 import { X, Loader2 } from "lucide-react";
+import type { AddTeacherDrawerProps } from "@/Store/Teacher/TeacherInterface";
+import useTeacherStore from "@/Service/TeacherService";
 
-interface ApiError {
-  message?: string;
-}
-
-interface UpdateTeacherDrawerProps {
-  open: boolean;
-  onClose: () => void;
-  teacherId: string;
-  onUpdated: () => void;
-}
 
 export default function UpdateTeacherDrawer({
   open,
   onClose,
   teacherId,
   onUpdated,
-}: UpdateTeacherDrawerProps) {
+}: AddTeacherDrawerProps) {
   const { t } = useTranslation();
+  const { updateTeacher, fetchTeachers, selectedTeacher, setSelectedTeacher } = useTeacherStore();
+  
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState<string>("");
@@ -41,24 +33,30 @@ export default function UpdateTeacherDrawer({
   });
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || !teacherId) return;
 
     const fetchTeacher = async () => {
       try {
         setFetching(true);
         setError("");
-        const res = await api.get(`/teachers/${teacherId}`);
-        const teacher = res.data.data || res.data;
-
-        setForm({
-          firstName: teacher.firstName || "",
-          lastName: teacher.lastName || "",
-          phone: teacher.phone || "",
-          password: "",
-          photoUrl: teacher.photoUrl || "",
-          monthlySalary: teacher.monthlySalary || null,
-          percentShare: teacher.percentShare || null,
-        });
+        
+        // Agar selectedTeacher bo'sh bo'lsa, store'dan teachers ro'yxatidan topamiz
+        const { teachers } = useTeacherStore.getState();
+        const teacher = selectedTeacher || teachers.find(t => t.id === teacherId);
+        
+        if (teacher) {
+          setForm({
+            firstName: teacher.firstName || "",
+            lastName: teacher.lastName || "",
+            phone: teacher.phone || "",
+            password: "",
+            photoUrl: teacher.photoUrl || "",
+            monthlySalary: teacher.monthlySalary || null,
+            percentShare: teacher.percentShare || null,
+          });
+        } else {
+          setError(t("updateTeacher.error") || "Teacher not found");
+        }
       } catch (err) {
         console.error("Error fetching teacher:", err);
         setError(
@@ -70,7 +68,7 @@ export default function UpdateTeacherDrawer({
     };
 
     fetchTeacher();
-  }, [open, teacherId, t]);
+  }, [open, teacherId, t, selectedTeacher]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -93,6 +91,12 @@ export default function UpdateTeacherDrawer({
     setLoading(true);
 
     try {
+      if (!teacherId) {
+        setError("Teacher ID is required");
+        setLoading(false);
+        return;
+      }
+
       const payload: any = {};
 
       if (form.firstName) payload.firstName = form.firstName;
@@ -116,7 +120,11 @@ export default function UpdateTeacherDrawer({
         return;
       }
 
-      await api.patch(`/teachers/${teacherId}`, payload);
+      // Store orqali teacher'ni yangilaymiz
+      await updateTeacher(teacherId, payload);
+
+      // Teacherlar ro'yxatini yangilaymiz
+      await fetchTeachers();
 
       setSuccess(true);
 
@@ -124,13 +132,25 @@ export default function UpdateTeacherDrawer({
         onUpdated();
         onClose();
         setSuccess(false);
+        
+        // Formni tozalash
+        setForm({
+          firstName: "",
+          lastName: "",
+          phone: "",
+          password: "",
+          photoUrl: "",
+          monthlySalary: null,
+          percentShare: null,
+        });
+        
+        // SelectedTeacher ni null qilish
+        setSelectedTeacher(null);
       }, 1500);
     } catch (err) {
-      const apiError = err as AxiosError<ApiError>;
+      console.error("Error updating teacher:", err);
       setError(
-        apiError.response?.data?.message ||
-          t("updateTeacher.error") ||
-          "An error occurred"
+        err instanceof Error ? err.message : "An error occurred while updating teacher"
       );
     } finally {
       setLoading(false);

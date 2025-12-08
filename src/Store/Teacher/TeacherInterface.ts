@@ -1,3 +1,6 @@
+// Store/Teacher/TeacherInterface.ts
+import type { Group } from "@/Store";
+
 export interface Teacher {
   id: string;
   isActive: boolean;
@@ -7,6 +10,8 @@ export interface Teacher {
   phone: string;
   createdAt: string;
   photoUrl?: string | null;
+   monthlySalary?: number | null; 
+  percentShare?: number | null;  
 }
 
 export interface CreateTeacherPayload {
@@ -41,11 +46,11 @@ export interface TeacherState {
 
   // Stats state'lari - ikkala nom ham saqlansin
   totalTeachers: number;
-  total: number; // TeacherStats uchun qo'shimcha
+  total: number;
   activeCount: number;
-  active: number; // TeacherStats uchun qo'shimcha
+  active: number;
   inactiveCount: number;
-  inactive: number; // TeacherStats uchun qo'shimcha
+  inactive: number;
 
   // Modal state'lari
   selectedTeacher: Teacher | null;
@@ -53,7 +58,12 @@ export interface TeacherState {
   openEditDrawer: boolean;
   deleteDialogOpen: boolean;
 
-  // Actions
+  // My groups state'lari
+  myGroups: Group[];
+  groupsLoading: boolean;
+  groupsError: string | null;
+
+  // Setters
   setSearch: (search: string) => void;
   setDebouncedSearch: (debouncedSearch: string) => void;
   setPage: (page: number) => void;
@@ -62,7 +72,7 @@ export interface TeacherState {
   setError: (error: string | null) => void;
   setTotalPages: (totalPages: number) => void;
 
-  // Stats actions - ikkala nom uchun ham
+  // Stats setters
   setTotalTeachers: (totalTeachers: number) => void;
   setTotal: (total: number) => void;
   setActiveCount: (activeCount: number) => void;
@@ -70,20 +80,30 @@ export interface TeacherState {
   setInactiveCount: (inactiveCount: number) => void;
   setInactive: (inactive: number) => void;
 
-  // Modal actions
+  // Modal setters
   setSelectedTeacher: (teacher: Teacher | null) => void;
   setOpenAddDrawer: (open: boolean) => void;
   setOpenEditDrawer: (open: boolean) => void;
   setDeleteDialogOpen: (open: boolean) => void;
 
+  // My groups setters
+  setMyGroups: (myGroups: Group[]) => void;
+  setGroupsLoading: (groupsLoading: boolean) => void;
+  setGroupsError: (groupsError: string | null) => void;
+
   // API actions
+  createTeacher: (payload: Partial<Teacher>) => Promise<Teacher>;
+  updateTeacher: (id: string, payload: Partial<Teacher>) => Promise<Teacher>;
   fetchTeachers: () => Promise<void>;
   fetchTeacherStats: () => Promise<void>;
+  fetchMyGroups: () => Promise<void>;
   handleUpdated: () => Promise<void>;
 }
 
 export interface AddTeacherDrawerProps {
   open: boolean;
   onClose: () => void;
+  teacherId: string;
+  onUpdated: () => void;
   onAdded: () => void;
 }

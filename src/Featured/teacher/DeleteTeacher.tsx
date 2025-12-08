@@ -10,11 +10,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { api } from "@/Service/api";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { DeleteTeacherProps } from "@/Store/Teacher/TeacherInterface";
+import useTeacherStore from "@/Service/TeacherService";
 
 export default function DeleteTeacherDialog({
   teacher,
@@ -24,6 +24,9 @@ export default function DeleteTeacherDialog({
 }: DeleteTeacherProps) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+  
+  // Store'dan methodlarni olamiz
+  const { updateTeacher, handleUpdated } = useTeacherStore() as any;
 
   if (!teacher) return null;
 
@@ -32,13 +35,16 @@ export default function DeleteTeacherDialog({
   const handleUpdateActive = async () => {
     setLoading(true);
     try {
-      await api.patch(`/teachers/${teacher.id}`, {
-        isActive: !isActive,
-      });
+      // Store orqali teacher'ni yangilaymiz
+      await updateTeacher(teacher.id, { isActive: !isActive });
+      
+      // Teacherlar ro'yxatini yangilaymiz
+      await handleUpdated();
+      
       onDeleted?.();
       onClose();
     } catch (err) {
-      console.error(err);
+      console.error("Error updating teacher status:", err);
     } finally {
       setLoading(false);
     }
@@ -46,7 +52,7 @@ export default function DeleteTeacherDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
-      <div className="fixed  flex items-center justify-center z-50 p-4">
+      <div className="fixed flex items-center justify-center z-50 p-4">
         <AlertDialogContent className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 max-w-md w-full p-6">
           <AlertDialogHeader>
             <AlertDialogTitle>
