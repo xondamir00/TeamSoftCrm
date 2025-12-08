@@ -1,24 +1,10 @@
 import { create } from "zustand";
-import { api } from "@/Service/api";
-import { financeService } from "../../Service/FinanceService";
+import { api } from "@/Service/ApiService/api";
+import { financeService } from "@/Service/FinanceService/FinanceService";
+import type { PaymentData, Student } from "../Finanace/FinanceInterface";
 
-export interface Student {
-  id: string;
-  fullName: string;
-  phone: string;
-  isActive?: boolean;
-  dateOfBirth?: string;
-  startDate?: string;
-}
 
-export interface PaymentData {
-  studentId: string;
-  amount: number;
-  method: "CASH" | "CARD" | "TRANSFER" | "OTHER";
-  reference?: string;
-  comment?: string;
-  paidAt?: string;
-}
+
 
 interface PaymentStore {
   // State

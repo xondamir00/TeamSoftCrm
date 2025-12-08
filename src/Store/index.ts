@@ -1,8 +1,6 @@
-import { api } from "@/Service/api";
+import { api } from "@/Service/ApiService/api";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { StudentFinanceSummary } from "./FinanceInterface";
-
 export type Role = "admin" | "teacher" | "MANAGER" | "USER";
 
 export type User = {
@@ -37,85 +35,9 @@ export interface Enrollment {
 
 
 
-// src/finance/types/finance.ts
-export interface Payment {
-  id: string;
-  studentId: string;
-  studentName?: string;
-  amount: number;
-  method: "CASH" | "CARD" | "TRANSFER" | "OTHER";
-  status: "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
-  paidAt: string;
-  reference?: string;
-  comment?: string;
-  recordedById: string;
-  recordedByName?: string;
-  createdAt: string;
-  summary?: StudentFinanceSummary;
-}
-export interface Expense {
-  id: string;
-  title: string;
-  category:
-    | "SALARY"
-    | "RENT"
-    | "UTILITIES"
-    | "EQUIPMENT"
-    | "MARKETING"
-    | "OTHER";
-  amount: number;
-  method: "CASH" | "CARD" | "TRANSFER" | "OTHER";
-  paidAt: string;
-  note?: string;
-  recordedById: string;
-  recordedByName?: string;
-  createdAt: string;
-}
 
-export interface FinanceOverview {
-  from: Date;
-  to: Date;
-  method?: string;
-  totalIncome: number;
-  totalExpense: number;
-  profit: number;
-}
 
-export interface FinanceSummary {
-  studentId: string;
-  totalCharges: number;
-  totalPaid: number;
-  debt: number;
-  lastPayments: Array<{
-    id: string;
-    amount: string;
-    method: string;
-    status: string;
-    paidAt: string;
-    comment?: string;
-    createdAt: string;
-  }>;
-}
-export interface FinanceStats {
-  totalIncome: number;
-  totalExpense: number;
-  profit: number;
-  paymentCount: number;
-  expenseCount: number;
-}
 
-export interface ApiResponse<T> {
-  data?: T;
-  items?: T[];
-  meta?: {
-    total: number;
-    pages: number;
-    page: number;
-    limit: number;
-  };
-  message?: string;
-  error?: string;
-}
 
 // ApiError interfeysini qo'shamiz
 export interface ApiError {

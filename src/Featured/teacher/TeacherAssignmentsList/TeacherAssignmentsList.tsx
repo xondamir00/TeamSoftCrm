@@ -6,7 +6,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import useTeachingAssignmentStore from "@/Service/TeacherAssigmentService";
+import useTeachingAssignmentStore from "@/Service/TeacherService/TeacherAssigmentService";
 
 export const TeachingAssignmentsList = () => {
   const { t } = useTranslation();

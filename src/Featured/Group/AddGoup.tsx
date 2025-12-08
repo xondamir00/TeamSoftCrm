@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import type { GroupModalStore } from "@/Store/Group/GroupInterface";
-import useGroupStore from "@/Service/GroupService";
+import useGroupStore from "@/Service/GroupService/GroupService";
 
 export default function AddGroupForm({
   editingGroup,

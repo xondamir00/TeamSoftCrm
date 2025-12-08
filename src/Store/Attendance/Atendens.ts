@@ -1,6 +1,6 @@
 // stores/attendanceStore.ts
 import type { Sheet } from "../Teacher/SheetInterdace";
-import type { Group } from "../../Service/GroupService";
+import type { Group } from "../../Service/GroupService/GroupService";
 import type { StudentStatus } from "../Student/StudentInterface";
 
 export interface AttendanceState {

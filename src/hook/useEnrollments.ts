@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { api } from "@/Service/api";
+import { api } from "@/Service/ApiService/api";
 import type { Enrollment } from "@/Store";
 
 interface Filters {

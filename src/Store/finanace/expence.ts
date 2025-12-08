@@ -1,33 +1,7 @@
 import { create } from "zustand";
-import { financeService } from "../../Service/FinanceService";
+import { financeService } from "@/Service/FinanceService/FinanceService";
+import type { Expense, ExpenseStore } from "./FinanceInterface";
 
-interface Expense {
-  title: string;
-  category: string;
-  amount: number;
-  method: "CASH" | "CARD" | "TRANSFER" | "OTHER";
-  note?: string;
-  paidAt?: string;
-}
-
-interface ExpenseStore {
-  isSubmitting: boolean;
-  alertOpen: boolean;
-  alertContent: {
-    title: string;
-    description: string;
-    type: "success" | "error";
-  };
-  submitExpense: (expenseData: Expense) => Promise<void>;
-  resetForm: () => void;
-  setAlert: (alert: {
-    title: string;
-    description: string;
-    type: "success" | "error";
-  }) => void;
-  setAlertOpen: (open: boolean) => void;
-  setIsSubmitting: (submitting: boolean) => void;
-}
 
 export const useExpenseStore = create<ExpenseStore>((set, get) => ({
   isSubmitting: false,

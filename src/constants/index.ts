@@ -10,7 +10,13 @@ export const DAYS_PATTERNS = [
   { value: "ODD", labelKey: "weekend" },
   { value: "ALL", labelKey: "all_days" },
 ];
-
+export const expenseCategories = [
+  { value: 'SALARY', label: 'Ish haqi' },
+  { value: 'RENT', label: 'Ijarа' },
+  { value: 'UTILITIES', label: 'Kommunal' },
+  { value: 'EQUIPMENT', label: 'Jihozlar va Kompyuterlar' },
+  { value: 'OTHER', label: 'Boshqa' },
+];
 export const CreateForm = [
   {
     nameKey: "assignment_teacher",

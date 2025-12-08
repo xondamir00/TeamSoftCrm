@@ -32,6 +32,12 @@ export interface StudentWithGroups {
   groups: StudentGroup[];
   totalGroups: number;
 }
+export interface StudentDropdownProps {
+  value: string;
+  onValueChange: (value: string) => void;
+  error?: string;
+}
+
 export interface DeleteStudentProps {
   student: Student | null;
   open: boolean;

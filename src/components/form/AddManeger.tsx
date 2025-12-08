@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { api } from "@/Service/api";
+import { api } from "@/Service/ApiService/api";
 import { useTranslation } from "react-i18next";
 import { AxiosError } from "axios";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api } from "@/Service/api";
+import { api } from "@/Service/ApiService/api";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RotateCcw, Trash2 } from "lucide-react";

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { api } from "@/Service/api";
+import { api } from "@/Service/ApiService/api";
 import type { Group } from "./Group/GroupInterface";
 import type { Student } from "./Student/StudentInterface";
 

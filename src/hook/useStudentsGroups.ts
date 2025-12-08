@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { api } from "@/Service/api";
+import { api } from "@/Service/ApiService/api";
 import type { Group, Student } from "@/Store";
 
 export function useStudentsGroups() {

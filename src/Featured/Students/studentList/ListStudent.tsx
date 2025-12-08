@@ -13,7 +13,7 @@ import RestoreStudentDialog from "../RestoreStudent";
 import AddStudentDrawer from "../AddStudentDrawer";
 import EditStudentDrawer from "../EditStudentDrawer";
 import { StudentStats } from "./StudentStatus";
-import { useStudentStore } from "@/Service/StudentService";
+import { useStudentStore } from "@/Service/StudentService/StudentService";
 
 export const ListStudent = () => {
   const { t } = useTranslation();

@@ -6,7 +6,7 @@ import { DeleteModal } from "./DeleteModal";
 import { PageHeader } from "./PageHeader";
 import { GroupStats } from "./GroupStatus";
 import { GroupModal } from "./Groupmodal";
-import useGroupStore from "@/Service/GroupService";
+import useGroupStore from "@/Service/GroupService/GroupService";
 
 export default function GroupList() {
   // Store'dan state va actions larni olamiz

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { User } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PaymentModal } from "@/components/debtors/paymetsmodal";
+import { PaymentModal } from "@/Featured/debtors/paymetsmodal";
 import { toast } from "sonner";
 import { StudentProfile } from "./StudentProfile";
 import { PersonalInfo } from "./PersonalInfo";
@@ -16,7 +16,7 @@ import { FinanceStats } from "./FinanceStats";
 import { PaymentHistory } from "./PaymentHistory";
 import { FinanceCards } from "./FinanceCards";
 import type { FinanceSummary } from "@/Store/index";
-import { api } from "@/Service/api";
+import { api } from "@/Service/ApiService/api";
 import type { Student } from "@/Store/Student/StudentInterface";
 
 const StudentPage = () => {

@@ -1,4 +1,4 @@
-import { api } from "@/Service/api";
+import { api } from "@/Service/ApiService/api";
 
 export interface GlobalBalance {
   totalCharges: number;

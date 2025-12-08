@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { api } from "@/Service/api";
+import { api } from "@/Service/ApiService/api";
 import { useAuth } from "@/Store";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

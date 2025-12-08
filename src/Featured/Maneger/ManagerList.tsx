@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { motion } from "framer-motion";
 import { Edit, Trash2 } from "lucide-react";
-import { managerAPI } from "../../Service/ManagerService";
+import { managerAPI } from "../../Service/ManagerService/ManagerService";
 import { useTranslation } from "react-i18next";
 import type { FormData, Manager } from "@/Store/Meneger/MenegerInterface";
 

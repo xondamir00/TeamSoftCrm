@@ -19,7 +19,7 @@ import ManagerList from "./Featured/Maneger/ManagerList";
 import Trash from "./components/page/trash";
 import StudentPage from "./Featured/Students/StudentFinancepage/StudentPage";
 import FinancePage from "./components/page/Finance";
-import Debtors from "./components/debtors/Debtors";
+import Debtors from "./Featured/debtors/Debtors";
 import FinanceDashboard from "./components/page/home";
 import Attendancepage from "./Featured/Attendance/attendance-page";
 import GroupList from "./Featured/Group/GroupList";

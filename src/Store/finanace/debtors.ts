@@ -1,42 +1,5 @@
-import { api } from "@/Service/api";
-
-export interface GlobalBalance {
-  totalCharges: number;
-  totalIncome: number;
-  totalExpense: number;
-  netCash: number;
-  totalDebt: number;
-}
-
-export interface FinanceOverview {
-  from: string;
-  to: string;
-  method: string;
-  totalIncome: number;
-  totalExpense: number;
-  profit: number;
-}
-
-export interface Debtor {
-  studentId: string;
-  fullName: string;
-  phone: string;
-  totalDebt: number;
-  groups: { groupId: string; name: string; debt: number }[];
-}
-
-export interface ChartData {
-  labels: string[];
-  incomeData: number[];
-  expenseData: number[];
-  profitData: number[];
-}
-
-export interface PaymentMethodDistribution {
-  method: string;
-  amount: number;
-  percentage: number;
-}
+import { api } from "@/Service/ApiService/api";
+import type { ChartData, Debtor, FinanceOverview, GlobalBalance, PaymentMethodDistribution } from "@/Store/Finanace/FinanceInterface";
 
 export const financeApi = {
   // Global balans olish

@@ -13,7 +13,7 @@ import {
   CardContent,
   CardTitle,
 } from "../../components/ui/card";
-import { api } from "@/Service/api";
+import { api } from "@/Service/ApiService/api";
 
 interface EditStudentProps {
   studentId: number;

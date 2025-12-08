@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import useTeachingAssignmentStore from "@/Service/TeacherAssigmentService";
+import useTeachingAssignmentStore from "@/Service/TeacherService/TeacherAssigmentService";
 import type { TeachingAssignmentFormProps } from "@/Store/Teacher/TeacherInterface";
 import { DAYS_PATTERNS } from "@/constants";
 
