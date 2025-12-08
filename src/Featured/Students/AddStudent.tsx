@@ -84,7 +84,7 @@ export default function AddStudentForm() {
   };
 
   return (
-    <Card className="w-full p-2">
+    <Card className="w-full p-2 dark:bg-slate-900">
       <CardHeader>
         <CardTitle>{t("add_student") || "Add New Student"}</CardTitle>
         <CardDescription>
@@ -93,7 +93,7 @@ export default function AddStudentForm() {
         </CardDescription>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="dark:bg-slate-900">
         {message && (
           <Alert
             className={`mb-4 ${
