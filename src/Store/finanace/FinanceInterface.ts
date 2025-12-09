@@ -252,13 +252,8 @@ export interface FinanceOverview {
   to?: string;
 }
 
-export interface FinanceStats {
-  totalIncome: number;
-  totalExpense: number;
-  profit: number;
-  paymentCount: number;
-  expenseCount: number;
-}
+
+
 
 export interface Student {
   id: string;

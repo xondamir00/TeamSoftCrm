@@ -57,7 +57,6 @@ export const CreateForm = [
 
 export const CategoryNavigate = [
   { label: "home", href: "", icon: "/icons/rooms.svg" },
-  { label: "leads", href: "lids", icon: "/icons/users.svg" },
   { label: "groups", href: "groups", icon: "/icons/group.svg" },
   { label: "teachersList", href: "teachers", icon: "/icons/teacher.svg" },
   { label: "studentsList", href: "student", icon: "/icons/student.svg" },
