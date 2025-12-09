@@ -6,33 +6,35 @@ import axios, {
   type AxiosRequestConfig,
 } from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+// ✅ BASE_URL ni to'g'ri fallback bilan yozish
+const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
-// Axios instance
 export const api = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true, // cookies yuborish uchun
+  withCredentials: true, // cookies yuboriladi
 });
 
-// Request interceptor: access tokenni yuborish
+// ---- 1) Har bir so'rovga access token qo'shish ----
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = useAuth.getState().token;
+    const token = useAuth.getState().token; // faqat access token
+
     if (token) {
-      config.headers = config.headers || {};
+      config.headers = config.headers ?? {};
       config.headers["Authorization"] = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Type definition for retry config
+// ---- 2) Retry config ----
 interface RetryConfig extends AxiosRequestConfig {
   _retry?: boolean;
 }
 
-// Response interceptor: 401 bo'lsa refresh token bilan yangilash
+// ---- 3) 401 bo'lsa avtomatik refresh ----
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError & { config?: RetryConfig }) => {
@@ -45,32 +47,23 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
 
-      const { refreshToken, logout, login, user } = useAuth.getState();
-
-      if (!refreshToken) {
-        logout();
-        return Promise.reject(error);
-      }
+      const { logout, setToken } = useAuth.getState();
 
       try {
-        // Refresh endpoint: body bo'sh, cookie orqali token olinadi
-        const { data } = await axios.post(
-          `${BASE_URL}/auth/refresh`,
-          {},
-          { withCredentials: true }
+        // refresh token cookie orqali yuboriladi
+        const { data } = await api.post<{ accessToken: string }>(
+          "/auth/refresh",
+          {}
         );
 
-        if (data?.accessToken && data?.refreshToken) {
-          // store ga yangilangan tokenlarni saqlash
-          login(data.accessToken, data.refreshToken, user);
+        if (data?.accessToken) {
+          // Tokenni yangilash
+          setToken(data.accessToken);
 
-          // original requestga yangi access token qo'shish
-          originalRequest.headers = originalRequest.headers || {};
-          originalRequest.headers[
-            "Authorization"
-          ] = `Bearer ${data.accessToken}`;
+          // Original requestni qayta yuborish
+          originalRequest.headers = originalRequest.headers ?? {};
+          originalRequest.headers["Authorization"] = `Bearer ${data.accessToken}`;
 
-          // requestni qayta yuborish
           return api(originalRequest);
         } else {
           logout();

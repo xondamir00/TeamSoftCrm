@@ -7,7 +7,7 @@ import { RotateCcw, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { trashStudentService } from "@/Service/TrashService";
-import type { Student } from "@/Store/FinanceInterface";
+import type { Student } from "@/Store/Student/StudentInterface";
 
 export default function TrashStudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
