@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import { Login } from "@/components/auth/login";
 import { RoleRoute } from "@/role/role-route";
 import Homelayout from "@/components/layout/homelayout";
-import Home from "@/Page/home";
 import StudentPage from "@/Featured/Students/StudentFinancepage/StudentPage";
 import Teachersettings from "@/Page/Teachersettings";
 import ListStudent from "@/Featured/Students/studentList/ListStudent";
@@ -23,6 +22,7 @@ import FinancePage from "@/Page/Finance";
 import Teacherlayout from "@/components/layout/teacherlayout";
 import MyGroups from "@/Featured/Teachers/TeacherMyGroups";
 import Attendancepage from "@/Featured/Attendance/Attendance-page";
+import Home from "@/Page/home.tsx";
 
 const App = () => {
   return (
