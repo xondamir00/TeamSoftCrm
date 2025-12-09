@@ -6,7 +6,6 @@ import { AuthRefresh } from "@/components/auth/Auth-Refresh";
 import RoomsList from "@/Featured/Rooms/RoomsList";
 import { Login } from "@/components/auth/login";
 import ListStudent from "@/Featured/Students/studentList/ListStudent";
-import EnrollmentsPage from "@/Page/EnrollmentsPage.tsx";
 import { TeachingAssignmentForm } from "@/Featured/Teachers/TeacherAssignmentsList/TeacherAssignmentForm";
 import { TeachingAssignmentsList } from "@/Featured/Teachers/TeacherAssignmentsList/TeacherAssignmentsList";
 import CreateStudentForm from "@/components/form/addStudent";
@@ -23,6 +22,7 @@ import GroupList from "@/Featured/Group/GroupList";
 import Teachersettings from "@/Page/Teachersettings.tsx";
 import MyGroups from "@/Featured/Teachers/TeacherMyGroups";
 import AddRoom from "@/Featured/Rooms/AddRoom";
+import EnrollmentPage from "./Page/EnrollmentsPage";
 
 const App = () => {
   return (
@@ -72,7 +72,7 @@ const App = () => {
             <Route path="settings/create-room" element={<AddRoom />} />
             {/* Other admin pages */}
             <Route path="settings/archive" element={<Trash />} />
-            <Route path="settings/enrollments" element={<EnrollmentsPage />} />
+            <Route path="settings/enrollments" element={<EnrollmentPage />} />
             <Route path="rooms" element={<RoomsList />} />
             <Route path="groups" element={<GroupList />} />
             <Route path="debtors" element={<Debtors />} />
