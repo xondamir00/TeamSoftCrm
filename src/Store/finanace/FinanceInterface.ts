@@ -7,15 +7,15 @@ export interface Payment {
   studentId: string;
   studentName?: string;
   amount: number;
-  method: 'CASH' | 'CARD' | 'TRANSFER' | 'OTHER';
-  status: 'PENDING' | 'COMPLETED' | 'FAILED';
+  method: "CASH" | "CARD" | "TRANSFER" | "OTHER";
+  status: "PENDING" | "COMPLETED" | "FAILED";
   paidAt: string;
   reference?: string;
   comment?: string;
   recordedById: string;
   recordedByName?: string;
   createdAt: string;
-   summary?: StudentFinanceSummary;
+  summary?: StudentFinanceSummary;
 }
 
 export interface PaymentMethodDistribution {
@@ -45,7 +45,7 @@ export interface Debtor {
   lastPaymentDate?: string;
   email?: string;
   avatar?: string;
-  status?: 'active' | 'inactive';
+  status?: "active" | "inactive";
   groups: { groupId: string; name: string; debt: number }[];
 }
 export interface DebtorStats {
@@ -84,11 +84,16 @@ export interface DebtorPaymentHistory {
   amount: number;
   date: string;
   method: string;
-  status: 'completed' | 'pending';
+  status: "completed" | "pending";
   comment?: string;
 }
-
-
+export interface FinanceStats {
+  totalIncome: number;
+  totalExpense: number;
+  profit: number;
+  paymentCount: number;
+  expenseCount: number;
+}
 export interface FinanceStatsProps {
   stats: FinanceStats;
   loading?: boolean;
@@ -100,7 +105,7 @@ export interface PaymentAlertProps {
   alertContent: {
     title: string;
     description: string;
-    type: 'success' | 'error';
+    type: "success" | "error";
   };
 }
 export interface PaymentData {
@@ -111,7 +116,7 @@ export interface PaymentData {
   comment?: string;
   paidAt?: string;
 }
-export type PaymentMethod = 'CASH' | 'CARD' | 'TRANSFER' | 'OTHER';
+export type PaymentMethod = "CASH" | "CARD" | "TRANSFER" | "OTHER";
 
 export interface StudentFinanceSummary {
   studentId: string;
@@ -122,7 +127,7 @@ export interface StudentFinanceSummary {
   totalCharges: number;
   totalPaid: number;
   debt: number;
-    lastPayments: Array<{
+  lastPayments: Array<{
     id: string;
     amount: string;
     method: string;
@@ -139,15 +144,15 @@ export interface StudentFinanceSummary {
   }[];
 }
 export const expenseSchema = z.object({
-  title: z.string().min(1, 'Sarlavha kiritish shart'),
-  category: z.string().min(1, 'Kategoriya tanlash shart'),
-  amount: z.coerce.number().positive('Summa musbat boʻlishi kerak'),
-  method: z.enum(['CASH', 'CARD', 'TRANSFER', 'OTHER']),
+  title: z.string().min(1, "Sarlavha kiritish shart"),
+  category: z.string().min(1, "Kategoriya tanlash shart"),
+  amount: z.coerce.number().positive("Summa musbat boʻlishi kerak"),
+  method: z.enum(["CASH", "CARD", "TRANSFER", "OTHER"]),
   note: z.string().optional(),
   paidAt: z.date().optional(),
 });
 
-export   type ExpenseFormData = z.infer<typeof expenseSchema>;
+export type ExpenseFormData = z.infer<typeof expenseSchema>;
 
 export interface CreateExpenseFormProps {
   onSuccess?: () => void;
@@ -164,8 +169,8 @@ export interface ApiResponse<T> {
   totalPages: number;
   hasNext: boolean;
   hasPrev: boolean;
-    message?: string;
-      meta?: {
+  message?: string;
+  meta?: {
     total: number;
     pages: number;
     page: number;
@@ -179,7 +184,7 @@ export interface ExpenseAlertProps {
   alertContent: {
     title: string;
     description: string;
-    type: 'success' | 'error';
+    type: "success" | "error";
   };
 }
 export interface ExpenseHeaderProps {
@@ -193,7 +198,6 @@ export interface ExpenseFieldProps {
   children: ReactNode;
   error?: string;
 }
-
 
 export interface Expense {
   id: string;
@@ -213,7 +217,6 @@ export interface Expense {
   recordedByName?: string;
   createdAt: string;
 }
-
 
 export interface ExpenseStore {
   isSubmitting: boolean;
@@ -241,8 +244,6 @@ export interface GlobalBalance {
   totalDebt: number;
 }
 
-
-
 export interface FinanceOverview {
   totalIncome: number;
   totalExpense: number;
@@ -251,9 +252,6 @@ export interface FinanceOverview {
   from?: string;
   to?: string;
 }
-
-
-
 
 export interface Student {
   id: string;

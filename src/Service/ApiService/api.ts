@@ -7,7 +7,8 @@ import axios, {
 } from "axios";
 
 // ✅ BASE_URL ni to'g'ri fallback bilan yozish
-const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+const BASE_URL =
+  import.meta.env.VITE_API_URL ?? "https://crm-production-9e6b.up.railway.app";
 
 export const api = axios.create({
   baseURL: BASE_URL,
@@ -62,7 +63,9 @@ api.interceptors.response.use(
 
           // Original requestni qayta yuborish
           originalRequest.headers = originalRequest.headers ?? {};
-          originalRequest.headers["Authorization"] = `Bearer ${data.accessToken}`;
+          originalRequest.headers[
+            "Authorization"
+          ] = `Bearer ${data.accessToken}`;
 
           return api(originalRequest);
         } else {
