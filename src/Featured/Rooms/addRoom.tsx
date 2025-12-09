@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import type { Room } from "@/Store/Room/RoomInterface";
 import { RoomService } from "@/Service/RoomService/RoomService";
 
-export default function RoomsPage() {
+export default function AddRoom() {
   const { t } = useTranslation();
 
   const [rooms, setRooms] = useState<Room[]>([]);

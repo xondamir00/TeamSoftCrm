@@ -3,7 +3,6 @@ import Homelayout from "@/components/layout/homelayout";
 import Teacherlayout from "@/components/layout/teacherlayout";
 import { RoleRoute } from "@/role/role-route";
 import { AuthRefresh } from "@/components/auth/Auth-Refresh";
-import AddRoom from "@/Featured/Rooms/AddRoom";
 import RoomsList from "@/Featured/Rooms/RoomsList";
 import { Login } from "@/components/auth/login";
 import ListStudent from "@/Featured/Students/studentList/ListStudent";
@@ -22,7 +21,8 @@ import Home from "@/Page/home";
 import Attendancepage from "@/Featured/Attendance/Attendance-page";
 import GroupList from "@/Featured/Group/GroupList";
 import Teachersettings from "@/Page/Teachersettings.tsx";
-import MyGroups from "./Featured/Teachers/TeacherMyGroups";
+import MyGroups from "@/Featured/Teachers/TeacherMyGroups";
+import AddRoom from "@/Featured/Rooms/AddRoom";
 
 const App = () => {
   return (
