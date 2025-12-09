@@ -20,9 +20,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useExpenseStore } from "@/Store/Finanace/expence";
-import { ExpenseHeader } from "./ExpenseHeader";
-import { ExpenseField } from "./ExpenseField";
-import { ExpenseAlert } from "./ExpenseAlert";
+import { ExpenseHeader } from "@/Featured/Finance/Form/Expence/ExpenseHeader";
+import { ExpenseField } from "@/Featured/Finance/Form/Expence/ExpenseField";
+import { ExpenseAlert } from "@/Featured/Finance/Form/Expence/ExpenseAlert";
 import { expenseCategories } from "@/constants";
 import {
   expenseSchema,

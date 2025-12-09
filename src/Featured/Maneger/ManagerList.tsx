@@ -15,10 +15,9 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { motion } from "framer-motion";
 import { Edit, Trash2 } from "lucide-react";
-import { managerAPI } from "../../Service/ManagerService/ManagerService";
+import { managerAPI } from "@/Service/ManagerService/ManagerService";
 import { useTranslation } from "react-i18next";
 import type { FormData, Manager } from "@/Store/Meneger/MenegerInterface";
-
 
 export default function ManagerList() {
   const { t } = useTranslation();
@@ -86,12 +85,18 @@ export default function ManagerList() {
           : undefined,
       };
       await managerAPI.update(selectedManager.id, payload);
-      setAlertMessage(t("managerManagement.updatedSuccess") || "Updated successfully");
+      setAlertMessage(
+        t("managerManagement.updatedSuccess") || "Updated successfully"
+      );
       setDialogOpen(false);
       fetchManagers();
     } catch (e: any) {
       console.error(e);
-      setAlertMessage(e.response?.data?.message || t("managerManagement.error") || "Xatolik yuz berdi");
+      setAlertMessage(
+        e.response?.data?.message ||
+          t("managerManagement.error") ||
+          "Xatolik yuz berdi"
+      );
     }
   };
 
@@ -99,12 +104,18 @@ export default function ManagerList() {
     if (!selectedManager) return;
     try {
       await managerAPI.delete(selectedManager.id);
-      setAlertMessage(t("managerManagement.deletedSuccess") || "Deleted successfully");
+      setAlertMessage(
+        t("managerManagement.deletedSuccess") || "Deleted successfully"
+      );
       setDeleteDialogOpen(false);
       fetchManagers();
     } catch (e: any) {
       console.error(e);
-      setAlertMessage(e.response?.data?.message || t("managerManagement.deleteError") || "O'chirishda xatolik");
+      setAlertMessage(
+        e.response?.data?.message ||
+          t("managerManagement.deleteError") ||
+          "O'chirishda xatolik"
+      );
     }
   };
 
@@ -155,10 +166,12 @@ export default function ManagerList() {
                     )}
                   </div>
                   <div className="flex gap-2">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       onClick={() => openEditForm(m)}
-                      title={t("managerManagement.editManager") || "Edit Manager"}
+                      title={
+                        t("managerManagement.editManager") || "Edit Manager"
+                      }
                     >
                       <Edit className="w-4 h-4" />
                     </Button>
@@ -187,14 +200,13 @@ export default function ManagerList() {
               {t("managerManagement.editManager") || "Edit Manager"}
             </DialogTitle>
             <DialogDescription>
-              {t("managerManagement.editDescription") || "Update the manager details below."}
+              {t("managerManagement.editDescription") ||
+                "Update the manager details below."}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 mt-3">
             <div>
-              <Label>
-                {t("managerManagement.firstName") || "First Name"}
-              </Label>
+              <Label>{t("managerManagement.firstName") || "First Name"}</Label>
               <Input
                 value={form.firstName}
                 onChange={(e) =>
@@ -204,9 +216,7 @@ export default function ManagerList() {
               />
             </div>
             <div>
-              <Label>
-                {t("managerManagement.lastName") || "Last Name"}
-              </Label>
+              <Label>{t("managerManagement.lastName") || "Last Name"}</Label>
               <Input
                 value={form.lastName}
                 onChange={(e) => setForm({ ...form, lastName: e.target.value })}
@@ -224,9 +234,7 @@ export default function ManagerList() {
               />
             </div>
             <div>
-              <Label>
-                {t("managerManagement.password") || "Password"}
-              </Label>
+              <Label>{t("managerManagement.password") || "Password"}</Label>
               <Input
                 type="password"
                 value={form.password}
@@ -235,9 +243,7 @@ export default function ManagerList() {
               />
             </div>
             <div>
-              <Label>
-                {t("managerManagement.photoUrl") || "Photo URL"}
-              </Label>
+              <Label>{t("managerManagement.photoUrl") || "Photo URL"}</Label>
               <Input
                 value={form.photoUrl}
                 onChange={(e) => setForm({ ...form, photoUrl: e.target.value })}
@@ -254,7 +260,9 @@ export default function ManagerList() {
                 onChange={(e) =>
                   setForm({ ...form, monthlySalary: e.target.value })
                 }
-                placeholder={t("managerManagement.salaryPlaceholder") || "Salary"}
+                placeholder={
+                  t("managerManagement.salaryPlaceholder") || "Salary"
+                }
               />
             </div>
             <Button className="w-full mt-2" onClick={handleUpdate}>
@@ -270,7 +278,8 @@ export default function ManagerList() {
               {t("managerManagement.deleteManager") || "Delete Manager?"}
             </DialogTitle>
             <DialogDescription>
-              {t("managerManagement.deleteDescription") || "Are you sure you want to delete this manager? This action cannot be undone."}
+              {t("managerManagement.deleteDescription") ||
+                "Are you sure you want to delete this manager? This action cannot be undone."}
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-end gap-3 mt-4">

@@ -1,4 +1,4 @@
-import type { Payment } from "../Finanace/FinanceInterface";
+import type { Payment } from "@/Store/Finanace/FinanceInterface";
 
 export interface Student {
   id: number;

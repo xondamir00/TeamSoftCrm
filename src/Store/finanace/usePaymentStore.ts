@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { api } from "@/Service/ApiService/api";
 import { financeService } from "@/Service/FinanceService/FinanceService";
-import type { PaymentData, Student } from "./FinanceInterface";
+import type { PaymentData, Student } from "@/Store/Finanace/FinanceInterface";
 
 interface PaymentStore {
   // State

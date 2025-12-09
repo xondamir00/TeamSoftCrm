@@ -2,8 +2,8 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import { Button } from "../../components/ui/button";
-import AddStudentForm from "./AddStudent";
+import { Button } from "@/components/ui/button";
+import AddStudentForm from "@/Featured/Students/AddStudent";
 import type { StudentDrawerProps } from "@/Store/Student/StudentInterface";
 
 export default function AddStudentDrawer({

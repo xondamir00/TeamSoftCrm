@@ -1,6 +1,6 @@
 // Store/Teacher/TeacherInterface.ts
 
-import type { Group } from "../Group/GroupInterface";
+import type { Group } from "@/Store/Group/GroupInterface";
 
 export interface Teacher {
   id: string;

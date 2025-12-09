@@ -1,18 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
-import { Label } from "../../components/ui/label";
-import { Alert, AlertTitle, AlertDescription } from "../../components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-} from "../../components/ui/card";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { api } from "@/Service/ApiService/api";
 import type { StudentForm } from "@/Store/Student/StudentInterface";
 

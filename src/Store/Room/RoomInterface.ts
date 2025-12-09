@@ -1,4 +1,4 @@
-import type { Schedule } from "../Group/GroupInterface";
+import type { Schedule } from "@/Store/Group/GroupInterface";
 
 export interface Room {
   id: string;

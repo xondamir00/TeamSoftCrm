@@ -34,7 +34,7 @@ import {
   type Debtor,
   type FinanceOverview,
   type GlobalBalance,
-} from "./homeApi";
+} from "@/Page/homeApi";
 import { Link } from "react-router-dom";
 
 // Chart.js elementlarini register qilish

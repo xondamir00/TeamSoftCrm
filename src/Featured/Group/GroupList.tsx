@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { GroupTable } from "./GroupTable";
-import { DeleteModal } from "./DeleteModal";
-import { PageHeader } from "./PageHeader";
-import { GroupStats } from "./GroupStatus";
-import { GroupModal } from "./Groupmodal";
+import { GroupTable } from "@/Featured/Group/GroupTable";
+import { DeleteModal } from "@/Featured/Group/DeleteModal";
+import { PageHeader } from "@/Featured/Group/PageHeader";
+import { GroupStats } from "@/Featured/Group/GroupStatus";
+import { GroupModal } from "@/Featured/Group/Groupmodal";
 import useGroupStore from "@/Service/GroupService/GroupService";
 
 export default function GroupList() {

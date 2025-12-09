@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Room } from "../Room/RoomInterface";
+import type { Room } from "@/Store/Room/RoomInterface";
 
 export interface Group {
   id: string; // groupId emas

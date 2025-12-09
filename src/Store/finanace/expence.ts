@@ -1,7 +1,7 @@
 // FinanceStore.ts - O'ZGARTIRILGAN VERSIYA
 import { create } from "zustand";
 import { financeService } from "@/Service/FinanceService/FinanceService";
-import type { Expense, ExpenseStore } from "./FinanceInterface";
+import type { Expense, ExpenseStore } from "@/Store/Finanace/FinanceInterface";
 
 export const useExpenseStore = create<ExpenseStore>((set, get) => ({
   isSubmitting: false,

@@ -1,4 +1,4 @@
-import type { StudentStatus } from "../Student/StudentInterface";
+import type { StudentStatus } from "@/Store/Student/StudentInterface";
 
 export interface Sheet {
   sheetId: string;

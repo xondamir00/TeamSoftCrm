@@ -8,16 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { User } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PaymentModal } from "@/Featured/debtors/paymetsmodal";
 import { toast } from "sonner";
-import { StudentProfile } from "./StudentProfile";
-import { PersonalInfo } from "./PersonalInfo";
-import { FinanceStats } from "./FinanceStats";
-import { PaymentHistory } from "./PaymentHistory";
-import { FinanceCards } from "./FinanceCards";
+import { StudentProfile } from "@/Featured/Students/StudentFinancepage/StudentProfile";
+import { PersonalInfo } from "@/Featured/Students/StudentFinancepage/PersonalInfo";
+import { FinanceStats } from "@/Featured/Students/StudentFinancepage/FinanceStats";
+import { PaymentHistory } from "@/Featured/Students/StudentFinancepage/PaymentHistory";
+import { FinanceCards } from "@/Featured/Students/StudentFinancepage/FinanceCards";
 import { api } from "@/Service/ApiService/api";
 import type { Student } from "@/Store/Student/StudentInterface";
 import type { StudentFinanceSummary } from "@/Store/Finanace/FinanceInterface";
+import { PaymentModal } from "@/Featured/Debtors/Paymetsmodal";
 
 const StudentPage = () => {
   const { t } = useTranslation();

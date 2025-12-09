@@ -1,7 +1,7 @@
 import type { AttendanceState } from "@/Store/Attendance/Atendens";
 import type { Sheet } from "@/Store/Teacher/SheetInterdace";
 import { create } from "zustand";
-import { api } from "../ApiService/api";
+import { api } from "@/Service/ApiService/api";
 import type { Group } from "@/Store/Group/GroupInterface";
 
 export const useAttendanceStore = create<AttendanceState>((set, get) => ({

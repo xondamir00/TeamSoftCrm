@@ -1,7 +1,7 @@
 import type { Room } from "@/Store/Room/RoomInterface";
-import { api } from "./ApiService/api";
-import type { Student } from "@/Store/Student/StudentInterface";
+import { api } from "@/Service/ApiService/api";
 
+import type { Student } from "@/Store/Student/StudentInterface";
 
 export const trashTeacherService = {
   async getAll() {
@@ -16,8 +16,7 @@ export const trashTeacherService = {
       isActive: true,
     });
   },
-
-}
+};
 export const trashStudentService = {
   async getAll(): Promise<{ items: Student[] }> {
     const response = await api.get("/students", {
@@ -28,8 +27,9 @@ export const trashStudentService = {
 
   async restore(id: string): Promise<void> {
     await api.patch(`/students/${id}/restore`);
-  }}
-  export const trashRoomService = {
+  },
+};
+export const trashRoomService = {
   async getAll(): Promise<{ items: Room[] }> {
     const response = await api.get("/rooms", {
       params: { isActive: false },

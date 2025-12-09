@@ -12,7 +12,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import LogoutButton from "./Logout";
+import LogoutButton from "@/shared/navbar/Logout";
 
 export default function ProfileMenu() {
   const navigate = useNavigate();

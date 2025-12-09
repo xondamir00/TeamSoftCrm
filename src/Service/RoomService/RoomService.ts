@@ -1,5 +1,9 @@
-import type { CreateRoomPayload, Room, UpdateRoomPayload } from "@/Store/Room/RoomInterface";
-import { api } from "../ApiService/api";
+import type {
+  CreateRoomPayload,
+  Room,
+  UpdateRoomPayload,
+} from "@/Store/Room/RoomInterface";
+import { api } from "@/Service/ApiService/api";
 
 export const RoomService = {
   async getAll() {

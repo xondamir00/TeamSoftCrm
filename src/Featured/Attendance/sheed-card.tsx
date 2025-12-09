@@ -1,23 +1,21 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import SheetHeader from "./sheed-header";
-import StudentsList from "./Attendance-List";
+import SheetHeader from "@/Featured/Attendance/Sheed-header";
+import StudentsList from "@/Featured/Attendance/Attendance-List";
 import type { SheetCardProps } from "@/Store/Attendance/Atendens";
 
-
-
-const SheetCard = ({ 
-  sheet, 
-  onStatusChange, 
-  onAddComment, 
-  onSave, 
+const SheetCard = ({
+  sheet,
+  onStatusChange,
+  onAddComment,
+  onSave,
   onDelete,
-  saving 
+  saving,
 }: SheetCardProps) => {
   const getSheetStats = () => {
-    const present = sheet.students.filter(s => s.status === "PRESENT").length;
-    const absent = sheet.students.filter(s => s.status === "ABSENT").length;
+    const present = sheet.students.filter((s) => s.status === "PRESENT").length;
+    const absent = sheet.students.filter((s) => s.status === "ABSENT").length;
     const total = sheet.students.length;
 
     return { present, absent, total };
@@ -33,7 +31,6 @@ const SheetCard = ({
         onSave={onSave}
         onDelete={onDelete}
         saving={saving}
-        
       />
       <CardContent className="p-0">
         <StudentsList

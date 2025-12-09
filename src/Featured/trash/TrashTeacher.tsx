@@ -5,7 +5,7 @@ import { Loader2, RotateCcw, Trash2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import DeleteTeacherDialog from "../../Featured/teacher/DeleteTeacher";
+import DeleteTeacherDialog from "@/Featured/teacher/DeleteTeacher";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import type { Teacher } from "@/Store/Teacher/TeacherInterface";

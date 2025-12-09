@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import type { Group } from "@/Store/Group/GroupInterface";
-import AddGroupForm from "./AddGoupForm";
+import AddGroupForm from "@/Featured/Group/AddGoupForm";
 
 export interface GroupModalProps {
   isOpen: boolean;

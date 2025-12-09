@@ -23,9 +23,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { usePaymentStore } from "@/Store/Finanace/usePaymentStore";
-import { PaymentHeader } from "./PaymentHeader";
-import { StudentDropdown } from "./StudentDropdown";
-import { PaymentAlert } from "./PaymentAlert";
+import { PaymentHeader } from "@/Featured/Finance/Form/Payment/PaymentHeader";
+import { StudentDropdown } from "@/Featured/Finance/Form/Payment/StudentDropdown";
+import { PaymentAlert } from "@/Featured/Finance/Form/Payment/PaymentAlert";
 
 const paymentSchema = z.object({
   studentId: z.string().min(1, "Talaba tanlang"),

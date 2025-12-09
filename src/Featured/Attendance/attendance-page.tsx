@@ -14,8 +14,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import SheetCard from "./sheed-card";
-import EmptyState from "./emty-state";
+import SheetCard from "@/Featured/Attendance/Sheed-card";
+import EmptyState from "@/Featured/Attendance/Emty-state";
 import { useAttendanceStore } from "@/Service/AtendanceService/AttendanceService";
 
 const Attendancepage = () => {
@@ -27,7 +27,6 @@ const Attendancepage = () => {
     new Date().toISOString().slice(0, 10)
   );
   const [lessonNumber, setLessonNumber] = useState(1);
-  
 
   const {
     sheets,
@@ -56,7 +55,7 @@ const Attendancepage = () => {
   }, [groupId, fetchGroupInfo]);
   const handleGetOrCreateSheet = async () => {
     if (!groupId) return;
-    
+
     try {
       clearError();
       await getOrCreateSheet(groupId, selectedDate, lessonNumber);
@@ -92,7 +91,9 @@ const Attendancepage = () => {
       console.error("Sheet o'chirishda xato:", err);
     }
   };
-  const handleBack = () => {navigate(-1);};
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   if (!groupId) {
     return (
@@ -117,7 +118,7 @@ const Attendancepage = () => {
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
               {group?.name || `Guruh ${groupId}`}
-              {group?.roomId && ` `}
+              {group?.room?.id && ` `}
             </p>
           </div>
         </div>

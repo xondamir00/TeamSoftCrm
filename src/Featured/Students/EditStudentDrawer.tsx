@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import { Button } from "../../components/ui/button";
-import EditStudent from "./EditStudent";
+import { Button } from "@/components/ui/button";
+import EditStudent from "@/Featured/Students/EditStudent";
 import { useTranslation } from "react-i18next";
 
 interface EditStudentDrawerProps {

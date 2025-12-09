@@ -1,5 +1,5 @@
-import type { Group } from "../Group/GroupInterface";
-import type { Student } from "../Student/StudentInterface";
+import type { Group } from "@/Store/Group/GroupInterface";
+import type { Student } from "@/Store/Student/StudentInterface";
 
 export interface Enrollment {
   id: string;

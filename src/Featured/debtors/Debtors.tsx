@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { DebtorStats } from "@/Featured/debtors/debtorsStats";
-import { DebtorFilters } from "@/Featured/debtors/DebtorFilters";
-import { DebtorList } from "@/Featured/debtors/debtorList";
+import { DebtorStats } from "@/Featured/Debtors/DebtorsStats";
+import { DebtorFilters } from "@/Featured/Debtors/DebtorFilters";
+import { DebtorList } from "@/Featured/Debtors/DebtorList";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { debtorService } from "@/Service/DebtorsService/DebtorService";

@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { Student } from "@/Store/Student/StudentInterface";
 import { Loader2 } from "lucide-react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 
 // Components
-import { StudentTable } from "./StudentTable";
-import { SearchBar } from "./SearchBar";
-import { PageHeader } from "./PageHeader";
-import DeleteStudentDialog from "../DeleteStudent";
-import RestoreStudentDialog from "../RestoreStudent";
-import AddStudentDrawer from "../AddStudentDrawer";
-import EditStudentDrawer from "../EditStudentDrawer";
-import { StudentStats } from "./StudentStatus";
+import { StudentTable } from "@/Featured/Students/studentList/StudentTable";
+import { SearchBar } from "@/Featured/Students/studentList/SearchBar";
+import { PageHeader } from "@/Featured/Students/studentList/PageHeader";
+import DeleteStudentDialog from "@/Featured/Students/DeleteStudent";
+import RestoreStudentDialog from "@/Featured/Students/RestoreStudent";
+import AddStudentDrawer from "@/Featured/Students/AddStudentDrawer";
+import EditStudentDrawer from "@/Featured/Students/EditStudentDrawer";
+import { StudentStats } from "@/Featured/Students/studentList/StudentStatus";
 import { useStudentStore } from "@/Service/StudentService/StudentService";
 
 export const ListStudent = () => {

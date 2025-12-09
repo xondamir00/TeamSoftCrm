@@ -1,5 +1,5 @@
 import type { Debtor } from "@/Store/Finanace/FinanceInterface";
-import { api } from "../ApiService/api";
+import { api } from "@/Service/ApiService/api";
 
 export const debtorService = {
   /**
