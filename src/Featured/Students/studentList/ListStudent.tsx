@@ -52,7 +52,7 @@ export const ListStudent = () => {
 
   // Fetch students on page or search change
   useEffect(() => {
-    fetchStudents(debouncedSearch, page, 10).then((res) => {
+    fetchStudents(debouncedSearch, page, 10).then(() => {
       const allStudents = useStudentStore.getState().students;
       const active = allStudents.filter((s) => s.isActive).length;
       const inactive = allStudents.filter((s) => !s.isActive).length;

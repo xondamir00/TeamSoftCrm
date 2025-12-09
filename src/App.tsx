@@ -22,7 +22,7 @@ import Debtors from "@/Featured/Debtors/Debtors";
 import FinanceDashboard from "@/Page/home";
 import Attendancepage from "@/Featured/Attendance/Attendance-page";
 import GroupList from "@/Featured/Group/GroupList";
-import TeacherGroup from "@/Page/TeacherGroup";
+import Teachersettings from "@/Page/Teachersettings";
 
 const App = () => {
   return (
@@ -89,10 +89,9 @@ const App = () => {
               </RoleRoute>
             }
           >
-            <Route index element={<TeacherGroup />} />
+            <Route index element={<Teachersettings />} />
             <Route path="group/:groupId" element={<Attendancepage />} />
           </Route>
-
           {/* Catch-all route */}
           <Route path="*" element={<Login />} />
         </Routes>

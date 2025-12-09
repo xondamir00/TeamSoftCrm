@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Line, Doughnut } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -18,14 +18,12 @@ import {
   TrendingUp,
   TrendingDown,
   DollarSign,
-  PieChart,
   Wallet,
   CreditCard,
   Users,
   AlertCircle,
   Loader2,
   BarChart3,
-  Filter,
   ChevronRight,
 } from "lucide-react";
 import { format, subMonths, startOfMonth, endOfMonth } from "date-fns";
@@ -59,6 +57,7 @@ export default function FinanceDashboard() {
   const [range, setRange] = useState<Range>("monthly");
   const [period, setPeriod] = useState<Period>("this_month");
   const [darkMode, setDarkMode] = useState(false);
+  console.log(setPeriod, setDarkMode);
 
   // Backend ma'lumotlari
   const [globalBalance, setGlobalBalance] = useState<GlobalBalance | null>(
@@ -326,62 +325,6 @@ export default function FinanceDashboard() {
           },
           callback: function (value: any) {
             return `${value.toLocaleString("uz-UZ")}`;
-          },
-        },
-      },
-    },
-  };
-
-  // Doughnut chart uchun data
-  const doughnutChartData = {
-    labels: ["Online to'lov", "Naqd", "Plastik", "Bank o'tkazma"],
-    datasets: [
-      {
-        label: "To'lov usullari",
-        data: [45, 30, 15, 10],
-        backgroundColor: darkMode
-          ? ["#10b981", "#3b82f6", "#8b5cf6", "#f59e0b"]
-          : ["#34d399", "#60a5fa", "#a78bfa", "#fbbf24"],
-        borderColor: darkMode ? "#1f2937" : "#ffffff",
-        borderWidth: 3,
-        hoverOffset: 15,
-      },
-    ],
-  };
-
-  const doughnutChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    cutout: "65%",
-    plugins: {
-      legend: {
-        position: "bottom" as const,
-        labels: {
-          color: darkMode ? "#d1d5db" : "#374151",
-          padding: 20,
-          font: {
-            size: 11,
-          },
-          usePointStyle: true,
-          pointStyle: "circle",
-        },
-      },
-      tooltip: {
-        backgroundColor: darkMode ? "#1f2937" : "#ffffff",
-        titleColor: darkMode ? "#f3f4f6" : "#111827",
-        bodyColor: darkMode ? "#d1d5db" : "#4b5563",
-        borderColor: darkMode ? "#374151" : "#e5e7eb",
-        borderWidth: 1,
-        padding: 12,
-        callbacks: {
-          label: (context: any) => {
-            const value = context.parsed;
-            const total = context.dataset.data.reduce(
-              (a: number, b: number) => a + b,
-              0
-            );
-            const percentage = ((value / total) * 100).toFixed(1);
-            return `${context.label}: ${value}% (${percentage}%)`;
           },
         },
       },
@@ -729,7 +672,7 @@ export default function FinanceDashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {debtors.slice(0, 5).map((debtor, index) => (
+                  {debtors.slice(0, 5).map((debtor) => (
                     <tr
                       key={debtor.studentId}
                       className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-300"

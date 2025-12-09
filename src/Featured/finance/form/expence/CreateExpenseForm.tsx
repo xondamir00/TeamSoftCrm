@@ -30,6 +30,7 @@ import {
   type Expense,
   type ExpenseFormData,
 } from "@/Store/Finanace/FinanceInterface";
+import { useAuth } from "@/Store";
 
 export default function CreateExpenseForm({
   onSuccess,
@@ -37,6 +38,8 @@ export default function CreateExpenseForm({
 }: CreateExpenseFormProps) {
   const { isSubmitting, alertOpen, alertContent, submitExpense, setAlertOpen } =
     useExpenseStore();
+
+  const { user } = useAuth(); // ← Foydalanuvchi ma'lumotlarini olish
 
   const {
     register,
@@ -61,26 +64,41 @@ export default function CreateExpenseForm({
   const onSubmit = async (data: ExpenseFormData) => {
     try {
       const expenseData: Expense = {
-        id: crypto.randomUUID(), // yoki backend dan keladi
+        id: crypto.randomUUID(),
         title: data.title,
-        category: data.category as Expense["category"], // Type assertion
+        category: data.category as Expense["category"],
         amount: data.amount,
         method: data.method,
         note: data.note || undefined,
         paidAt: data.paidAt
           ? data.paidAt.toISOString()
           : new Date().toISOString(),
-        recordedById: "current-user-id", // ← Current user ID qo'shing
-        recordedByName: "Current User", // ← Current user name
+        recordedById: user?.id || "current-user-id", // ← Foydalanuvchi ID sini ishlating
+        recordedByName: user?.lastname || "Current User", // ← Foydalanuvchi nomini ishlating
         createdAt: new Date().toISOString(),
       };
 
       await submitExpense(expenseData);
-      // ... qolgan kod
+
+      // Muvaffaqiyatli saqlangandan keyin
+      if (onSuccess) {
+        onSuccess();
+      }
+
+      // Formani tozalash
+      reset({
+        method: "CASH",
+        paidAt: new Date(),
+        category: "",
+        title: "",
+        amount: 0,
+        note: "",
+      });
     } catch (error) {
       console.error("Form submit error:", error);
     }
   };
+
   return (
     <div className="max-w-2xl mx-auto p-6 bg-gradient-to-br from-rose-50 to-white dark:from-slate-800 dark:to-slate-900 rounded-2xl shadow-lg border border-rose-200 dark:border-rose-800">
       <ExpenseHeader />
@@ -142,7 +160,13 @@ export default function CreateExpenseForm({
               <Input
                 id="amount"
                 type="number"
-                {...register("amount", { valueAsNumber: true })}
+                {...register("amount", {
+                  valueAsNumber: true,
+                  min: {
+                    value: 1,
+                    message: "Summa 1 soʻmdan kam boʻlmasligi kerak",
+                  },
+                })}
                 placeholder="0"
                 min="1"
                 step="1000"
@@ -157,7 +181,12 @@ export default function CreateExpenseForm({
 
         {/* Toʻlov usuli va Sana */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <ExpenseField label="Toʻlov usuli" htmlFor="method" required>
+          <ExpenseField
+            label="Toʻlov usuli"
+            htmlFor="method"
+            required
+            error={errors.method?.message}
+          >
             <Select
               onValueChange={(value) => setValue("method", value as any)}
               value={watch("method")}
@@ -189,7 +218,11 @@ export default function CreateExpenseForm({
             </Select>
           </ExpenseField>
 
-          <ExpenseField label="Toʻlov sanasi" htmlFor="paidAt">
+          <ExpenseField
+            label="Toʻlov sanasi"
+            htmlFor="paidAt"
+            error={errors.paidAt?.message}
+          >
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -221,7 +254,11 @@ export default function CreateExpenseForm({
         </div>
 
         {/* Izoh */}
-        <ExpenseField label="Izoh (ixtiyoriy)" htmlFor="note">
+        <ExpenseField
+          label="Izoh (ixtiyoriy)"
+          htmlFor="note"
+          error={errors.note?.message}
+        >
           <Textarea
             id="note"
             {...register("note")}
@@ -233,7 +270,7 @@ export default function CreateExpenseForm({
 
         <Button
           type="submit"
-          className="w-full h-12 text-lg font-semibold bg-gradient-to-r text-white   from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 shadow-lg hover:shadow-xl transition-all duration-300"
+          className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
           disabled={isSubmitting}
         >
           {isSubmitting ? (

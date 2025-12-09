@@ -12,13 +12,13 @@ const BASE_URL =
 
 export const api = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true, // cookies yuboriladi
+  withCredentials: true,
 });
 
 // ---- 1) Har bir so'rovga access token qo'shish ----
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = useAuth.getState().token; // faqat access token
+    const token = useAuth.getState().token;
 
     if (token) {
       config.headers = config.headers ?? {};
@@ -48,7 +48,7 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
 
-      const { logout, setToken } = useAuth.getState();
+      const { logout, user } = useAuth.getState(); // `user` ni olish kerak
 
       try {
         // refresh token cookie orqali yuboriladi
@@ -57,9 +57,14 @@ api.interceptors.response.use(
           {}
         );
 
-        if (data?.accessToken) {
-          // Tokenni yangilash
-          setToken(data.accessToken);
+        if (data?.accessToken && user) {
+          // Tokenni yangilash uchun `login` methodini ishlating
+          const authStore = useAuth.getState();
+          authStore.login(
+            data.accessToken, // yangi token
+            "", // refreshToken - agar backend kerak bo'lsa, bo'sh qoldiring
+            user // mavjud user
+          );
 
           // Original requestni qayta yuborish
           originalRequest.headers = originalRequest.headers ?? {};
