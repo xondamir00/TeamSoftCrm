@@ -24,8 +24,8 @@ export default function ProfileMenu() {
         <Avatar className="cursor-pointer hover:opacity-80 transition w-10 h-10 ring-2 ring-white">
           <AvatarImage src={user?.avatarUrl || ""} />
           <AvatarFallback>
-            {user?.firstName?.[0]}
-            {user?.lastName?.[0]}
+            {user?.lastname?.[0]}
+            {user?.firstname?.[0]}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -38,13 +38,14 @@ export default function ProfileMenu() {
           <Avatar className="w-8 h-8">
             <AvatarImage src={user?.avatarUrl || ""} />
             <AvatarFallback>
-              {user?.firstName?.[0]}
-              {user?.lastName?.[0]}
+              {user?.lastname?.[0]}
+              {user?.firstname?.[0]}
             </AvatarFallback>
           </Avatar>
           <div className="text-sm">
             <p className="font-semibold">
-              {user?.firstName} {user?.lastName}
+              {user?.lastname?.[0]}
+              {user?.firstname?.[0]}
             </p>
             <p className="text-xs opacity-60">{user?.phone}</p>
           </div>
@@ -60,10 +61,8 @@ export default function ProfileMenu() {
           Sozlamalar
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-               <DropdownMenuItem
-          className="flex gap-2 cursor-pointer"
-        >
-          <LogoutButton/>
+        <DropdownMenuItem className="flex gap-2 cursor-pointer">
+          <LogoutButton />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

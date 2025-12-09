@@ -1,10 +1,7 @@
 import { create } from "zustand";
 import { api } from "@/Service/ApiService/api";
 import { financeService } from "@/Service/FinanceService/FinanceService";
-import type { PaymentData, Student } from "../Finanace/FinanceInterface";
-
-
-
+import type { PaymentData, Student } from "./FinanceInterface";
 
 interface PaymentStore {
   // State
@@ -118,10 +115,15 @@ export const usePaymentStore = create<PaymentStore>((set, get) => ({
   submitPayment: async (paymentData: PaymentData) => {
     set({ isSubmitting: true });
     try {
-      const result = await financeService.createPayment({
+      const { selectedStudent } = get();
+
+      const paymentPayload = {
         ...paymentData,
+        studentName: selectedStudent?.fullName || "", // ← studentName qo'shish
         paidAt: paymentData.paidAt || new Date().toISOString(),
-      });
+      };
+
+      const result = await financeService.createPayment(paymentPayload);
 
       console.log("To'lov muvaffaqiyatli:", result);
 

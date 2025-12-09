@@ -1,4 +1,4 @@
-import type { Payment } from "..";
+import type { Payment } from "../Finanace/FinanceInterface";
 
 export interface Student {
   id: number;
@@ -19,6 +19,15 @@ export interface Student {
   }>;
 }
 export type StudentStatus = "PRESENT" | "ABSENT" | "UNKNOWN";
+export interface StudentForm {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  password: string;
+  dateOfBirth: string;
+  startDate: string;
+  isActive: boolean;
+}
 
 export interface StudentWithGroups {
   id: string;
@@ -123,4 +132,5 @@ export interface StudentGroup {
 export interface StudentDrawerProps {
   open: boolean;
   onClose: () => void;
+  onAdded: () => void; // ← onAdded qo'shing
 }

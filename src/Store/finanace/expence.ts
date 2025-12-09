@@ -1,7 +1,7 @@
+// FinanceStore.ts - O'ZGARTIRILGAN VERSIYA
 import { create } from "zustand";
 import { financeService } from "@/Service/FinanceService/FinanceService";
 import type { Expense, ExpenseStore } from "./FinanceInterface";
-
 
 export const useExpenseStore = create<ExpenseStore>((set, get) => ({
   isSubmitting: false,
@@ -12,7 +12,8 @@ export const useExpenseStore = create<ExpenseStore>((set, get) => ({
     type: "success",
   },
 
-  submitExpense: async (expenseData: Expense) => {
+  // Arrow function o'rniga regular function ishlating
+  submitExpense: async function (expenseData: Expense) {
     set({ isSubmitting: true });
     try {
       const result = await financeService.createExpense({
@@ -43,7 +44,6 @@ export const useExpenseStore = create<ExpenseStore>((set, get) => ({
   },
 
   resetForm: () => {
-    // Formani tozalash uchun
     set({
       alertOpen: false,
       isSubmitting: false,

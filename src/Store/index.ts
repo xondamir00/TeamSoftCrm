@@ -6,10 +6,12 @@ export type Role = "admin" | "teacher" | "MANAGER" | "USER";
 export type User = {
   id: string;
   email: string;
+  avatarUrl: string;
   role: Role;
   mustChangePassword?: boolean;
   firstname: string;
   lastname: string;
+  phone: number;
   isActive: boolean;
 };
 
@@ -32,12 +34,6 @@ export interface Enrollment {
     name: string;
   };
 }
-
-
-
-
-
-
 
 // ApiError interfeysini qo'shamiz
 export interface ApiError {

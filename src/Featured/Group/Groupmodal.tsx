@@ -2,10 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import AddGroupForm from "./AddGoup";
-import type { Group, GroupModalProps } from "@/Store/Group/GroupInterface";
+import type { Group } from "@/Store/Group/GroupInterface";
+import AddGroupForm from "./AddGoupForm";
 
-
+export interface GroupModalProps {
+  isOpen: boolean;
+  editingGroup: Group | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}
 
 export function GroupModal({
   isOpen,
@@ -46,7 +51,7 @@ interface ModalHeaderProps {
 
 function ModalHeader({ editingGroup, onClose }: ModalHeaderProps) {
   const title = editingGroup ? "Edit Group" : "Add Group";
-  
+
   return (
     <div className="p-4 border-b dark:border-gray-800 flex items-center justify-between">
       <h2 className="text-lg font-semibold dark:text-white">{title}</h2>

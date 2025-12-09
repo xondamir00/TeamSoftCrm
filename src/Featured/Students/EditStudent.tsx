@@ -14,20 +14,11 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import { api } from "@/Service/ApiService/api";
+import type { StudentForm } from "@/Store/Student/StudentInterface";
 
 interface EditStudentProps {
   studentId: number;
   onUpdated?: () => void;
-}
-
-interface StudentForm {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  password: string;
-  dateOfBirth: string;
-  startDate: string;
-  isActive: boolean;
 }
 
 export default function EditStudent({

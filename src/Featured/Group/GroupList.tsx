@@ -25,7 +25,7 @@ export default function GroupList() {
     setGroupToDelete,
     fetchGroups,
     fetchRooms,
-    deleteGroup
+    deleteGroup,
   } = useGroupStore();
 
   useEffect(() => {

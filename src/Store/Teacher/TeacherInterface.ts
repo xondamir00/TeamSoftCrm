@@ -11,8 +11,8 @@ export interface Teacher {
   phone: string;
   createdAt: string;
   photoUrl?: string | null;
-   monthlySalary?: number | null; 
-  percentShare?: number | null;  
+  monthlySalary?: number | null;
+  percentShare?: number | null;
 }
 export interface TeachingAssignmentState {
   // State
@@ -22,7 +22,7 @@ export interface TeachingAssignmentState {
   teachers: any[]; // Form uchun teacherlar ro'yxati
   groups: any[]; // Form uchun guruhlar ro'yxati
   formLoading: boolean; // Form yuklanishi uchun
-  
+
   // Setters
   setAssignments: (assignments: TeacherAssignment[]) => void;
   setLoading: (loading: boolean) => void;
@@ -30,10 +30,10 @@ export interface TeachingAssignmentState {
   setTeachers: (teachers: any[]) => void;
   setGroups: (groups: any[]) => void;
   setFormLoading: (loading: boolean) => void;
-  
+
   // Actions - CRUD operations
   fetchAssignments: () => Promise<void>;
-  
+
   // Form uchun metodlar
   fetchFormData: () => Promise<void>; // Teacher va group ma'lumotlarini olish
   createAssignment: (payload: {
@@ -48,16 +48,16 @@ export interface TeachingAssignmentState {
     startTimeOverride?: string;
     endTimeOverride?: string;
   }) => Promise<TeacherAssignment>;
-  
+
   updateAssignment: (
-    id: string, 
+    id: string,
     payload: Partial<{
       role?: string;
       note?: string;
       isActive?: boolean;
     }>
   ) => Promise<TeacherAssignment>;
-  
+
   deleteAssignment: (id: string) => Promise<void>;
 }
 export interface TeachingAssignmentFormProps {
@@ -169,10 +169,16 @@ export interface TeacherState {
   handleUpdated: () => Promise<void>;
 }
 
-export interface AddTeacherDrawerProps {
+export interface TeacherDrawerProps {
   open: boolean;
   onClose: () => void;
+}
+
+export interface AddTeacherDrawerProps extends TeacherDrawerProps {
+  onAdded: () => void;
+}
+
+export interface UpdateTeacherDrawerProps extends TeacherDrawerProps {
   teacherId: string;
   onUpdated: () => void;
-  onAdded: () => void;
 }

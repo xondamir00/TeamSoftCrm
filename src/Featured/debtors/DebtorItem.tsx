@@ -2,28 +2,25 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Phone, 
-  ChevronDown, 
+import {
+  Phone,
+  ChevronDown,
   ChevronUp,
   DollarSign,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 import type { DebtorItemProps } from "@/Store/Finanace/FinanceInterface";
-
 
 export function DebtorItem({ debtor, index }: DebtorItemProps) {
   const [expanded, setExpanded] = useState(false);
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('uz-UZ', {
-      style: 'currency',
-      currency: 'UZS',
+    return new Intl.NumberFormat("uz-UZ", {
+      style: "currency",
+      currency: "UZS",
       minimumFractionDigits: 0,
     }).format(amount);
   };
-
-
 
   return (
     <Card className="mb-4 hover:shadow-lg transition-shadow">
@@ -43,14 +40,11 @@ export function DebtorItem({ debtor, index }: DebtorItemProps) {
           </div>
 
           <div className="flex items-center gap-4">
-            <Badge 
-              variant="destructive" 
-              className="text-lg px-3 py-1"
-            >
+            <Badge variant="destructive" className="text-lg px-3 py-1">
               <DollarSign className="w-4 h-4 mr-1" />
               {formatCurrency(debtor.totalDebt)}
             </Badge>
-            
+
             <Button
               variant="outline"
               size="sm"

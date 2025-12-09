@@ -1,27 +1,24 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { 
-  User, 
-  Phone, 
-  Search, 
-  X,
-  Loader2 
-} from 'lucide-react';
-import { usePaymentStore} from '@/Store/Finanace/UsePaymentStore';
-import { formatDate } from '@/Store/Finanace/DateUtils';
-import type { StudentDropdownProps } from '@/Store/Student/StudentInterface';
+} from "@/components/ui/select";
+import { User, Phone, Search, X, Loader2 } from "lucide-react";
+import { usePaymentStore } from "@/Store/Finanace/usePaymentStore";
+import { formatDate } from "@/Store/Finanace/dateUtils";
+import type { StudentDropdownProps } from "@/Store/Student/StudentInterface";
 
-
-export function StudentDropdown({ value, onValueChange, error }: StudentDropdownProps) {
+export function StudentDropdown({
+  value,
+  onValueChange,
+  error,
+}: StudentDropdownProps) {
   const {
     selectedStudent,
     filteredStudents,
@@ -41,7 +38,7 @@ export function StudentDropdown({ value, onValueChange, error }: StudentDropdown
 
   const handleClearSelection = () => {
     clearSelectedStudent();
-    onValueChange('');
+    onValueChange("");
   };
 
   if (selectedStudent) {
@@ -74,16 +71,25 @@ export function StudentDropdown({ value, onValueChange, error }: StudentDropdown
             </Button>
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
-            <Badge variant="secondary" className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+            <Badge
+              variant="secondary"
+              className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
+            >
               Telefon: {selectedStudent.phone}
             </Badge>
             {selectedStudent.dateOfBirth && (
-              <Badge variant="outline" className="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400">
+              <Badge
+                variant="outline"
+                className="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400"
+              >
                 Tugʻilgan: {formatDate(selectedStudent.dateOfBirth)}
               </Badge>
             )}
             {selectedStudent.startDate && (
-              <Badge variant="outline" className="bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400">
+              <Badge
+                variant="outline"
+                className="bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400"
+              >
                 Boshlagan: {formatDate(selectedStudent.startDate)}
               </Badge>
             )}
@@ -122,7 +128,9 @@ export function StudentDropdown({ value, onValueChange, error }: StudentDropdown
             {isLoadingStudents ? (
               <div className="flex items-center justify-center p-8">
                 <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
-                <span className="ml-2 text-slate-600">Talabalar yuklanmoqda...</span>
+                <span className="ml-2 text-slate-600">
+                  Talabalar yuklanmoqda...
+                </span>
               </div>
             ) : filteredStudents.length === 0 ? (
               <div className="text-center p-6">

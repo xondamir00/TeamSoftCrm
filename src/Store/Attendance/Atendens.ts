@@ -1,7 +1,7 @@
 // stores/attendanceStore.ts
 import type { Sheet } from "../Teacher/SheetInterdace";
-import type { Group } from "../../Service/GroupService/GroupService";
 import type { StudentStatus } from "../Student/StudentInterface";
+import type { Group } from "../Group/GroupInterface";
 
 export interface AttendanceState {
   sheets: Sheet[];
@@ -45,17 +45,24 @@ export interface SheetHeaderProps {
   saving: boolean;
 }
 
-
 export interface StudentsListProps {
   sheet: Sheet;
-  onStatusChange: (sheetId: string, studentId: string, status: StudentStatus) => void;
+  onStatusChange: (
+    sheetId: string,
+    studentId: string,
+    status: StudentStatus
+  ) => void;
   onAddComment: (sheetId: string, studentId: string) => void;
   saving?: boolean;
 }
 
 export interface SheetCardProps {
   sheet: Sheet;
-  onStatusChange: (sheetId: string, studentId: string, status: StudentStatus) => void;
+  onStatusChange: (
+    sheetId: string,
+    studentId: string,
+    status: StudentStatus
+  ) => void;
   onAddComment: (sheetId: string, studentId: string) => void;
   onSave: (sheetId: string) => void;
   onDelete: (sheetId: string) => void;

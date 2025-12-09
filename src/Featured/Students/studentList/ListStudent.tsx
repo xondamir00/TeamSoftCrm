@@ -152,7 +152,7 @@ export const ListStudent = () => {
             student={selectedStudent}
             open={restoreDialogOpen}
             onClose={() => setRestoreDialogOpen(false)}
-            onDeleted={async () => {
+            onUpdated={async () => {
               await restoreStudent(selectedStudent.id);
               handleUpdated();
             }}

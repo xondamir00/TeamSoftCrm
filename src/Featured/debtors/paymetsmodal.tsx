@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,37 +7,41 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { Calendar } from '@/components/ui/calendar';
-import { CalendarIcon, CreditCard, Wallet, Banknote, Smartphone } from 'lucide-react';
-import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  CalendarIcon,
+  CreditCard,
+  Wallet,
+  Banknote,
+  Smartphone,
+} from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import type { PaymentModalProps } from '@/Store/Finanace/FinanceInterface';
-
-
+} from "@/components/ui/popover";
+import { type PaymentModalProps } from "@/Store/Finanace/FinanceInterface";
 
 const PAYMENT_METHODS = [
-  { value: 'CASH', label: 'Naqd', icon: Banknote },
-  { value: 'CARD', label: 'Karta', icon: CreditCard },
-  { value: 'UZUM', label: 'Uzum', icon: Smartphone },
-  { value: 'CLICK', label: 'Click', icon: Wallet },
-  { value: 'PAYME', label: 'Payme', icon: Smartphone },
-  { value: 'TRANSFER', label: 'Bank o\'tkazma', icon: CreditCard },
+  { value: "CASH", label: "Naqd", icon: Banknote },
+  { value: "CARD", label: "Karta", icon: CreditCard },
+  { value: "UZUM", label: "Uzum", icon: Smartphone },
+  { value: "CLICK", label: "Click", icon: Wallet },
+  { value: "PAYME", label: "Payme", icon: Smartphone },
+  { value: "TRANSFER", label: "Bank o'tkazma", icon: CreditCard },
 ];
 
 export function PaymentModal({
@@ -49,10 +53,10 @@ export function PaymentModal({
   loading,
 }: PaymentModalProps) {
   const [formData, setFormData] = useState({
-    amount: '',
-    method: 'CASH',
-    reference: '',
-    comment: '',
+    amount: "",
+    method: "CASH",
+    reference: "",
+    comment: "",
     paidAt: new Date(),
   });
 
@@ -65,16 +69,16 @@ export function PaymentModal({
       paidAt: formData.paidAt.toISOString(),
     });
     setFormData({
-      amount: '',
-      method: 'CASH',
-      reference: '',
-      comment: '',
+      amount: "",
+      method: "CASH",
+      reference: "",
+      comment: "",
       paidAt: new Date(),
     });
   };
 
   const handleChange = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -92,7 +96,10 @@ export function PaymentModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
             <div>
-              <Label htmlFor="amount" className="mb-2 block text-sm font-medium">
+              <Label
+                htmlFor="amount"
+                className="mb-2 block text-sm font-medium"
+              >
                 To'lov summasi (UZS)
               </Label>
               <Input
@@ -100,7 +107,7 @@ export function PaymentModal({
                 type="number"
                 placeholder="0"
                 value={formData.amount}
-                onChange={(e) => handleChange('amount', e.target.value)}
+                onChange={(e) => handleChange("amount", e.target.value)}
                 className="text-lg font-semibold py-6"
                 required
               />
@@ -112,7 +119,7 @@ export function PaymentModal({
               </Label>
               <Select
                 value={formData.method}
-                onValueChange={(value) => handleChange('method', value)}
+                onValueChange={(value) => handleChange("method", value)}
               >
                 <SelectTrigger className="w-full py-6">
                   <SelectValue placeholder="To'lov usulini tanlang" />
@@ -158,7 +165,9 @@ export function PaymentModal({
                   <Calendar
                     mode="single"
                     selected={formData.paidAt}
-                    onSelect={(date) => handleChange('paidAt', date || new Date())}
+                    onSelect={(date) =>
+                      handleChange("paidAt", date || new Date())
+                    }
                     initialFocus
                   />
                 </PopoverContent>
@@ -166,26 +175,32 @@ export function PaymentModal({
             </div>
 
             <div>
-              <Label htmlFor="reference" className="mb-2 block text-sm font-medium">
+              <Label
+                htmlFor="reference"
+                className="mb-2 block text-sm font-medium"
+              >
                 Referens raqami (ixtiyoriy)
               </Label>
               <Input
                 id="reference"
                 placeholder="To'lov ID yoki chek raqami"
                 value={formData.reference}
-                onChange={(e) => handleChange('reference', e.target.value)}
+                onChange={(e) => handleChange("reference", e.target.value)}
               />
             </div>
 
             <div>
-              <Label htmlFor="comment" className="mb-2 block text-sm font-medium">
+              <Label
+                htmlFor="comment"
+                className="mb-2 block text-sm font-medium"
+              >
                 Izoh (ixtiyoriy)
               </Label>
               <Textarea
                 id="comment"
                 placeholder="Qo'shimcha ma'lumotlar..."
                 value={formData.comment}
-                onChange={(e) => handleChange('comment', e.target.value)}
+                onChange={(e) => handleChange("comment", e.target.value)}
                 rows={3}
               />
             </div>
@@ -211,7 +226,7 @@ export function PaymentModal({
                   Kiritilmoqda...
                 </>
               ) : (
-                'To\'lovni kiritish'
+                "To'lovni kiritish"
               )}
             </Button>
           </DialogFooter>

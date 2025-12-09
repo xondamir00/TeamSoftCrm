@@ -4,19 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { X, Loader2 } from "lucide-react";
-import type { AddTeacherDrawerProps } from "@/Store/Teacher/TeacherInterface";
+import type { UpdateTeacherDrawerProps } from "@/Store/Teacher/TeacherInterface";
 import useTeacherStore from "@/Service/TeacherService/TeacherService";
-
 
 export default function UpdateTeacherDrawer({
   open,
   onClose,
   teacherId,
   onUpdated,
-}: AddTeacherDrawerProps) {
+}: UpdateTeacherDrawerProps) {
   const { t } = useTranslation();
-  const { updateTeacher, fetchTeachers, selectedTeacher, setSelectedTeacher } = useTeacherStore();
-  
+  const { updateTeacher, fetchTeachers, selectedTeacher, setSelectedTeacher } =
+    useTeacherStore();
+
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState<string>("");
@@ -39,11 +39,12 @@ export default function UpdateTeacherDrawer({
       try {
         setFetching(true);
         setError("");
-        
+
         // Agar selectedTeacher bo'sh bo'lsa, store'dan teachers ro'yxatidan topamiz
         const { teachers } = useTeacherStore.getState();
-        const teacher = selectedTeacher || teachers.find(t => t.id === teacherId);
-        
+        const teacher =
+          selectedTeacher || teachers.find((t) => t.id === teacherId);
+
         if (teacher) {
           setForm({
             firstName: teacher.firstName || "",
@@ -132,7 +133,7 @@ export default function UpdateTeacherDrawer({
         onUpdated();
         onClose();
         setSuccess(false);
-        
+
         // Formni tozalash
         setForm({
           firstName: "",
@@ -143,14 +144,16 @@ export default function UpdateTeacherDrawer({
           monthlySalary: null,
           percentShare: null,
         });
-        
+
         // SelectedTeacher ni null qilish
         setSelectedTeacher(null);
       }, 1500);
     } catch (err) {
       console.error("Error updating teacher:", err);
       setError(
-        err instanceof Error ? err.message : "An error occurred while updating teacher"
+        err instanceof Error
+          ? err.message
+          : "An error occurred while updating teacher"
       );
     } finally {
       setLoading(false);

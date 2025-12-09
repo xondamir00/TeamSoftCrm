@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import type { Room } from '../Room/RoomInterface';
+import { create } from "zustand";
+import type { Room } from "../Room/RoomInterface";
 
 export interface Group {
   id: string; // groupId emas
@@ -20,14 +20,12 @@ export interface Group {
 }
 // Guruhlarni olish response tipi
 export interface GroupsResponse {
-  items: Group[];
-  total: number;
-  page: number;
-  active: number;
-
-  limit: number;
-  inactive: number;
-
+  items: Group[]; // Required
+  total: number; // Required
+  page: number; // Required
+  active: number; // Required
+  limit: number; // Required
+  inactive: number; // Required
 }
 
 export interface GroupPayload {
@@ -50,16 +48,11 @@ export interface GroupModalStore {
   isOpen: boolean;
   editingGroup: Group | null;
   openModal: (group?: Group | null) => void;
-  closeModal: () => void
+  closeModal: () => void;
   onSuccess?: () => void;
   setEditingGroup: (group: Group | null) => void;
 }
-export interface GroupModalProps {
-  isOpen: boolean;
-  editingGroup: Group | null;
-  onClose: () => void;
-  onSuccess: () => void;
-}
+
 export interface StatCardProps {
   title: string;
   value: number;
@@ -90,16 +83,18 @@ export interface GroupTableProps {
 export const useGroupModalStore = create<GroupModalStore>((set) => ({
   isOpen: false,
   editingGroup: null,
-  
-  openModal: (group = null) => set({ 
-    isOpen: true, 
-    editingGroup: group 
-  }),
-  
-  closeModal: () => set({ 
-    isOpen: false, 
-    editingGroup: null 
-  }),
-  
+
+  openModal: (group = null) =>
+    set({
+      isOpen: true,
+      editingGroup: group,
+    }),
+
+  closeModal: () =>
+    set({
+      isOpen: false,
+      editingGroup: null,
+    }),
+
   setEditingGroup: (group) => set({ editingGroup: group }),
 }));

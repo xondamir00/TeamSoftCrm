@@ -110,6 +110,7 @@ export interface PaymentAlertProps {
 }
 export interface PaymentData {
   studentId: string;
+  studentName: string; // ← Qo'shing
   amount: number;
   method: "CASH" | "CARD" | "TRANSFER" | "OTHER";
   reference?: string;
@@ -144,12 +145,12 @@ export interface StudentFinanceSummary {
   }[];
 }
 export const expenseSchema = z.object({
-  title: z.string().min(1, "Sarlavha kiritish shart"),
-  category: z.string().min(1, "Kategoriya tanlash shart"),
-  amount: z.coerce.number().positive("Summa musbat boʻlishi kerak"),
+  title: z.string().min(1, "Sarlavha kiritilishi shart"),
+  category: z.string().min(1, "Kategoriya tanlanishi shart"),
+  amount: z.number().min(1, "Summa kiritilishi shart"),
   method: z.enum(["CASH", "CARD", "TRANSFER", "OTHER"]),
-  note: z.string().optional(),
   paidAt: z.date().optional(),
+  note: z.string().optional(),
 });
 
 export type ExpenseFormData = z.infer<typeof expenseSchema>;
@@ -226,7 +227,7 @@ export interface ExpenseStore {
     description: string;
     type: "success" | "error";
   };
-  submitExpense: (expenseData: Expense) => Promise<void>;
+  submitExpense: (expenseData: Expense) => Promise<any>;
   resetForm: () => void;
   setAlert: (alert: {
     title: string;

@@ -1,9 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import type {  FinanceStatsProps } from '@/Store/Finanace/FinanceInterface';
-import { DollarSign, TrendingUp, TrendingDown } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { FinanceStatsProps } from "@/Store/Finanace/FinanceInterface";
+import { DollarSign, TrendingUp, TrendingDown } from "lucide-react";
 
-
-export default function FinanceStatss({ stats, loading = false }: FinanceStatsProps) {
+export default function FinanceStatss({
+  stats,
+  loading = false,
+}: FinanceStatsProps) {
   if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -33,9 +35,10 @@ export default function FinanceStatss({ stats, loading = false }: FinanceStatsPr
       title: "Foyda",
       value: stats.profit,
       color: stats.profit >= 0 ? "text-green-500" : "text-red-500",
-      bg: stats.profit >= 0
-        ? "dark:from-green-500/20 p-4 dark:to-green-500/5"
-        : "dark:from-red-500/20 p-4 dark:to-red-500/5",
+      bg:
+        stats.profit >= 0
+          ? "dark:from-green-500/20 p-4 dark:to-green-500/5"
+          : "dark:from-red-500/20 p-4 dark:to-red-500/5",
       icon: <DollarSign className="h-5 w-5 text-blue-500 drop-shadow" />,
     },
   ];

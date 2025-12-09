@@ -18,7 +18,7 @@ class FinanceService {
     comment?: string;
     paidAt?: string;
     groupId?: string;
-  }) {
+  }): Promise<any> {
     try {
       const response = await api.post<{
         payment: Payment;

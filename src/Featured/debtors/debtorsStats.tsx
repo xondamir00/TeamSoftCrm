@@ -4,9 +4,9 @@ import { DollarSign, Users, TrendingUp, AlertTriangle } from "lucide-react";
 
 export function DebtorStats({ stats }: DebtorStatsProps) {
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('uz-UZ', {
-      style: 'currency',
-      currency: 'UZS',
+    return new Intl.NumberFormat("uz-UZ", {
+      style: "currency",
+      currency: "UZS",
       minimumFractionDigits: 0,
     }).format(amount);
   };
@@ -17,7 +17,9 @@ export function DebtorStats({ stats }: DebtorStatsProps) {
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-blue-600 dark:text-blue-400">Jami qarzdorlar</p>
+              <p className="text-sm text-blue-600 dark:text-blue-400">
+                Jami qarzdorlar
+              </p>
               <p className="text-2xl font-bold">{stats.totalDebtors}</p>
             </div>
             <Users className="w-8 h-8 text-blue-500" />
@@ -29,8 +31,12 @@ export function DebtorStats({ stats }: DebtorStatsProps) {
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-red-600 dark:text-red-400">Jami qarz</p>
-              <p className="text-2xl font-bold">{formatCurrency(stats.totalAmount)}</p>
+              <p className="text-sm text-red-600 dark:text-red-400">
+                Jami qarz
+              </p>
+              <p className="text-2xl font-bold">
+                {formatCurrency(stats.totalAmount)}
+              </p>
             </div>
             <DollarSign className="w-8 h-8 text-red-500" />
           </div>
@@ -41,8 +47,12 @@ export function DebtorStats({ stats }: DebtorStatsProps) {
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-amber-600 dark:text-amber-400">O'rtacha qarz</p>
-              <p className="text-2xl font-bold">{formatCurrency(stats.averageDebt)}</p>
+              <p className="text-sm text-amber-600 dark:text-amber-400">
+                O'rtacha qarz
+              </p>
+              <p className="text-2xl font-bold">
+                {formatCurrency(stats.averageDebt)}
+              </p>
             </div>
             <TrendingUp className="w-8 h-8 text-amber-500" />
           </div>
@@ -53,8 +63,12 @@ export function DebtorStats({ stats }: DebtorStatsProps) {
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-purple-600 dark:text-purple-400">Eng katta qarz</p>
-              <p className="text-2xl font-bold">{formatCurrency(stats.highestDebt)}</p>
+              <p className="text-sm text-purple-600 dark:text-purple-400">
+                Eng katta qarz
+              </p>
+              <p className="text-2xl font-bold">
+                {formatCurrency(stats.highestDebt)}
+              </p>
             </div>
             <AlertTriangle className="w-8 h-8 text-purple-500" />
           </div>

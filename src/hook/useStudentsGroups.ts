@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { api } from "@/Service/ApiService/api";
-import type { Group, Student } from "@/Store";
+import type { Student } from "@/Store/Student/StudentInterface";
+import type { Group } from "@/Store/Group/GroupInterface";
 
 export function useStudentsGroups() {
   const [students, setStudents] = useState<Student[]>([]);

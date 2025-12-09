@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { DollarSign, TrendingDown } from "lucide-react";
 import { api } from "@/Service/ApiService/api";
-import CreatePaymentForm from "../Featured/finance/form/payment/CreatePaymentForm";
-import CreateExpenseForm from "../Featured/finance/form/expence/CreateExpenseForm";
-import FinanceStatss from "../Featured/finance/FinanceStats";
+import CreatePaymentForm from "../Featured/Finance/Form/payment/CreatePaymentForm";
+import CreateExpenseForm from "../Featured/Finance/Form/Expence/CreateExpenseForm";
+import FinanceStatss from "../Featured/Finance/FinanceStats";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import type { FinanceStats } from "@/Store/Finanace/FinanceInterface";
 

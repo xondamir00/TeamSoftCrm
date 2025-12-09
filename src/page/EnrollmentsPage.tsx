@@ -63,9 +63,10 @@ export default function EnrollmentPage() {
     try {
       setLoadingId(studentId);
 
+      // String'ni number'ga o'tkazish
       await createEnrollment({
-        studentId,
-        groupId: selectedGroup,
+        studentId: Number(studentId),
+        groupId: Number(selectedGroup),
       });
 
       await loadAll();
@@ -129,7 +130,7 @@ export default function EnrollmentPage() {
 
                   <Button
                     onClick={() => handleAssign(s.id)}
-                    disabled={loadingId === s.id}
+                    disabled={loadingId === s.id || !selectedGroup}
                     className="px-6 bg-blue-600 hover:bg-blue-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-700"
                   >
                     {loadingId === s.id && (

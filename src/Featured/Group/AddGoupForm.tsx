@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import type { GroupModalStore } from "@/Store/Group/GroupInterface";
+import type { Group } from "@/Store/Group/GroupInterface";
 import useGroupStore from "@/Service/GroupService/GroupService";
-
+// AddGroupForm.tsx faylida
+interface AddGroupFormProps {
+  editingGroup: Group | null;
+  onSuccess: () => void;
+}
 export default function AddGroupForm({
   editingGroup,
   onSuccess,
-}: GroupModalStore) {
+}: AddGroupFormProps) {
   const { t } = useTranslation();
-  
-  const { 
-    rooms, 
-    loading, 
-    createGroup, 
-    updateGroup,
-    fetchRooms,
-    setLoading,
-  } = useGroupStore();
-  
+
+  const { rooms, loading, createGroup, updateGroup, fetchRooms, setLoading } =
+    useGroupStore();
+
   const [message, setMessage] = useState("");
 
   const [form, setForm] = useState({
@@ -32,7 +30,7 @@ export default function AddGroupForm({
       days: [] as string[],
     },
   });
-  
+
   // Xonalarni yuklash
   useEffect(() => {
     fetchRooms();
@@ -47,7 +45,8 @@ export default function AddGroupForm({
         capacity: editingGroup.capacity ?? 1,
         monthlyFee: editingGroup.monthlyFee ?? 0,
         schedule: {
-          mode: editingGroup.daysPattern as "ODD" | "EVEN" | "CUSTOM" || "ODD",
+          mode:
+            (editingGroup.daysPattern as "ODD" | "EVEN" | "CUSTOM") || "ODD",
           startTime: editingGroup.startTime || "",
           endTime: editingGroup.endTime || "",
           days: editingGroup.schedule?.days || [],
@@ -74,16 +73,16 @@ export default function AddGroupForm({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    
+
     if (["mode", "startTime", "endTime"].includes(name)) {
-      setForm((f) => ({ 
-        ...f, 
-        schedule: { ...f.schedule, [name]: value } 
+      setForm((f) => ({
+        ...f,
+        schedule: { ...f.schedule, [name]: value },
       }));
     } else if (name === "capacity" || name === "monthlyFee") {
-      setForm((f) => ({ 
-        ...f, 
-        [name]: Number(value) || 0 
+      setForm((f) => ({
+        ...f,
+        [name]: Number(value) || 0,
       }));
     } else {
       setForm((f) => ({
@@ -134,16 +133,16 @@ export default function AddGroupForm({
       setTimeout(() => {
         onSuccess?.();
       }, 500);
-      
     } catch (err: any) {
       console.error("Error saving group:", err);
-      
+
       // Xatolik xabarini ko'rsatish
-      const errorMessage = err.response?.data?.message || 
-        err.message || 
-        t("group_error") || 
+      const errorMessage =
+        err.response?.data?.message ||
+        err.message ||
+        t("group_error") ||
         "An error occurred";
-      
+
       setMessage(errorMessage);
     } finally {
       setLoading(false);
@@ -159,11 +158,13 @@ export default function AddGroupForm({
       </h2>
 
       {message && (
-        <div className={`mb-3 p-3 rounded-lg text-sm text-center ${
-          message.includes("success") 
-            ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800" 
-            : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800"
-        }`}>
+        <div
+          className={`mb-3 p-3 rounded-lg text-sm text-center ${
+            message.includes("success")
+              ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800"
+              : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800"
+          }`}
+        >
           {message}
         </div>
       )}
@@ -197,7 +198,9 @@ export default function AddGroupForm({
             className="w-full border border-gray-300 dark:border-gray-700 p-2.5 rounded-lg dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             disabled={loading}
           >
-            <option value="">{t("select_room_optional") || "Select a room (optional)"}</option>
+            <option value="">
+              {t("select_room_optional") || "Select a room (optional)"}
+            </option>
             {rooms.map((room) => (
               <option key={room.id} value={room.id}>
                 {room.name} {room.capacity ? `(${room.capacity} seats)` : ""}
@@ -259,7 +262,9 @@ export default function AddGroupForm({
           >
             <option value="ODD">{t("odd_days_label") || "Odd Days"}</option>
             <option value="EVEN">{t("even_days_label") || "Even Days"}</option>
-            <option value="CUSTOM">{t("custom_days_label") || "Custom Days"}</option>
+            <option value="CUSTOM">
+              {t("custom_days_label") || "Custom Days"}
+            </option>
           </select>
         </div>
 
@@ -320,7 +325,8 @@ export default function AddGroupForm({
             </div>
             {form.schedule.days.length > 0 && (
               <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                Selected: {form.schedule.days.map(d => t(d.toLowerCase())).join(", ")}
+                Selected:{" "}
+                {form.schedule.days.map((d) => t(d.toLowerCase())).join(", ")}
               </p>
             )}
           </div>
@@ -335,14 +341,14 @@ export default function AddGroupForm({
           {loading ? (
             <>
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-              {editingGroup 
-                ? t("updating") || "Updating..." 
+              {editingGroup
+                ? t("updating") || "Updating..."
                 : t("adding") || "Adding..."}
             </>
+          ) : editingGroup ? (
+            t("update_button") || "Update Group"
           ) : (
-            editingGroup 
-              ? t("update_button") || "Update Group" 
-              : t("add_button") || "Add Group"
+            t("add_button") || "Add Group"
           )}
         </button>
       </form>

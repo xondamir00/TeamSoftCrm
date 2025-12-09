@@ -62,8 +62,6 @@ const Debtors = () => {
     }
   };
 
-
-
   if (loading && debtors.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -75,7 +73,6 @@ const Debtors = () => {
     );
   }
 
-  // Statistikani hisoblash
   const stats = {
     totalDebtors: filteredDebtors.length,
     totalAmount: filteredDebtors.reduce((sum, d) => sum + d.totalDebt, 0),
@@ -88,8 +85,10 @@ const Debtors = () => {
     highestDebt: filteredDebtors.length
       ? Math.max(...filteredDebtors.map((d) => d.totalDebt))
       : 0,
-  };
 
+    totalGroups: filteredDebtors.reduce((sum, d) => sum + d.groups.length, 0),
+    debtByMonth: [],
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-950 p-4 md:p-6">
       <div className="max-w-6xl mx-auto">

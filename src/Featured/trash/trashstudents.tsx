@@ -27,12 +27,14 @@ export default function TrashStudentsPage() {
   useEffect(() => {
     loadStudents();
   }, []);
-
-  const restoreStudent = async (id: string) => {
-    await trashStudentService.restore(id);
-    setStudents((prev) => prev.filter((s) => s.id !== id));
+  const restoreStudent = async (id: any) => {
+    try {
+      await trashStudentService.restore(id);
+      setStudents((prev) => prev.filter((s) => s.id !== id));
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
-
   return (
     <div className="max-w-5xl mx-auto p-6">
       <Card className="shadow-lg p-5 bg-white dark:bg-slate-900 backdrop-blur border border-red-200 dark:border-red-900/40 transition-colors">

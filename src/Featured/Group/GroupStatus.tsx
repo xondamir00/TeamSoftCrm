@@ -1,11 +1,15 @@
 "use client";
 
-import type { GroupsResponse, StatCardProps } from "@/Store/Group/GroupInterface";
+import type { StatCardProps } from "@/Store/Group/GroupInterface";
 import { Users, UserCheck, UserX } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-
-export function GroupStats({ total, active, inactive }: GroupsResponse) {
+// Alohida prop'lar uchun interface yarating
+interface GroupStatsProps {
+  total: number;
+  active: number;
+  inactive: number;
+}
+export function GroupStats({ total, active, inactive }: GroupStatsProps) {
   const { t } = useTranslation();
 
   return (
@@ -60,7 +64,9 @@ function StatCard({ title, value, icon, color }: StatCardProps) {
   const classes = colorClasses[color];
 
   return (
-    <div className={`bg-gradient-to-br ${classes.bg} rounded-xl p-4 border ${classes.border} transition-colors duration-300`}>
+    <div
+      className={`bg-gradient-to-br ${classes.bg} rounded-xl p-4 border ${classes.border} transition-colors duration-300`}
+    >
       <div className="flex items-center justify-between">
         <div>
           <p className={`${classes.text} text-xs sm:text-sm font-medium mb-1`}>

@@ -57,9 +57,7 @@ export default function RoomsPage() {
     try {
       await RoomService.update(editRoom.id, {
         name: editRoom.name,
-        capacity: editRoom.capacity
-          ? Number(editRoom.capacity)
-          : undefined,
+        capacity: editRoom.capacity ? Number(editRoom.capacity) : undefined,
       });
 
       setEditRoom(null);
@@ -229,7 +227,9 @@ export default function RoomsPage() {
                 onChange={(e) =>
                   setEditRoom({
                     ...editRoom,
-                    capacity: e.target.value,
+                    capacity: e.target.value
+                      ? parseInt(e.target.value)
+                      : undefined,
                   })
                 }
                 className="mt-1 dark:bg-slate-900 dark:border-neutral-700 dark:text-white"

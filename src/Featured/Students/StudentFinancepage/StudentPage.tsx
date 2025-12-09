@@ -15,9 +15,9 @@ import { PersonalInfo } from "./PersonalInfo";
 import { FinanceStats } from "./FinanceStats";
 import { PaymentHistory } from "./PaymentHistory";
 import { FinanceCards } from "./FinanceCards";
-import type { FinanceSummary } from "@/Store/index";
 import { api } from "@/Service/ApiService/api";
 import type { Student } from "@/Store/Student/StudentInterface";
+import type { StudentFinanceSummary } from "@/Store/Finanace/FinanceInterface";
 
 const StudentPage = () => {
   const { t } = useTranslation();
@@ -25,7 +25,7 @@ const StudentPage = () => {
   const navigate = useNavigate();
 
   const [student, setStudent] = useState<Student | null>(null);
-  const [finance, setFinance] = useState<FinanceSummary | null>(null);
+  const [finance, setFinance] = useState<StudentFinanceSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [financeLoading, setFinanceLoading] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
