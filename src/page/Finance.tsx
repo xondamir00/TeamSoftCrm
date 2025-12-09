@@ -5,7 +5,7 @@ import { api } from "@/Service/ApiService/api";
 import FinanceStatss from "@/Featured/Finance/FinanceStats";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import type { FinanceStats } from "@/Store/Finanace/FinanceInterface";
-import CreateExpenseForm from "../Featured/Finance/Form/Expence/CreateExpenseForm";
+import CreateExpenseForm from "@/Featured/Finance/Form/Expence/CreateExpenseForm";
 import CreatePaymentForm from "@/Featured/Finance/Form/Payment/CreatePaymentForm";
 // import CreateExpenseForm from "@/Featured/Finance/Form/Expence/CreateExpenseForm";
 
