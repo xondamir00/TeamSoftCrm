@@ -3,26 +3,26 @@ import Homelayout from "@/components/layout/homelayout";
 import Teacherlayout from "@/components/layout/teacherlayout";
 import { RoleRoute } from "@/role/role-route";
 import { AuthRefresh } from "@/components/auth/Auth-Refresh";
-import Settings from "@/Page/TeacherGroup";
+import Settings from "@/Page/TeacherGroup.tsx";
 import AddRoom from "@/Featured/Rooms/AddRoom";
 import RoomsList from "@/Featured/Rooms/RoomsList";
 import { Login } from "@/components/auth/login";
 import ListStudent from "@/Featured/Students/studentList/ListStudent";
-import EnrollmentsPage from "@/Page/EnrollmentsPage";
+import EnrollmentsPage from "@/Page/EnrollmentsPage.tsx";
 import { TeachingAssignmentForm } from "@/Featured/teacher/TeacherAssignmentsList/TeacherAssignmentForm";
 import { TeachingAssignmentsList } from "@/Featured/teacher/TeacherAssignmentsList/TeacherAssignmentsList";
 import CreateStudentForm from "@/components/form/addStudent";
 import TeacherList from "@/Featured/teacher/Teacherlist";
 import AddManagerForm from "@/components/form/AddManeger";
 import ManagerList from "@/Featured/Maneger/ManagerList";
-import Trash from "@/Page/trash";
+import Trash from "@/Page/trash.tsx";
 import StudentPage from "@/Featured/Students/StudentFinancepage/StudentPage";
-import FinancePage from "@/Page/Finance";
+import FinancePage from "@/Page/Finance.tsx";
 import Debtors from "@/Featured/Debtors/Debtors";
-import FinanceDashboard from "@/Page/home";
+import FinanceDashboard from "@/Page/home.tsx";
 import Attendancepage from "@/Featured/Attendance/Attendance-page";
 import GroupList from "@/Featured/Group/GroupList";
-import Teachersettings from "@/Page/Teachersettings";
+import Teachersettings from "@/Page/Teachersettings.tsx";
 
 const App = () => {
   return (
