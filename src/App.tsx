@@ -22,7 +22,7 @@ import GroupList from "@/Featured/Group/GroupList";
 import Teachersettings from "@/Page/Teachersettings.tsx";
 import MyGroups from "@/Featured/Teachers/TeacherMyGroups";
 import AddRoom from "@/Featured/Rooms/AddRoom";
-import EnrollmentPage from "./Page/EnrollmentsPage";
+import EnrollmentPage from "@/Page/EnrollmentsPage";
 
 const App = () => {
   return (
