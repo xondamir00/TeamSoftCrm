@@ -3,7 +3,6 @@ import Homelayout from "@/components/layout/homelayout";
 import Teacherlayout from "@/components/layout/teacherlayout";
 import { RoleRoute } from "@/role/role-route";
 import { AuthRefresh } from "@/components/auth/Auth-Refresh";
-import Settings from "@/Page/TeacherGroup";
 import AddRoom from "@/Featured/Rooms/AddRoom";
 import RoomsList from "@/Featured/Rooms/RoomsList";
 import { Login } from "@/components/auth/login";
@@ -23,6 +22,7 @@ import Home from "@/Page/home";
 import Attendancepage from "@/Featured/Attendance/Attendance-page";
 import GroupList from "@/Featured/Group/GroupList";
 import Teachersettings from "@/Page/Teachersettings.tsx";
+import MyGroups from "./Featured/Teachers/TeacherMyGroups";
 
 const App = () => {
   return (
@@ -43,7 +43,7 @@ const App = () => {
           >
             <Route index element={<Home />} /> {/* ✅ DEFAULT COMPONENT */}
             <Route path="student/:id" element={<StudentPage />} />
-            <Route path="settings" element={<Settings />} />
+            <Route path="settings" element={<Teachersettings />} />
             <Route path="student" element={<ListStudent />} />
             <Route path="teachers" element={<TeacherList />} />
             {/* Teaching Assignments routes */}
@@ -88,7 +88,7 @@ const App = () => {
               </RoleRoute>
             }
           >
-            <Route index element={<Teachersettings />} />
+            <Route index element={<MyGroups />} />
             <Route path="group/:groupId" element={<Attendancepage />} />
           </Route>
           {/* Catch-all route */}
