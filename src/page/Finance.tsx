@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { DollarSign, TrendingDown } from "lucide-react";
 import { api } from "@/Service/ApiService/api";
-import CreatePaymentForm from "../Featured/Finance/Form/payment/CreatePaymentForm";
-import CreateExpenseForm from "../Featured/Finance/Form/Expence/CreateExpenseForm";
-import FinanceStatss from "../Featured/Finance/FinanceStats";
+import CreatePaymentForm from "@/Featured/Finance/Form/payment/CreatePaymentForm";
+import FinanceStatss from "@/Featured/Finance/FinanceStats";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import type { FinanceStats } from "@/Store/Finanace/FinanceInterface";
+import CreateExpenseForm from "@/Featured/Finance/Form/Expence/CreateExpenseForm";
+// import CreateExpenseForm from "@/Featured/Finance/Form/Expence/CreateExpenseForm";
 
 export default function FinancePage() {
   const [stats, setStats] = useState<FinanceStats>({
