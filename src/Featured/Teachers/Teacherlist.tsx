@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import UpdateTeacherDrawer from "@/Featured/teacher/UpdateTeacherForm";
-import AddTeacherDrawer from "@/Featured/teacher/AddTeacherForm";
-import TeacherSearchBar from "@/Featured/teacher/TeacherSearchBar";
-import TeacherStats from "@/Featured/teacher/TeacherStats";
-import TeacherTable from "@/Featured/teacher/TeacherTable";
-import TeacherPagination from "@/Featured/teacher/TeacherPageNavigation";
+import UpdateTeacherDrawer from "@/Featured/Teachers/UpdateTeacherForm";
+import AddTeacherDrawer from "@/Featured/Teachers/AddTeacherForm";
+import TeacherSearchBar from "@/Featured/Teachers/TeacherSearchBar";
+import TeacherStats from "@/Featured/Teachers/TeacherStats";
+import TeacherTable from "@/Featured/Teachers/TeacherTable";
+import TeacherPagination from "@/Featured/Teachers/TeacherPageNavigation";
 import useTeacherStore from "@/Service/TeacherService/TeacherService";
-import DeleteTeacherDialog from "@/Featured/teacher/DeleteTeacher";
+import DeleteTeacherDialog from "@/Featured/Teachers/DeleteTeacher";
 
 export default function TeacherList() {
   const {

@@ -1,7 +1,6 @@
-import TrashRoomsPage from "@/Featured/trash/trashroom";
-import TrashStudentsPage from "@/Featured/trash/trashstudents";
-import TrashTeacherPage from "@/Featured/trash/TrashTeacher";
-
+import TrashRoomsPage from "@/Featured/Trash/trashroom";
+import TrashStudentsPage from "@/Featured/Trash/trashstudents";
+import TrashTeacherPage from "@/Featured/Trash/TrashTeacher";
 
 const Trash = () => {
   return (

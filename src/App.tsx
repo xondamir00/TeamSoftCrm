@@ -3,23 +3,23 @@ import Homelayout from "@/components/layout/homelayout";
 import Teacherlayout from "@/components/layout/teacherlayout";
 import { RoleRoute } from "@/role/role-route";
 import { AuthRefresh } from "@/components/auth/Auth-Refresh";
-import Settings from "@/Page/TeacherGroup.tsx";
+import Settings from "@/Page/TeacherGroup";
 import AddRoom from "@/Featured/Rooms/AddRoom";
 import RoomsList from "@/Featured/Rooms/RoomsList";
 import { Login } from "@/components/auth/login";
 import ListStudent from "@/Featured/Students/studentList/ListStudent";
 import EnrollmentsPage from "@/Page/EnrollmentsPage.tsx";
-import { TeachingAssignmentForm } from "@/Featured/teacher/TeacherAssignmentsList/TeacherAssignmentForm";
-import { TeachingAssignmentsList } from "@/Featured/teacher/TeacherAssignmentsList/TeacherAssignmentsList";
+import { TeachingAssignmentForm } from "@/Featured/Teachers/TeacherAssignmentsList/TeacherAssignmentForm";
+import { TeachingAssignmentsList } from "@/Featured/Teachers/TeacherAssignmentsList/TeacherAssignmentsList";
 import CreateStudentForm from "@/components/form/addStudent";
-import TeacherList from "@/Featured/teacher/Teacherlist";
+import TeacherList from "@/Featured/Teachers/Teacherlist";
 import AddManagerForm from "@/components/form/AddManeger";
 import ManagerList from "@/Featured/Maneger/ManagerList";
-import Trash from "@/Page/trash.tsx";
+import Trash from "@/Page/trash";
 import StudentPage from "@/Featured/Students/StudentFinancepage/StudentPage";
 import FinancePage from "@/Page/Finance.tsx";
 import Debtors from "@/Featured/Debtors/Debtors";
-import FinanceDashboard from "@/Page/home.tsx";
+import Home from "@/Page/home";
 import Attendancepage from "@/Featured/Attendance/Attendance-page";
 import GroupList from "@/Featured/Group/GroupList";
 import Teachersettings from "@/Page/Teachersettings.tsx";
@@ -41,8 +41,7 @@ const App = () => {
               </RoleRoute>
             }
           >
-            <Route index element={<FinanceDashboard />} />{" "}
-            {/* ✅ DEFAULT COMPONENT */}
+            <Route index element={<Home />} /> {/* ✅ DEFAULT COMPONENT */}
             <Route path="student/:id" element={<StudentPage />} />
             <Route path="settings" element={<Settings />} />
             <Route path="student" element={<ListStudent />} />

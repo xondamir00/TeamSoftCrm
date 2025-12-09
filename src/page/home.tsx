@@ -52,7 +52,7 @@ type Category = "income" | "expense" | "profit";
 type Range = "yearly" | "monthly" | "weekly";
 type Period = "this_month" | "last_month" | "last_3_months" | "this_year";
 
-export default function FinanceDashboard() {
+export default function Home() {
   const [category, setCategory] = useState<Category>("income");
   const [range, setRange] = useState<Range>("monthly");
   const [period, setPeriod] = useState<Period>("this_month");

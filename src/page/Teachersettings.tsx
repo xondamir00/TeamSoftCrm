@@ -1,4 +1,4 @@
-import TeacherGroup from "@/Page/TeacherGroup.tsx";
+import TeacherGroup from "@/Page/TeacherGroup";
 
 export default function Teachersettings() {
   return (
