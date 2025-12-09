@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Homelayout from "@/components/layout/homelayout";
 import Teacherlayout from "@/components/layout/teacherlayout";
-import Teacher from "@/Page/Teacher";
 import { RoleRoute } from "@/role/role-route";
 import { AuthRefresh } from "@/components/auth/Auth-Refresh";
 import Settings from "@/Page/TeacherGroup";
@@ -23,6 +22,7 @@ import Debtors from "@/Featured/Debtors/Debtors";
 import FinanceDashboard from "@/Page/home";
 import Attendancepage from "@/Featured/Attendance/Attendance-page";
 import GroupList from "@/Featured/Group/GroupList";
+import TeacherGroup from "@/Page/TeacherGroup";
 
 const App = () => {
   return (
@@ -89,7 +89,7 @@ const App = () => {
               </RoleRoute>
             }
           >
-            <Route index element={<Teacher />} />
+            <Route index element={<TeacherGroup />} />
             <Route path="group/:groupId" element={<Attendancepage />} />
           </Route>
 
