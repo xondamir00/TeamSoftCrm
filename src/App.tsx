@@ -4,7 +4,7 @@ import Teacherlayout from "@/components/layout/teacherlayout";
 import Teacher from "@/Page/Teacher";
 import { RoleRoute } from "@/role/role-route";
 import { AuthRefresh } from "@/components/auth/Auth-Refresh";
-import Settings from "@/Page/Settings";
+import Settings from "@/Page/TeacherGroup";
 import AddRoom from "@/Featured/Rooms/AddRoom";
 import RoomsList from "@/Featured/Rooms/RoomsList";
 import { Login } from "@/components/auth/login";
